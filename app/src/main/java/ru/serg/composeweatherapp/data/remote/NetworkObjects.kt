@@ -29,7 +29,7 @@ data class Precipitation(
 
 @Serializable
 data class Weather(
-    val id: String,
+    val id: Long,
     val main: String,
     val description: String,
     val icon: String,
@@ -38,8 +38,8 @@ data class Weather(
 @Serializable
 data class NetworkCurrent(
     val dt: Long,
-    val sunrise: Long?,
-    val sunset: Long?,
+    val sunrise: Long? = null,
+    val sunset: Long? = null,
     val temp: Double,
     @SerialName("feels_like") val feelsLike: Double,
     val pressure: Double,
@@ -51,8 +51,8 @@ data class NetworkCurrent(
     @SerialName("wind_speed") val windSpeed: Double,
     @SerialName("wind_gust") val windGust: Double?,
     @SerialName("wind_deg") val windDeg: Int,
-    val rain: Precipitation?,
-    val snow: Precipitation?,
+    val rain: Precipitation? = null,
+    val snow: Precipitation? = null,
     val weather: List<Weather>
 )
 
@@ -71,21 +71,21 @@ data class NetworkHourly(
     @SerialName("wind_gust") val windGust: Double?,
     @SerialName("wind_deg") val windDeg: Int,
     val pop: Double,
-    val rain: Precipitation?,
-    val snow: Precipitation?,
+    val rain: Precipitation? = null,
+    val snow: Precipitation? = null,
     val weather: List<Weather>
 )
 
 @Serializable
 data class NetworkDaily(
     val dt: Long,
-    val sunrise: Long?,
-    val sunset: Long?,
-    val moonrise: Long?,
-    val moonset: Long?,
+    val sunrise: Long? = null,
+    val sunset: Long? = null,
+    val moonrise: Long? = null,
+    val moonset: Long? = null,
     @SerialName("moon_phase") val moonPhase: Double,
     val temp: Temp,
-    @SerialName("feels_like") val feelsLike: FeelsLike?,
+    @SerialName("feels_like") val feelsLike: FeelsLike? = null,
     val pressure: Double,
     val humidity: Double,
     @SerialName("dew_point") val dewPoint: Double,
@@ -94,8 +94,8 @@ data class NetworkDaily(
     @SerialName("wind_deg") val windDeg: Int,
     val uvi: Double,
     val pop: Double,
-    val rain: Double?,
-    val snow: Double?,
+    val rain: Double? = null,
+    val snow: Double? = null,
     val weather: List<Weather>
 ) {
     @Serializable

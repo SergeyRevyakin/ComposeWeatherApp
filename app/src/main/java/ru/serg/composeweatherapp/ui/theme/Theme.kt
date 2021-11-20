@@ -6,6 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -17,10 +18,10 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = Purple500,
-    primaryVariant = Purple700,
+    primaryVariant = Color.DarkGray,
     secondary = Teal200,
     background = Color.White,
-    onBackground = Color.Black
+    onSecondary = Color.Black
 
     /* Other default colors to override
     background = Color.White,
@@ -37,11 +38,15 @@ fun ComposeWeatherAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
+
+    systemUiController.isNavigationBarVisible = false
+    systemUiController.isStatusBarVisible = false
 
     MaterialTheme(
         colors = colors,

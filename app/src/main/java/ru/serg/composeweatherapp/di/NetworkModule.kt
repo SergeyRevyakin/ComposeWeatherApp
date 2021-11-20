@@ -26,6 +26,8 @@ class NetworkModule {
         val json = Json {
             encodeDefaults = true
             ignoreUnknownKeys = true
+            explicitNulls = false
+            coerceInputValues = true
         }
 
         return HttpClient {
@@ -35,8 +37,13 @@ class NetworkModule {
             }
             // setups the logging (android studio profiler not works with this library)
             install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.ALL
+                if (BuildConfig.DEBUG) {
+                    logger = Logger.SIMPLE
+                    level = LogLevel.BODY
+                } else {
+                    logger = Logger.EMPTY
+                    level = LogLevel.NONE
+                }
             }
             install(HttpTimeout) {
 //                socketTimeoutMillis = 15_000
@@ -48,6 +55,7 @@ class NetworkModule {
                 host = Constants.BASE_URL
                 url {
                     protocol = URLProtocol.HTTPS
+                    parameter("units", "metric")
                     parameter("appid", BuildConfig.OWM_API_KEY)
                 }
 

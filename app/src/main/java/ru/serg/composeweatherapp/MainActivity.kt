@@ -1,8 +1,7 @@
 package ru.serg.composeweatherapp
 
 import android.os.Bundle
-import android.view.animation.OvershootInterpolator
-import android.window.SplashScreen
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.*
@@ -11,25 +10,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import ru.serg.composeweatherapp.ui.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         setContent {
             ComposeWeatherAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -41,19 +45,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ComposeWeatherAppTheme {
-        Greeting("Android")
     }
 }
 
@@ -78,7 +69,7 @@ fun Navigation() {
 
 
 @Composable
-fun SplashScreen(rotationDegrees:Float = 0f) {
+fun SplashScreen(rotationDegrees: Float = 0f) {
 //    val scale = remember {
 //        Animatable(0f)
 //    }
@@ -118,9 +109,11 @@ fun SplashScreen(rotationDegrees:Float = 0f) {
     }
 }
 
-
+@Preview
 @Composable
-fun SplashScreenAnimation(){
+fun SplashScreenAnimation(
+    viewModule: MainViewModel = hiltViewModel()
+) {
     var currentRotation by remember {
         mutableStateOf(0f)
     }

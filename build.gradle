@@ -5,6 +5,7 @@ buildscript {
         room_version = '2.3.0'
         hilt_version = '2.40.1'
         ktor_version = '1.6.5'
+        accompanist_version = '0.17.0'
     }
     repositories {
         google()
