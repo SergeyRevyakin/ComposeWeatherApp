@@ -5,15 +5,18 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.kotlinx.serializer.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import ru.serg.composeweatherapp.BuildConfig
 import ru.serg.composeweatherapp.utils.Constants
+import java.nio.charset.Charset
 import javax.inject.Singleton
 
 @Module
@@ -23,17 +26,19 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideHttpClient(): HttpClient {
-        val json = Json {
-            encodeDefaults = true
-            ignoreUnknownKeys = true
-            explicitNulls = false
-            coerceInputValues = true
-        }
 
-        return HttpClient {
+        return HttpClient(Android) {
             // setups the json deserializer
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(json)
+
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    encodeDefaults = true
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                    explicitNulls = false
+                })
             }
             // setups the logging (android studio profiler not works with this library)
             install(Logging) {
@@ -45,22 +50,23 @@ class NetworkModule {
                     level = LogLevel.NONE
                 }
             }
+            expectSuccess = false
             install(HttpTimeout) {
-//                socketTimeoutMillis = 15_000
-                requestTimeoutMillis = 5_000
-//                connectTimeoutMillis = 15_000
+                requestTimeoutMillis = 15000L
+                connectTimeoutMillis = 15000L
+                socketTimeoutMillis = 15000L
             }
 //            install(ParametersBuilder)
             defaultRequest {
                 host = Constants.BASE_URL
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameter("units", "metric")
-                    parameter("appid", BuildConfig.OWM_API_KEY)
+                    parameters.append("units", "metric")
+                    parameters.append("appid", BuildConfig.OWM_API_KEY)
                 }
-
-                contentType(ContentType.Application.Json)
-                accept(ContentType.Application.Json)
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+//                contentType(ContentType.Application.Json)
+//                accept(ContentType.Application.Json)
             }
         }
     }

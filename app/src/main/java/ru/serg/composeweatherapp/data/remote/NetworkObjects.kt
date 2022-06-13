@@ -16,10 +16,12 @@ sealed class WeatherResult {
         val daily: List<NetworkDaily>,
         val alerts: List<NetworkAlert>?,
     ) : WeatherResult()
-    @Serializable
+
     data class Failure(
         val error: String
     ) : WeatherResult()
+
+    object Loading : WeatherResult()
 }
 
 @Serializable

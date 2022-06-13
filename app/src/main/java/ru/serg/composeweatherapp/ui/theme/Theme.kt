@@ -45,8 +45,8 @@ fun ComposeWeatherAppTheme(
         LightColorPalette
     }
 
-    systemUiController.isNavigationBarVisible = false
-    systemUiController.isStatusBarVisible = false
+//    systemUiController.isNavigationBarVisible = false
+//    systemUiController.isStatusBarVisible = false
 
     MaterialTheme(
         colors = colors,

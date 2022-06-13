@@ -13,9 +13,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
-    val weather = mutableStateOf<WeatherResult.Success?>(null)
+
+    val weather = mutableStateOf<WeatherResult>(WeatherResult.Loading)
 
     init {
+
+    }
+
+    fun initialize(){
         viewModelScope.launch {
             weather.value = remoteRepository.getWeather()
         }
