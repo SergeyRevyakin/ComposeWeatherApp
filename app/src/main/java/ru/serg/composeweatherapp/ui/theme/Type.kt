@@ -1,6 +1,8 @@
 package ru.serg.composeweatherapp.ui.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -12,7 +14,8 @@ val Typography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
-    )
+    ),
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
@@ -26,3 +29,15 @@ val Typography = Typography(
     )
     */
 )
+
+val Typography.headerStyle: TextStyle
+    @Composable
+    get() {
+        return TextStyle(
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.5.sp,
+            color = Color.Black,
+            
+        )
+    }

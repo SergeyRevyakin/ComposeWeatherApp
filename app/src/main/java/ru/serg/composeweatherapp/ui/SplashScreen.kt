@@ -1,6 +1,5 @@
 package ru.serg.composeweatherapp.ui
 
-import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -9,12 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
-import kotlinx.coroutines.delay
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.remote.WeatherResult
+import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.utils.ScreenState
 
 
 @Composable
@@ -36,7 +33,7 @@ fun SplashScreen(rotationDegrees: Float = 0f) {
 @Composable
 fun SplashScreenAnimation(
     viewModule: MainViewModel,
-    onLoadSuccess:()->Unit
+    onLoadSuccess: () -> Unit
 ) {
     var currentRotation by remember {
         mutableStateOf(0f)
@@ -59,7 +56,7 @@ fun SplashScreenAnimation(
     }
     SplashScreen(rotation.value)
 
-    if (viewModule.weather.value is WeatherResult.Success){
+    if (viewModule.screenState.value == ScreenState.DATA){
         LaunchedEffect(Unit){
             onLoadSuccess.invoke()
         }

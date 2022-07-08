@@ -1,0 +1,77 @@
+package ru.serg.composeweatherapp.data
+
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
+import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
+import ru.serg.composeweatherapp.utils.Constants
+import javax.inject.Inject
+import javax.inject.Named
+
+class RemoteRepository @Inject constructor(
+    @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
+    @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient
+) {
+    suspend fun getWeather(): NetworkResult<OneCallResponse> {
+        httpClientOneCall.get {
+
+
+            parameter("exclude", "minutely")
+            parameter("lon", 10.1257)
+            parameter("lat", 51.5085)
+        }.apply {
+            if (status.value == 200) {
+                return NetworkResult.Success(this.body())
+            } else {
+                return NetworkResult.Error("ERROR")
+            }
+        }
+    }
+
+    suspend fun getWeatherW(): NetworkResult<WeatherResponse> {
+        httpClientWeather.get {
+
+
+            parameter("lon", 10.1257)
+            parameter("lat", 51.5085)
+        }.apply {
+            if (status.value == 200) {
+                return NetworkResult.Success(this.body())
+            } else {
+                return NetworkResult.Error("ERROR")
+            }
+        }
+    }
+
+    suspend fun getWeather(lat: Double, lon: Double): NetworkResult<OneCallResponse> {
+        httpClientOneCall.get {
+//            url.path("onecall")
+            parameter("exclude", "minutely")
+            parameter("lon", lon)
+            parameter("lat", lat)
+        }.apply {
+            if (status.value == 200) {
+                return NetworkResult.Success(this.body())
+            } else {
+                return NetworkResult.Error("ERROR")
+            }
+        }
+    }
+
+    suspend fun getWeatherW(lat: Double, lon: Double): NetworkResult<WeatherResponse> {
+        httpClientWeather.get {
+//            url.path("onecall")
+            parameter("exclude", "minutely")
+            parameter("lon", lon)
+            parameter("lat", lat)
+        }.apply {
+            if (status.value == 200) {
+                return NetworkResult.Success<WeatherResponse>(this.body())
+            } else {
+                return NetworkResult.Error("ERROR")
+            }
+        }
+    }
+}
