@@ -5,4 +5,6 @@ object Constants {
     const val BASE_URL_WEATHER = "api.openweathermap.org/data/2.5/weather"
     const val WEATHER = "weather"
     const val ONECALL = "onecall"
+
+    const val WEATHER_DATABASE = "weather_database"
 }

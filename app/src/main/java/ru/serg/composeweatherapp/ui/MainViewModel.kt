@@ -12,16 +12,19 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
+import ru.serg.composeweatherapp.data.room.WeatherUnit
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val remoteRepository: RemoteRepository
+    private val remoteRepository: RemoteRepository,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
     @Inject
@@ -32,6 +35,7 @@ class MainViewModel @Inject constructor(
 
     val screenState = mutableStateOf(ScreenState.LOADING)
 
+    var counter = 0
 
     @SuppressLint("MissingPermission")
     fun initialize() {
@@ -73,8 +77,13 @@ class MainViewModel @Inject constructor(
                         remoteRepository.getWeather()
 //                    initLoadingListener()
                 }
+
+
             }
-//            }
+            viewModelScope.launch {
+                localRepository.saveInDatabase(WeatherUnit(name = "1"))
+                counter = localRepository.getQuantity()
+            }
         }
     }
 

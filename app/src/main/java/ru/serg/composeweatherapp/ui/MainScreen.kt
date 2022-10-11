@@ -1,6 +1,7 @@
 package ru.serg.composeweatherapp.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -10,7 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,10 +48,12 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
 
         val country = java.util.Locale.getDefault().displayCountry
 
+
+
         SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = (viewModel.screenState.value == ScreenState.LOADING)),
             onRefresh = {
-            viewModel.initialize()
-        }) {
+                viewModel.initialize()
+            }) {
 
             LazyColumn(
                 modifier = modifier
@@ -148,10 +151,27 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                                 Text(
                                     text = viewModel.simpleWeather.value.data?.weather?.first()?.main.orEmpty(),
                                     color = Color.Gray,
-                                    fontSize = 20.sp,
+                                    fontSize = 16.sp,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier
-                                        .padding(top = 16.dp)
+//                                        .padding(top = 16.dp)
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp)
+                                    .padding(horizontal = 24.dp)
+                            ) {
+                                Text(
+                                    text = viewModel.counter.toString(),
+                                    color = Color.Gray,
+                                    fontSize = 16.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+//                                        .padding(top = 16.dp)
                                         .fillMaxWidth()
                                 )
                             }
@@ -203,8 +223,17 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                             val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
                             list.forEachIndexed { index, daily ->
                                 if (daily != null) {
+                                    var isDailyItemOpen by remember {
+                                        mutableStateOf(false)
+                                    }
                                     val color = if (index % 2 == 0) Color.White else Color.LightGray
-                                    DailyWeatherItem(item = daily, color)
+                                    DailyWeatherItem(item = daily, color) { isDailyItemOpen = true }
+                                    if (isDailyItemOpen){
+                                        DailyWeatherDetails(daily = daily, modifier = Modifier){
+                                            isDailyItemOpen = false
+                                        }
+                                    }
+
                                 }
                             }
                         }
