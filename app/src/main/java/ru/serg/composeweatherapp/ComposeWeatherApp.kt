@@ -3,12 +3,8 @@ package ru.serg.composeweatherapp
 import android.app.Application
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import dagger.hilt.android.HiltAndroidApp
-import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,18 +31,29 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
         doWork()
     }
 
-    private fun doWork(){
+    private fun doWork() {
         applicationScope.launch {
             setupWorker()
         }
     }
 
-    private fun setupWorker(){
-        val repeatingWork = PeriodicWorkRequestBuilder<WeatherWorker>(1, TimeUnit.MINUTES).build()
+    private fun setupWorker() {
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val repeatingWork = PeriodicWorkRequest.Builder(WeatherWorker::class.java, 15, TimeUnit.MINUTES)
+            .addTag("TAG")
+            .setInitialDelay(2, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+//            PeriodicWorkRequestBuilder<WeatherWorker>(1, TimeUnit.MINUTES)
+            .build()
+
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             "W",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.REPLACE,
             repeatingWork
         )
     }

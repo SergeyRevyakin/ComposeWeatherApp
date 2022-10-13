@@ -7,4 +7,6 @@ object Constants {
     const val ONECALL = "onecall"
 
     const val WEATHER_DATABASE = "weather_database"
+
+    const val LAST_LOCATION = "LASTLOCATIONENTITY"
 }

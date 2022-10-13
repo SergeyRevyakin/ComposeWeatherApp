@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.room.AppDatabase
+import ru.serg.composeweatherapp.data.room.LastLocationDao
 import ru.serg.composeweatherapp.data.room.WeatherDao
 import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Singleton
@@ -24,11 +25,18 @@ class DatabaseModule {
             context,
             AppDatabase::class.java,
             Constants.WEATHER_DATABASE
-        ).build()
+        )
+            .fallbackToDestructiveMigration()//TODO Migration rules
+            .build()
     }
 
     @Provides
     fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
         return appDatabase.weatherUnitsDao()
+    }
+
+    @Provides
+    fun provideLastLocationDao(appDatabase: AppDatabase): LastLocationDao {
+        return appDatabase.lastLocationDao()
     }
 }

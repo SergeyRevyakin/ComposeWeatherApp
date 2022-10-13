@@ -7,10 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
@@ -60,29 +57,52 @@ class MainViewModel @Inject constructor(
             if (it != null) {
                 println()
                 viewModelScope.launch {
-                    simpleWeather.value = remoteRepository.getWeatherW(it.latitude, it.longitude)
+                    localRepository.saveCurrentLocation(it.latitude, it.longitude)
+                }
+
+                viewModelScope.launch {
+                    remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
+                        simpleWeather.value = it
+                    }
                 }
                 viewModelScope.launch {
-                    oneCallWeather.value = remoteRepository.getWeather(it.latitude, it.longitude)
+                    remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
+                        oneCallWeather.value = it
+                    }
                 }
             } else {
-                println()
-                viewModelScope.launch {
-//                    coroutineScope {
-                    simpleWeather.value = remoteRepository.getWeatherW()
-//                    initLoadingListener()
-                }
-                viewModelScope.launch {
-                    oneCallWeather.value =
-                        remoteRepository.getWeather()
-//                    initLoadingListener()
-                }
 
+                viewModelScope.launch {
+                    localRepository.getLastSavedLocation().let {
+                        viewModelScope.launch {
+                            remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
+                                simpleWeather.value = it
+                            }
+                        }
+                        viewModelScope.launch {
+                            remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
+                                oneCallWeather.value = it
+                            }
+                        }
+                    }
+                }
 
             }
+
+        }.addOnFailureListener {
             viewModelScope.launch {
-                localRepository.saveInDatabase(WeatherUnit(name = "1"))
-                counter = localRepository.getQuantity()
+                localRepository.getLastSavedLocation().let {
+                    viewModelScope.launch {
+                        remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
+                            simpleWeather.value = it
+                        }
+                    }
+                    viewModelScope.launch {
+                        remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
+                            oneCallWeather.value = it
+                        }
+                    }
+                }
             }
         }
     }
