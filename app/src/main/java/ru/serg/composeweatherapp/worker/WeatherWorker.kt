@@ -7,12 +7,13 @@ import androidx.work.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.room.WeatherUnit
+import ru.serg.composeweatherapp.utils.Ext.showNotification
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +34,7 @@ class WeatherWorker @AssistedInject constructor(
         fun enqueue(context: Context, force: Boolean = false) {
             val manager = WorkManager.getInstance(context)
             val requestBuilder = OneTimeWorkRequestBuilder<WeatherWorker>()
-                .setInitialDelay(1, TimeUnit.MINUTES)
+                .setInitialDelay(15, TimeUnit.MINUTES)
             val workPolicy = if (force) ExistingWorkPolicy.REPLACE
             else ExistingWorkPolicy.KEEP
 
@@ -52,20 +53,57 @@ class WeatherWorker @AssistedInject constructor(
             )
         }
 
+        fun setupPeriodicWork(context: Context) {
+
+            if (WorkManager.getInstance(context).getWorkInfosByTag("TAG").get().isEmpty()) {
+
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+
+                val repeatingWork =
+                    PeriodicWorkRequestBuilder<WeatherWorker>(15, TimeUnit.MINUTES)
+                        .addTag("TAG")
+                        .setInitialDelay(3, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .build()
+
+
+                WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                    "W",
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    repeatingWork
+                )
+            }
+        }
+
     }
 
-    @SuppressLint("MissingPermission")
     override suspend fun doWork(): Result {
         return try {
-
-            localRepository.saveInDatabase(WeatherUnit(name = "WORKER_STARTED ${LocalDateTime.now()}"))
-
-            localRepository.getLastSavedLocation().let {
-                workerUseCase.fetchWeather(it.latitude, it.longitude)
-            }
+//
+////            CoroutineScope(Dispatchers.IO).launch {
+//                localRepository.saveInDatabase(WeatherUnit(name = "WORKER_STARTED ${LocalDateTime.now()}"))
+//
+////                localRepository.getLastSavedLocation().let {
+//                    workerUseCase.fetchWeather().collectLatest { temp ->
+//                        showNotification(
+//                            applicationContext,
+//                            "Success",
+//                            "${LocalDateTime.now()} Temp: $temp"
+//                        )
+//                        Result.success()
+//                    }
+////                    Result.success()
+////                }
+////            }
 
             //TODO Get current location
-
+            showNotification(
+                applicationContext,
+                "Success",
+                "${LocalDateTime.now()}"
+            )
             Result.success()
         } catch (e: Exception) {
             withContext(Dispatchers.IO) {

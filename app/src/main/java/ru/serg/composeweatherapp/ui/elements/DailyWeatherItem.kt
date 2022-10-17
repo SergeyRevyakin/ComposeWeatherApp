@@ -35,11 +35,10 @@ fun DailyWeatherItem(
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
-        Text(text = getDate(item.dt), color = Color.Black, modifier = Modifier.weight(1f))
+        Text(text = getDate(item.dt), modifier = Modifier.weight(1f))
 
         Text(
             text = getMinMaxTemp(item.temp),
-            color = Color.Black,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )

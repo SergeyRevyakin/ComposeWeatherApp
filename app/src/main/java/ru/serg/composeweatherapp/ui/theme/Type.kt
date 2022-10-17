@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -37,7 +38,15 @@ val Typography.headerStyle: TextStyle
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.5.sp,
-            color = Color.Black,
             
         )
     }
+
+val Typography.descriptionSubHeader: TextStyle
+@Composable
+get() {
+    return TextStyle(
+        fontSize = 20.sp,
+        fontStyle = FontStyle.Italic
+    )
+}

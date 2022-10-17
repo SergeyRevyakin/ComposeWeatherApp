@@ -21,9 +21,10 @@ class LocalRepository @Inject constructor(
     }
 
     suspend fun getLastSavedLocation(): CoordinatesWrapper {
-        lastLocationDao.getLocation().let {
+        lastLocationDao.getLocation()?.let {
             return CoordinatesWrapper(it.latitude, it.longitude)
         }
+        return CoordinatesWrapper(0.0, 0.0)
     }
 
     suspend fun saveCurrentLocation(lat: Double, long: Double) {

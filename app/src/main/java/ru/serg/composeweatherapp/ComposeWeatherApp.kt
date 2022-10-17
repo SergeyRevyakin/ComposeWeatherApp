@@ -1,6 +1,9 @@
 package ru.serg.composeweatherapp
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.*
@@ -28,33 +31,23 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        doWork()
+        createNotificationChannel()
+//        doWork()
     }
 
-    private fun doWork() {
-        applicationScope.launch {
-            setupWorker()
+
+
+    private fun createNotificationChannel() {
+
+        val name = "NOTIFICATION_CHANNEL"
+        val descriptionText = "NOTIFICATION_CHANNEL_DESC"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("123", name, importance).apply {
+            description = descriptionText
         }
-    }
 
-    private fun setupWorker() {
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val repeatingWork = PeriodicWorkRequest.Builder(WeatherWorker::class.java, 15, TimeUnit.MINUTES)
-            .addTag("TAG")
-            .setInitialDelay(2, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-//            PeriodicWorkRequestBuilder<WeatherWorker>(1, TimeUnit.MINUTES)
-            .build()
-
-
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
-            "W",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            repeatingWork
-        )
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }

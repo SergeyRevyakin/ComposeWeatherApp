@@ -12,5 +12,5 @@ interface LastLocationDao {
     suspend fun saveLocation(lastLocationEntity: LastLocationEntity)
 
     @Query("SELECT * FROM ${Constants.LAST_LOCATION}")
-    suspend fun getLocation(): LastLocationEntity
+    suspend fun getLocation(): LastLocationEntity?
 }

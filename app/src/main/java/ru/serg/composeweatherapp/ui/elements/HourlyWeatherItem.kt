@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.ui.elements
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.utils.Ext.getHour
+import ru.serg.composeweatherapp.utils.Ext.getTemp
 
 @Composable
 fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
@@ -43,7 +45,6 @@ fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
 
                 Text(
                     text = getHour(item.dt),
-                    color = Color.Black,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -57,8 +58,7 @@ fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
                     .padding(bottom = 16.dp)
             ) {
                 Text(
-                    text = item.feelsLike.toString(),
-                    color = Color.Black,
+                    text = getTemp(item.feelsLike),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -69,9 +69,11 @@ fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
     }
 }
 
-@Preview
+@Preview(name = "Light mode")
+@Preview(uiMode = UI_MODE_NIGHT_YES, name = "Dark mode", showBackground = true)
 @Composable
 fun PreviewHourlyItem() {
     HourlyWeatherItem(item = OneCallResponse.Hourly.getTestExample())
 }
+
 

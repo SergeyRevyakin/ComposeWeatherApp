@@ -1,6 +1,7 @@
 package ru.serg.composeweatherapp.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,8 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
@@ -28,6 +31,7 @@ import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
+import ru.serg.composeweatherapp.utils.Ext.getTemp
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
 import ru.serg.composeweatherapp.worker.WeatherWorker
@@ -37,7 +41,6 @@ import ru.serg.composeweatherapp.worker.WeatherWorker
 fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
 
     val hourlyWeatherListState = rememberLazyListState()
-    val dailyWeatherListState = rememberLazyListState()
 
 
     if (viewModel.oneCallWeather.value is NetworkResult.Success) {
@@ -52,21 +55,16 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
         SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = (viewModel.screenState.value == ScreenState.LOADING)),
             onRefresh = {
                 viewModel.initialize()
-                WeatherWorker.enqueue(context, true)
+                WeatherWorker.setupPeriodicWork(context)
             }) {
 
             LazyColumn(
                 modifier = modifier
                     .fillMaxSize()
-//                .verticalScroll(rememberScrollState())
-
             ) {
-//            Row(modifier = Modifier.fillMaxWidth()) {
-
                 item {
                     Text(
                         text = (city) ?: "",
-                        color = Color.Gray,
                         fontSize = 20.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -74,9 +72,7 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                             .fillMaxWidth()
                     )
                 }
-//            }
-//            val image = AnimatedImageVector.animatedVectorResource(R.drawable.ic_sunny_day)
-//            val atEnd by remember { mutableStateOf(false) }
+
                 item {
 
                     Image(
@@ -110,10 +106,8 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                                     .padding(horizontal = 24.dp)
                             ) {
                                 Text(
-                                    text = "Temperature: ${viewModel.simpleWeather.value.data?.main?.temp.toString()}",
-                                    color = Color.Black,
+                                    text = "Temperature: ${getTemp(viewModel.simpleWeather.value.data?.main?.temp)}",
                                     fontSize = 16.sp,
-//                            textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                 )
@@ -126,10 +120,8 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                                     .padding(horizontal = 24.dp)
                             ) {
                                 Text(
-                                    text = "Feels like: ${viewModel.simpleWeather.value.data?.main?.feelsLike.toString()}",
-                                    color = Color.Gray,
+                                    text = "Feels like: ${getTemp(viewModel.simpleWeather.value.data?.main?.feelsLike)}",
                                     fontSize = 16.sp,
-//                            textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                 )
@@ -150,11 +142,9 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                             ) {
                                 Text(
                                     text = viewModel.simpleWeather.value.data?.weather?.first()?.main.orEmpty(),
-                                    color = Color.Gray,
                                     fontSize = 16.sp,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier
-//                                        .padding(top = 16.dp)
                                         .fillMaxWidth()
                                 )
                             }
@@ -167,11 +157,9 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                             ) {
                                 Text(
                                     text = viewModel.counter.toString(),
-                                    color = Color.Gray,
                                     fontSize = 16.sp,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier
-//                                        .padding(top = 16.dp)
                                         .fillMaxWidth()
                                 )
                             }
@@ -193,7 +181,6 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                         contentPadding = PaddingValues(horizontal = 24.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         state = hourlyWeatherListState,
-//                modifier = Modifier.padding(top = .dp)
                     ) {
                         val list = viewModel.oneCallWeather.value.data?.hourly ?: listOf()
                         items(list) {
@@ -226,11 +213,15 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                                     var isDailyItemOpen by remember {
                                         mutableStateOf(false)
                                     }
-                                    val color = if (index % 2 == 0) Color.White else Color.LightGray
+                                    val color = if (isSystemInDarkTheme()) {
+                                        if (index % 2 == 0) Color.Gray else Color.DarkGray
+                                    } else {
+                                        if (index % 2 == 0) Color.LightGray else Color.Gray
+                                    }
                                     DailyWeatherItem(item = daily, color) { isDailyItemOpen = true }
-                                    if (isDailyItemOpen){
-                                        DailyWeatherDetails(daily = daily, modifier = Modifier){
-                                            isDailyItemOpen = false
+                                    if (isDailyItemOpen) {
+                                        DailyWeatherDetails(daily = daily, modifier = Modifier) {
+                                            isDailyItemOpen = false//!isDailyItemOpen
                                         }
                                     }
 
@@ -246,5 +237,11 @@ fun MainScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             }
         }
     }
-
 }
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    MainScreen(viewModel = hiltViewModel())
+}
+
