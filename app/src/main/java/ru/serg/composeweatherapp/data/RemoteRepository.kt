@@ -5,47 +5,19 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.data.remote.responses.CityNameGeocodingResponseItem
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 import javax.inject.Named
 
 class RemoteRepository @Inject constructor(
     @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
-    @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient
+    @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
+    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient
 ) {
-//    suspend fun getWeather(): NetworkResult<OneCallResponse> {
-//        httpClientOneCall.get {
-//
-//
-//            parameter("exclude", "minutely")
-//            parameter("lon", 10.1257)
-//            parameter("lat", 51.5085)
-//        }.apply {
-//            if (status.value == 200) {
-//                return NetworkResult.Success(this.body())
-//            } else {
-//                return NetworkResult.Error("ERROR")
-//            }
-//        }
-//    }
-//
-//    suspend fun getWeatherW(): NetworkResult<WeatherResponse> {
-//        httpClientWeather.get {
-//
-//
-//            parameter("lon", 10.1257)
-//            parameter("lat", 51.5085)
-//        }.apply {
-//            if (status.value == 200) {
-//                return NetworkResult.Success(this.body())
-//            } else {
-//                return NetworkResult.Error("ERROR")
-//            }
-//        }
-//    }
 
     suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         httpClientOneCall.get {
@@ -57,7 +29,7 @@ class RemoteRepository @Inject constructor(
             if (it.status.value == 200) {
                 return flow { emit(NetworkResult.Success(it.body())) }
             } else {
-                return flow { emit(NetworkResult.Error("ERROR"))}
+                return flow { emit(NetworkResult.Error("ERROR")) }
             }
         }
     }
@@ -72,7 +44,23 @@ class RemoteRepository @Inject constructor(
                 parameter("lat", lat)
             }.let {
                 if (it.status.value == 200) {
-                     emit(NetworkResult.Success(it.body()))
+                    emit(NetworkResult.Success(it.body()))
+                } else {
+                    emit(NetworkResult.Error("ERROR"))
+                }
+            }
+        }
+    }
+
+    suspend fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
+        return flow {
+            emit(NetworkResult.Loading())
+            httpClientGeocoding.get {
+                parameter("q", input)
+                parameter("limit", 15)
+            }.let {
+                if (it.status.value == 200) {
+                    emit(NetworkResult.Success(it.body()))
                 } else {
                     emit(NetworkResult.Error("ERROR"))
                 }

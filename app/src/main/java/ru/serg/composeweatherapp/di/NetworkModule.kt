@@ -115,4 +115,50 @@ class NetworkModule {
         }
     }
 
+    @Singleton
+    @Provides
+    @Named(Constants.GEOCODING)
+    fun provideGeocodingHttpClient(): HttpClient {
+
+        return HttpClient(Android) {
+
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    encodeDefaults = true
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                    explicitNulls = false
+                })
+            }
+
+            install(Logging) {
+                if (BuildConfig.DEBUG) {
+                    logger = Logger.SIMPLE
+                    level = LogLevel.BODY
+                } else {
+                    logger = Logger.EMPTY
+                    level = LogLevel.NONE
+                }
+            }
+            expectSuccess = false
+            install(HttpTimeout) {
+                requestTimeoutMillis = 15000L
+                connectTimeoutMillis = 15000L
+                socketTimeoutMillis = 15000L
+            }
+
+            defaultRequest {
+                host = Constants.BASE_URL_GEOCODING
+                url {
+                    protocol = URLProtocol.HTTPS
+//                    parameters.append("q", input)
+                    parameters.append("appid", BuildConfig.OWM_API_KEY)
+                }
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+        }
+    }
+
 }

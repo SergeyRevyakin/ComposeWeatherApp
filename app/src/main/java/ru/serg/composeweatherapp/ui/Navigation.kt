@@ -1,10 +1,11 @@
 package ru.serg.composeweatherapp.ui
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ru.serg.composeweatherapp.ui.screens.ChooseCityScreen
+import ru.serg.composeweatherapp.ui.screens.MainScreen
 
 @Composable
 fun Navigation(
@@ -22,7 +23,11 @@ fun Navigation(
         }
         // Main Screen
         composable("main_screen") {
-            MainScreen(viewModule)
+            MainScreen(viewModule, {navController.navigate("choose_city")})
+        }
+        // Choose City screen
+        composable("choose_city") {
+            ChooseCityScreen()
         }
     }
 }
