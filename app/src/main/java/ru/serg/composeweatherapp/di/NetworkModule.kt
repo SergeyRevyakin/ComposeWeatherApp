@@ -153,7 +153,6 @@ class NetworkModule {
                 host = Constants.BASE_URL_GEOCODING
                 url {
                     protocol = URLProtocol.HTTPS
-//                    parameters.append("q", input)
                     parameters.append("appid", BuildConfig.OWM_API_KEY)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)

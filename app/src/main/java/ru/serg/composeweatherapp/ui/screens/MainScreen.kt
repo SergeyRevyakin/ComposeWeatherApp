@@ -1,5 +1,9 @@
 package ru.serg.composeweatherapp.ui.screens
 
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,6 +20,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -35,11 +41,13 @@ import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Ext.getTemp
+import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
 import ru.serg.composeweatherapp.worker.WeatherWorker
 
 
+@OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel, navigateToChooseCity: () -> Unit, modifier: Modifier = Modifier) {
 
@@ -68,11 +76,11 @@ fun MainScreen(viewModel: MainViewModel, navigateToChooseCity: () -> Unit, modif
                 item {
                     Text(
                         text = (city) ?: "",
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.headerStyle,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 16.dp)
                             .fillMaxWidth()
+                            .headerModifier()
                             .clickable {
                                 navigateToChooseCity.invoke()
                             }
@@ -82,12 +90,13 @@ fun MainScreen(viewModel: MainViewModel, navigateToChooseCity: () -> Unit, modif
                 item {
 
                     Image(
-                        painter = painterResource(id = R.drawable.ic_sun),
+                        painter = painterResource(id = IconMapper.map(viewModel.simpleWeather.value.data?.weather?.first()?.id?:0)),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
                         contentDescription = "Weather icon",
+                        contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 36.dp)
-                            .padding(horizontal = 100.dp)
+                            .height(300.dp)
                     )
                 }
 

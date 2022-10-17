@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.serg.composeweatherapp.ui.screens.ChooseCityScreen
+import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
 import ru.serg.composeweatherapp.ui.screens.MainScreen
 
 @Composable

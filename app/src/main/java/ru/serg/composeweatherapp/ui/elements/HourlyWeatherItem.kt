@@ -4,20 +4,22 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.utils.Ext.getHour
 import ru.serg.composeweatherapp.utils.Ext.getTemp
+import ru.serg.composeweatherapp.utils.IconMapper
 
 @Composable
 fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
@@ -27,14 +29,17 @@ fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
             .width(80.dp)
             .wrapContentHeight()
     ) {
-        Column() {
-            Row() {
+        Column {
+            Row {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_sun),
+                    painter = painterResource(id = IconMapper.map(item.weather?.first()?.id ?: 0)),
                     contentDescription = "Weather icon",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(8.dp)
+                        .height(64.dp)
                 )
             }
             Row(
@@ -55,7 +60,7 @@ fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 12.dp)
             ) {
                 Text(
                     text = getTemp(item.feelsLike),

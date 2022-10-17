@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Dev/ComposeWeatherApp/app/src/main/res/drawable/ic_rainy_1.xml" value="0.1575" />
         <entry key="..\:/Dev/ComposeWeatherApp/app/src/main/res/drawable/ic_sun.xml" value="0.23333333333333334" />
         <entry key="..\:/Dev/ComposeWeatherApp/app/src/main/res/drawable/ic_sunny_day.xml" value="0.1" />
       </map>
