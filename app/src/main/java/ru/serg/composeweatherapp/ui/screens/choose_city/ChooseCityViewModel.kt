@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.utils.NetworkResult
@@ -15,11 +16,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
-    val remoteRepository: RemoteRepository
+    val remoteRepository: RemoteRepository,
+    val localRepository: LocalRepository
 ) : ViewModel() {
 
     var screenState by mutableStateOf(ChoseCityScreenStates(isLoading = false))
         private set
+
+    var searchHistoryItems by mutableStateOf(listOf<CityItem>())
 
     fun onTextChanged(input: String?) {
         viewModelScope.launch {
@@ -38,7 +42,7 @@ class ChooseCityViewModel @Inject constructor(
                     is NetworkResult.Success -> {
                         val cityList = networkResult.data?.map {
                             CityItem(
-                                name = it.name,
+                                name = it.name.orEmpty(),
                                 country = it.country,
                                 latitude = it.lat,
                                 longitude = it.lon
@@ -51,6 +55,26 @@ class ChooseCityViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun onCityClicked(cityItem: CityItem) {
+        viewModelScope.launch {
+            localRepository.insertCityItemToHistorySearch(cityItem)
+        }
+    }
+
+    fun onDeleteClick(cityItem: CityItem) {
+        viewModelScope.launch {
+            localRepository.deleteCityItemToHistorySearch(cityItem)
+        }
+    }
+
+    fun init(){
+        viewModelScope.launch {
+            localRepository.getCityHistorySearchDao().collect {
+                searchHistoryItems = it
             }
         }
     }
