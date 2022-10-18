@@ -1,19 +1,24 @@
 package ru.serg.composeweatherapp.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.data.room.WeatherUnit
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
 import javax.inject.Inject
@@ -30,13 +35,13 @@ class MainViewModel @Inject constructor(
     val oneCallWeather = mutableStateOf<NetworkResult<OneCallResponse>>(NetworkResult.Loading())
     val simpleWeather = mutableStateOf<NetworkResult<WeatherResponse>>(NetworkResult.Loading())
 
-    val screenState = mutableStateOf(ScreenState.LOADING)
+    var screenState by mutableStateOf(ScreenState.LOADING)
 
     var counter = 0
 
     @SuppressLint("MissingPermission")
     fun initialize() {
-
+        screenState = ScreenState.LOADING
         snapshotFlow {
             flowOf(oneCallWeather.value, simpleWeather.value)
         }.onEach {
@@ -112,11 +117,14 @@ class MainViewModel @Inject constructor(
 //        if (isLoadingCompleted.value) return
 
         if (simpleWeather.value is NetworkResult.Success && oneCallWeather.value is NetworkResult.Success) {
-            screenState.value = ScreenState.DATA
+            viewModelScope.launch {
+                delay(1000)
+                screenState = ScreenState.DATA
+            }
         }
     }
 
     private fun setError() {
-        screenState.value = ScreenState.ERROR
+        screenState = ScreenState.ERROR
     }
 }

@@ -1,12 +1,14 @@
 package ru.serg.composeweatherapp.ui.screens
 
-import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
-import androidx.compose.animation.graphics.res.animatedVectorResource
-import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
-import androidx.compose.animation.graphics.vector.AnimatedImageVector
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,6 +21,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -28,11 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.ui.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.MainViewModel
@@ -47,211 +49,310 @@ import ru.serg.composeweatherapp.utils.ScreenState
 import ru.serg.composeweatherapp.worker.WeatherWorker
 
 
-@OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, navigateToChooseCity: () -> Unit, modifier: Modifier = Modifier) {
+fun MainScreen(
+    viewModel: MainViewModel,
+    navigateToChooseCity: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
+    AnimatedVisibility(
+        visible = viewModel.screenState == ScreenState.LOADING,
+        enter = fadeIn(
+            animationSpec = tween(500)
+        ),
+        exit = fadeOut(
+            animationSpec = tween(300)
+        )
+    ) {
+        LoadingScreen()
+    }
+
+    AnimatedVisibility(
+        visible = viewModel.screenState == ScreenState.DATA,
+        enter = slideInVertically(
+            initialOffsetY = { 1500 },
+            animationSpec = tween(500)
+        ),
+        exit = fadeOut(
+            animationSpec = tween(0)
+        )
+
+    ) {
+        ContentScreen(
+            viewModel = viewModel,
+            navigateToChooseCity = navigateToChooseCity,
+            modifier = modifier
+        )
+    }
+
+
+}
+
+@Composable
+fun LoadingScreen() {
+    var currentRotation by remember {
+        mutableStateOf(0f)
+    }
+
+    val rotation = remember {
+        androidx.compose.animation.core.Animatable(currentRotation)
+    }
+
+    LaunchedEffect(true) {
+        rotation.animateTo(
+            targetValue = currentRotation + 360f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(3000, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            )
+        ) {
+            currentRotation = value
+        }
+    }
+
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_sun),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .fillMaxSize(0.4f)
+                .align(Alignment.Center)
+                .rotate(rotation.value)
+        )
+    }
+}
+
+@Composable
+fun ContentScreen(
+    viewModel: MainViewModel,
+    navigateToChooseCity: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val hourlyWeatherListState = rememberLazyListState()
 
+    val city =
+        (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name
 
-    if (viewModel.oneCallWeather.value is NetworkResult.Success) {
+    val context = LocalContext.current
 
-        val result = viewModel.oneCallWeather.value as NetworkResult.Success<OneCallResponse>
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.screenState == ScreenState.LOADING),
+        onRefresh = {
+            viewModel.initialize()
+            WeatherWorker.setupPeriodicWork(context)
+        }) {
 
-        val city =
-            (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            item {
+                Text(
+                    text = (city) ?: "",
+                    style = MaterialTheme.typography.headerStyle,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .headerModifier()
+                        .clickable {
+                            navigateToChooseCity.invoke()
+                        }
+                )
+            }
 
-        val context = LocalContext.current
+            item {
+                val gradient = Brush.linearGradient(
+                    listOf(Color.DarkGray, MaterialTheme.colors.background),
+                )
 
-        SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = (viewModel.screenState.value == ScreenState.LOADING)),
-            onRefresh = {
-                viewModel.initialize()
-                WeatherWorker.setupPeriodicWork(context)
-            }) {
-
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxSize()
-            ) {
-                item {
-                    Text(
-                        text = (city) ?: "",
-                        style = MaterialTheme.typography.headerStyle,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .headerModifier()
-                            .clickable {
-                                navigateToChooseCity.invoke()
-                            }
-                    )
-                }
-
-                item {
-
-                    Image(
-                        painter = painterResource(id = IconMapper.map(viewModel.simpleWeather.value.data?.weather?.first()?.id?:0)),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-                        contentDescription = "Weather icon",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
-                    )
-                }
-
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                Card(
+                    shape = RoundedCornerShape(24.dp),
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .fillMaxWidth()
+                        .border(1.dp, Color.Yellow, RoundedCornerShape(24.dp))
+                        .wrapContentHeight()
+                        .clickable {
+                            viewModel.initialize()
+                        }
+                ) {
+                    Column(
+                        modifier = Modifier.background(gradient)
                     ) {
-                        Column(
+
+                        Image(
+                            painter = painterResource(
+                                id = IconMapper.map(
+                                    viewModel.simpleWeather.value.data?.weather?.first()?.id
+                                        ?: 0
+                                )
+                            ),
+                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                            contentDescription = "Weather icon",
+                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
-                        ) {
+                                .height(300.dp)
+                        )
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp)
-                                    .padding(horizontal = 24.dp)
-                            ) {
-                                Text(
-                                    text = "Temperature: ${getTemp(viewModel.simpleWeather.value.data?.main?.temp)}",
-                                    fontSize = 16.sp,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp)
-                                    .padding(horizontal = 24.dp)
-                            ) {
-                                Text(
-                                    text = "Feels like: ${getTemp(viewModel.simpleWeather.value.data?.main?.feelsLike)}",
-                                    fontSize = 16.sp,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                )
-                            }
-
-                        }
-
-                        Column(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f)
+                                .padding(bottom = 16.dp),
+                            verticalAlignment = Alignment.Top,
+                            horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Row(
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = 16.dp)
-                                    .padding(horizontal = 24.dp)
+                                    .weight(1f)
                             ) {
-                                Text(
-                                    text = viewModel.simpleWeather.value.data?.weather?.first()?.main.orEmpty(),
-                                    fontSize = 16.sp,
-                                    textAlign = TextAlign.Center,
+
+                                Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                )
+                                        .padding(top = 16.dp)
+                                        .padding(horizontal = 24.dp)
+                                ) {
+                                    Text(
+                                        text = "Temperature: ${getTemp(viewModel.simpleWeather.value.data?.main?.temp)}",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    )
+                                }
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp)
+                                        .padding(horizontal = 24.dp)
+                                ) {
+                                    Text(
+                                        text = "Feels like: ${getTemp(viewModel.simpleWeather.value.data?.main?.feelsLike)}",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    )
+                                }
+
                             }
 
-                            Row(
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = 16.dp)
-                                    .padding(horizontal = 24.dp)
+                                    .weight(1f)
                             ) {
-                                Text(
-                                    text = viewModel.counter.toString(),
-                                    fontSize = 16.sp,
-                                    textAlign = TextAlign.Center,
+                                Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                )
-                            }
-                        }
+                                        .padding(top = 16.dp)
+                                        .padding(horizontal = 24.dp)
+                                ) {
+                                    Text(
+                                        text = viewModel.simpleWeather.value.data?.weather?.first()?.main.orEmpty(),
+                                        fontSize = 16.sp,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    )
+                                }
 
-                    }
-                }
-                item {
-                    Text(
-                        text = "Hourly",
-                        style = MaterialTheme.typography.headerStyle,
-                        modifier = Modifier
-                            .headerModifier()
-                    )
-                }
-
-                item {
-                    LazyRow(
-                        contentPadding = PaddingValues(horizontal = 24.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        state = hourlyWeatherListState,
-                    ) {
-                        val list = viewModel.oneCallWeather.value.data?.hourly ?: listOf()
-                        items(list) {
-                            it?.let { HourlyWeatherItem(item = it) }
-
-                        }
-                    }
-                }
-
-                item {
-                    Text(
-                        text = "Daily",
-                        style = MaterialTheme.typography.headerStyle,
-                        modifier = Modifier
-                            .headerModifier()
-                    )
-                }
-                item {
-                    Card(
-                        elevation = 8.dp,
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp)
-                    ) {
-                        Column() {
-                            val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
-                            list.forEachIndexed { index, daily ->
-                                if (daily != null) {
-                                    var isDailyItemOpen by remember {
-                                        mutableStateOf(false)
-                                    }
-                                    val color = if (isSystemInDarkTheme()) {
-                                        if (index % 2 == 0) Color.Gray else Color.DarkGray
-                                    } else {
-                                        if (index % 2 == 0) Color.LightGray else Color.Gray
-                                    }
-                                    DailyWeatherItem(item = daily, color) { isDailyItemOpen = true }
-                                    if (isDailyItemOpen) {
-                                        DailyWeatherDetailsScreen(daily = daily, modifier = Modifier) {
-                                            isDailyItemOpen = false//!isDailyItemOpen
-                                        }
-                                    }
-
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp)
+                                        .padding(horizontal = 24.dp)
+                                ) {
+                                    Text(
+                                        text = viewModel.counter.toString(),
+                                        fontSize = 16.sp,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    )
                                 }
                             }
+
+                        }
+                    }
+
+                }
+            }
+
+            item {
+                Text(
+                    text = "Hourly",
+                    style = MaterialTheme.typography.headerStyle,
+                    modifier = Modifier
+                        .headerModifier()
+                )
+            }
+
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    state = hourlyWeatherListState,
+                ) {
+                    val list = viewModel.oneCallWeather.value.data?.hourly ?: listOf()
+                    items(list) {
+                        it?.let { HourlyWeatherItem(item = it) }
+
+                    }
+                }
+            }
+
+            item {
+                Text(
+                    text = "Daily",
+                    style = MaterialTheme.typography.headerStyle,
+                    modifier = Modifier
+                        .headerModifier()
+                )
+            }
+            item {
+                Card(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                ) {
+                    Column {
+                        val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
+                        list.forEachIndexed { index, daily ->
+                            if (daily != null) {
+                                var isDailyItemOpen by remember {
+                                    mutableStateOf(false)
+                                }
+                                val color = if (isSystemInDarkTheme()) {
+                                    if (index % 2 == 0) Color.Gray else Color.DarkGray
+                                } else {
+                                    if (index % 2 == 0) Color.LightGray else Color.Gray
+                                }
+                                DailyWeatherItem(item = daily, color) { isDailyItemOpen = true }
+                                if (isDailyItemOpen) {
+                                    DailyWeatherDetailsScreen(
+                                        daily = daily,
+                                        modifier = Modifier
+                                    ) {
+                                        isDailyItemOpen = false//!isDailyItemOpen
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
+            }
 
-                item {
-                    Spacer(modifier = Modifier.height(32.dp))
-                }
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)
