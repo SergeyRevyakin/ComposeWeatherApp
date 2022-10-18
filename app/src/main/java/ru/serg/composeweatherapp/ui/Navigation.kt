@@ -8,6 +8,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import ru.serg.composeweatherapp.ui.screens.MainScreen
 import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
+import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.utils.ScreenNames
 
 @OptIn(ExperimentalAnimationApi::class)

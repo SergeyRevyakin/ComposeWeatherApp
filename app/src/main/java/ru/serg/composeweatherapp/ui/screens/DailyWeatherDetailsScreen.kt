@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui
+package ru.serg.composeweatherapp.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

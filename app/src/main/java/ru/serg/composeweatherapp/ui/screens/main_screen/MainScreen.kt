@@ -16,12 +16,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -36,12 +39,10 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.ui.DailyWeatherDetailsScreen
-import ru.serg.composeweatherapp.ui.MainViewModel
+import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
+import ru.serg.composeweatherapp.ui.theme.*
 import ru.serg.composeweatherapp.utils.Ext.getTemp
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
@@ -167,10 +168,12 @@ fun ContentScreen(
 
                 Card(
                     shape = RoundedCornerShape(24.dp),
+                    elevation = 10.dp,
                     modifier = Modifier
                         .padding(12.dp)
                         .fillMaxWidth()
-                        .border(1.dp, Color.Yellow, RoundedCornerShape(24.dp))
+                        .gradientBorder()
+//                        .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(24.dp))
                         .wrapContentHeight()
                         .clickable {
                             viewModel.initialize()
@@ -180,16 +183,16 @@ fun ContentScreen(
                         modifier = Modifier.background(gradient)
                     ) {
 
-                        Image(
+                        Icon(
                             painter = painterResource(
                                 id = IconMapper.map(
                                     viewModel.simpleWeather.value.data?.weather?.first()?.id
                                         ?: 0
                                 )
                             ),
-                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+//                            colorFilter = ColorFilter.tint(primaryDark),
                             contentDescription = "Weather icon",
-                            contentScale = ContentScale.Fit,
+//                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(300.dp)

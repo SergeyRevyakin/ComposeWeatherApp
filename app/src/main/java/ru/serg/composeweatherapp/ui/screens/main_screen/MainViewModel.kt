@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui
+package ru.serg.composeweatherapp.ui.screens.main_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue

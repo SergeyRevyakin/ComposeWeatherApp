@@ -3,6 +3,7 @@ package ru.serg.composeweatherapp.ui.elements
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -25,6 +26,7 @@ import ru.serg.composeweatherapp.utils.IconMapper
 fun HourlyWeatherItem(item: OneCallResponse.Hourly) {
     Card(
         elevation = 8.dp,
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .width(80.dp)
             .wrapContentHeight()
