@@ -3,98 +3,101 @@ package ru.serg.composeweatherapp.ui.screens.choose_city
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.serg.composeweatherapp.ui.elements.CityRow
 import ru.serg.composeweatherapp.ui.elements.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.SearchTextField
 import ru.serg.composeweatherapp.ui.theme.headerStyle
+import ru.serg.composeweatherapp.utils.Constants
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalUnitApi::class)
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
     viewModel: ChooseCityViewModel = hiltViewModel(),
 ) {
-    viewModel.init()
 
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+    ) {
+        Text(
+            text = "Enter city name",
+            style = MaterialTheme.typography.headerStyle,
+            modifier = Modifier
+                .padding(top = 36.dp)
+                .padding(horizontal = 24.dp)
+        )
 
-        Column(
-            modifier = modifier
-                .fillMaxSize(),
-//            state = rememberLazyListState()
+        SearchTextField(
+            value = viewModel.sharedFlow.collectAsState(initial = Constants.EMPTY_STRING).value,
+            onValueChange = viewModel::onSharedFlowText,
+            modifier = Modifier.padding(24.dp).fillMaxWidth()
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            state = rememberLazyListState()
         ) {
-//            item {
-                Text(
-                    text = "Enter city name",
-                    style = MaterialTheme.typography.headerStyle,
-                    modifier = Modifier
-                        .padding(24.dp)
-                )
-//            }
-
-//            item {
-                SearchTextField(
-                    onValueChange = { viewModel.onTextChanged(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                )
-//            }
-
-//            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-//                    verticalArrangement = Arrangement.spacedBy(12.dp),
-//                    state = rememberLazyGridState()
+            items(viewModel.searchHistoryItems) {
+                AnimatedVisibility(
+                    visible = viewModel.searchHistoryItems.contains(it),
+                    exit = fadeOut(),
+                    enter = fadeIn()
                 ) {
-                    items(viewModel.searchHistoryItems) {
-                        AnimatedVisibility(visible = viewModel.searchHistoryItems.contains(it),
-                        exit = fadeOut(),
-                        enter = fadeIn()) {
-                            CitySearchItem(cityItem = it, onDelete = viewModel::onDeleteClick)
-                        }
-//                        CitySearchItem(cityItem = it, onDelete = viewModel::onDeleteClick) //, Modifier.animateItemPlacement()
-                    }
+                    CitySearchItem(cityItem = it, onDelete = viewModel::onDeleteClick)
                 }
-//            }
+            }
+        }
 
-            if (viewModel.screenState.isLoading) {
-//                item {
+        when {
+            (viewModel.screenState.isLoading) -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     CircularProgressIndicator(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.padding(top = 64.dp)
                     )
-//                }
-            } else if (viewModel.screenState.data.isEmpty()) {
-//                item {
+                }
+            }
+            (viewModel.screenState.data.isEmpty()) -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = "No results",
-                        modifier = Modifier.fillMaxSize()
+                        fontSize = 24.sp,
+                        letterSpacing = TextUnit(2f, TextUnitType(2)),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxSize().padding(top = 64.dp)
                     )
-//                }
-            } else {
+                }
+            }
+            (viewModel.screenState.data.isNotEmpty()) -> {
                 LazyColumn() {
-                items(viewModel.screenState.data) {
-                    CityRow(cityItem = it, viewModel::onCityClicked)
+                    items(viewModel.screenState.data) {
+                        CityRow(cityItem = it, viewModel::onCityClicked)
+                    }
                 }
             }
         }

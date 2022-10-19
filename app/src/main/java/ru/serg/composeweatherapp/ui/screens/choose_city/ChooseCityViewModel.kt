@@ -6,7 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.RemoteRepository
@@ -14,6 +18,7 @@ import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
     val remoteRepository: RemoteRepository,
@@ -25,7 +30,35 @@ class ChooseCityViewModel @Inject constructor(
 
     var searchHistoryItems by mutableStateOf(listOf<CityItem>())
 
-    fun onTextChanged(input: String?) {
+    var sharedFlow = MutableSharedFlow<String>(
+        replay = 0,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    init {
+        initDebounceSearcher()
+
+        fillSearchHistory()
+    }
+
+    private fun initDebounceSearcher() {
+        viewModelScope.launch {
+            sharedFlow.debounce(3000).collectLatest {
+                onTextChanged(it)
+            }
+        }
+    }
+
+    private fun fillSearchHistory() {
+        viewModelScope.launch {
+            localRepository.getCityHistorySearchDao().collect {
+                searchHistoryItems = it
+            }
+        }
+    }
+
+    private fun onTextChanged(input: String?) {
         viewModelScope.launch {
             remoteRepository.getCityForAutocomplete(input).collectLatest { networkResult ->
                 when (networkResult) {
@@ -48,8 +81,12 @@ class ChooseCityViewModel @Inject constructor(
                                 longitude = it.lon
                             )
                         }
-                        screenState = if (cityList.isNullOrEmpty()){
-                            screenState.copy(isLoading = false, data = emptyList(), message = "Nothing found")
+                        screenState = if (cityList.isNullOrEmpty()) {
+                            screenState.copy(
+                                isLoading = false,
+                                data = emptyList(),
+                                message = "Nothing found"
+                            )
                         } else {
                             screenState.copy(isLoading = false, data = cityList, message = null)
                         }
@@ -71,11 +108,18 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    fun init(){
-        viewModelScope.launch {
-            localRepository.getCityHistorySearchDao().collect {
-                searchHistoryItems = it
+    fun onSharedFlowText(input: String) {
+        if (input.isNotBlank()) {
+            screenState = screenState.copy(isLoading = true)
+            viewModelScope.launch {
+                sharedFlow.emit(input)
             }
+        } else {
+            screenState = screenState.copy(
+                isLoading = false,
+                data = emptyList(),
+                message = "Nothing found"
+            )
         }
     }
 }
