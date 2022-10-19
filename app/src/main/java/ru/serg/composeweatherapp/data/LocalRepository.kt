@@ -1,11 +1,15 @@
 package ru.serg.composeweatherapp.data
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.room.*
+import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
+import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
+import ru.serg.composeweatherapp.data.room.dao.WeatherDao
+import ru.serg.composeweatherapp.data.room.entity.CityEntity
+import ru.serg.composeweatherapp.data.room.entity.LastLocationEntity
 import javax.inject.Inject
 
 class LocalRepository @Inject constructor(

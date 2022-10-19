@@ -8,9 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.room.AppDatabase
-import ru.serg.composeweatherapp.data.room.CityHistorySearchDao
-import ru.serg.composeweatherapp.data.room.LastLocationDao
-import ru.serg.composeweatherapp.data.room.WeatherDao
+import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
+import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
+import ru.serg.composeweatherapp.data.room.dao.WeatherDao
 import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Singleton
 

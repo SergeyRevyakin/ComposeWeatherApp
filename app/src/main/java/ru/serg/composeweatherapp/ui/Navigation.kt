@@ -2,16 +2,20 @@ package ru.serg.composeweatherapp.ui
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import ru.serg.composeweatherapp.ui.screens.MainScreen
+import kotlinx.coroutines.FlowPreview
+import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.utils.ScreenNames
 
-@OptIn(ExperimentalAnimationApi::class)
+
+
+@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class)
 @Composable
 fun Navigation(
     viewModule: MainViewModel

@@ -37,88 +37,60 @@ class MainViewModel @Inject constructor(
 
     var screenState by mutableStateOf(ScreenState.LOADING)
 
-    var counter = 0
-
     @SuppressLint("MissingPermission")
     fun initialize() {
         screenState = ScreenState.LOADING
         snapshotFlow {
             flowOf(oneCallWeather.value, simpleWeather.value)
-        }.onEach {
-            it.collectLatest {
-                when {
-                    it is NetworkResult.Success -> {
+        }.onEach { flow ->
+            flow.collectLatest {
+                when (it) {
+                    is NetworkResult.Success -> {
                         setSuccess()
                     }
-                    it is NetworkResult.Error -> {
+                    is NetworkResult.Error -> {
                         setError()
                     }
-
+                    else -> {}
                 }
             }
         }.launchIn(viewModelScope)
 
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            if (it != null) {
-                println()
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
                 viewModelScope.launch {
-                    localRepository.saveCurrentLocation(it.latitude, it.longitude)
-                }
-
-                viewModelScope.launch {
-                    remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
-                        simpleWeather.value = it
-                    }
-                }
-                viewModelScope.launch {
-                    remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
-                        oneCallWeather.value = it
-                    }
+                    localRepository.saveCurrentLocation(location.latitude, location.longitude)
+                    fetchWeather(location.latitude, location.longitude)
                 }
             } else {
-
-                viewModelScope.launch {
-                    localRepository.getLastSavedLocation().let {
-                        viewModelScope.launch {
-                            remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
-                                simpleWeather.value = it
-                            }
-                        }
-                        viewModelScope.launch {
-                            remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
-                                oneCallWeather.value = it
-                            }
-                        }
-                    }
-                }
-
+                getLastKnownLocationAndFetchWeather()
             }
-
         }.addOnFailureListener {
-            viewModelScope.launch {
-                localRepository.getLastSavedLocation().let {
-                    viewModelScope.launch {
-                        remoteRepository.getWeatherW(it.latitude, it.longitude).collectLatest {
-                            simpleWeather.value = it
-                        }
-                    }
-                    viewModelScope.launch {
-                        remoteRepository.getWeather(it.latitude, it.longitude).collectLatest {
-                            oneCallWeather.value = it
-                        }
-                    }
-                }
+            getLastKnownLocationAndFetchWeather()
+        }
+    }
+
+    private suspend fun fetchWeather(latitude: Double, longitude: Double) {
+        remoteRepository.getWeatherW(latitude, longitude).collectLatest {
+            simpleWeather.value = it
+        }
+        remoteRepository.getWeather(latitude, longitude).collectLatest {
+            oneCallWeather.value = it
+        }
+    }
+
+    private fun getLastKnownLocationAndFetchWeather() {
+        viewModelScope.launch {
+            localRepository.getLastSavedLocation().let {
+                fetchWeather(it.latitude, it.longitude)
             }
         }
     }
 
-
     private fun setSuccess() {
-//        if (isLoadingCompleted.value) return
-
         if (simpleWeather.value is NetworkResult.Success && oneCallWeather.value is NetworkResult.Success) {
             viewModelScope.launch {
-                delay(1000)
+                delay(600)
                 screenState = ScreenState.DATA
             }
         }

@@ -2,12 +2,10 @@ package ru.serg.composeweatherapp.ui.elements
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
@@ -18,10 +16,13 @@ import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 
 @Composable
-fun CitySearchItem(cityItem: CityItem, onDelete: ((CityItem) -> Unit), modifier: Modifier = Modifier) {
+fun CitySearchItem(
+    cityItem: CityItem,
+    onDelete: ((CityItem) -> Unit),
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = Modifier
-//            .padding(12.dp)
             .gradientBorder(1, 16)
             .wrapContentHeight()
 
@@ -31,7 +32,7 @@ fun CitySearchItem(cityItem: CityItem, onDelete: ((CityItem) -> Unit), modifier:
                 text = cityItem.name,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
-            
+
             Icon(
                 Icons.Rounded.Close,
                 contentDescription = null,

@@ -22,7 +22,11 @@ import ru.serg.composeweatherapp.utils.Ext
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun DailyWeatherDetailsScreen(daily: OneCallResponse.Daily, modifier: Modifier, onDismiss: () -> Unit) {
+fun DailyWeatherDetailsScreen(
+    daily: OneCallResponse.Daily,
+    modifier: Modifier,
+    onDismiss: () -> Unit
+) {
     Dialog(
         onDismissRequest = { onDismiss() },
         properties = DialogProperties(

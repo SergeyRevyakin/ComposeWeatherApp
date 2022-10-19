@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,10 +30,6 @@ fun CityRow(cityItem: CityItem, onClick: ((CityItem) -> Unit)) {
 
 @Preview(showBackground = true)
 @Composable
-fun CityRowPreview(){
-    CityRow(cityItem = CityItem("Moscow", "Ru", null, null), onClick = ::blanc)
-}
-
-fun blanc(cityItem: CityItem){
-
+fun CityRowPreview() {
+    CityRow(cityItem = CityItem("Moscow", "Ru", null, null), onClick = {})
 }

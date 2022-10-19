@@ -21,13 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.FlowPreview
 import ru.serg.composeweatherapp.ui.elements.CityRow
 import ru.serg.composeweatherapp.ui.elements.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.SearchTextField
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Constants
 
-@OptIn(ExperimentalUnitApi::class, ExperimentalFoundationApi::class)
+@ExperimentalFoundationApi
+@FlowPreview
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
@@ -47,7 +49,7 @@ fun ChooseCityScreen(
         )
 
         SearchTextField(
-            value = viewModel.sharedFlow.collectAsState(initial = Constants.EMPTY_STRING).value,
+            value = viewModel.inputSharedFlow.collectAsState(initial = Constants.EMPTY_STRING).value,
             onValueChange = viewModel::onSharedFlowText,
             modifier = Modifier
                 .padding(24.dp)
@@ -81,7 +83,6 @@ fun ChooseCityScreen(
                 Text(
                     text = viewModel.screenState.message.orEmpty(),
                     fontSize = 24.sp,
-                    letterSpacing = TextUnit(2f, TextUnitType(2)),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxSize()
@@ -114,6 +115,8 @@ fun ChooseCityScreen(
 }
 
 
+@FlowPreview
+@ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
 fun ChooseCityPreview() {

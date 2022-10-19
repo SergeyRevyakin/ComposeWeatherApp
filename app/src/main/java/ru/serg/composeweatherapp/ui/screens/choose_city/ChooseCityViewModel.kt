@@ -18,7 +18,7 @@ import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
-@OptIn(FlowPreview::class)
+@FlowPreview
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
     val remoteRepository: RemoteRepository,
@@ -35,66 +35,54 @@ class ChooseCityViewModel @Inject constructor(
 
     var searchHistoryItems by mutableStateOf(listOf<CityItem>())
 
-    var sharedFlow = MutableSharedFlow<String>(
+    var inputSharedFlow = MutableSharedFlow<String>(
         replay = 0,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
     init {
-        initDebounceSearcher()
-
-        fillSearchHistory()
-    }
-
-    private fun initDebounceSearcher() {
         viewModelScope.launch {
-            sharedFlow.debounce(3000).collectLatest {
-                onTextChanged(it)
-            }
+            initDebounceSearcher()
+            fillSearchHistory()
         }
     }
 
-    private fun fillSearchHistory() {
-        viewModelScope.launch {
-            localRepository.getCityHistorySearchDao().collect {
-                searchHistoryItems = it
-            }
+    private suspend fun initDebounceSearcher() {
+        inputSharedFlow.debounce(3000).collectLatest {
+            fetchCities(it)
         }
     }
 
-    private fun onTextChanged(input: String?) {
-        viewModelScope.launch {
-            remoteRepository.getCityForAutocomplete(input).collectLatest { networkResult ->
-                when (networkResult) {
-                    is NetworkResult.Loading -> {
-                        screenState = screenState.copy(isLoading = true)
-                    }
-                    is NetworkResult.Error -> {
-                        screenState = screenState.copy(
-                            isLoading = false,
-                            data = emptyList(),
-                            message = (if (input.isNullOrBlank()) "Enter city name" else "Error")
+    private suspend fun fillSearchHistory() {
+        localRepository.getCityHistorySearchDao().collect {
+            searchHistoryItems = it
+        }
+    }
+
+    private suspend fun fetchCities(input: String?) {
+        remoteRepository.getCityForAutocomplete(input).collectLatest { networkResult ->
+            when (networkResult) {
+                is NetworkResult.Loading -> {
+                    setLoadingState()
+                }
+                is NetworkResult.Error -> {
+                    setErrorState(input)
+                }
+                is NetworkResult.Success -> {
+                    val cityList = networkResult.data?.map {
+                        CityItem(
+                            name = it.name.orEmpty(),
+                            country = it.country,
+                            latitude = it.lat,
+                            longitude = it.lon
                         )
                     }
-                    is NetworkResult.Success -> {
-                        val cityList = networkResult.data?.map {
-                            CityItem(
-                                name = it.name.orEmpty(),
-                                country = it.country,
-                                latitude = it.lat,
-                                longitude = it.lon
-                            )
-                        }
-                        screenState = if (cityList.isNullOrEmpty()) {
-                            screenState.copy(
-                                isLoading = false,
-                                data = emptyList(),
-                                message = "Nothing found"
-                            )
-                        } else {
+                    if (cityList.isNullOrEmpty()) {
+                        setErrorState(input)
+                    } else {
+                        screenState =
                             screenState.copy(isLoading = false, data = cityList, message = null)
-                        }
                     }
                 }
             }
@@ -114,17 +102,25 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     fun onSharedFlowText(input: String) {
-        screenState = if (input.isNotBlank()) {
-            screenState.copy(isLoading = true)
+        if (input.isNotBlank()) {
+            setLoadingState()
         } else {
-            screenState.copy(
-                isLoading = false,
-                data = emptyList(),
-                message = "Enter city name"
-            )
+            setErrorState("")
         }
         viewModelScope.launch {
-            sharedFlow.emit(input)
+            inputSharedFlow.emit(input)
         }
+    }
+
+    private fun setErrorState(input: String?) {
+        screenState = screenState.copy(
+            isLoading = false,
+            data = emptyList(),
+            message = (if (input.isNullOrBlank()) "Enter city name" else "Error")
+        )
+    }
+
+    private fun setLoadingState() {
+        screenState = screenState.copy(isLoading = true)
     }
 }
