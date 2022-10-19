@@ -25,7 +25,6 @@ import ru.serg.composeweatherapp.utils.IconMapper
 fun DailyWeatherItem(
     item: OneCallResponse.Daily,
     background: Color = Color.White,
-//    clickable: Modifier,
     onClick: () -> Unit
 ) {
     Row(

@@ -1,8 +1,10 @@
 package ru.serg.composeweatherapp.ui.screens.choose_city
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,7 +27,7 @@ import ru.serg.composeweatherapp.ui.elements.SearchTextField
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Constants
 
-@OptIn(ExperimentalUnitApi::class)
+@OptIn(ExperimentalUnitApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
@@ -47,7 +49,9 @@ fun ChooseCityScreen(
         SearchTextField(
             value = viewModel.sharedFlow.collectAsState(initial = Constants.EMPTY_STRING).value,
             onValueChange = viewModel::onSharedFlowText,
-            modifier = Modifier.padding(24.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(24.dp)
+                .fillMaxWidth()
         )
 
         LazyRow(
@@ -56,13 +60,33 @@ fun ChooseCityScreen(
             state = rememberLazyListState()
         ) {
             items(viewModel.searchHistoryItems) {
-                AnimatedVisibility(
-                    visible = viewModel.searchHistoryItems.contains(it),
-                    exit = fadeOut(),
-                    enter = fadeIn()
-                ) {
-                    CitySearchItem(cityItem = it, onDelete = viewModel::onDeleteClick)
-                }
+                CitySearchItem(
+                    cityItem = it,
+                    onDelete = viewModel::onDeleteClick,
+                    modifier = Modifier.animateItemPlacement()
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = (!viewModel.screenState.isLoading && !viewModel.screenState.message.isNullOrBlank()),
+            enter = fadeIn(animationSpec = tween(500)),
+            exit = fadeOut(animationSpec = tween(500))
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = viewModel.screenState.message.orEmpty(),
+                    fontSize = 24.sp,
+                    letterSpacing = TextUnit(2f, TextUnitType(2)),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 64.dp)
+                )
             }
         }
 
@@ -78,23 +102,8 @@ fun ChooseCityScreen(
                     )
                 }
             }
-            (viewModel.screenState.data.isEmpty()) -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "No results",
-                        fontSize = 24.sp,
-                        letterSpacing = TextUnit(2f, TextUnitType(2)),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxSize().padding(top = 64.dp)
-                    )
-                }
-            }
             (viewModel.screenState.data.isNotEmpty()) -> {
-                LazyColumn() {
+                LazyColumn(modifier = modifier.padding(24.dp)) {
                     items(viewModel.screenState.data) {
                         CityRow(cityItem = it, viewModel::onCityClicked)
                     }

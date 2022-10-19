@@ -35,7 +35,7 @@ val Typography.headerStyle: TextStyle
     @Composable
     get() {
         return TextStyle(
-            fontSize = 28.sp,
+            fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.5.sp,
             

@@ -25,7 +25,12 @@ class ChooseCityViewModel @Inject constructor(
     val localRepository: LocalRepository
 ) : ViewModel() {
 
-    var screenState by mutableStateOf(ChoseCityScreenStates(isLoading = false))
+    var screenState by mutableStateOf(
+        ChoseCityScreenStates(
+            isLoading = false,
+            message = "Enter city name"
+        )
+    )
         private set
 
     var searchHistoryItems by mutableStateOf(listOf<CityItem>())
@@ -69,7 +74,7 @@ class ChooseCityViewModel @Inject constructor(
                         screenState = screenState.copy(
                             isLoading = false,
                             data = emptyList(),
-                            message = "Error"
+                            message = (if (input.isNullOrBlank()) "Enter city name" else "Error")
                         )
                     }
                     is NetworkResult.Success -> {
@@ -109,17 +114,17 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     fun onSharedFlowText(input: String) {
-        if (input.isNotBlank()) {
-            screenState = screenState.copy(isLoading = true)
-            viewModelScope.launch {
-                sharedFlow.emit(input)
-            }
+        screenState = if (input.isNotBlank()) {
+            screenState.copy(isLoading = true)
         } else {
-            screenState = screenState.copy(
+            screenState.copy(
                 isLoading = false,
                 data = emptyList(),
-                message = "Nothing found"
+                message = "Enter city name"
             )
+        }
+        viewModelScope.launch {
+            sharedFlow.emit(input)
         }
     }
 }

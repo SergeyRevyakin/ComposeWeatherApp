@@ -20,13 +20,7 @@ fun Navigation(
     AnimatedNavHost(
         navController = navController,
         startDestination = ScreenNames.MAIN_SCREEN,
-
-        ) {
-//        composable("splash_screen") {
-//            SplashScreenAnimation(viewModule, onLoadSuccess = {navController.navigate("main_screen"){
-//                popUpTo(0)
-//            } })
-//        }
+    ) {
 
         // Main Screen
         composable(ScreenNames.MAIN_SCREEN,
@@ -55,7 +49,7 @@ fun Navigation(
                 slideOutVertically(
                     targetOffsetY = { -1400 },
                     animationSpec = tween(1000)
-                )
+                ) + fadeOut(animationSpec = tween(800))
             }
         ) {
             ChooseCityScreen()
