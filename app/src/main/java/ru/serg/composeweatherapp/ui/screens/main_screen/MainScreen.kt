@@ -1,14 +1,14 @@
-package ru.serg.composeweatherapp.ui.screens
+package ru.serg.composeweatherapp.ui.screens.main_screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,27 +22,27 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
-import ru.serg.composeweatherapp.ui.theme.*
+import ru.serg.composeweatherapp.ui.elements.MainScreenTopItem
+import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
+import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.composeweatherapp.ui.theme.headerModifier
+import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Ext.getTemp
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
@@ -97,7 +97,7 @@ fun LoadingScreen() {
     }
 
     val rotation = remember {
-        androidx.compose.animation.core.Animatable(currentRotation)
+        Animatable(currentRotation)
     }
 
     LaunchedEffect(true) {
@@ -133,7 +133,7 @@ fun ContentScreen(
     val hourlyWeatherListState = rememberLazyListState()
 
     val city =
-        (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name
+        (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name.orEmpty()
 
     val context = LocalContext.current
 
@@ -148,16 +148,10 @@ fun ContentScreen(
                 .fillMaxSize()
         ) {
             item {
-                Text(
-                    text = (city) ?: "",
-                    style = MaterialTheme.typography.headerStyle,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .headerModifier()
-                        .clickable {
-                            navigateToChooseCity.invoke()
-                        }
+                MainScreenTopItem(
+                    cityName = city,
+                    onSearchCityClick = navigateToChooseCity,
+                    onSettingsClick = {}
                 )
             }
 
@@ -173,7 +167,6 @@ fun ContentScreen(
                         .padding(12.dp)
                         .fillMaxWidth()
                         .gradientBorder()
-//                        .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(24.dp))
                         .wrapContentHeight()
                         .clickable {
                             viewModel.initialize()
@@ -190,9 +183,7 @@ fun ContentScreen(
                                         ?: 0
                                 )
                             ),
-//                            colorFilter = ColorFilter.tint(primaryDark),
                             contentDescription = "Weather icon",
-//                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(300.dp)
@@ -268,7 +259,7 @@ fun ContentScreen(
                                         .padding(horizontal = 24.dp)
                                 ) {
                                     Text(
-                                        text = viewModel.counter.toString(),
+                                        text = "TODO",
                                         fontSize = 16.sp,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier
@@ -279,7 +270,6 @@ fun ContentScreen(
 
                         }
                     }
-
                 }
             }
 
@@ -361,6 +351,6 @@ fun ContentScreen(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-//    MainScreen(viewModel = hiltViewModel())
+    MainScreen(viewModel = hiltViewModel(), navigateToChooseCity = {})
 }
 
