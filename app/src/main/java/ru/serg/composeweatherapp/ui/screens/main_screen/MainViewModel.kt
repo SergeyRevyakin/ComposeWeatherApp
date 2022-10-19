@@ -37,9 +37,29 @@ class MainViewModel @Inject constructor(
 
     var screenState by mutableStateOf(ScreenState.LOADING)
 
+    init {
+        initializeState()
+    }
+
     @SuppressLint("MissingPermission")
     fun initialize() {
         screenState = ScreenState.LOADING
+
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                viewModelScope.launch {
+                    localRepository.saveCurrentLocation(location.latitude, location.longitude)
+                    fetchWeather(location.latitude, location.longitude)
+                }
+            } else {
+                getLastKnownLocationAndFetchWeather()
+            }
+        }.addOnFailureListener {
+            getLastKnownLocationAndFetchWeather()
+        }
+    }
+
+    private fun initializeState(){
         snapshotFlow {
             flowOf(oneCallWeather.value, simpleWeather.value)
         }.onEach { flow ->
@@ -55,19 +75,6 @@ class MainViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                viewModelScope.launch {
-                    localRepository.saveCurrentLocation(location.latitude, location.longitude)
-                    fetchWeather(location.latitude, location.longitude)
-                }
-            } else {
-                getLastKnownLocationAndFetchWeather()
-            }
-        }.addOnFailureListener {
-            getLastKnownLocationAndFetchWeather()
-        }
     }
 
     private suspend fun fetchWeather(latitude: Double, longitude: Double) {
