@@ -20,50 +20,63 @@ class RemoteRepository @Inject constructor(
 ) {
 
     suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
-        httpClientOneCall.get {
-//            url.path("onecall")
-            parameter("exclude", "minutely")
-            parameter("lon", lon)
-            parameter("lat", lat)
-        }.let {
-            if (it.status.value == 200) {
-                return flow { emit(NetworkResult.Success(it.body())) }
-            } else {
-                return flow { emit(NetworkResult.Error("ERROR")) }
+        return flow {
+            try {
+                emit(NetworkResult.Loading())
+                httpClientOneCall.get {
+                    parameter("exclude", "minutely")
+                    parameter("lon", lon)
+                    parameter("lat", lat)
+                }.let {
+                    if (it.status.value == 200) {
+                        emit(NetworkResult.Success(it.body()))
+                    } else {
+                        emit(NetworkResult.Error("ERROR"))
+                    }
+                }
+            } catch (e: Exception) {
+                emit(NetworkResult.Error(e.localizedMessage))
             }
         }
     }
 
     suspend fun getWeatherW(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
-            emit(NetworkResult.Loading())
-            httpClientWeather.get {
-//            url.path("onecall")
-                parameter("exclude", "minutely")
-                parameter("lon", lon)
-                parameter("lat", lat)
-            }.let {
-                if (it.status.value == 200) {
-                    emit(NetworkResult.Success(it.body()))
-                } else {
-                    emit(NetworkResult.Error("ERROR"))
+            try {
+                emit(NetworkResult.Loading())
+                httpClientWeather.get {
+                    parameter("exclude", "minutely")
+                    parameter("lon", lon)
+                    parameter("lat", lat)
+                }.let {
+                    if (it.status.value == 200) {
+                        emit(NetworkResult.Success(it.body()))
+                    } else {
+                        emit(NetworkResult.Error("ERROR"))
+                    }
                 }
+            } catch (e: Exception) {
+                emit(NetworkResult.Error(e.localizedMessage))
             }
         }
     }
 
     suspend fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
         return flow {
-            emit(NetworkResult.Loading())
-            httpClientGeocoding.get {
-                parameter("q", input)
-                parameter("limit", 15)
-            }.let {
-                if (it.status.value == 200) {
-                    emit(NetworkResult.Success(it.body()))
-                } else {
-                    emit(NetworkResult.Error("ERROR"))
+            try {
+                emit(NetworkResult.Loading())
+                httpClientGeocoding.get {
+                    parameter("q", input)
+                    parameter("limit", 15)
+                }.let {
+                    if (it.status.value == 200) {
+                        emit(NetworkResult.Success(it.body()))
+                    } else {
+                        emit(NetworkResult.Error("ERROR"))
+                    }
                 }
+            } catch (e: Exception) {
+                emit(NetworkResult.Error(e.localizedMessage))
             }
         }
     }
