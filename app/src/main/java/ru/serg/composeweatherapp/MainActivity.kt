@@ -12,9 +12,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.Navigation
+import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
+import ru.serg.composeweatherapp.worker.WeatherWorker
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
 
     private fun startMainScreen() {
         viewModel.initialize()
+        WeatherWorker.enqueue(applicationContext)
         setContent {
             ComposeWeatherAppTheme {
                 Surface(
