@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,13 +46,13 @@ import ru.serg.composeweatherapp.utils.Ext.getTemp
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
-import ru.serg.composeweatherapp.worker.WeatherWorker
 
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
     navigateToChooseCity: () -> Unit,
+    navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -83,6 +82,7 @@ fun MainScreen(
         ContentScreen(
             viewModel = viewModel,
             navigateToChooseCity = navigateToChooseCity,
+            navigateToSettings = navigateToSettings,
             modifier = modifier
         )
     }
@@ -128,6 +128,7 @@ fun LoadingScreen() {
 fun ContentScreen(
     viewModel: MainViewModel,
     navigateToChooseCity: () -> Unit,
+    navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val hourlyWeatherListState = rememberLazyListState()
@@ -135,12 +136,9 @@ fun ContentScreen(
     val city =
         (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name.orEmpty()
 
-    val context = LocalContext.current
-
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.screenState == ScreenState.LOADING),
         onRefresh = {
             viewModel.initialize()
-            WeatherWorker.setupPeriodicWork(context)
         }) {
 
         LazyColumn(
@@ -151,7 +149,7 @@ fun ContentScreen(
                 MainScreenTopItem(
                     cityName = city,
                     onSearchCityClick = navigateToChooseCity,
-                    onSettingsClick = {}
+                    onSettingsClick = navigateToSettings
                 )
             }
 
@@ -351,6 +349,6 @@ fun ContentScreen(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    MainScreen(viewModel = hiltViewModel(), navigateToChooseCity = {})
+    MainScreen(viewModel = hiltViewModel(), navigateToChooseCity = {}, {})
 }
 

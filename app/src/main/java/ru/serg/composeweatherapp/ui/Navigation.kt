@@ -8,11 +8,11 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.FlowPreview
-import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
+import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
+import ru.serg.composeweatherapp.ui.screens.settings.SettingsScreen
 import ru.serg.composeweatherapp.utils.ScreenNames
-
 
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class)
@@ -39,8 +39,13 @@ fun Navigation(
                 )
             }
         ) {
-            MainScreen(viewModule, { navController.navigate(ScreenNames.CHOOSE_CITY_SCREEN) })
+            MainScreen(
+                viewModule,
+                { navController.navigate(ScreenNames.CHOOSE_CITY_SCREEN) },
+                { navController.navigate(ScreenNames.SETTINGS_SCREEN) }
+            )
         }
+
         // Choose City screen
         composable(ScreenNames.CHOOSE_CITY_SCREEN,
             enterTransition = {
@@ -57,6 +62,24 @@ fun Navigation(
             }
         ) {
             ChooseCityScreen()
+        }
+
+        composable(
+            ScreenNames.SETTINGS_SCREEN,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { 1000 },
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { 1000 },
+                    animationSpec = tween(800)
+                ) + fadeOut(animationSpec = tween(600))
+            }
+        ) {
+            SettingsScreen()
         }
     }
 }
