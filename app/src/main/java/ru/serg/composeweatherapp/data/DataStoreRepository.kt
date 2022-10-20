@@ -1,0 +1,43 @@
+package ru.serg.composeweatherapp.data
+
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import ru.serg.composeweatherapp.utils.Ext.dataStore
+
+class DataStoreRepository(context: Context) {
+    companion object {
+        val IS_DARK_THEME = booleanPreferencesKey("IS_DARK_THEME")
+        val IS_BACKGROUND_FETCH_ENABLED = booleanPreferencesKey("IS_BACKGROUND_FETCH_ENABLED")
+    }
+
+    private val dataStore = context.dataStore
+
+    //DarkMode flag
+    val isDarkThemeEnabled: Flow<Boolean> = dataStore.data.map {
+        it[IS_DARK_THEME]
+            ?: (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES)
+    }
+
+    suspend fun saveDarkMode(isDark: Boolean) {
+        dataStore.edit {
+            it[IS_DARK_THEME] = isDark
+        }
+    }
+
+    //Is app able to fetch weather in background
+    val isBackgroundFetchWeatherEnabled = dataStore.data.map {
+        it[IS_BACKGROUND_FETCH_ENABLED] ?: false
+    }
+
+    suspend fun saveBackgroundFetchWeatherEnabled(isEnabled: Boolean) {
+        dataStore.edit {
+            it[IS_BACKGROUND_FETCH_ENABLED] = isEnabled
+        }
+    }
+
+}

@@ -1,6 +1,5 @@
 package ru.serg.composeweatherapp.ui.screens.settings
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,9 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,15 +34,19 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val therme = remember {
-            mutableStateOf(false)
-        }
-
-
         MenuRowWithRadioButton(
             optionName = "Use dark mode",
             modifier = Modifier,
-            buttonState = therme
+            buttonState = viewModel.isDarkModeEnabled,
+            onSwitchClick = viewModel::onScreenModeChanged
+        )
+
+        MenuRowWithRadioButton(
+            optionName = "Update weather in background",
+            descriptionText = "Allow map get data about weather in background. It will consume some network traffic",
+            modifier = Modifier,
+            buttonState = viewModel.isBackgroundFetchWeatherEnabled,
+            onSwitchClick = viewModel::onBackgroundFetchChanged
         )
     }
 }

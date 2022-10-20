@@ -7,11 +7,18 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.serg.composeweatherapp.data.DataStoreRepository
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
+
+    @Singleton
+    @Provides
+    fun provideDataStore(
+        @ApplicationContext context: Context
+    ): DataStoreRepository = DataStoreRepository(context)
 
     @Singleton
     @Provides

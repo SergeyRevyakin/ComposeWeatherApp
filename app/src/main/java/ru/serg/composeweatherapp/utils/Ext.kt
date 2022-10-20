@@ -8,6 +8,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import io.ktor.util.date.*
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -106,6 +109,5 @@ object Ext {
         }
     }
 
-    fun String.firstLetterToUpperCase() = replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 }

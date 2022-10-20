@@ -10,17 +10,26 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import ru.serg.composeweatherapp.data.DataStoreRepository
 import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.worker.WeatherWorker
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -63,10 +72,18 @@ class MainActivity : ComponentActivity() {
 
 
     private fun startMainScreen() {
+        val isDarkTheme = mutableStateOf(true)
+        lifecycleScope.launch {
+            dataStoreRepository.isDarkThemeEnabled.collectLatest {
+                isDarkTheme.value = it
+            }
+        }
         viewModel.initialize()
         WeatherWorker.enqueue(applicationContext)
         setContent {
-            ComposeWeatherAppTheme {
+            ComposeWeatherAppTheme(
+                darkTheme = isDarkTheme
+            ) {
                 Surface(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxSize()

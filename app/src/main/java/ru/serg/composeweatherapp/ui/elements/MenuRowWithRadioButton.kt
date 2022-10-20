@@ -22,6 +22,7 @@ fun MenuRowWithRadioButton(
 //    hasDescription:Boolean = false,
     descriptionText: String? = null,
     buttonState: MutableState<Boolean> = mutableStateOf(false),
+    onSwitchClick: ((Boolean) -> Unit) = {}
 ) {
     Row(
         modifier = modifier
@@ -44,7 +45,7 @@ fun MenuRowWithRadioButton(
                 Text(
                     text = descriptionText,
                     fontSize = 16.sp,
-                    color = if(isSystemInDarkTheme()) Color.LightGray else Color.DarkGray,
+                    color = Color.Gray,
                     modifier = modifier
                         .padding(top = 8.dp)
                 )
@@ -68,7 +69,7 @@ fun MenuRowWithRadioButton(
             Switch(
                 checked = buttonState.value,
                 onCheckedChange = {
-                    buttonState.value = !buttonState.value
+                    onSwitchClick(it)
                 }
             )
         }

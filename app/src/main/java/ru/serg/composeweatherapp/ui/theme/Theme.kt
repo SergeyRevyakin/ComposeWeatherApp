@@ -5,6 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -41,11 +44,14 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun ComposeWeatherAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: MutableState<Boolean> = mutableStateOf(false),
     content: @Composable() () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
-    val colors = if (darkTheme) {
+    val isDark = remember {
+        darkTheme
+    }
+    val colors = if (isDark.value) {
         DarkColorPalette
     } else {
         LightColorPalette
