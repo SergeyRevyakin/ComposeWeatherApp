@@ -42,21 +42,24 @@ class ChooseCityViewModel @Inject constructor(
     )
 
     init {
+        initDebounceSearcher()
+        fillSearchHistory()
+    }
+
+    private fun initDebounceSearcher() {
+
         viewModelScope.launch {
-            initDebounceSearcher()
-            fillSearchHistory()
+            inputSharedFlow.debounce(3000).collectLatest {
+                fetchCities(it)
+            }
         }
     }
 
-    private suspend fun initDebounceSearcher() {
-        inputSharedFlow.debounce(3000).collectLatest {
-            fetchCities(it)
-        }
-    }
-
-    private suspend fun fillSearchHistory() {
-        localRepository.getCityHistorySearchDao().collect {
-            searchHistoryItems = it
+    private fun fillSearchHistory() {
+        viewModelScope.launch {
+            localRepository.getCityHistorySearchDao().collect {
+                searchHistoryItems = it
+            }
         }
     }
 
