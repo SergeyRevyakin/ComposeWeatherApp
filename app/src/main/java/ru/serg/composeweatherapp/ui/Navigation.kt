@@ -79,7 +79,9 @@ fun Navigation(
                 ) + fadeOut(animationSpec = tween(600))
             }
         ) {
-            SettingsScreen()
+            SettingsScreen(
+                navController = navController
+            )
         }
     }
 }

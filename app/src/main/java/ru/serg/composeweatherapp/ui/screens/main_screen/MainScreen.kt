@@ -19,6 +19,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +40,7 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
-import ru.serg.composeweatherapp.ui.elements.MainScreenTopItem
+import ru.serg.composeweatherapp.ui.elements.TopItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.ui.theme.headerModifier
@@ -146,10 +149,12 @@ fun ContentScreen(
                 .fillMaxSize()
         ) {
             item {
-                MainScreenTopItem(
-                    cityName = city,
-                    onSearchCityClick = navigateToChooseCity,
-                    onSettingsClick = navigateToSettings
+                TopItem(
+                    header = city,
+                    leftIconImageVector = Icons.Rounded.Search,
+                    rightIconImageVector = Icons.Rounded.Settings,
+                    onLeftIconClick = navigateToChooseCity,
+                    onRightIconClick = navigateToSettings
                 )
             }
 

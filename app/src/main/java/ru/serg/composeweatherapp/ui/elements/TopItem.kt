@@ -6,21 +6,24 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 
 @Composable
-fun MainScreenTopItem(
-    cityName: String,
-    onSearchCityClick: (() -> Unit),
-    onSettingsClick: (() -> Unit)
+fun TopItem(
+    header: String,
+    rightIconImageVector: ImageVector?,
+    leftIconImageVector: ImageVector?,
+    onLeftIconClick: (() -> Unit)?,
+    onRightIconClick: (() -> Unit)?
 ) {
     Row(
         modifier = Modifier
@@ -33,20 +36,22 @@ fun MainScreenTopItem(
             Modifier
                 .size(48.dp)
                 .clickable {
-                    onSearchCityClick.invoke()
+                    onLeftIconClick?.invoke()
                 },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                Icons.Filled.Search,
-                contentDescription = "Search",
-                modifier = Modifier
-            )
+            leftIconImageVector?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = "Search",
+                    modifier = Modifier
+                )
+            }
         }
 
         Text(
-            text = cityName,
+            text = header,
             style = MaterialTheme.typography.headerStyle,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -58,15 +63,17 @@ fun MainScreenTopItem(
             Modifier
                 .size(48.dp)
                 .clickable {
-                    onSettingsClick.invoke()
+                    onRightIconClick?.invoke()
                 },
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                Icons.Rounded.Settings,
-                contentDescription = "Search",
-            )
+            rightIconImageVector?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = "Search",
+                )
+            }
         }
     }
 
@@ -75,12 +82,11 @@ fun MainScreenTopItem(
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    MainScreenTopItem(
-        cityName = "Moscow",
-        onSearchCityClick = { blanc() },
-        onSettingsClick = { blanc() })
-}
-
-fun blanc() {
-
+    TopItem(
+        header = "Moscow",
+        leftIconImageVector = Icons.Rounded.Search,
+        rightIconImageVector = Icons.Rounded.Settings,
+        onLeftIconClick = {},
+        onRightIconClick = {}
+    )
 }
