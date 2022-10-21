@@ -1,6 +1,5 @@
 package ru.serg.composeweatherapp.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -9,21 +8,24 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = primaryDark,
-//    primaryVariant = Purple700,
+    primaryVariant = primaryDark,
     secondary = primaryDark,
+    secondaryVariant = primaryDark,
 //    background = Color.Black,
 //    onBackground = Color.White,
+//    surface = Color.Black,
+//    onSurface = Color.White
 
 )
 
 private val LightColorPalette = lightColors(
     primary = primaryLight,
-//    primaryVariant = Color.DarkGray,
+    primaryVariant = primaryLight,
     secondary = primaryLight,
+    secondaryVariant = primaryLight
 //    background = Color.White,
 //    onSecondary = Color.Black,
 //    onBackground = Color.Yellow,
@@ -47,7 +49,6 @@ fun ComposeWeatherAppTheme(
     darkTheme: MutableState<Boolean> = mutableStateOf(false),
     content: @Composable() () -> Unit
 ) {
-    val systemUiController = rememberSystemUiController()
     val isDark = remember {
         darkTheme
     }
@@ -57,11 +58,18 @@ fun ComposeWeatherAppTheme(
         LightColorPalette
     }
 
-//    systemUiController.isNavigationBarVisible = false
-//    systemUiController.isStatusBarVisible = false
-
     MaterialTheme(
         colors = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
+
+@Composable
+fun PreviewDarkTheme(content: @Composable () -> Unit){
+    MaterialTheme(
+        colors = DarkColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

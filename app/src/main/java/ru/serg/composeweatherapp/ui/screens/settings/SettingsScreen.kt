@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.serg.composeweatherapp.ui.elements.HourSlider
 import ru.serg.composeweatherapp.ui.elements.MenuRowWithRadioButton
 import ru.serg.composeweatherapp.ui.elements.TopItem
 
@@ -47,6 +48,16 @@ fun SettingsScreen(
             modifier = Modifier,
             buttonState = viewModel.isBackgroundFetchWeatherEnabled,
             onSwitchClick = viewModel::onBackgroundFetchChanged
+        )
+
+        HourSlider(
+            isVisible = viewModel.isBackgroundFetchWeatherEnabled.value
+        )
+
+        MenuRowWithRadioButton(
+            optionName = "Check device location",
+            descriptionText = "To get precise info about weather enable this feature. You should allow access to your geodata",
+            modifier = Modifier
         )
     }
 }

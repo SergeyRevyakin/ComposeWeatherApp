@@ -1,8 +1,6 @@
 package ru.serg.composeweatherapp.ui.elements
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Colors
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +17,6 @@ import androidx.compose.ui.unit.sp
 fun MenuRowWithRadioButton(
     optionName: String,
     modifier: Modifier = Modifier,
-//    hasDescription:Boolean = false,
     descriptionText: String? = null,
     buttonState: MutableState<Boolean> = mutableStateOf(false),
     onSwitchClick: ((Boolean) -> Unit) = {}
