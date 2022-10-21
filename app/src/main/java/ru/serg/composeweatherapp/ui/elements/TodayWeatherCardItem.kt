@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -86,49 +85,24 @@ fun TodayWeatherCardItem(
                         .weight(1f)
                 ) {
 
-                    Row(
+                    WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 12.dp)
-                            .height(24.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_thermometer),
-                            contentDescription = "Temperature",
-                            modifier = Modifier
-                                .height(24.dp)
-                        )
-                        Text(
-                            text = "Temperature: ${Ext.getTemp(temp = currentTemp.toDouble())}",
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(24.dp)
-                        )
-                    }
+//                            .padding(horizontal = 12.dp)
+                            .height(24.dp),
+                        paramIcon = R.drawable.ic_thermometer,
+                        paramValue = "Temperature: ${Ext.getTemp(temp = currentTemp.toDouble())}",
+                    )
 
-                    Row(
+                    WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
-                            .padding(horizontal = 12.dp)
-                            .height(24.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_thermometer),
-                            contentDescription = "Feels like",
-                            modifier = Modifier
-                                .height(24.dp)
-                        )
-                        Text(
-                            text = "Feels like: ${Ext.getTemp(feelsLikeTemp.toDouble())}",
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(24.dp)
-                        )
-                    }
-
+//                            .padding(horizontal = 12.dp)
+                            .height(24.dp),
+                        paramIcon = R.drawable.ic_thermometer,
+                        paramValue = "Feels like: ${Ext.getTemp(feelsLikeTemp.toDouble())}",
+                    )
                 }
 
                 Column(
@@ -136,78 +110,39 @@ fun TodayWeatherCardItem(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    Row(
+
+                    WeatherParamRowItem(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+//                            .padding(horizontal = 12.dp),
+                        rotation = windDirection,
+                        paramValue = "Wind speed: ${windSpeed}m/s",
+                        paramIcon = R.drawable.ic_wind_dir_north
+                    )
+
+                    WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth()
-//                            .padding(top = 16.dp)
-                            .padding(horizontal = 12.dp)
-//                            .height(30.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_wind_dir_north),
-                            contentDescription = "Direction",
-                            modifier = Modifier
-                                .rotate(windDirection.toFloat())
-                                .height(24.dp)
-                        )
-
-                        Text(
-                            text = "Wind speed: ${windSpeed}m/s",
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(24.dp)
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .padding(horizontal = 12.dp)
-
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_humidity),
-                            contentDescription = "Humidity",
-                            modifier = Modifier
-                                .height(24.dp)
-                        )
-
-                        Text(
-                            text = "Humidity: $humidity%",
-                            fontSize = 16.sp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(24.dp)
-                        )
-                    }
+                            .padding(top = 16.dp),
+//                            .padding(horizontal = 12.dp),
+                        paramIcon = R.drawable.ic_humidity,
+                        paramValue = "Humidity: $humidity%",
+                    )
                 }
             }
-            Row(
-                modifier = Modifier
+
+
+                WeatherParamRowItem(
+                    modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
-                    .padding(bottom = 24.dp)
-                    .padding(horizontal = 12.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_barometer),
-                    contentDescription = "Pressure",
-                    modifier = Modifier
-                        .height(24.dp)
-                )
-
-                Text(
-                    text = "Pressure: $pressure",
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .height(24.dp)
+                        .padding(top = 16.dp)
+                        .padding(bottom = 24.dp)
+                        .padding(horizontal = 12.dp),
+                    paramIcon = R.drawable.ic_barometer,
+                    paramValue = "Pressure: $pressure",
                 )
             }
-        }
+
     }
 }
 
