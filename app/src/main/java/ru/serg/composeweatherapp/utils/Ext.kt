@@ -110,4 +110,7 @@ object Ext {
     }
 
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+    fun String.firstLetterToUpperCase() = replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
 }

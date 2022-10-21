@@ -2,7 +2,6 @@ package ru.serg.composeweatherapp.ui.elements
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -37,7 +36,6 @@ fun WeatherParamRowItem(
             text = paramValue,
             fontSize = 16.sp,
             modifier = Modifier
-//                .fillMaxWidth()
                 .height(24.dp)
         )
     }

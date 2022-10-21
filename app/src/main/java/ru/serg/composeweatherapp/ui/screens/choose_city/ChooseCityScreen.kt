@@ -11,21 +11,25 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import ru.serg.composeweatherapp.ui.elements.CityRow
 import ru.serg.composeweatherapp.ui.elements.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.SearchTextField
-import ru.serg.composeweatherapp.ui.theme.headerStyle
+import ru.serg.composeweatherapp.ui.elements.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 
 @ExperimentalFoundationApi
@@ -34,18 +38,19 @@ import ru.serg.composeweatherapp.utils.Constants
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
     viewModel: ChooseCityViewModel = hiltViewModel(),
+    navController: NavController = rememberNavController()
 ) {
 
     Column(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        Text(
-            text = "Enter city name",
-            style = MaterialTheme.typography.headerStyle,
-            modifier = Modifier
-                .padding(top = 36.dp)
-                .padding(horizontal = 24.dp)
+        TopItem(
+            header = "Choose the city",
+            leftIconImageVector = Icons.Rounded.ArrowBack,
+            rightIconImageVector = null,
+            onLeftIconClick = { navController.navigateUp() },
+            onRightIconClick = null
         )
 
         SearchTextField(

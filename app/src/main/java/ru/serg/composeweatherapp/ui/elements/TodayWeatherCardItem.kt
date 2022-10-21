@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.Ext
+import ru.serg.composeweatherapp.utils.Ext.firstLetterToUpperCase
 
 @Composable
 fun TodayWeatherCardItem(
@@ -63,13 +65,16 @@ fun TodayWeatherCardItem(
             )
 
             Text(
-                text = weatherDesc,
-                fontSize = 20.sp,
+                text = weatherDesc.firstLetterToUpperCase(),
+                fontSize = 28.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                    .padding(bottom = 24.dp),
+                style = TextStyle(
+                    letterSpacing = 1.5.sp
+                )
             )
 
             Row(
@@ -132,16 +137,16 @@ fun TodayWeatherCardItem(
             }
 
 
-                WeatherParamRowItem(
-                    modifier = Modifier
+            WeatherParamRowItem(
+                modifier = Modifier
                     .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .padding(bottom = 24.dp)
-                        .padding(horizontal = 12.dp),
-                    paramIcon = R.drawable.ic_barometer,
-                    paramValue = "Pressure: $pressure",
-                )
-            }
+                    .padding(top = 16.dp)
+                    .padding(bottom = 24.dp)
+                    .padding(horizontal = 12.dp),
+                paramIcon = R.drawable.ic_barometer,
+                paramValue = "Pressure: $pressure",
+            )
+        }
 
     }
 }

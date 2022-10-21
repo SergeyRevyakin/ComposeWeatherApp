@@ -61,7 +61,9 @@ fun Navigation(
                 ) + fadeOut(animationSpec = tween(800))
             }
         ) {
-            ChooseCityScreen()
+            ChooseCityScreen(
+                navController = navController
+            )
         }
 
         composable(

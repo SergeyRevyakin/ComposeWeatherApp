@@ -97,7 +97,7 @@ class MainViewModel @Inject constructor(
     private fun setSuccess() {
         if (simpleWeather.value is NetworkResult.Success && oneCallWeather.value is NetworkResult.Success) {
             viewModelScope.launch {
-                delay(600)
+                delay(500)
                 screenState = ScreenState.DATA
             }
         }
