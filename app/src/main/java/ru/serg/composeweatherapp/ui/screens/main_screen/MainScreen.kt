@@ -6,16 +6,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -25,13 +20,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -39,12 +30,11 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
+import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
 import ru.serg.composeweatherapp.ui.elements.TopItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
-import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
-import ru.serg.composeweatherapp.utils.Ext.getTemp
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ScreenState
@@ -138,10 +128,6 @@ fun ContentScreen(
     val city =
         (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name.orEmpty()
 
-    val gradient = Brush.linearGradient(
-        listOf(Color.DarkGray, MaterialTheme.colors.background),
-    )
-
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.screenState == ScreenState.LOADING),
         onRefresh = {
             viewModel.initialize()
@@ -162,118 +148,20 @@ fun ContentScreen(
             }
 
             item {
-
-                Card(
-                    shape = RoundedCornerShape(24.dp),
-                    elevation = 10.dp,
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .fillMaxWidth()
-                        .gradientBorder()
-                        .wrapContentHeight()
-                        .clickable {
-                            viewModel.initialize()
-                        }
-                ) {
-                    Column(
-                        modifier = Modifier.background(gradient)
-                    ) {
-
-                        Icon(
-                            painter = painterResource(
-                                id = IconMapper.map(
-                                    viewModel.simpleWeather.value.data?.weather?.first()?.id
-                                        ?: 0
-                                )
-                            ),
-                            contentDescription = "Weather icon",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(300.dp)
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                            ) {
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp)
-                                        .padding(horizontal = 24.dp)
-                                ) {
-                                    Text(
-                                        text = "Temperature: ${getTemp(viewModel.simpleWeather.value.data?.main?.temp)}",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                    )
-                                }
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp)
-                                        .padding(horizontal = 24.dp)
-                                ) {
-                                    Text(
-                                        text = "Feels like: ${getTemp(viewModel.simpleWeather.value.data?.main?.feelsLike)}",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                    )
-                                }
-
-                            }
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp)
-                                        .padding(horizontal = 24.dp)
-                                ) {
-                                    Text(
-                                        text = viewModel.simpleWeather.value.data?.weather?.first()?.main.orEmpty(),
-                                        fontSize = 16.sp,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                    )
-                                }
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp)
-                                        .padding(horizontal = 24.dp)
-                                ) {
-                                    Text(
-                                        text = "TODO",
-                                        fontSize = 16.sp,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                    )
-                                }
-                            }
-
-                        }
-                    }
-                }
+                TodayWeatherCardItem(
+                    weatherIcon = IconMapper.map(
+                        viewModel.simpleWeather.value.data?.weather?.first()?.id
+                            ?: 0
+                    ),
+                    weatherDesc = viewModel.simpleWeather.value.data?.weather?.first()?.description.orEmpty(),
+                    currentTemp = viewModel.simpleWeather.value.data?.main?.temp?.toInt() ?: 0,
+                    feelsLikeTemp = viewModel.simpleWeather.value.data?.main?.feelsLike?.toInt()
+                        ?: 0,
+                    windDirection = viewModel.simpleWeather.value.data?.wind?.deg ?: 0,
+                    windSpeed = viewModel.simpleWeather.value.data?.wind?.speed?.toInt() ?: 0,
+                    humidity = viewModel.simpleWeather.value.data?.main?.humidity ?: 0,
+                    pressure = viewModel.simpleWeather.value.data?.main?.pressure ?: 0,
+                )
             }
 
             item {
