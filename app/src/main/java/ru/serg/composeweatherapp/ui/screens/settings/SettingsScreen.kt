@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.serg.composeweatherapp.ui.elements.HourSlider
+import ru.serg.composeweatherapp.ui.elements.HourSliderItem
 import ru.serg.composeweatherapp.ui.elements.MenuRowWithRadioButton
 import ru.serg.composeweatherapp.ui.elements.TopItem
+import ru.serg.composeweatherapp.utils.Constants
 
 @Composable
 fun SettingsScreen(
@@ -50,8 +51,11 @@ fun SettingsScreen(
             onSwitchClick = viewModel::onBackgroundFetchChanged
         )
 
-        HourSlider(
-            isVisible = viewModel.isBackgroundFetchWeatherEnabled.value
+        HourSliderItem(
+            isVisible = viewModel.isBackgroundFetchWeatherEnabled.value,
+            hours = Constants.HOUR_FREQUENCY_LIST,
+            value = viewModel.fetchFrequencyValue.value,
+            onValueChanged = viewModel::onFrequencyChanged
         )
 
         MenuRowWithRadioButton(

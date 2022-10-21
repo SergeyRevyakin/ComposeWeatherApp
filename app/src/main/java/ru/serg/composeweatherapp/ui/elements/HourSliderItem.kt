@@ -8,9 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,12 +22,15 @@ import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.ui.theme.PreviewDarkTheme
 
 @Composable
-fun HourSlider(
+fun HourSliderItem(
     isVisible: Boolean = false,
     hours: List<Int> = listOf(1, 2, 4, 6, 8, 12, 24),
-    value: Float = 0f,
-
-    ) {
+    value: Float = 2f,
+    onValueChanged: ((Int) -> Unit) = {}
+) {
+    var stateValue by remember {
+        mutableStateOf(value)
+    }
     AnimatedVisibility(
         visible = isVisible,
         enter = expandVertically(
@@ -66,7 +67,6 @@ fun HourSlider(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            val sliderValue = remember { mutableStateOf(value) }
             val drawPadding = with(LocalDensity.current) { 10.dp.toPx() }
             val textSize = with(LocalDensity.current) { 14.sp.toPx() }
             val canvasHeight = 50.dp
@@ -107,11 +107,14 @@ fun HourSlider(
                 }
 
                 Slider(
-                    value = sliderValue.value,
+                    value = stateValue,
                     onValueChange = {
-                        sliderValue.value = it
+                        stateValue = it
                     },
-                    valueRange = 1f..hours.size.minus(1).toFloat(),
+                    onValueChangeFinished = {
+                        onValueChanged.invoke(stateValue.toInt())
+                    },
+                    valueRange = 0f..hours.size.minus(1).toFloat(),
                     steps = hours.size.minus(2),
                     colors = SliderDefaults.colors(
                         activeTickColor = Color.Transparent,
@@ -122,7 +125,7 @@ fun HourSlider(
             }
 
             Text(
-                text = "Weather will be updated every ${hours[sliderValue.value.toInt()]} hours",
+                text = "Weather will be updated every ${hours[value.toInt()]} hours",
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier
@@ -136,6 +139,6 @@ fun HourSlider(
 @Composable
 fun SliderPreview() {
     PreviewDarkTheme {
-        HourSlider()
+        HourSliderItem()
     }
 }

@@ -18,9 +18,12 @@ class SettingViewModel @Inject constructor(
 
     var isBackgroundFetchWeatherEnabled = mutableStateOf(false)
 
+    var fetchFrequencyValue = mutableStateOf(0f)
+
     init {
         initDarkModeChange()
         initBackgroundFetchWeatherChange()
+        initFetchFrequencyValue()
     }
 
     private fun initDarkModeChange() {
@@ -39,6 +42,14 @@ class SettingViewModel @Inject constructor(
         }
     }
 
+    private fun initFetchFrequencyValue() {
+        viewModelScope.launch {
+            dataStoreRepository.fetchFrequency.collectLatest {
+                fetchFrequencyValue.value = it.toFloat()
+            }
+        }
+    }
+
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
             dataStoreRepository.saveDarkMode(isDark)
@@ -48,6 +59,12 @@ class SettingViewModel @Inject constructor(
     fun onBackgroundFetchChanged(isEnabled: Boolean) {
         viewModelScope.launch {
             dataStoreRepository.saveBackgroundFetchWeatherEnabled(isEnabled)
+        }
+    }
+
+    fun onFrequencyChanged(positionInList: Int) {
+        viewModelScope.launch {
+            dataStoreRepository.saveFetchFrequency(positionInList)
         }
     }
 

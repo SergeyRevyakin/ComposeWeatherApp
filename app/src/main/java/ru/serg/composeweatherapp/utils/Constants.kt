@@ -15,4 +15,6 @@ object Constants {
     const val SEARCH_HISTORY = "CITYENTITY"
 
     const val EMPTY_STRING = ""
+
+    val HOUR_FREQUENCY_LIST = listOf(1, 2, 4, 6, 8, 12, 24)
 }
