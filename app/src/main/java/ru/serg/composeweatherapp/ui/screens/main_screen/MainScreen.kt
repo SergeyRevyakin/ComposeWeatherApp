@@ -8,7 +8,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -139,6 +138,10 @@ fun ContentScreen(
     val city =
         (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name.orEmpty()
 
+    val gradient = Brush.linearGradient(
+        listOf(Color.DarkGray, MaterialTheme.colors.background),
+    )
+
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.screenState == ScreenState.LOADING),
         onRefresh = {
             viewModel.initialize()
@@ -159,9 +162,6 @@ fun ContentScreen(
             }
 
             item {
-                val gradient = Brush.linearGradient(
-                    listOf(Color.DarkGray, MaterialTheme.colors.background),
-                )
 
                 Card(
                     shape = RoundedCornerShape(24.dp),
@@ -305,39 +305,34 @@ fun ContentScreen(
                     style = MaterialTheme.typography.headerStyle,
                     modifier = Modifier
                         .headerModifier()
+                        .padding(top = 12.dp)
                 )
             }
             item {
-                Card(
-                    elevation = 8.dp,
-                    shape = RoundedCornerShape(16.dp),
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Column {
-                        val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
-                        list.forEachIndexed { index, daily ->
-                            if (daily != null) {
-                                var isDailyItemOpen by remember {
-                                    mutableStateOf(false)
-                                }
-                                val color = if (isSystemInDarkTheme()) {
-                                    if (index % 2 == 0) Color.Gray else Color.DarkGray
-                                } else {
-                                    if (index % 2 == 0) Color.LightGray else Color.Gray
-                                }
-                                DailyWeatherItem(item = daily, color) { isDailyItemOpen = true }
-                                if (isDailyItemOpen) {
-                                    DailyWeatherDetailsScreen(
-                                        daily = daily,
-                                        modifier = Modifier
-                                    ) {
-                                        isDailyItemOpen = false//!isDailyItemOpen
-                                    }
-                                }
+                    val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
+                    list.forEachIndexed { _, daily ->
+                        if (daily != null) {
 
+                            var isDailyItemOpen by remember {
+                                mutableStateOf(false)
                             }
+
+                            DailyWeatherItem(item = daily) { isDailyItemOpen = true }
+                            if (isDailyItemOpen) {
+                                DailyWeatherDetailsScreen(
+                                    daily = daily,
+                                    modifier = Modifier
+                                ) {
+                                    isDailyItemOpen = !isDailyItemOpen
+                                }
+                            }
+
                         }
                     }
                 }

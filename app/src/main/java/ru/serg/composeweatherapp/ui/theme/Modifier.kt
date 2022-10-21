@@ -20,26 +20,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import kotlin.random.Random
 
 fun Modifier.headerModifier() = this
     .fillMaxWidth()
     .padding(24.dp)
+    .padding(start = 12.dp)
 
 fun Modifier.gradientBorder(borderWidth: Int = 2, cornerRadius: Int = 24) =
     composed { border(
 
-        BorderStroke(borderWidth.dp, Brush.linearGradient(
+        BorderStroke(borderWidth.dp, Brush.sweepGradient(
             listOf(
                 MaterialTheme.colors.primary,
-//                MaterialTheme.colors.onBackground,
-                MaterialTheme.colors.primary,
                 MaterialTheme.colors.onBackground,
+                MaterialTheme.colors.onBackground,
+                MaterialTheme.colors.primary,
+                MaterialTheme.colors.primary,
             ),
-//            start = Offset(50f, 1f),
-//            end = Offset(150f, 100f),
-
-
-            tileMode = TileMode.Clamp
         )),
         shape = RoundedCornerShape(cornerRadius.dp)
     ) }
