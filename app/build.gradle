@@ -15,7 +15,7 @@ android {
         minSdk 27
         targetSdk 32
         versionCode 1
-        versionName "0.04"
+        versionName "0.05"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -104,6 +104,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 
     implementation "com.google.android.gms:play-services-location:20.0.0"
 

@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -139,11 +140,22 @@ fun ContentScreen(
         ) {
             item {
                 TopItem(
-                    header = city,
+                    header = "Current weather in",
                     leftIconImageVector = Icons.Rounded.Search,
                     rightIconImageVector = Icons.Rounded.Settings,
                     onLeftIconClick = navigateToChooseCity,
                     onRightIconClick = navigateToSettings
+                )
+            }
+
+            item {
+                Text(
+                    text = city,
+                    style = MaterialTheme.typography.headerStyle,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
             }
 

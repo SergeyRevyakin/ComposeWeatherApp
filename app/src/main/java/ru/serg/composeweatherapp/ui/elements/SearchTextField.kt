@@ -3,7 +3,6 @@ package ru.serg.composeweatherapp.ui.elements
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -31,7 +30,7 @@ fun SearchTextField(
             onValueChange(it)
         },
         label = {
-                Text(text = "Enter city name")
+            Text(text = "Enter city name")
         },
         placeholder = {
             Text(
@@ -56,7 +55,7 @@ fun SearchTextField(
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
-fun PreviewSearchTextField(){
+fun PreviewSearchTextField() {
     val isDarkTheme = remember {
         mutableStateOf(true)
     }
