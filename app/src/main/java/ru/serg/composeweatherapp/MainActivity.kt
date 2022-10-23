@@ -78,8 +78,9 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme.value = it
             }
         }
-        viewModel.initialize()
+
         WeatherWorker.enqueue(applicationContext)
+
         setContent {
             ComposeWeatherAppTheme(
                 darkTheme = isDarkTheme

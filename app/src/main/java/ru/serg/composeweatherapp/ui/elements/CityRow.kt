@@ -31,5 +31,5 @@ fun CityRow(cityItem: CityItem, onClick: ((CityItem) -> Unit)) {
 @Preview(showBackground = true)
 @Composable
 fun CityRowPreview() {
-    CityRow(cityItem = CityItem("Moscow", "Ru", null, null), onClick = {})
+    CityRow(cityItem = CityItem("Moscow", "Ru", 0.0, 0.0), onClick = {})
 }

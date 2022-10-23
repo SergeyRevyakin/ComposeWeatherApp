@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
-import ru.serg.composeweatherapp.data.room.*
+import ru.serg.composeweatherapp.data.room.WeatherUnit
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
 import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
 import ru.serg.composeweatherapp.data.room.dao.WeatherDao
@@ -44,8 +44,8 @@ class LocalRepository @Inject constructor(
                     CityItem(
                         entity.name,
                         entity.country,
-                        entity.latitude,
-                        entity.longitude
+                        entity.latitude ?: 0.0,
+                        entity.longitude ?: 0.0
                     )
                 }
                 )
