@@ -16,15 +16,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
+import ru.serg.composeweatherapp.data.data.DayWeatherItem
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.Ext.getDate
 import ru.serg.composeweatherapp.utils.Ext.getMinMaxTemp
-import ru.serg.composeweatherapp.utils.IconMapper
 
 @Composable
 fun DailyWeatherItem(
-    item: OneCallResponse.Daily,
+    item: DayWeatherItem,
     onClick: () -> Unit
 ) {
     Card(
@@ -36,10 +35,10 @@ fun DailyWeatherItem(
                 borderWidth = 1,
                 cornerRadius = 16
             )
-            .wrapContentHeight()
             .clickable {
                 onClick.invoke()
             }
+            .wrapContentHeight()
     ) {
 
         Row(
@@ -52,7 +51,7 @@ fun DailyWeatherItem(
             verticalAlignment = Alignment.CenterVertically,
 
             ) {
-            Text(text = getDate(item.dt), modifier = Modifier.weight(1f))
+            Text(text = getDate(item.dateTime), modifier = Modifier.weight(1f))
 
             Text(
                 text = getMinMaxTemp(item.temp),
@@ -61,7 +60,7 @@ fun DailyWeatherItem(
             )
 
             Image(
-                painter = painterResource(id = IconMapper.map(item.weather?.first()?.id ?: 0)),
+                painter = painterResource(id = item.weatherIcon),
                 contentDescription = "Weather icon",
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
                 contentScale = ContentScale.Fit,

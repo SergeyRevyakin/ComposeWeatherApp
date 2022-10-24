@@ -28,14 +28,15 @@ import ru.serg.composeweatherapp.utils.Ext.firstLetterToUpperCase
 
 @Composable
 fun TodayWeatherCardItem(
-    weatherIcon: Int = R.drawable.ic_rain,
-    currentTemp: Int = 12,
-    feelsLikeTemp: Int = 10,
+    weatherIcon: Int? = R.drawable.ic_rain,
+    currentTemp: Int? = 12,
+    feelsLikeTemp: Int? = 10,
     weatherDesc: String = "Rain",
-    windDirection: Int = 90,
-    windSpeed: Int = 5,
-    humidity: Int = 55,
-    pressure: Int = 967
+    windDirection: Int? = 90,
+    windSpeed: Int? = 5,
+    humidity: Int? = 55,
+    pressure: Int? = 967,
+    timestamp: Long? = 0L
 ) {
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -56,7 +57,7 @@ fun TodayWeatherCardItem(
 
             Icon(
                 painter = painterResource(
-                    id = weatherIcon
+                    id = weatherIcon ?: R.drawable.ic_rain
                 ),
                 contentDescription = "Weather icon",
                 modifier = Modifier
@@ -93,20 +94,18 @@ fun TodayWeatherCardItem(
                     WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth()
-//                            .padding(horizontal = 12.dp)
                             .height(24.dp),
                         paramIcon = R.drawable.ic_thermometer,
-                        paramValue = "Temperature: ${Ext.getTemp(temp = currentTemp.toDouble())}",
+                        paramValue = "Temperature: ${Ext.getTemp(temp = currentTemp?.toDouble())}",
                     )
 
                     WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
-//                            .padding(horizontal = 12.dp)
                             .height(24.dp),
                         paramIcon = R.drawable.ic_thermometer,
-                        paramValue = "Feels like: ${Ext.getTemp(feelsLikeTemp.toDouble())}",
+                        paramValue = "Feels like: ${Ext.getTemp(feelsLikeTemp?.toDouble())}",
                     )
                 }
 
@@ -120,7 +119,7 @@ fun TodayWeatherCardItem(
                         modifier = Modifier
                             .fillMaxWidth(),
 //                            .padding(horizontal = 12.dp),
-                        rotation = windDirection,
+                        rotation = windDirection ?: 0,
                         paramValue = "Wind speed: ${windSpeed}m/s",
                         paramIcon = R.drawable.ic_wind_dir_north
                     )
@@ -141,10 +140,18 @@ fun TodayWeatherCardItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
-                    .padding(bottom = 24.dp)
+                    .padding(bottom = 16.dp)
                     .padding(horizontal = 12.dp),
                 paramIcon = R.drawable.ic_barometer,
                 paramValue = "Pressure: $pressure",
+            )
+
+            Text(
+                text = "Last updated: ${Ext.getFormattedLastUpdateDate(timestamp ?: 0L)}",
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             )
         }
 

@@ -3,7 +3,7 @@ package ru.serg.composeweatherapp.utils
 import ru.serg.composeweatherapp.R
 
 object IconMapper {
-    fun map(iconId: Int): Int {
+    fun map(iconId: Int?): Int {
         return when (iconId) {
             200, 201, 202, 230, 231, 232 -> R.drawable.ic_thunderstorm
             210, 211, 212, 221 -> R.drawable.ic_lightning

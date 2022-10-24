@@ -1,6 +1,7 @@
 package ru.serg.composeweatherapp.data.remote.responses
 
 
+import io.ktor.util.date.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,7 +32,8 @@ data class WeatherResponse(
     @SerialName("weather")
     val weather: List<Weather?>?,
     @SerialName("wind")
-    val wind: Wind?
+    val wind: Wind?,
+    val timeStampUpdate: Long = getTimeMillis()
 ) {
     @Serializable
     data class Clouds(

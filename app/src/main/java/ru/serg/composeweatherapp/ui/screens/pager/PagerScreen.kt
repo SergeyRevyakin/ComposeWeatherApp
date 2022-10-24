@@ -24,16 +24,12 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
-import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
-import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
-import ru.serg.composeweatherapp.utils.ScreenState
 
 
 @Composable
@@ -51,7 +47,7 @@ fun PagerScreen(
     }
 
     AnimatedVisibility(
-        visible = viewModel.screenState == ScreenState.LOADING,
+        visible = viewModel.localWeatherItem.value is NetworkResult.Loading,
         enter = fadeIn(
             animationSpec = tween(500)
         ),
@@ -63,7 +59,7 @@ fun PagerScreen(
     }
 
     AnimatedVisibility(
-        visible = viewModel.screenState == ScreenState.DATA,
+        visible = viewModel.localWeatherItem.value is NetworkResult.Success,
         enter = slideInVertically(
             initialOffsetY = { 1500 },
             animationSpec = tween(500)
@@ -125,12 +121,11 @@ fun ContentScreen(
 ) {
     val hourlyWeatherListState = rememberLazyListState()
 
-    val city = cityItem?.name
-        ?: (viewModel.simpleWeather.value as? NetworkResult.Success<WeatherResponse>)?.data?.name.orEmpty()
+    val city = viewModel.localWeatherItem.value.data?.cityItem?.name.orEmpty()
 
-    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.screenState == ScreenState.LOADING),
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.localWeatherItem.value is NetworkResult.Loading),
         onRefresh = {
-            viewModel.initialize()
+            viewModel.initialize(cityItem)
         }) {
 
         LazyColumn(
@@ -150,20 +145,22 @@ fun ContentScreen(
             }
 
             item {
-                TodayWeatherCardItem(
-                    weatherIcon = IconMapper.map(
-                        viewModel.simpleWeather.value.data?.weather?.first()?.id
-                            ?: 0
-                    ),
-                    weatherDesc = viewModel.simpleWeather.value.data?.weather?.first()?.description.orEmpty(),
-                    currentTemp = viewModel.simpleWeather.value.data?.main?.temp?.toInt() ?: 0,
-                    feelsLikeTemp = viewModel.simpleWeather.value.data?.main?.feelsLike?.toInt()
-                        ?: 0,
-                    windDirection = viewModel.simpleWeather.value.data?.wind?.deg ?: 0,
-                    windSpeed = viewModel.simpleWeather.value.data?.wind?.speed?.toInt() ?: 0,
-                    humidity = viewModel.simpleWeather.value.data?.main?.humidity ?: 0,
-                    pressure = viewModel.simpleWeather.value.data?.main?.pressure ?: 0,
-                )
+                val weatherItemState = viewModel.localWeatherItem.value.data
+
+                weatherItemState?.let {
+                    TodayWeatherCardItem(
+                        weatherIcon = weatherItemState.weatherIcon,
+                        weatherDesc = weatherItemState.weatherDescription.orEmpty(),
+                        currentTemp = weatherItemState.currentTemp?.toInt(),
+                        feelsLikeTemp = weatherItemState.feelsLike?.toInt()
+                            ?: 0,
+                        windDirection = weatherItemState.windDirection,
+                        windSpeed = weatherItemState.windSpeed?.toInt(),
+                        humidity = weatherItemState.humidity ?: 0,
+                        pressure = weatherItemState.pressure ?: 0,
+                        timestamp = weatherItemState.lastUpdatedTime
+                    )
+                }
             }
 
             item {
@@ -181,10 +178,9 @@ fun ContentScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     state = hourlyWeatherListState,
                 ) {
-                    val list = viewModel.oneCallWeather.value.data?.hourly ?: listOf()
+                    val list = viewModel.localWeatherItem.value.data?.hourlyWeatherList ?: listOf()
                     items(list) {
-                        it?.let { HourlyWeatherItem(item = it) }
-
+                        HourlyWeatherItem(item = it)
                     }
                 }
             }
@@ -205,25 +201,24 @@ fun ContentScreen(
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    val list = viewModel.oneCallWeather.value.data?.daily ?: listOf()
-                    list.forEachIndexed { _, daily ->
-                        if (daily != null) {
+                    val list = viewModel.localWeatherItem.value.data?.dailyWeatherList ?: listOf()
+                    list.forEach { daily ->
 
-                            var isDailyItemOpen by remember {
-                                mutableStateOf(false)
-                            }
-
-                            DailyWeatherItem(item = daily) { isDailyItemOpen = true }
-                            if (isDailyItemOpen) {
-                                DailyWeatherDetailsScreen(
-                                    daily = daily,
-                                    modifier = Modifier
-                                ) {
-                                    isDailyItemOpen = !isDailyItemOpen
-                                }
-                            }
-
+                        var isDailyItemOpen by remember {
+                            mutableStateOf(false)
                         }
+
+                        DailyWeatherItem(item = daily) { isDailyItemOpen = true }
+                        if (isDailyItemOpen) {
+//                                DailyWeatherDetailsScreen(
+//                                    daily = daily,
+//                                    modifier = Modifier
+//                                ) {
+//                                    isDailyItemOpen = !isDailyItemOpen
+//                                }
+                        }
+
+
                     }
                 }
             }

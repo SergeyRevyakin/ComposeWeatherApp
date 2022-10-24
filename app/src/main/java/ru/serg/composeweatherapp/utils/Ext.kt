@@ -16,22 +16,45 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
+import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data.IntraDayTempItem
+import ru.serg.composeweatherapp.data.room.entity.CityEntity
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
 
 object Ext {
 
     fun getHour(l: Long?): String {
-        return if (((l ?: 0) * 1000L) - getTimeMillis() < 60L * 1000L) "NOW"
-        else SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L) * 1000L)
+        return if (((l ?: 0)) - getTimeMillis() < 60L * 1000L) "NOW"
+        else SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
+    }
+
+    fun getFormattedLastUpdateDate(timestamp: Long): String {
+        val time = Instant.fromEpochMilliseconds(timestamp)
+        val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
+        return when {
+            (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> "Today ${
+                SimpleDateFormat(
+                    "HH:mm",
+                    Locale.getDefault()
+                ).format(timestamp)
+            }"
+            (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> "Yesterday ${
+                SimpleDateFormat(
+                    "HH:mm",
+                    Locale.getDefault()
+                ).format(timestamp)
+            }"
+            else -> SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault()).format(timestamp)
+        }
     }
 
     fun getDate(timestamp: Long?): AnnotatedString {
         return if (timestamp == null) buildAnnotatedString { append("") }
         else {
-            val time = Instant.fromEpochMilliseconds(timestamp * 1000L)
+            val time = Instant.fromEpochMilliseconds(timestamp)
             val local = time.toLocalDateTime(TimeZone.currentSystemDefault())
             buildAnnotatedString {
 
@@ -88,15 +111,15 @@ object Ext {
         }
     }
 
-    fun getMinMaxTemp(temp: OneCallResponse.Daily.Temp?): String {
-        return "${temp?.min?.toInt()}-${temp?.max?.toInt()}"
+    fun getMinMaxTemp(temp: IntraDayTempItem?): String {
+        return "${temp?.nightTemp?.toInt()}-${temp?.dayTemp?.toInt()}℃"
     }
 
     fun getTemp(temp: Double?): String {
         return "${temp?.toInt().toString()}℃" //TODO Fahrenheit temp
     }
 
-    fun showNotification(context: Context, header:String?, text:String?){
+    fun showNotification(context: Context, header: String?, text: String?) {
         val builder = NotificationCompat.Builder(context, "123")
             .setSmallIcon(R.drawable.ic_sun)
             .setContentTitle(header)
@@ -111,6 +134,22 @@ object Ext {
 
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-    fun String.firstLetterToUpperCase() = replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    fun String.firstLetterToUpperCase() =
+        replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
+    fun CityItem.toCityEntity() = CityEntity(
+        name,
+        country,
+        latitude,
+        longitude,
+        isFavorite
+    )
+
+    fun CityEntity.toCityItem() = CityItem(
+        cityName,
+        country,
+        latitude ?: 0.0,
+        longitude ?: 0.0,
+        isFavorite
+    )
 }

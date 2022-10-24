@@ -23,9 +23,16 @@ class MainViewModel @Inject constructor(
 
     private fun fillCitiesList() {
         viewModelScope.launch {
-            localRepository.getCityHistorySearchDao().collectLatest {
-                val resultList = listOf(null) + it
-                citiesList.value = resultList
+            localRepository.getCityHistorySearchDao().collectLatest { items ->
+                val hasFavorite = items.findLast {
+                    it.isFavorite
+                } != null
+                if (hasFavorite) {
+                    citiesList.value = items
+                } else {
+                    val resultList = listOf(null) + items
+                    citiesList.value = resultList
+                }
             }
         }
     }
