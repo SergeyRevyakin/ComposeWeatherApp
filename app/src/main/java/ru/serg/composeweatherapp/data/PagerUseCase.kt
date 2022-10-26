@@ -92,6 +92,8 @@ class PagerUseCase @Inject constructor(
                             weatherDescription = daily?.weather?.first()?.description,
                             weatherIcon = IconMapper.map(daily?.weather?.first()?.id),
                             dateTime = (daily?.dt ?: 0) * 1000L,
+                            sunrise = (daily?.sunrise?.toLong() ?: 0L) * 1000L,
+                            sunset = (daily?.sunset?.toLong() ?: 0L) * 1000L
                         )
                     } ?: emptyList()
 
@@ -169,6 +171,8 @@ class PagerUseCase @Inject constructor(
                             weatherDescription = daily?.weather?.first()?.description,
                             weatherIcon = IconMapper.map(daily?.weather?.first()?.id),
                             dateTime = (daily?.dt ?: 0) * 1000L,
+                            sunrise = (daily?.sunrise?.toLong() ?: 0L) * 1000L,
+                            sunset = (daily?.sunset?.toLong() ?: 0L) * 1000L
                         )
                     } ?: emptyList()
 

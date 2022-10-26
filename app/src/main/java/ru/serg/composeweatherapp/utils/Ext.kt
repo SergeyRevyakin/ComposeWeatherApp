@@ -26,7 +26,9 @@ import java.util.*
 
 object Ext {
 
-    fun getHour(l: Long?): String {
+    fun getHour(l: Long?): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
+
+    fun getHourWithNow(l: Long?): String {
         return if (((l ?: 0)) - getTimeMillis() < 60L * 1000L) "NOW"
         else SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
     }
@@ -84,7 +86,7 @@ object Ext {
     fun getFullDate(timestamp: Long?): AnnotatedString {
         return if (timestamp == null) buildAnnotatedString { append("") }
         else {
-            val time = Instant.fromEpochMilliseconds(timestamp * 1000L)
+            val time = Instant.fromEpochMilliseconds(timestamp)
             val local = time.toLocalDateTime(TimeZone.currentSystemDefault())
             buildAnnotatedString {
 
@@ -102,7 +104,7 @@ object Ext {
                 append(
                     "${local.dayOfMonth} ${
                         local.month.getDisplayName(
-                            TextStyle.FULL,
+                            TextStyle.SHORT,
                             Locale.getDefault()
                         )
                     }"

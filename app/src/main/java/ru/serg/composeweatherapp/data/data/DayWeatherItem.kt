@@ -13,4 +13,6 @@ data class DayWeatherItem(
     val weatherDescription: String?,
     val weatherIcon: Int,
     val dateTime: Long,
+    val sunrise: Long,
+    val sunset: Long
 )

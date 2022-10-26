@@ -7,10 +7,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -27,6 +28,7 @@ import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
+import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.NetworkResult
@@ -128,104 +130,94 @@ fun ContentScreen(
             viewModel.initialize(cityItem)
         }) {
 
-        LazyColumn(
+        val columnState = rememberScrollState()
+
+        Column(
             modifier = modifier
                 .fillMaxSize()
+                .verticalScroll(columnState, true)
         ) {
 
-            item {
-                Text(
-                    text = city,
-                    style = MaterialTheme.typography.headerStyle,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
+            Text(
+                text = city,
+                style = MaterialTheme.typography.headerStyle,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            val weatherItemState = viewModel.localWeatherItem.value.data
+
+            weatherItemState?.let {
+                TodayWeatherCardItem(
+                    weatherIcon = weatherItemState.weatherIcon,
+                    weatherDesc = weatherItemState.weatherDescription.orEmpty(),
+                    currentTemp = weatherItemState.currentTemp?.toInt(),
+                    feelsLikeTemp = weatherItemState.feelsLike?.toInt()
+                        ?: 0,
+                    windDirection = weatherItemState.windDirection,
+                    windSpeed = weatherItemState.windSpeed?.toInt(),
+                    humidity = weatherItemState.humidity ?: 0,
+                    pressure = weatherItemState.pressure ?: 0,
+                    timestamp = weatherItemState.lastUpdatedTime
                 )
             }
 
-            item {
-                val weatherItemState = viewModel.localWeatherItem.value.data
+            Text(
+                text = "Hourly",
+                style = MaterialTheme.typography.headerStyle,
+                modifier = Modifier
+                    .headerModifier()
+            )
 
-                weatherItemState?.let {
-                    TodayWeatherCardItem(
-                        weatherIcon = weatherItemState.weatherIcon,
-                        weatherDesc = weatherItemState.weatherDescription.orEmpty(),
-                        currentTemp = weatherItemState.currentTemp?.toInt(),
-                        feelsLikeTemp = weatherItemState.feelsLike?.toInt()
-                            ?: 0,
-                        windDirection = weatherItemState.windDirection,
-                        windSpeed = weatherItemState.windSpeed?.toInt(),
-                        humidity = weatherItemState.humidity ?: 0,
-                        pressure = weatherItemState.pressure ?: 0,
-                        timestamp = weatherItemState.lastUpdatedTime
-                    )
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                state = hourlyWeatherListState,
+            ) {
+                val list = viewModel.localWeatherItem.value.data?.hourlyWeatherList ?: listOf()
+                items(list) {
+                    HourlyWeatherItem(item = it)
                 }
             }
 
-            item {
-                Text(
-                    text = "Hourly",
-                    style = MaterialTheme.typography.headerStyle,
-                    modifier = Modifier
-                        .headerModifier()
-                )
-            }
+            Text(
+                text = "Daily",
+                style = MaterialTheme.typography.headerStyle,
+                modifier = Modifier
+                    .headerModifier()
+                    .padding(top = 12.dp)
+            )
 
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    state = hourlyWeatherListState,
-                ) {
-                    val list = viewModel.localWeatherItem.value.data?.hourlyWeatherList ?: listOf()
-                    items(list) {
-                        HourlyWeatherItem(item = it)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                val list = viewModel.localWeatherItem.value.data?.dailyWeatherList ?: listOf()
+                list.forEach { daily ->
+
+                    var isDailyItemOpen by remember {
+                        mutableStateOf(false)
                     }
-                }
-            }
 
-            item {
-                Text(
-                    text = "Daily",
-                    style = MaterialTheme.typography.headerStyle,
-                    modifier = Modifier
-                        .headerModifier()
-                        .padding(top = 12.dp)
-                )
-            }
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    val list = viewModel.localWeatherItem.value.data?.dailyWeatherList ?: listOf()
-                    list.forEach { daily ->
-
-                        var isDailyItemOpen by remember {
-                            mutableStateOf(false)
+                    DailyWeatherItem(item = daily) { isDailyItemOpen = true }
+                    if (isDailyItemOpen) {
+                        DailyWeatherDetailsScreen(
+                            daily = daily,
+                            modifier = Modifier
+                        ) {
+                            isDailyItemOpen = !isDailyItemOpen
                         }
-
-                        DailyWeatherItem(item = daily) { isDailyItemOpen = true }
-                        if (isDailyItemOpen) {
-//                                DailyWeatherDetailsScreen(
-//                                    daily = daily,
-//                                    modifier = Modifier
-//                                ) {
-//                                    isDailyItemOpen = !isDailyItemOpen
-//                                }
-                        }
-
-
                     }
+
+
                 }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import io.ktor.util.date.*
 import ru.serg.composeweatherapp.data.data.HourWeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.utils.Ext.getHour
+import ru.serg.composeweatherapp.utils.Ext.getHourWithNow
 import ru.serg.composeweatherapp.utils.Ext.getTemp
 
 @Composable
@@ -54,7 +54,7 @@ fun HourlyWeatherItem(item: HourWeatherItem) {
             ) {
 
                 Text(
-                    text = getHour(item.timestamp),
+                    text = getHourWithNow(item.timestamp),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
