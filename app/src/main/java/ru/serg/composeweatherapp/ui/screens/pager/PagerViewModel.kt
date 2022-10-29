@@ -13,26 +13,45 @@ import ru.serg.composeweatherapp.data.PagerUseCase
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
 @HiltViewModel
 class PagerViewModel @Inject constructor(
-    private val pagerUseCase: PagerUseCase
+    private val pagerUseCase: PagerUseCase,
+    private val dateUtils: DateUtils
 ) : ViewModel() {
 
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     var localWeatherItem: MutableState<NetworkResult<WeatherItem>> =
-        mutableStateOf(NetworkResult.Loading())
+        mutableStateOf(NetworkResult.Error(null))
 
     private var isInit = mutableStateOf(false)
 
     @SuppressLint("MissingPermission")
     fun initialize(city: CityItem? = null) {
-        if (isInit.value) return
+        viewModelScope.launch {
+            if (localWeatherItem.value is NetworkResult.Success) {
+                checkLastUpdate(city)
+            } else {
+                if (localWeatherItem.value !is NetworkResult.Loading) {
+                    fetchWeather(city)
+                }
+            }
+        }
+    }
 
+    private suspend fun checkLastUpdate(city: CityItem?) {
+        if (dateUtils.isFetchDateExpired(localWeatherItem.value.data?.lastUpdatedTime ?: 0L)) {
+            fetchWeather(city)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private suspend fun fetchWeather(city: CityItem?) {
         if (city == null) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                 viewModelScope.launch {
@@ -53,8 +72,6 @@ class PagerViewModel @Inject constructor(
                 }
             }
         }
-
-        isInit.value = true
 
     }
 }

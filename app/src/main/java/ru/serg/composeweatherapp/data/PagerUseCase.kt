@@ -4,6 +4,7 @@ import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import ru.serg.composeweatherapp.data.data.*
+import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import javax.inject.Inject
 class PagerUseCase @Inject constructor(
     private val remoteRepository: RemoteRepository,
     private val localRepository: LocalRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) {
 
 
@@ -27,10 +29,13 @@ class PagerUseCase @Inject constructor(
             list.findLast {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
-                if (item.lastUpdatedTime > getTimeMillis() - 24L * 60L * 60L * 1000L) {
-                    flowOf(NetworkResult.Success(item))
-                } else {
-                    fetchWeather(cityItem)
+                dataStoreRepository.fetchFrequency.flatMapLatest {
+                    val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
+                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 1000L))) {
+                        flowOf(NetworkResult.Success(item))
+                    } else {
+                        fetchWeather(cityItem)
+                    }
                 }
             } ?: fetchWeather(cityItem)
         }
