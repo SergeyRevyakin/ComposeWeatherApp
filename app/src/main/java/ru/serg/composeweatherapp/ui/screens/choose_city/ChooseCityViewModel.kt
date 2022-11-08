@@ -78,7 +78,8 @@ class ChooseCityViewModel @Inject constructor(
                             name = it.name.orEmpty(),
                             country = it.country,
                             latitude = it.lat ?: 0.0,
-                            longitude = it.lon ?: 0.0
+                            longitude = it.lon ?: 0.0,
+                            false
                         )
                     }
                     if (cityList.isNullOrEmpty()) {

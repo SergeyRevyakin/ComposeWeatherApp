@@ -127,7 +127,7 @@ class PagerUseCase @Inject constructor(
             }
         }
 
-    private suspend fun fetchWeather(
+    suspend fun fetchWeather(
         cityItem: CityItem
     ): Flow<NetworkResult<WeatherItem>> =
         combine(

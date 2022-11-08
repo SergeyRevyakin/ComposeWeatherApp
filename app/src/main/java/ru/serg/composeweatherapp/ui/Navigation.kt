@@ -4,14 +4,18 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.FlowPreview
 import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
+import ru.serg.composeweatherapp.ui.screens.city_weather_screen.CityWeatherScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.screens.settings.SettingsScreen
+import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ScreenNames
 
 
@@ -84,6 +88,15 @@ fun Navigation(
             SettingsScreen(
                 navController = navController
             )
+        }
+
+        composable(
+            "${ScreenNames.CITY_WEATHER_SCREEN}/{${Constants.CITY_ITEM}}",
+            arguments = listOf(navArgument(Constants.CITY_ITEM) {
+                type = NavType.StringType
+            })
+        ) {
+            CityWeatherScreen(navController = navController)
         }
     }
 }

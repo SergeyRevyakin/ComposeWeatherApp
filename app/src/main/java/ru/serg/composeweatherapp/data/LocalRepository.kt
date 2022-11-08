@@ -75,6 +75,7 @@ class LocalRepository @Inject constructor(
                             it.cityEntity.country,
                             it.cityEntity.latitude ?: 0.0,
                             it.cityEntity.longitude ?: 0.0,
+                            false
                         ),
                         lastUpdatedTime = it.weatherItemEntity.lastUpdatedTime,
                         hourlyWeatherList = it.weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->

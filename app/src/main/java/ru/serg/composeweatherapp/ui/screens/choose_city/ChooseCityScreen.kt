@@ -26,11 +26,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import ru.serg.composeweatherapp.ui.elements.CityRow
 import ru.serg.composeweatherapp.ui.elements.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.SearchTextField
 import ru.serg.composeweatherapp.ui.elements.TopItem
 import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.ScreenNames
 
 @ExperimentalFoundationApi
 @FlowPreview
@@ -110,8 +113,16 @@ fun ChooseCityScreen(
             }
             (viewModel.screenState.data.isNotEmpty()) -> {
                 LazyColumn(modifier = modifier.padding(24.dp)) {
-                    items(viewModel.screenState.data) {
-                        CityRow(cityItem = it, viewModel::onCityClicked)
+                    items(viewModel.screenState.data) { cityItem ->
+                        CityRow(
+                            cityItem = cityItem,
+                            {
+                                navController.navigate(
+                                    "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
+                                )
+                            },
+                            viewModel::onCityClicked
+                        )
                     }
                 }
             }

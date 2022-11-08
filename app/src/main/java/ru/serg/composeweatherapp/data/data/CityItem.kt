@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.data.data
 
+@kotlinx.serialization.Serializable
 data class CityItem(
     val name: String,
     val country: String?,

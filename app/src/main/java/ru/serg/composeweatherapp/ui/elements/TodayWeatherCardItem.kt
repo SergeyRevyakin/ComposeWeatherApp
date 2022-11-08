@@ -72,7 +72,8 @@ fun TodayWeatherCardItem(
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = 24.dp)
+                    .padding(horizontal = 24.dp),
                 style = TextStyle(
                     letterSpacing = 1.5.sp
                 )

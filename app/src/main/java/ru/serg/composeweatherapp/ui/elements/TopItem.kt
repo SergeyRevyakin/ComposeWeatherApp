@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TopItem(
     header: String,
-    rightIconImageVector: ImageVector?,
-    leftIconImageVector: ImageVector?,
-    onLeftIconClick: (() -> Unit)?,
-    onRightIconClick: (() -> Unit)?
+    rightIconImageVector: ImageVector? = null,
+    leftIconImageVector: ImageVector? = null,
+    onLeftIconClick: (() -> Unit)? = null,
+    onRightIconClick: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier

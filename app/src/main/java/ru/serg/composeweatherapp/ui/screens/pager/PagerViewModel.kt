@@ -29,8 +29,6 @@ class PagerViewModel @Inject constructor(
     var localWeatherItem: MutableState<NetworkResult<WeatherItem>> =
         mutableStateOf(NetworkResult.Error(null))
 
-    private var isInit = mutableStateOf(false)
-
     @SuppressLint("MissingPermission")
     fun initialize(city: CityItem? = null) {
         viewModelScope.launch {
