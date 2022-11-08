@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.LocalRepository
 import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val localRepository: LocalRepository
+    private val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     val citiesList = mutableStateOf(emptyList<CityItem?>())
@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
 
     private fun fillCitiesList() {
         viewModelScope.launch {
-            localRepository.getCityHistorySearchDao().collectLatest { items ->
+            localDataSource.getCityHistorySearchDao().collectLatest { items ->
                 val hasFavorite = items.findLast {
                     it.isFavorite
                 } != null

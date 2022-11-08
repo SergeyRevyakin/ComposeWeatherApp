@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.DataStoreRepository
+import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreDataSource: DataStoreDataSource
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -28,7 +28,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initDarkModeChange() {
         viewModelScope.launch {
-            dataStoreRepository.isDarkThemeEnabled.collectLatest {
+            dataStoreDataSource.isDarkThemeEnabled.collectLatest {
                 isDarkModeEnabled.value = it
             }
         }
@@ -36,7 +36,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initBackgroundFetchWeatherChange() {
         viewModelScope.launch {
-            dataStoreRepository.isBackgroundFetchWeatherEnabled.collectLatest {
+            dataStoreDataSource.isBackgroundFetchWeatherEnabled.collectLatest {
                 isBackgroundFetchWeatherEnabled.value = it
             }
         }
@@ -44,7 +44,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initFetchFrequencyValue() {
         viewModelScope.launch {
-            dataStoreRepository.fetchFrequency.collectLatest {
+            dataStoreDataSource.fetchFrequency.collectLatest {
                 fetchFrequencyValue.value = it.toFloat()
             }
         }
@@ -52,19 +52,19 @@ class SettingViewModel @Inject constructor(
 
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
-            dataStoreRepository.saveDarkMode(isDark)
+            dataStoreDataSource.saveDarkMode(isDark)
         }
     }
 
     fun onBackgroundFetchChanged(isEnabled: Boolean) {
         viewModelScope.launch {
-            dataStoreRepository.saveBackgroundFetchWeatherEnabled(isEnabled)
+            dataStoreDataSource.saveBackgroundFetchWeatherEnabled(isEnabled)
         }
     }
 
     fun onFrequencyChanged(positionInList: Int) {
         viewModelScope.launch {
-            dataStoreRepository.saveFetchFrequency(positionInList)
+            dataStoreDataSource.saveFetchFrequency(positionInList)
         }
     }
 

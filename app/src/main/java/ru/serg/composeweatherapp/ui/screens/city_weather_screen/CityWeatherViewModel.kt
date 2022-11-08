@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import ru.serg.composeweatherapp.data.PagerUseCase
+import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.NetworkResult
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
-    private val pagerUseCase: PagerUseCase,
+    private val weatherRepository: WeatherRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -26,7 +26,7 @@ class CityWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             savedStateHandle.get<String>(Constants.CITY_ITEM)?.let {
                 uiState =
-                    pagerUseCase.fetchWeather(Json.decodeFromString(it)).map { networkResult ->
+                    weatherRepository.fetchWeather(Json.decodeFromString(it)).map { networkResult ->
                         when (networkResult) {
                             is NetworkResult.Loading -> ScreenState.Loading
                             is NetworkResult.Error -> ScreenState.Error(null)

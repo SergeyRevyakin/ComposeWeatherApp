@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data
+package ru.serg.composeweatherapp.data.data_source
 
 import io.ktor.util.date.*
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ import ru.serg.composeweatherapp.utils.Ext.toCityEntity
 import ru.serg.composeweatherapp.utils.Ext.toCityItem
 import javax.inject.Inject
 
-class LocalRepository @Inject constructor(
+class LocalDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
     private val lastLocationDao: LastLocationDao,
     private val cityHistorySearchDao: CityHistorySearchDao

@@ -1,17 +1,16 @@
 package ru.serg.composeweatherapp.worker
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collectLatest
-import ru.serg.composeweatherapp.data.LocalRepository
-import ru.serg.composeweatherapp.data.RemoteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.serg.composeweatherapp.data.WorkerUseCase
+import ru.serg.composeweatherapp.data.data_source.LocalDataSource
+import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.room.WeatherUnit
 import ru.serg.composeweatherapp.utils.Ext.showNotification
 import java.time.LocalDateTime
@@ -21,8 +20,8 @@ import java.util.concurrent.TimeUnit
 class WeatherWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted params: WorkerParameters,
-    private val localRepository: LocalRepository,
-    private val remoteRepository: RemoteRepository,
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val workerUseCase: WorkerUseCase
 ) : CoroutineWorker(appContext, params) {
@@ -107,7 +106,7 @@ class WeatherWorker @AssistedInject constructor(
             Result.success()
         } catch (e: Exception) {
             withContext(Dispatchers.IO) {
-                localRepository.saveInDatabase(WeatherUnit(name = "FAILED"))
+                localDataSource.saveInDatabase(WeatherUnit(name = "FAILED"))
             }
             Result.failure()
         }

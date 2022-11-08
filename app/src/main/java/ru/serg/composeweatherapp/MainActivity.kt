@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.DataStoreRepository
+import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     @Inject
-    lateinit var dataStoreRepository: DataStoreRepository
+    lateinit var dataStoreDataSource: DataStoreDataSource
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
     private fun startMainScreen() {
         val isDarkTheme = mutableStateOf(true)
         lifecycleScope.launch {
-            dataStoreRepository.isDarkThemeEnabled.collectLatest {
+            dataStoreDataSource.isDarkThemeEnabled.collectLatest {
                 isDarkTheme.value = it
             }
         }

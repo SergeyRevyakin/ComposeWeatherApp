@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data
+package ru.serg.composeweatherapp.data.data_source
 
 import android.content.Context
 import android.content.res.Configuration
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.utils.Ext.dataStore
 
-class DataStoreRepository(context: Context) {
+class DataStoreDataSource(context: Context) {
     companion object {
         val IS_DARK_THEME = booleanPreferencesKey("IS_DARK_THEME")
         val IS_BACKGROUND_FETCH_ENABLED = booleanPreferencesKey("IS_BACKGROUND_FETCH_ENABLED")

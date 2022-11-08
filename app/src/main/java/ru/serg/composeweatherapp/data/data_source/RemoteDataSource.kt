@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data
+package ru.serg.composeweatherapp.data.data_source
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -13,7 +13,7 @@ import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 import javax.inject.Named
 
-class RemoteRepository @Inject constructor(
+class RemoteDataSource @Inject constructor(
     @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
     @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
     @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient

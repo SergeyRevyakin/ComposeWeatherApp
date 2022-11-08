@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.util.date.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.PagerUseCase
+import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PagerViewModel @Inject constructor(
-    private val pagerUseCase: PagerUseCase,
+    private val weatherRepository: WeatherRepository,
     private val dateUtils: DateUtils
 ) : ViewModel() {
 
@@ -53,7 +53,7 @@ class PagerViewModel @Inject constructor(
         if (city == null) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
                 viewModelScope.launch {
-                    pagerUseCase.fetchCurrentLocationWeather(
+                    weatherRepository.fetchCurrentLocationWeather(
                         CoordinatesWrapper(
                             it.latitude,
                             it.longitude
@@ -65,7 +65,7 @@ class PagerViewModel @Inject constructor(
             }
         } else {
             viewModelScope.launch {
-                pagerUseCase.fetchCityWeather(city).collect {
+                weatherRepository.fetchCityWeather(city).collect {
                     localWeatherItem.value = it
                 }
             }

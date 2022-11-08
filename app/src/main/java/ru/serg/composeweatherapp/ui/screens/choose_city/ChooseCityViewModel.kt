@@ -12,17 +12,17 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.LocalRepository
-import ru.serg.composeweatherapp.data.RemoteRepository
 import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data_source.LocalDataSource
+import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
 @FlowPreview
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
-    val remoteRepository: RemoteRepository,
-    val localRepository: LocalRepository
+    val remoteDataSource: RemoteDataSource,
+    val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     var screenState by mutableStateOf(
@@ -57,14 +57,14 @@ class ChooseCityViewModel @Inject constructor(
 
     private fun fillSearchHistory() {
         viewModelScope.launch {
-            localRepository.getCityHistorySearchDao().collect {
+            localDataSource.getCityHistorySearchDao().collect {
                 searchHistoryItems = it
             }
         }
     }
 
     private suspend fun fetchCities(input: String?) {
-        remoteRepository.getCityForAutocomplete(input).collectLatest { networkResult ->
+        remoteDataSource.getCityForAutocomplete(input).collectLatest { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> {
                     setLoadingState()
@@ -95,13 +95,13 @@ class ChooseCityViewModel @Inject constructor(
 
     fun onCityClicked(cityItem: CityItem) {
         viewModelScope.launch {
-            localRepository.insertCityItemToHistorySearch(cityItem)
+            localDataSource.insertCityItemToHistorySearch(cityItem)
         }
     }
 
     fun onDeleteClick(cityItem: CityItem) {
         viewModelScope.launch {
-            localRepository.deleteCityItemToHistorySearch(cityItem)
+            localDataSource.deleteCityItemToHistorySearch(cityItem)
         }
     }
 

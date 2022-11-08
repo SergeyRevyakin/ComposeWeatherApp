@@ -4,17 +4,19 @@ import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import ru.serg.composeweatherapp.data.data.*
+import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.LocalDataSource
+import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
-class PagerUseCase @Inject constructor(
-    private val remoteRepository: RemoteRepository,
-    private val localRepository: LocalRepository,
-    private val dataStoreRepository: DataStoreRepository
+class WeatherRepository @Inject constructor(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val dataStoreDataSource: DataStoreDataSource
 ) {
-
 
     suspend fun fetchCurrentLocationWeather(coordinatesWrapper: CoordinatesWrapper): Flow<NetworkResult<WeatherItem>> =
         fetchWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude)
@@ -25,11 +27,11 @@ class PagerUseCase @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun getLocalWeather(cityItem: CityItem): Flow<NetworkResult<WeatherItem>> =
-        localRepository.getCurrentWeatherItem().flatMapLatest { list ->
+        localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
             list.findLast {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
-                dataStoreRepository.fetchFrequency.flatMapLatest {
+                dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 1000L))) {
                         flowOf(NetworkResult.Success(item))
@@ -45,8 +47,8 @@ class PagerUseCase @Inject constructor(
         longitude: Double
     ): Flow<NetworkResult<WeatherItem>> =
         combine(
-            remoteRepository.getWeatherW(latitude, longitude),
-            remoteRepository.getWeather(latitude, longitude)
+            remoteDataSource.getWeatherW(latitude, longitude),
+            remoteDataSource.getWeather(latitude, longitude)
         ) { weatherResponse, oneCallResponse ->
             when {
                 (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
@@ -117,8 +119,8 @@ class PagerUseCase @Inject constructor(
                         dailyWeatherList = dailyList,
                         hourlyWeatherList = hourlyList
                     )
-                    localRepository.saveWeather(weatherItem)
-                    localRepository.insertCityItemToHistorySearch(cityItem)
+                    localDataSource.saveWeather(weatherItem)
+                    localDataSource.insertCityItemToHistorySearch(cityItem)
                     NetworkResult.Success(weatherItem)
 
                 }
@@ -131,8 +133,8 @@ class PagerUseCase @Inject constructor(
         cityItem: CityItem
     ): Flow<NetworkResult<WeatherItem>> =
         combine(
-            remoteRepository.getWeatherW(cityItem.latitude, cityItem.longitude),
-            remoteRepository.getWeather(cityItem.latitude, cityItem.longitude)
+            remoteDataSource.getWeatherW(cityItem.latitude, cityItem.longitude),
+            remoteDataSource.getWeather(cityItem.latitude, cityItem.longitude)
         ) { weatherResponse, oneCallResponse ->
             when {
                 (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
@@ -197,7 +199,7 @@ class PagerUseCase @Inject constructor(
                         hourlyWeatherList = hourlyList
                     )
 
-                    localRepository.saveWeather(weatherItem)
+                    localDataSource.saveWeather(weatherItem)
                     NetworkResult.Success(weatherItem)
 
                 }
