@@ -75,7 +75,7 @@ class LocalDataSource @Inject constructor(
                             it.cityEntity.country,
                             it.cityEntity.latitude ?: 0.0,
                             it.cityEntity.longitude ?: 0.0,
-                            false
+                            it.cityEntity.isFavorite
                         ),
                         lastUpdatedTime = it.weatherItemEntity.lastUpdatedTime,
                         hourlyWeatherList = it.weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->

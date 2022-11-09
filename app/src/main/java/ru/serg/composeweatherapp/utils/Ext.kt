@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
+import kotlin.math.absoluteValue
 
 object Ext {
 
@@ -154,4 +155,12 @@ object Ext {
         longitude ?: 0.0,
         isFavorite
     )
+
+    infix fun Double?.isNearTo(other: Double?): Boolean {
+        if (this == null || other == null) return false
+        return when {
+            this.minus(other).absoluteValue < 0.001 -> true
+            else -> false
+        }
+    }
 }
