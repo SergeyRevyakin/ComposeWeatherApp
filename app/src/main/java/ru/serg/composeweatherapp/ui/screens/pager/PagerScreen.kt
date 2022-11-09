@@ -45,6 +45,7 @@ fun PagerScreen(
         ru.serg.composeweatherapp.utils.hiltViewModel(key = cityItem?.name)
 
     if (startLoading) {
+
         viewModel.initialize(cityItem)
     }
 

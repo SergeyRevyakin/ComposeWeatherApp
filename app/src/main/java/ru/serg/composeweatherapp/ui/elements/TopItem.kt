@@ -26,65 +26,69 @@ fun TopItem(
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp, bottom = 8.dp)
-            .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .clickable {
-                    onLeftIconClick?.invoke()
-                },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            leftIconImageVector?.let {
-                Icon(
-                    imageVector = it,
-                    contentDescription = "Search",
-                    modifier = Modifier
-                )
-            }
-        }
-
-        Text(
-            text = header,
-            fontSize = 26.sp,
-            textAlign = TextAlign.Center,
+    Column {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-        )
-
-        Column(
-            Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .clickable {
-                    onRightIconClick?.invoke()
-                },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(top = 24.dp, bottom = 8.dp)
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            rightIconImageVector?.let {
-                Icon(
-                    imageVector = it,
-                    contentDescription = "Search",
-                )
+            Column(
+                Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        onLeftIconClick?.invoke()
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                leftIconImageVector?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "Search",
+                        modifier = Modifier
+                    )
+                }
+            }
+
+            Text(
+                text = header,
+                fontSize = 26.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            )
+
+            Column(
+                Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        onRightIconClick?.invoke()
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                rightIconImageVector?.let {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "Search",
+                    )
+                }
             }
         }
+
+        ConnectivityStatus()
     }
 
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TopBarPreview() {
+fun PreviewTopBar() {
     TopItem(
         header = "Moscow",
         leftIconImageVector = Icons.Rounded.Search,
