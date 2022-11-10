@@ -28,10 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import ru.serg.composeweatherapp.ui.elements.CityRow
-import ru.serg.composeweatherapp.ui.elements.CitySearchItem
-import ru.serg.composeweatherapp.ui.elements.SearchTextField
-import ru.serg.composeweatherapp.ui.elements.TopItem
+import ru.serg.composeweatherapp.ui.elements.*
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ScreenNames
 
@@ -125,6 +122,9 @@ fun ChooseCityScreen(
                         )
                     }
                 }
+            }
+            (viewModel.screenState.message == "Error") -> {
+                ErrorItem(errorText = "Error")
             }
         }
     }

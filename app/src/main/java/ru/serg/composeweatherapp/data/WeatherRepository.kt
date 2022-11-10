@@ -3,6 +3,7 @@ package ru.serg.composeweatherapp.data
 import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.*
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
@@ -11,12 +12,14 @@ import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.Ext.isNearTo
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.utils.NetworkStatus
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val dataStoreDataSource: DataStoreDataSource
+    private val dataStoreDataSource: DataStoreDataSource,
+    private val networkStatus: NetworkStatus
 ) {
 
     suspend fun fetchCurrentLocationWeather(coordinatesWrapper: CoordinatesWrapper): Flow<NetworkResult<WeatherItem>> =
@@ -34,13 +37,27 @@ class WeatherRepository @Inject constructor(
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
-                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 1000L))) {
+                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 60L * 1000L))) {
                         flowOf(NetworkResult.Success(item))
                     } else {
-                        fetchWeather(cityItem)
+                        if (networkStatus.isNetworkConnected()) {
+                            fetchWeather(cityItem)
+                        } else {
+                            flowOf(NetworkResult.Success(item))
+                        }
+
                     }
                 }
-            } ?: fetchWeather(cityItem)
+            } ?: if (networkStatus.isNetworkConnected()) {
+                fetchWeather(cityItem)
+            } else {
+                flowOf(
+                    NetworkResult.Error(
+                        message = null,
+                        errorTextResource = R.string.no_connection
+                    )
+                )
+            }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,10 +76,23 @@ class WeatherRepository @Inject constructor(
                     if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 1000L))) {
                         flowOf(NetworkResult.Success(item))
                     } else {
-                        fetchCoordinatesWeather(latitude, longitude)
+                        if (networkStatus.isNetworkConnected()) {
+                            fetchCoordinatesWeather(latitude, longitude)
+                        } else {
+                            flowOf(NetworkResult.Success(item))
+                        }
                     }
                 }
-            } ?: fetchCoordinatesWeather(latitude, longitude)
+            } ?: if (networkStatus.isNetworkConnected()) {
+                fetchCoordinatesWeather(latitude, longitude)
+            } else {
+                flowOf(
+                    NetworkResult.Error(
+                        message = null,
+                        errorTextResource = R.string.no_connection
+                    )
+                )
+            }
         }
 
     private suspend fun fetchCoordinatesWeather(latitude: Double, longitude: Double) = combine(

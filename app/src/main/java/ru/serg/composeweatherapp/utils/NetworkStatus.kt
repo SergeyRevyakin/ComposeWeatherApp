@@ -9,6 +9,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
+class NetworkStatus(val context: Context) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeConnectivityFlow() = context.observeConnectivityAsFlow()
+
+    fun isNetworkConnected() = context.currentConnectionsState == ConnectionState.Available
+
+}
+
 sealed class ConnectionState {
     object Available : ConnectionState()
     object Unavailable : ConnectionState()
