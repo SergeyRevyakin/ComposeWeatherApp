@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.serg.composeweatherapp.ui.elements.HourSliderItem
-import ru.serg.composeweatherapp.ui.elements.MenuRowWithRadioButton
-import ru.serg.composeweatherapp.ui.elements.TopItem
+import ru.serg.composeweatherapp.ui.elements.settings.HourSliderItem
+import ru.serg.composeweatherapp.ui.elements.settings.MenuRowWithRadioButton
+import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 
 @Composable

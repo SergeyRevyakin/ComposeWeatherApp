@@ -31,7 +31,7 @@ import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
-import ru.serg.composeweatherapp.ui.elements.TopItem
+import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.ui.theme.headerModifier

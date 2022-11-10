@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.city_search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -18,8 +18,7 @@ import ru.serg.composeweatherapp.ui.theme.gradientBorder
 @Composable
 fun CitySearchItem(
     cityItem: CityItem,
-    onDelete: ((CityItem) -> Unit),
-    modifier: Modifier = Modifier
+    onDelete: ((CityItem) -> Unit)
 ) {
     Card(
         modifier = Modifier

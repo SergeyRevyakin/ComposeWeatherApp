@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.city_search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -56,6 +56,6 @@ fun CityRow(
 
 @Preview(showBackground = true)
 @Composable
-fun CityRowPreview() {
+fun PreviewCityRow() {
     CityRow(cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false), onItemClick = {}, onAddClick = {})
 }

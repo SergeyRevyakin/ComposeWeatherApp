@@ -28,7 +28,11 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import ru.serg.composeweatherapp.ui.elements.*
+import ru.serg.composeweatherapp.ui.elements.city_search.CityRow
+import ru.serg.composeweatherapp.ui.elements.city_search.CitySearchItem
+import ru.serg.composeweatherapp.ui.elements.city_search.SearchTextField
+import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
+import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ScreenNames
 
@@ -69,8 +73,7 @@ fun ChooseCityScreen(
             items(viewModel.searchHistoryItems) {
                 CitySearchItem(
                     cityItem = it,
-                    onDelete = viewModel::onDeleteClick,
-                    modifier = Modifier.animateItemPlacement()
+                    onDelete = viewModel::onDeleteClick
                 )
             }
         }

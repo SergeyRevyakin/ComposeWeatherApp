@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.top_item
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing

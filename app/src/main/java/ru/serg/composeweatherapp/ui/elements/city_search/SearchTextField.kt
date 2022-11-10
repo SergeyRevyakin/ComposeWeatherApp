@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.city_search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape

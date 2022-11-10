@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.common
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +28,7 @@ fun ErrorItem(
     ) {
         Card(
             shape = RoundedCornerShape(16.dp),
-
+            modifier = Modifier.padding(24.dp)
             ) {
             Column(modifier = Modifier.padding(24.dp)) {
 
