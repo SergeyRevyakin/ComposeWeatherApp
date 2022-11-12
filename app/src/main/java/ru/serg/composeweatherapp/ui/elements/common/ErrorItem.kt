@@ -34,16 +34,14 @@ fun ErrorItem(
 
                 Text(
                     text = "We can't show you weather because:",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                 )
                 Row(
-
                     verticalAlignment = Alignment.CenterVertically,
-//                horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.SentimentDissatisfied,
@@ -55,8 +53,8 @@ fun ErrorItem(
                     )
                     Text(
                         text = errorText ?: "",
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Start,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }

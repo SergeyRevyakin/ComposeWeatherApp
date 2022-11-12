@@ -29,7 +29,7 @@ class CityWeatherViewModel @Inject constructor(
                     weatherRepository.fetchWeather(Json.decodeFromString(it)).map { networkResult ->
                         when (networkResult) {
                             is NetworkResult.Loading -> ScreenState.Loading
-                            is NetworkResult.Error -> ScreenState.Error(null)
+                            is NetworkResult.Error -> ScreenState.Error(networkResult.message)
                             is NetworkResult.Success -> ScreenState.Success(networkResult.data)
                         }
                     }.stateIn(

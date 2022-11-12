@@ -24,7 +24,8 @@ fun TopItem(
     rightIconImageVector: ImageVector? = null,
     leftIconImageVector: ImageVector? = null,
     onLeftIconClick: (() -> Unit)? = null,
-    onRightIconClick: (() -> Unit)? = null
+    onRightIconClick: (() -> Unit)? = null,
+    isLoading: Boolean = false
 ) {
     Column {
         Row(
@@ -81,9 +82,10 @@ fun TopItem(
             }
         }
 
+        AttachedProgressBar(isLoading = isLoading)
+
         ConnectivityStatus()
     }
-
 }
 
 @Preview(showBackground = true)

@@ -47,10 +47,9 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     private fun initDebounceSearcher() {
-
         viewModelScope.launch {
             inputSharedFlow.debounce(3000).collectLatest {
-                fetchCities(it)
+                if (it.isNotBlank()) fetchCities(it)
             }
         }
     }
@@ -70,7 +69,7 @@ class ChooseCityViewModel @Inject constructor(
                     setLoadingState()
                 }
                 is NetworkResult.Error -> {
-                    setErrorState(input)
+                    setErrorState(networkResult.message)
                 }
                 is NetworkResult.Success -> {
                     val cityList = networkResult.data?.map {
@@ -83,7 +82,7 @@ class ChooseCityViewModel @Inject constructor(
                         )
                     }
                     if (cityList.isNullOrEmpty()) {
-                        setErrorState(input)
+                        setErrorState(input, "No results found")
                     } else {
                         screenState =
                             screenState.copy(isLoading = false, data = cityList, message = null)
@@ -116,11 +115,11 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    private fun setErrorState(input: String?) {
+    private fun setErrorState(input: String?, errorText: String? = null) {
         screenState = screenState.copy(
             isLoading = false,
             data = emptyList(),
-            message = (if (input.isNullOrBlank()) "Enter city name" else "Error")
+            message = (errorText ?: if (input.isNullOrBlank()) "Enter city name" else "Error")
         )
     }
 

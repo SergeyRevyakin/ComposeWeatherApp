@@ -35,7 +35,6 @@ fun CityRow(
             fontSize = 20.sp,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 8.dp)
         )
         Box(
             modifier = Modifier

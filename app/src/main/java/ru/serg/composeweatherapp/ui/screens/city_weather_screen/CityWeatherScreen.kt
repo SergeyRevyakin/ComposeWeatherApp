@@ -1,11 +1,9 @@
 package ru.serg.composeweatherapp.ui.screens.city_weather_screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.*
-import androidx.compose.animation.fadeIn
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,20 +15,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
+import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.screens.ScreenState
@@ -44,8 +39,6 @@ fun CityWeatherScreen(
     viewModel: CityWeatherViewModel = hiltViewModel()
 ) {
 
-//    viewModel.initialize(cityItem)
-
     val screenState by viewModel.uiState.collectAsState()
 
     Column(
@@ -56,19 +49,12 @@ fun CityWeatherScreen(
             header = "Current weather in",
             leftIconImageVector = Icons.Rounded.ArrowBack,
             onLeftIconClick = { navController.navigateUp() },
+            isLoading = screenState is ScreenState.Loading
         )
 
-
-        AnimatedVisibility(
-            visible = screenState is ScreenState.Loading,//viewModel.localWeatherItem.value is NetworkResult.Loading,
-            enter = fadeIn(
-                animationSpec = tween(500)
-            ),
-            exit = fadeOut(
-                animationSpec = tween(300)
-            )
-        ) {
-            LoadingScreen()
+        AnimatedVisibility(visible = screenState is ScreenState.Error) {
+            val errorText = (screenState as? ScreenState.Error)?.message
+            ErrorItem(errorText = errorText)
         }
 
         AnimatedVisibility(
@@ -89,40 +75,6 @@ fun CityWeatherScreen(
         }
 
 
-    }
-}
-
-@Composable
-fun LoadingScreen() {
-    var currentRotation by remember {
-        mutableStateOf(0f)
-    }
-
-    val rotation = remember {
-        Animatable(currentRotation)
-    }
-
-    LaunchedEffect(true) {
-        rotation.animateTo(
-            targetValue = currentRotation + 360f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(3000, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            )
-        ) {
-            currentRotation = value
-        }
-    }
-
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_sun),
-            contentDescription = "Logo",
-            modifier = Modifier
-                .fillMaxSize(0.4f)
-                .align(Alignment.Center)
-                .rotate(rotation.value)
-        )
     }
 }
 
