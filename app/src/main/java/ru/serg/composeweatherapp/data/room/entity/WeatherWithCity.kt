@@ -10,5 +10,5 @@ data class WeatherWithCity(
         parentColumn = "cityName",
         entityColumn = "cityName",
     )
-    val cityEntity: CityEntity
+    val cityEntity: CityEntity?
 )

@@ -3,6 +3,7 @@ package ru.serg.composeweatherapp.data.data_source
 import io.ktor.util.date.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
@@ -54,6 +55,15 @@ class LocalDataSource @Inject constructor(
         cityHistorySearchDao.deleteCityFromHistory(
             cityItem.toCityEntity()
         )
+        weatherDao.getWeatherWithCity().map {
+            it.filter {
+                it.cityEntity?.cityName == cityItem.name
+            }
+        }.collect {
+            it.forEach {
+                weatherDao.deleteWeatherEntity(it.weatherItemEntity)
+            }
+        }
     }
 
     suspend fun getCurrentWeatherItem(): Flow<List<WeatherItem>> {
@@ -71,11 +81,11 @@ class LocalDataSource @Inject constructor(
                         weatherIcon = it.weatherItemEntity.weatherIcon,
                         dateTime = it.weatherItemEntity.dateTime,
                         cityItem = CityItem(
-                            it.cityEntity.cityName,
-                            it.cityEntity.country,
-                            it.cityEntity.latitude ?: 0.0,
-                            it.cityEntity.longitude ?: 0.0,
-                            it.cityEntity.isFavorite
+                            it.cityEntity?.cityName.orEmpty(),
+                            it.cityEntity?.country,
+                            it.cityEntity?.latitude ?: 0.0,
+                            it.cityEntity?.longitude ?: 0.0,
+                            it.cityEntity?.isFavorite ?: false
                         ),
                         lastUpdatedTime = it.weatherItemEntity.lastUpdatedTime,
                         hourlyWeatherList = it.weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->

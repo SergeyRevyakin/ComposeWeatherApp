@@ -14,6 +14,9 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveWeatherEntity(weatherItemEntity: WeatherItemEntity)
 
+    @Delete
+    suspend fun deleteWeatherEntity(weatherItemEntity: WeatherItemEntity)
+
     @Transaction
     @Query("SELECT * FROM WEATHERITEMENTITY")
     fun getWeatherWithCity(): Flow<List<WeatherWithCity>>
