@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.ui.screens.main_screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.screens.pager.PagerScreen
 
@@ -36,15 +38,22 @@ fun MainScreen(
             onRightIconClick = navigateToSettings
         )
 
-        HorizontalPager(
-            count = viewModel.citiesList.value.size,
-            state = rememberPagerState(),
-            modifier = Modifier.fillMaxWidth()
-        ) { page ->
-            PagerScreen(
-                cityItem = viewModel.citiesList.value[page],
-                currentPage == page //To prevent preload of next page
-            )
+        AnimatedVisibility(visible = viewModel.citiesList.value.isEmpty()) {
+            NoCitiesMainScreenItem()
+        }
+
+        AnimatedVisibility(visible = viewModel.citiesList.value.isNotEmpty()) {
+
+            HorizontalPager(
+                count = viewModel.citiesList.value.size,
+                state = rememberPagerState(),
+                modifier = Modifier.fillMaxWidth()
+            ) { page ->
+                PagerScreen(
+                    cityItem = viewModel.citiesList.value[page],
+                    currentPage == page //To prevent preload of next page
+                )
+            }
         }
     }
 

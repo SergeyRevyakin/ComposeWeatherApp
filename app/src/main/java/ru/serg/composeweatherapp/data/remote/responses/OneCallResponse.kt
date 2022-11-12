@@ -13,7 +13,8 @@ data class OneCallResponse(
     val lon: Double?,
     val timezone: String?,
     @SerialName("timezone_offset")
-    val timezoneOffset: Int?
+    val timezoneOffset: Int?,
+    val message: String?,
 ) {
     @Serializable
     data class Current(

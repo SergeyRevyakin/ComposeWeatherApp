@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class NetworkResult<T>(
     val data: T? = null,
-    val message: String? = null
+    var message: String? = null
 ) {
 
     class Success<T>(data: T) : NetworkResult<T>(data)

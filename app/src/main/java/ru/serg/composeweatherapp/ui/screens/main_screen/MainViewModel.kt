@@ -17,17 +17,10 @@ class MainViewModel @Inject constructor(
 
     val citiesList = mutableStateOf(emptyList<CityItem?>())
 
-    init {
-        fillCitiesList()
-    }
-
-    private fun fillCitiesList() {
+    fun fillCitiesList(hasLocationPermission: Boolean) {
         viewModelScope.launch {
             localDataSource.getCityHistorySearchDao().collectLatest { items ->
-                val hasFavorite = items.findLast {
-                    it.isFavorite
-                } != null
-                if (hasFavorite) {
+                if (!hasLocationPermission) {
                     citiesList.value = items
                 } else {
                     val resultList = listOf(null) + items

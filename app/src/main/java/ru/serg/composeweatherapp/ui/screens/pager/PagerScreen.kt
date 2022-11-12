@@ -25,13 +25,15 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.elements.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.HourlyWeatherItem
 import ru.serg.composeweatherapp.ui.elements.TodayWeatherCardItem
+import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
+import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
-import ru.serg.composeweatherapp.utils.NetworkResult
 
 
 @Composable
@@ -45,12 +47,13 @@ fun PagerScreen(
         ru.serg.composeweatherapp.utils.hiltViewModel(key = cityItem?.name)
 
     if (startLoading) {
-
         viewModel.initialize(cityItem)
     }
 
+    val uiState by viewModel.uiState.collectAsState()
+
     AnimatedVisibility(
-        visible = viewModel.localWeatherItem.value is NetworkResult.Loading,
+        visible = uiState is ScreenState.Loading,
         enter = fadeIn(
             animationSpec = tween(500)
         ),
@@ -61,8 +64,13 @@ fun PagerScreen(
         LoadingScreen()
     }
 
+    AnimatedVisibility(visible = uiState is ScreenState.Error) {
+        val errorText = (uiState as? ScreenState.Error)?.message
+        ErrorItem(errorText = errorText)
+    }
+
     AnimatedVisibility(
-        visible = viewModel.localWeatherItem.value is NetworkResult.Success,
+        visible = uiState is ScreenState.Success<*>,
         enter = slideInVertically(
             initialOffsetY = { 1500 },
             animationSpec = tween(500)
@@ -124,9 +132,13 @@ fun ContentScreen(
 ) {
     val hourlyWeatherListState = rememberLazyListState()
 
-    val city = viewModel.localWeatherItem.value.data?.cityItem?.name.orEmpty()
+    val uiState by viewModel.uiState.collectAsState()
 
-    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.localWeatherItem.value is NetworkResult.Loading),
+    val weatherItem = (uiState as? ScreenState.Success<*>)?.data as? WeatherItem
+
+    val city = weatherItem?.cityItem?.name ?: cityItem?.name.orEmpty()
+
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = uiState is ScreenState.Loading),
         onRefresh = {
             viewModel.initialize(cityItem)
         }) {
@@ -148,20 +160,18 @@ fun ContentScreen(
                 textAlign = TextAlign.Center
             )
 
-            val weatherItemState = viewModel.localWeatherItem.value.data
-
-            weatherItemState?.let {
+            weatherItem?.let {
                 TodayWeatherCardItem(
-                    weatherIcon = weatherItemState.weatherIcon,
-                    weatherDesc = weatherItemState.weatherDescription.orEmpty(),
-                    currentTemp = weatherItemState.currentTemp?.toInt(),
-                    feelsLikeTemp = weatherItemState.feelsLike?.toInt()
+                    weatherIcon = weatherItem.weatherIcon,
+                    weatherDesc = weatherItem.weatherDescription.orEmpty(),
+                    currentTemp = weatherItem.currentTemp?.toInt(),
+                    feelsLikeTemp = weatherItem.feelsLike?.toInt()
                         ?: 0,
-                    windDirection = weatherItemState.windDirection,
-                    windSpeed = weatherItemState.windSpeed?.toInt(),
-                    humidity = weatherItemState.humidity ?: 0,
-                    pressure = weatherItemState.pressure ?: 0,
-                    timestamp = weatherItemState.lastUpdatedTime
+                    windDirection = weatherItem.windDirection,
+                    windSpeed = weatherItem.windSpeed?.toInt(),
+                    humidity = weatherItem.humidity ?: 0,
+                    pressure = weatherItem.pressure ?: 0,
+                    timestamp = weatherItem.lastUpdatedTime
                 )
             }
 
@@ -177,7 +187,7 @@ fun ContentScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 state = hourlyWeatherListState,
             ) {
-                val list = viewModel.localWeatherItem.value.data?.hourlyWeatherList ?: listOf()
+                val list = weatherItem?.hourlyWeatherList ?: listOf()
                 items(list) {
                     HourlyWeatherItem(item = it)
                 }
@@ -197,7 +207,7 @@ fun ContentScreen(
                     .padding(horizontal = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val list = viewModel.localWeatherItem.value.data?.dailyWeatherList ?: listOf()
+                val list = weatherItem?.dailyWeatherList ?: listOf()
                 list.forEach { daily ->
 
                     var isDailyItemOpen by remember {
@@ -213,11 +223,8 @@ fun ContentScreen(
                             isDailyItemOpen = !isDailyItemOpen
                         }
                     }
-
-
                 }
             }
-
             Spacer(modifier = Modifier.height(32.dp))
         }
     }

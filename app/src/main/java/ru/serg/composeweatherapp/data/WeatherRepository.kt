@@ -104,7 +104,7 @@ class WeatherRepository @Inject constructor(
                 NetworkResult.Loading()
             }
             (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
-                NetworkResult.Error("")
+                NetworkResult.Error(weatherResponse.data?.message ?: oneCallResponse.data?.message)
             }
             (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
                 val cityItem = CityItem(
@@ -190,7 +190,9 @@ class WeatherRepository @Inject constructor(
                     NetworkResult.Loading()
                 }
                 (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
-                    NetworkResult.Error("")
+                    NetworkResult.Error(
+                        weatherResponse.data?.message ?: oneCallResponse.data?.message
+                    )
                 }
                 (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
 

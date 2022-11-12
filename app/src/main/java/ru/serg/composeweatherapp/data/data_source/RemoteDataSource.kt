@@ -31,7 +31,7 @@ class RemoteDataSource @Inject constructor(
                     if (it.status.value == 200) {
                         emit(NetworkResult.Success(it.body()))
                     } else {
-                        emit(NetworkResult.Error("ERROR"))
+                        emit(NetworkResult.Error(data = it.body(), message = ""))
                     }
                 }
             } catch (e: Exception) {
@@ -52,7 +52,7 @@ class RemoteDataSource @Inject constructor(
                     if (it.status.value == 200) {
                         emit(NetworkResult.Success(it.body()))
                     } else {
-                        emit(NetworkResult.Error("ERROR"))
+                        emit(NetworkResult.Error(data = it.body(), message = ""))
                     }
                 }
             } catch (e: Exception) {
@@ -72,7 +72,7 @@ class RemoteDataSource @Inject constructor(
                     if (it.status.value == 200) {
                         emit(NetworkResult.Success(it.body()))
                     } else {
-                        emit(NetworkResult.Error("ERROR"))
+                        emit(NetworkResult.Error(data = it.body(), message = ""))
                     }
                 }
             } catch (e: Exception) {

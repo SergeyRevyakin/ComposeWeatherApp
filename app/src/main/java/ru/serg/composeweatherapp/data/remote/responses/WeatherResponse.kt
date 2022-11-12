@@ -33,6 +33,7 @@ data class WeatherResponse(
     val weather: List<Weather?>?,
     @SerialName("wind")
     val wind: Wind?,
+    val message: String?,
     val timeStampUpdate: Long = getTimeMillis()
 ) {
     @Serializable

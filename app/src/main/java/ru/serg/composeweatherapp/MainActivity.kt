@@ -36,13 +36,13 @@ class MainActivity : ComponentActivity() {
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                startMainScreen()
+                startMainScreen(true)
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                startMainScreen()
+                startMainScreen(true)
             }
             else -> {
-                startMainScreen()
+                startMainScreen(false)
             }
         }
     }
@@ -71,7 +71,8 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun startMainScreen() {
+    private fun startMainScreen(hasLocationPermission: Boolean) {
+        viewModel.fillCitiesList(hasLocationPermission)
         val isDarkTheme = mutableStateOf(true)
         lifecycleScope.launch {
             dataStoreDataSource.isDarkThemeEnabled.collectLatest {

@@ -12,5 +12,6 @@ data class CityNameGeocodingResponseItem(
     val localNames: Map<String, String>? = mapOf(),
     val lon: Double?,
     val name: String?,
-    val state: String?
+    val state: String?,
+    val message: String?,
 )
