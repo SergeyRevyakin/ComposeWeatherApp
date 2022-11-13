@@ -53,7 +53,7 @@ class WeatherRepository @Inject constructor(
             } else {
                 flowOf(
                     NetworkResult.Error(
-                        message = null,
+                        message = "No Internet Connection",
                         errorTextResource = R.string.no_connection
                     )
                 )
@@ -88,7 +88,7 @@ class WeatherRepository @Inject constructor(
             } else {
                 flowOf(
                     NetworkResult.Error(
-                        message = null,
+                        message = "No Internet Connection",
                         errorTextResource = R.string.no_connection
                     )
                 )
@@ -104,7 +104,9 @@ class WeatherRepository @Inject constructor(
                 NetworkResult.Loading()
             }
             (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
-                NetworkResult.Error(weatherResponse.data?.message ?: oneCallResponse.data?.message)
+                NetworkResult.Error(
+                    weatherResponse.data?.message ?: oneCallResponse.data?.message
+                )
             }
             (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
                 val cityItem = CityItem(
@@ -119,7 +121,7 @@ class WeatherRepository @Inject constructor(
                     HourWeatherItem(
                         weatherIcon = IconMapper.map(it?.weather?.first()?.id),
                         currentTemp = it?.feelsLike ?: 0.0,
-                        timestamp = (it?.dt ?: 0) * 1000
+                        timestamp = (it?.dt ?: 0) * 1000L
                     )
                 } ?: listOf()
 

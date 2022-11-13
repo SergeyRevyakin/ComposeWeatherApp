@@ -88,28 +88,37 @@ fun ChooseCityScreen(
 //                )
 //            }
 //        }
-        Text(
-            text = "Favourite cities",
-            style = MaterialTheme.typography.headerStyle,
-            modifier = Modifier
-                .headerModifier()
-        )
+        AnimatedVisibility(visible = viewModel.searchHistoryItems.isNotEmpty()) {
 
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            state = rememberLazyListState()
-        ) {
-            items(viewModel.searchHistoryItems) {
-                CitySearchItem(
-                    cityItem = it,
-                    onDelete = viewModel::onDeleteClick,
-                    onItemClick = { cityItem ->
-                        navController.navigate(
-                            "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(cityItem)}"
+            Column() {
+                Text(
+                    text = "Favourite cities",
+                    style = MaterialTheme.typography.headerStyle,
+                    modifier = Modifier
+                        .headerModifier()
+                )
+
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    state = rememberLazyListState()
+                ) {
+                    items(viewModel.searchHistoryItems) {
+                        CitySearchItem(
+                            cityItem = it,
+                            onDelete = viewModel::onDeleteClick,
+                            onItemClick = { cityItem ->
+                                navController.navigate(
+                                    "${ScreenNames.CITY_WEATHER_SCREEN}/${
+                                        Json.encodeToString(
+                                            cityItem
+                                        )
+                                    }"
+                                )
+                            }
                         )
                     }
-                )
+                }
             }
         }
 

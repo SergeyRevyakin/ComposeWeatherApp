@@ -1,6 +1,11 @@
 package ru.serg.composeweatherapp.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Looper
+import android.provider.Settings
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -11,23 +16,35 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import io.ktor.util.date.*
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.IntraDayTempItem
 import ru.serg.composeweatherapp.data.room.entity.CityEntity
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
 object Ext {
 
     fun getHour(l: Long?): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
+
+    fun getTimeWithSeconds(l: Long?): String =
+        SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format((l ?: 0L))
 
     fun getHourWithNow(l: Long?): String {
         return if (((l ?: 0)) - getTimeMillis() < 60L * 1000L) "NOW"
@@ -162,5 +179,48 @@ object Ext {
             this.minus(other).absoluteValue < 0.001 -> true
             else -> false
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    suspend fun FusedLocationProviderClient.locationFlow(): Flow<CoordinatesWrapper> =
+        callbackFlow {
+            val locationRequest = LocationRequest.create().apply {
+                interval = TimeUnit.SECONDS.toMillis(15_000)
+                fastestInterval = TimeUnit.SECONDS.toMillis(1_000)
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+            val callBack = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    val location = locationResult.lastLocation
+                    val userLocation = CoordinatesWrapper(
+                        latitude = location?.latitude ?: 0.0,
+                        longitude = location?.longitude ?: 0.0
+                    )
+                    try {
+                        this@callbackFlow.trySend(userLocation).isSuccess
+                        removeLocationUpdates(this)
+                    } catch (_: Exception) {
+                    }
+                }
+            }
+
+            requestLocationUpdates(
+                locationRequest,
+                callBack,
+                Looper.getMainLooper()
+            ).addOnFailureListener { e ->
+                close(e)
+            }
+            awaitClose {
+                removeLocationUpdates(callBack)
+            }
+        }
+
+    fun Context.openAppSystemSettings() {
+        startActivity(Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
     }
 }

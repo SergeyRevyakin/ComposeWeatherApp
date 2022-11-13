@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.util.date.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
+import ru.serg.composeweatherapp.utils.Ext.locationFlow
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
@@ -26,9 +27,6 @@ class PagerViewModel @Inject constructor(
 
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
-    var localWeatherItem: MutableStateFlow<NetworkResult<WeatherItem>> =
-        MutableStateFlow(NetworkResult.Error(null))
 
     var uiState: StateFlow<ScreenState> = MutableStateFlow(ScreenState.Empty)
 
@@ -46,49 +44,43 @@ class PagerViewModel @Inject constructor(
     }
 
     private suspend fun checkLastUpdate(city: CityItem?) {
-//        if (dateUtils.isFetchDateExpired(localWeatherItem.value.data?.lastUpdatedTime ?: 0L)) {
+        if (dateUtils.isFetchDateExpired(((uiState.value as ScreenState.Success<*>).data as WeatherItem).lastUpdatedTime)) {
             fetchWeather(city)
-//        }
+        }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("MissingPermission")
     private suspend fun fetchWeather(city: CityItem?) {
         if (city == null) {
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                viewModelScope.launch {
-                    uiState = weatherRepository.fetchCurrentLocationWeather(
-                        CoordinatesWrapper(
-                            it.latitude,
-                            it.longitude
-                        )
+            uiState =
+                fusedLocationProviderClient.locationFlow().flatMapLatest { coordinatesWrapper ->
+                    weatherRepository.fetchCurrentLocationWeather(
+                        coordinatesWrapper
                     ).map { networkResult ->
                         when (networkResult) {
                             is NetworkResult.Loading -> ScreenState.Loading
                             is NetworkResult.Error -> ScreenState.Error(networkResult.message)
                             is NetworkResult.Success -> ScreenState.Success(networkResult.data)
                         }
-                    }.stateIn(
-                        scope = viewModelScope,
-                        initialValue = ScreenState.Empty,
-                        started = SharingStarted.WhileSubscribed(5_000)
-                    )
-                }
-            }
-        } else {
-            viewModelScope.launch {
-                uiState = weatherRepository.fetchCityWeather(city).map { networkResult ->
-                    when (networkResult) {
-                        is NetworkResult.Loading -> ScreenState.Loading
-                        is NetworkResult.Error -> ScreenState.Error(networkResult.message)
-                        is NetworkResult.Success -> ScreenState.Success(networkResult.data)
                     }
                 }.stateIn(
                     scope = viewModelScope,
                     initialValue = ScreenState.Empty,
                     started = SharingStarted.WhileSubscribed(5_000)
                 )
-            }
+        } else {
+            uiState = weatherRepository.fetchCityWeather(city).map { networkResult ->
+                when (networkResult) {
+                    is NetworkResult.Loading -> ScreenState.Loading
+                    is NetworkResult.Error -> ScreenState.Error(networkResult.message)
+                    is NetworkResult.Success -> ScreenState.Success(networkResult.data)
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                initialValue = ScreenState.Empty,
+                started = SharingStarted.WhileSubscribed(5_000)
+            )
         }
-
     }
 }

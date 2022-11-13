@@ -13,7 +13,7 @@ import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
 @TypeConverters(value = [WeatherTypeConverters::class])
 @Database(
     entities = [WeatherUnit::class, LastLocationEntity::class, CityEntity::class, WeatherItemEntity::class],
-    version = 11
+    version = 15
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherUnitsDao(): WeatherDao
