@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.Ext.locationFlow
@@ -36,7 +35,7 @@ class PagerViewModel @Inject constructor(
             if (uiState.value is ScreenState.Empty) {
                 fetchWeather(city)
             } else {
-                if (uiState.value is ScreenState.Success<*>) {
+                if (uiState.value is ScreenState.Success) {
                     checkLastUpdate(city)
                 }
             }
@@ -44,7 +43,7 @@ class PagerViewModel @Inject constructor(
     }
 
     private suspend fun checkLastUpdate(city: CityItem?) {
-        if (dateUtils.isFetchDateExpired(((uiState.value as ScreenState.Success<*>).data as WeatherItem).lastUpdatedTime)) {
+        if (dateUtils.isFetchDateExpired((uiState.value as ScreenState.Success).weatherItem.lastUpdatedTime)) {
             fetchWeather(city)
         }
     }

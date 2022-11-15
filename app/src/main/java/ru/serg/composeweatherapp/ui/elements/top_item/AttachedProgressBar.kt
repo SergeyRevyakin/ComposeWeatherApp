@@ -30,7 +30,7 @@ fun AttachedProgressBar(
             Divider(
                 color = MaterialTheme.colors.primary,
                 thickness = 1.dp,
-                modifier = Modifier.padding(bottom = 3.dp)
+                modifier = Modifier.padding(top = 3.dp)
             )
         }
 

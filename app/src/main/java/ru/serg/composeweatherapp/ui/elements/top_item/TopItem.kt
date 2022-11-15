@@ -30,18 +30,19 @@ fun TopItem(
     Column {
         Row(
             modifier = Modifier
+                .height(60.dp)
                 .fillMaxWidth()
-                .padding(top = 24.dp, bottom = 8.dp)
-                .padding(horizontal = 8.dp),
+                .padding(top = 8.dp, bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 Modifier
-                    .size(48.dp)
                     .clip(CircleShape)
                     .clickable {
                         onLeftIconClick?.invoke()
-                    },
+                    }
+                    .padding(start = 16.dp, end = 24.dp)
+                    .size(48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -65,11 +66,12 @@ fun TopItem(
 
             Column(
                 Modifier
-                    .size(48.dp)
                     .clip(CircleShape)
                     .clickable {
                         onRightIconClick?.invoke()
-                    },
+                    }
+                    .padding(start = 24.dp, end = 16.dp)
+                    .size(48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
