@@ -30,7 +30,11 @@ class CityWeatherViewModel @Inject constructor(
                         when (networkResult) {
                             is NetworkResult.Loading -> ScreenState.Loading
                             is NetworkResult.Error -> ScreenState.Error(networkResult.message)
-                            is NetworkResult.Success -> ScreenState.Success(networkResult.data)
+                            is NetworkResult.Success -> networkResult.data?.let {
+                                ScreenState.Success(
+                                    it
+                                )
+                            } ?: ScreenState.Error("Can't recognise data")
                         }
                     }.stateIn(
                         scope = viewModelScope,
