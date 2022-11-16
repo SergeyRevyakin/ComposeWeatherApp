@@ -6,14 +6,14 @@ import androidx.work.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.ktor.util.date.*
+import kotlinx.coroutines.flow.first
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
-import ru.serg.composeweatherapp.data.room.WeatherUnit
+import ru.serg.composeweatherapp.utils.Ext
 import ru.serg.composeweatherapp.utils.Ext.showNotification
-import java.time.LocalDateTime
+import ru.serg.composeweatherapp.utils.NetworkResult
 import java.util.concurrent.TimeUnit
 
 @HiltWorker
@@ -29,6 +29,7 @@ class WeatherWorker @AssistedInject constructor(
     companion object {
 
         private val uniqueWorkName = WeatherWorker::class.java.simpleName
+        private val workerTag = "weather_worker_tag"
 
         fun enqueue(context: Context, force: Boolean = false) {
             val manager = WorkManager.getInstance(context)
@@ -42,9 +43,6 @@ class WeatherWorker @AssistedInject constructor(
                 .setRequiresBatteryNotLow(true)
                 .build()
 
-            // Replace any enqueued work and expedite the request
-
-
             manager.enqueueUniqueWork(
                 uniqueWorkName,
                 workPolicy,
@@ -54,7 +52,7 @@ class WeatherWorker @AssistedInject constructor(
 
         fun setupPeriodicWork(context: Context) {
 
-            if (WorkManager.getInstance(context).getWorkInfosByTag("TAG").get().isEmpty()) {
+            if (WorkManager.getInstance(context).getWorkInfosByTag(workerTag).get().isEmpty()) {
 
                 val constraints = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -62,14 +60,14 @@ class WeatherWorker @AssistedInject constructor(
 
                 val repeatingWork =
                     PeriodicWorkRequestBuilder<WeatherWorker>(15, TimeUnit.MINUTES)
-                        .addTag("TAG")
+                        .addTag(workerTag)
                         .setInitialDelay(3, TimeUnit.MINUTES)
                         .setConstraints(constraints)
                         .build()
 
 
                 WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                    "W",
+                    uniqueWorkName,
                     ExistingPeriodicWorkPolicy.KEEP,
                     repeatingWork
                 )
@@ -80,34 +78,26 @@ class WeatherWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-//
-////            CoroutineScope(Dispatchers.IO).launch {
-//                localRepository.saveInDatabase(WeatherUnit(name = "WORKER_STARTED ${LocalDateTime.now()}"))
-//
-////                localRepository.getLastSavedLocation().let {
-//                    workerUseCase.fetchWeather().collectLatest { temp ->
-//                        showNotification(
-//                            applicationContext,
-//                            "Success",
-//                            "${LocalDateTime.now()} Temp: $temp"
-//                        )
-//                        Result.success()
-//                    }
-////                    Result.success()
-////                }
-////            }
 
-            //TODO Get current location
+            val r = workerUseCase.fetchFavouriteCity().first { networkResult ->
+                networkResult is NetworkResult.Success
+            }.data
+
+            r.let { data ->
+                showNotification(
+                    applicationContext,
+                    "Current weather in ${data?.cityItem?.name}",
+                    "${Ext.getHour(getTimeMillis())} temp: ${data?.feelsLike}"
+                )
+            }
+            Result.success()
+
+        } catch (e: Exception) {
             showNotification(
                 applicationContext,
-                "Success",
-                "${LocalDateTime.now()}"
+                "Worker failed",
+                e.message + Ext.getHour(getTimeMillis())
             )
-            Result.success()
-        } catch (e: Exception) {
-            withContext(Dispatchers.IO) {
-                localDataSource.saveInDatabase(WeatherUnit(name = "FAILED"))
-            }
             Result.failure()
         }
     }

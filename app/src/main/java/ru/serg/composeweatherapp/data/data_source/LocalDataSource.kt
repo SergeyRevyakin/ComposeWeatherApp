@@ -34,13 +34,21 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun getCityHistorySearchDao(): Flow<List<CityItem>> {
-        return flow {
-            cityHistorySearchDao.getCitySearchHistory().collect { list ->
-                emit(list.map { entity ->
-                    entity.toCityItem()
-                }.filter {
-                    !it.isFavorite
-                })
+        return cityHistorySearchDao.getCitySearchHistory().map { list ->
+            list.map { entity ->
+                entity.toCityItem()
+            }.filter {
+                !it.isFavorite
+            }
+        }
+    }
+
+    fun getFavouriteCity(): Flow<CityItem> {
+        return cityHistorySearchDao.getCitySearchHistory().map { list ->
+            list.map { entity ->
+                entity.toCityItem()
+            }.first {
+                it.isFavorite
             }
         }
     }

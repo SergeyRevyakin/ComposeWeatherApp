@@ -14,7 +14,6 @@ class NetworkStatus(val context: Context) {
     fun observeConnectivityFlow() = context.observeConnectivityAsFlow()
 
     fun isNetworkConnected() = context.currentConnectionsState == ConnectionState.Available
-
 }
 
 sealed class ConnectionState {

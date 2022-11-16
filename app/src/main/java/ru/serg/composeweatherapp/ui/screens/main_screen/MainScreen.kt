@@ -17,7 +17,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.shouldShowRationale
 import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.screens.pager.PagerScreen
@@ -54,10 +53,6 @@ fun MainScreen(
         val context = LocalContext.current
 
         AnimatedVisibility(visible = viewModel.citiesList.value.isEmpty()) {
-
-            val expRationale = multiplePermissionState.permissions.map {
-                it.status.shouldShowRationale
-            }.contains(true)
 
             NoCitiesMainScreenItem(
                 onSearchClick = navigateToChooseCity,

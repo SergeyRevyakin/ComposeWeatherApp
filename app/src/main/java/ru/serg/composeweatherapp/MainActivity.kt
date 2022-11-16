@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        WeatherWorker.enqueue(applicationContext)
+        WeatherWorker.setupPeriodicWork(applicationContext)
 
         setContent {
             ComposeWeatherAppTheme(
