@@ -12,6 +12,7 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import ru.serg.composeweatherapp.BuildConfig
 import ru.serg.composeweatherapp.utils.Constants
@@ -19,6 +20,7 @@ import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
 
+@OptIn(ExperimentalSerializationApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
