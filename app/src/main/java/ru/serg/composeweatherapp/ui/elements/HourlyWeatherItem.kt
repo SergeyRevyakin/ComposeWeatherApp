@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import io.ktor.util.date.*
 import ru.serg.composeweatherapp.data.data.HourWeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.utils.Ext.getHourWithNow
+import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNow
 import ru.serg.composeweatherapp.utils.Ext.getTemp
 
 @Composable

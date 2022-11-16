@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.first
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
-import ru.serg.composeweatherapp.utils.Ext
+import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.Ext.showNotification
 import ru.serg.composeweatherapp.utils.NetworkResult
 import java.util.concurrent.TimeUnit
@@ -29,7 +29,7 @@ class WeatherWorker @AssistedInject constructor(
     companion object {
 
         private val uniqueWorkName = WeatherWorker::class.java.simpleName
-        private val workerTag = "weather_worker_tag"
+        private const val workerTag = "weather_worker_tag"
 
         fun enqueue(context: Context, force: Boolean = false) {
             val manager = WorkManager.getInstance(context)
@@ -87,7 +87,7 @@ class WeatherWorker @AssistedInject constructor(
                 showNotification(
                     applicationContext,
                     "Current weather in ${data?.cityItem?.name}",
-                    "${Ext.getHour(getTimeMillis())} temp: ${data?.feelsLike}"
+                    "${getHour(getTimeMillis())} temp: ${data?.feelsLike}"
                 )
             }
             Result.success()
@@ -96,7 +96,7 @@ class WeatherWorker @AssistedInject constructor(
             showNotification(
                 applicationContext,
                 "Worker failed",
-                e.message + Ext.getHour(getTimeMillis())
+                e.message + getHour(getTimeMillis())
             )
             Result.failure()
         }

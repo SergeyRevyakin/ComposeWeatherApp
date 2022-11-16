@@ -8,7 +8,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import dagger.assisted.Assisted
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -17,7 +16,7 @@ import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.utils.Ext.hasLocationPermission
 
 class LocationServiceImpl(
-    @Assisted val appContext: Context,
+    private val appContext: Context,
     private val client: FusedLocationProviderClient
 ) : LocationService {
 

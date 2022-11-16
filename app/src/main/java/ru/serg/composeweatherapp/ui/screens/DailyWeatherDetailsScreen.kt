@@ -21,6 +21,8 @@ import ru.serg.composeweatherapp.data.data.DayWeatherItem
 import ru.serg.composeweatherapp.data.data.IntraDayTempItem
 import ru.serg.composeweatherapp.ui.elements.WeatherParamRowItem
 import ru.serg.composeweatherapp.ui.theme.*
+import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
+import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.Ext
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -49,7 +51,7 @@ fun DailyWeatherDetailsScreen(
         ) {
             Column {
                 Text(
-                    text = Ext.getFullDate(daily.dateTime),
+                    text = getFullDate(daily.dateTime),
                     style = MaterialTheme.typography.headerStyle,
                     modifier = Modifier
                         .headerModifier()
@@ -90,17 +92,15 @@ fun DailyWeatherDetailsScreen(
                             .padding(start = 8.dp, end = 16.dp)
                     ) {
                         Text(
-                            text = "Sunrise: ${Ext.getHour(daily.sunrise)}",
+                            text = "Sunrise: ${getHour(daily.sunrise)}",
                         )
 
                         Text(
-                            text = "Sunrise: ${Ext.getHour(daily.sunset)}",
+                            text = "Sunrise: ${getHour(daily.sunset)}",
                         )
                     }
 
                 }
-
-//                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -113,8 +113,6 @@ fun DailyWeatherDetailsScreen(
                         contentDescription = "weather icon",
                         modifier = Modifier
                             .size(72.dp)
-//                            .padding(start = 8.dp)
-//                            .padding(8.dp)
                     )
 
 

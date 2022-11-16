@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
 import ru.serg.composeweatherapp.utils.Ext
 import ru.serg.composeweatherapp.utils.Ext.firstLetterToUpperCase
 
@@ -148,7 +149,7 @@ fun TodayWeatherCardItem(
             )
 
             Text(
-                text = "Last updated: ${Ext.getFormattedLastUpdateDate(timestamp ?: 0L)}",
+                text = "Last updated: ${getFormattedLastUpdateDate(timestamp ?: 0L)}",
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .fillMaxWidth()

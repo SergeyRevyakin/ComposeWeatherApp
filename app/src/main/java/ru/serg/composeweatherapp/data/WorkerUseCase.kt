@@ -8,7 +8,7 @@ import ru.serg.composeweatherapp.data.data.*
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.room.WeatherUnit
-import ru.serg.composeweatherapp.utils.Ext
+import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
@@ -104,7 +104,7 @@ class WorkerUseCase @Inject constructor(
                 localDataSource.saveInDatabase(
                     WeatherUnit(
                         name = "USE_CASE_EXECUTED ${
-                            Ext.getHour(
+                            DateUtils.getHour(
                                 getTimeMillis()
                             )
                         }"

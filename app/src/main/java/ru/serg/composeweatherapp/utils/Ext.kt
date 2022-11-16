@@ -8,11 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Looper
 import android.provider.Settings
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -27,112 +22,16 @@ import io.ktor.util.date.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.IntraDayTempItem
 import ru.serg.composeweatherapp.data.room.entity.CityEntity
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.TextStyle
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
 object Ext {
-
-    fun getHour(l: Long?): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
-
-    fun getTimeWithSeconds(l: Long?): String =
-        SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format((l ?: 0L))
-
-    fun getHourWithNow(l: Long?): String {
-        return if (((l ?: 0)) - getTimeMillis() < 60L * 1000L) "NOW"
-        else SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
-    }
-
-    fun getFormattedLastUpdateDate(timestamp: Long): String {
-        val time = Instant.fromEpochMilliseconds(timestamp)
-        val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
-        return when {
-            (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> "Today ${
-                SimpleDateFormat(
-                    "HH:mm",
-                    Locale.getDefault()
-                ).format(timestamp)
-            }"
-            (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> "Yesterday ${
-                SimpleDateFormat(
-                    "HH:mm",
-                    Locale.getDefault()
-                ).format(timestamp)
-            }"
-            else -> SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault()).format(timestamp)
-        }
-    }
-
-    fun getDate(timestamp: Long?): AnnotatedString {
-        return if (timestamp == null) buildAnnotatedString { append("") }
-        else {
-            val time = Instant.fromEpochMilliseconds(timestamp)
-            val local = time.toLocalDateTime(TimeZone.currentSystemDefault())
-            buildAnnotatedString {
-
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(
-                        "${
-                            local.dayOfWeek.getDisplayName(
-                                TextStyle.SHORT,
-                                Locale.getDefault()
-                            )
-                        }, "
-                    )
-                }
-
-                append(
-                    "${local.dayOfMonth} ${
-                        local.month.getDisplayName(
-                            TextStyle.SHORT,
-                            Locale.getDefault()
-                        )
-                    }"
-                )
-            }
-        }
-    }
-
-    fun getFullDate(timestamp: Long?): AnnotatedString {
-        return if (timestamp == null) buildAnnotatedString { append("") }
-        else {
-            val time = Instant.fromEpochMilliseconds(timestamp)
-            val local = time.toLocalDateTime(TimeZone.currentSystemDefault())
-            buildAnnotatedString {
-
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(
-                        "${
-                            local.dayOfWeek.getDisplayName(
-                                TextStyle.FULL_STANDALONE,
-                                Locale.getDefault()
-                            )
-                        }, "
-                    )
-                }
-
-                append(
-                    "${local.dayOfMonth} ${
-                        local.month.getDisplayName(
-                            TextStyle.SHORT,
-                            Locale.getDefault()
-                        )
-                    }"
-                )
-            }
-        }
-    }
 
     fun getMinMaxTemp(temp: IntraDayTempItem?): String {
         return "${temp?.nightTemp?.toInt()}-${temp?.dayTemp?.toInt()}℃"
