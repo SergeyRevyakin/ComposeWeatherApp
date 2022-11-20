@@ -6,13 +6,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.*
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.worker.WeatherWorker
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -20,6 +17,9 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
+//
+//    @Inject
+//    lateinit var appDatabase: AppDatabase
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -32,7 +32,9 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-//        doWork()
+//        applicationScope.launch {
+//            appDatabase.clearAllTables()
+//        }
     }
 
 

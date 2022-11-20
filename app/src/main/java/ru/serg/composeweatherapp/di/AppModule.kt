@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import javax.inject.Singleton
 
@@ -32,5 +33,12 @@ class AppModule {
     fun provideNetworkStatus(
         @ApplicationContext context: Context
     ): NetworkStatus = NetworkStatus(context)
+
+    @Singleton
+    @Provides
+    fun provideLocationService(
+        @ApplicationContext context: Context,
+        client: FusedLocationProviderClient
+    ): LocationServiceImpl = LocationServiceImpl(context, client)
 
 }

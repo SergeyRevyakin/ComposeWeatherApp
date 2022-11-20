@@ -20,6 +20,25 @@ class LocationServiceImpl(
     private val client: FusedLocationProviderClient
 ) : LocationService {
 
+    private var locationManager: LocationManager =
+        appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    override fun isLocationAvailable(): Boolean {
+        if (!appContext.hasLocationPermission()) {
+            return false
+        }
+
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        val isNetworkEnabled =
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            return false
+        }
+        return true
+    }
+
     @SuppressLint("MissingPermission")
     override fun getLocationUpdate(): Flow<CoordinatesWrapper> {
         return callbackFlow {
@@ -40,7 +59,7 @@ class LocationServiceImpl(
             }
 
             val request = LocationRequest.create()
-                .setInterval(15_000)
+                .setInterval(150_000)
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {

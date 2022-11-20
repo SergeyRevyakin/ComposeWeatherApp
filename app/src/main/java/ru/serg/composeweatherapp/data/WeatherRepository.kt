@@ -1,7 +1,10 @@
+@file:OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+
 package ru.serg.composeweatherapp.data
 
 import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.*
@@ -28,11 +31,9 @@ class WeatherRepository @Inject constructor(
     suspend fun fetchCityWeather(cityItem: CityItem): Flow<NetworkResult<WeatherItem>> =
         getLocalWeather(cityItem)
 
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun getLocalWeather(cityItem: CityItem): Flow<NetworkResult<WeatherItem>> =
-        localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
-            list.findLast {
+        localDataSource.getCurrentWeatherItem().flatMapConcat { list ->
+            list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
@@ -60,12 +61,11 @@ class WeatherRepository @Inject constructor(
             }
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun fetchWeather(
         latitude: Double,
         longitude: Double
     ): Flow<NetworkResult<WeatherItem>> =
-        localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
+        localDataSource.getCurrentWeatherItem().flatMapConcat { list ->
 
             list.find {
                 it.cityItem?.latitude isNearTo latitude &&
@@ -73,7 +73,7 @@ class WeatherRepository @Inject constructor(
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
-                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 1000L))) {
+                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 60L * 1000L))) {
                         flowOf(NetworkResult.Success(item))
                     } else {
                         if (networkStatus.isNetworkConnected()) {
@@ -170,8 +170,9 @@ class WeatherRepository @Inject constructor(
                     dailyWeatherList = dailyList,
                     hourlyWeatherList = hourlyList
                 )
-                localDataSource.saveWeather(weatherItem)
+
                 localDataSource.insertCityItemToHistorySearch(cityItem)
+                localDataSource.saveWeather(weatherItem)
                 NetworkResult.Success(weatherItem)
 
             }

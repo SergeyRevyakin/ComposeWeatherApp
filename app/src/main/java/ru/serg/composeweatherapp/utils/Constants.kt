@@ -12,7 +12,8 @@ object Constants {
 
     const val LAST_LOCATION = "LASTLOCATIONENTITY"
 
-    const val SEARCH_HISTORY = "CITYENTITY"
+    const val SEARCH_HISTORY = "city_search_history"
+    const val WEATHER_ITEMS = "weather_items"
 
     const val EMPTY_STRING = ""
 

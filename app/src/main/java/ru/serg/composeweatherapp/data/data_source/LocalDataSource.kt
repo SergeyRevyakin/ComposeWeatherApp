@@ -33,7 +33,7 @@ class LocalDataSource @Inject constructor(
         return CoordinatesWrapper(0.0, 0.0)
     }
 
-    suspend fun getCityHistorySearchDao(): Flow<List<CityItem>> {
+    fun getCityHistorySearchDao(): Flow<List<CityItem>> {
         return cityHistorySearchDao.getCitySearchHistory().map { list ->
             list.map { entity ->
                 entity.toCityItem()
@@ -60,18 +60,7 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun deleteCityItemToHistorySearch(cityItem: CityItem) {
-        cityHistorySearchDao.deleteCityFromHistory(
-            cityItem.toCityEntity()
-        )
-        weatherDao.getWeatherWithCity().map {
-            it.filter {
-                it.cityEntity?.cityName == cityItem.name
-            }
-        }.collect {
-            it.forEach {
-                weatherDao.deleteWeatherEntity(it.weatherItemEntity)
-            }
-        }
+        weatherDao.deleteWeatherWithCity(cityItem.name)
     }
 
     suspend fun getCurrentWeatherItem(): Flow<List<WeatherItem>> {

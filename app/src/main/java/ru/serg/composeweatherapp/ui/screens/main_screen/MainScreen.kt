@@ -47,12 +47,13 @@ fun MainScreen(
             leftIconImageVector = Icons.Rounded.Search,
             rightIconImageVector = Icons.Rounded.Settings,
             onLeftIconClick = navigateToChooseCity,
-            onRightIconClick = navigateToSettings
+            onRightIconClick = navigateToSettings,
+            isLoading = viewModel.isLoading.value
         )
 
         val context = LocalContext.current
 
-        AnimatedVisibility(visible = viewModel.citiesList.value.isEmpty()) {
+        AnimatedVisibility(visible = viewModel.citiesList.value.isEmpty() && !viewModel.isLoading.value) {
 
             NoCitiesMainScreenItem(
                 onSearchClick = navigateToChooseCity,
