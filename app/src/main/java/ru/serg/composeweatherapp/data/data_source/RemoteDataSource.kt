@@ -19,7 +19,7 @@ class RemoteDataSource @Inject constructor(
     @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient
 ) {
 
-    suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
+    suspend fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
@@ -38,9 +38,10 @@ class RemoteDataSource @Inject constructor(
                 emit(NetworkResult.Error(e.localizedMessage))
             }
         }
+        //.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getWeatherW(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
+    suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())

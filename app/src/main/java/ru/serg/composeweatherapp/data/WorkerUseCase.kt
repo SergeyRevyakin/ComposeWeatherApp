@@ -25,8 +25,8 @@ class WorkerUseCase @Inject constructor(
         }
 
     private suspend fun fetchCoordinatesWeather(latitude: Double, longitude: Double) = combine(
-        remoteDataSource.getWeatherW(latitude, longitude),
-        remoteDataSource.getWeather(latitude, longitude)
+        remoteDataSource.getWeather(latitude, longitude),
+        remoteDataSource.getOneCallWeather(latitude, longitude)
     ) { weatherResponse, oneCallResponse ->
         when {
             (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {

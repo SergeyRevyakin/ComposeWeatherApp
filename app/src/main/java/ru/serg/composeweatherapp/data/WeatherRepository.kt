@@ -25,14 +25,24 @@ class WeatherRepository @Inject constructor(
     private val networkStatus: NetworkStatus
 ) {
 
-    suspend fun fetchCurrentLocationWeather(coordinatesWrapper: CoordinatesWrapper): Flow<NetworkResult<WeatherItem>> =
-        fetchWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude)
+    suspend fun fetchCurrentLocationWeather(
+        coordinatesWrapper: CoordinatesWrapper,
+        forced: Boolean = false
+    ): Flow<NetworkResult<WeatherItem>> =
+        fetchWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude, forced)
 
-    suspend fun fetchCityWeather(cityItem: CityItem): Flow<NetworkResult<WeatherItem>> =
-        getLocalWeather(cityItem)
+    suspend fun fetchCityWeather(
+        cityItem: CityItem,
+        forced: Boolean = false
+    ): Flow<NetworkResult<WeatherItem>> =
+        getLocalWeather(cityItem, forced)
 
-    private suspend fun getLocalWeather(cityItem: CityItem): Flow<NetworkResult<WeatherItem>> =
-        localDataSource.getCurrentWeatherItem().flatMapConcat { list ->
+    private suspend fun getLocalWeather(
+        cityItem: CityItem,
+        forced: Boolean = false
+    ): Flow<NetworkResult<WeatherItem>> =
+        if (forced) fetchWeather(cityItem)
+        else localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
             list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
@@ -50,7 +60,11 @@ class WeatherRepository @Inject constructor(
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
-                fetchWeather(cityItem)
+                localDataSource.getCityHistorySearchDao().flatMapLatest {
+                    if (it.contains(cityItem)) fetchWeather(cityItem)
+                    else emptyFlow()
+                }
+
             } else {
                 flowOf(
                     NetworkResult.Error(
@@ -63,9 +77,11 @@ class WeatherRepository @Inject constructor(
 
     private suspend fun fetchWeather(
         latitude: Double,
-        longitude: Double
+        longitude: Double,
+        forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
-        localDataSource.getCurrentWeatherItem().flatMapConcat { list ->
+        if (forced) fetchCoordinatesWeather(latitude, longitude)
+        else localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
 
             list.find {
                 it.cityItem?.latitude isNearTo latitude &&
@@ -96,8 +112,8 @@ class WeatherRepository @Inject constructor(
         }
 
     private suspend fun fetchCoordinatesWeather(latitude: Double, longitude: Double) = combine(
-        remoteDataSource.getWeatherW(latitude, longitude),
-        remoteDataSource.getWeather(latitude, longitude)
+        remoteDataSource.getWeather(latitude, longitude),
+        remoteDataSource.getOneCallWeather(latitude, longitude)
     ) { weatherResponse, oneCallResponse ->
         when {
             (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
@@ -185,8 +201,8 @@ class WeatherRepository @Inject constructor(
         cityItem: CityItem
     ): Flow<NetworkResult<WeatherItem>> =
         combine(
-            remoteDataSource.getWeatherW(cityItem.latitude, cityItem.longitude),
-            remoteDataSource.getWeather(cityItem.latitude, cityItem.longitude)
+            remoteDataSource.getWeather(cityItem.latitude, cityItem.longitude),
+            remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
         ) { weatherResponse, oneCallResponse ->
             when {
                 (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
@@ -252,6 +268,7 @@ class WeatherRepository @Inject constructor(
                         dailyWeatherList = dailyList,
                         hourlyWeatherList = hourlyList
                     )
+
 
                     localDataSource.saveWeather(weatherItem)
                     NetworkResult.Success(weatherItem)

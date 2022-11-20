@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package ru.serg.composeweatherapp.ui.screens.pager
 
 import android.annotation.SuppressLint
@@ -42,13 +44,25 @@ class PagerViewModel @Inject constructor(
         }
     }
 
+    fun refresh(city: CityItem?) {
+        viewModelScope.launch {
+            if (city == null) {
+                fusedLocationProviderClient.locationFlow().flatMapLatest { coordinatesWrapper ->
+                    weatherRepository.fetchCurrentLocationWeather(
+                        coordinatesWrapper,
+                        true
+                    )
+                }.launchIn(this)
+            } else weatherRepository.fetchCityWeather(city, true).launchIn(this)
+        }
+    }
+
     private suspend fun checkLastUpdate(city: CityItem?) {
-        if (dateUtils.isFetchDateExpired((uiState.value as ScreenState.Success).weatherItem.lastUpdatedTime)) {
+        if (dateUtils.isFetchDateExpired((uiState.last() as ScreenState.Success).weatherItem.lastUpdatedTime)) {
             fetchWeather(city)
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("MissingPermission")
     private suspend fun fetchWeather(city: CityItem?) {
         if (city == null) {

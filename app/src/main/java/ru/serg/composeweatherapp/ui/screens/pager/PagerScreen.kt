@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItem
@@ -65,11 +67,15 @@ fun PagerScreen(
     ) {
         val weatherItem = (uiState as? ScreenState.Success)?.weatherItem
 
-        weatherItem?.let {
-            CityWeatherContentItem(
-                weatherItem = weatherItem,
-                modifier = modifier
-            )
+        SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = uiState is ScreenState.Loading),
+            onRefresh = { viewModel.refresh(cityItem) }) {
+
+            weatherItem?.let {
+                CityWeatherContentItem(
+                    weatherItem = weatherItem,
+                    modifier = modifier
+                )
+            }
         }
     }
 }

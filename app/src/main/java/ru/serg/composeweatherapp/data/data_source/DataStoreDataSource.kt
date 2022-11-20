@@ -14,8 +14,9 @@ import ru.serg.composeweatherapp.utils.Ext.dataStore
 class DataStoreDataSource(context: Context) {
     companion object {
         val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
-        val IS_BACKGROUND_FETCH_ENABLED = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
-        val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.IS_DARK_THEME)
+        val IS_BACKGROUND_FETCH_ENABLED =
+            booleanPreferencesKey(Constants.DataStore.IS_BACKGROUND_FETCH_ENABLED)
+        val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
     }
 
     private val dataStore = context.dataStore
