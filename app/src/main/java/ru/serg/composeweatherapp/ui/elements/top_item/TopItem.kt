@@ -37,12 +37,12 @@ fun TopItem(
         ) {
             Column(
                 Modifier
+                    .padding(start = 16.dp, end = 24.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
                     .clickable {
                         onLeftIconClick?.invoke()
-                    }
-                    .padding(start = 16.dp, end = 24.dp)
-                    .size(48.dp),
+                    },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -66,12 +66,12 @@ fun TopItem(
 
             Column(
                 Modifier
+                    .padding(start = 24.dp, end = 16.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
                     .clickable {
                         onRightIconClick?.invoke()
-                    }
-                    .padding(start = 24.dp, end = 16.dp)
-                    .size(48.dp),
+                    },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
