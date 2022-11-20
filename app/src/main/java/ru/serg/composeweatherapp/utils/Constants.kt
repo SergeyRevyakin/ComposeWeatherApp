@@ -20,4 +20,16 @@ object Constants {
     val HOUR_FREQUENCY_LIST = listOf(1, 2, 4, 6, 8, 12, 24)
 
     const val CITY_ITEM = "city_item"
+
+    object Notifications {
+        const val NOTIFICATION_CHANNEL = "weather_channel"
+        const val NOTIFICATION_CHANNEL_DESCRIPTION = "Weather notifications"
+        const val NOTIFICATION_CHANNEL_ID = "WEATHER_CHANNEL_ID"
+    }
+
+    object DataStore {
+        const val IS_DARK_THEME = "IS_DARK_THEME"
+        const val IS_BACKGROUND_FETCH_ENABLED = "IS_BACKGROUND_FETCH_ENABLED"
+        const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
+    }
 }

@@ -10,6 +10,7 @@ import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -41,10 +42,11 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
 
     private fun createNotificationChannel() {
 
-        val name = "NOTIFICATION_CHANNEL"
-        val descriptionText = "NOTIFICATION_CHANNEL_DESC"
+        val id = Constants.Notifications.NOTIFICATION_CHANNEL_ID
+        val name = Constants.Notifications.NOTIFICATION_CHANNEL
+        val descriptionText = Constants.Notifications.NOTIFICATION_CHANNEL_DESCRIPTION
         val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel("123", name, importance).apply {
+        val channel = NotificationChannel(id, name, importance).apply {
             description = descriptionText
         }
 

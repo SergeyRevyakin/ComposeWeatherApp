@@ -28,50 +28,14 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var dataStoreDataSource: DataStoreDataSource
 
-//    private val locationPermissionRequest = registerForActivityResult(
-//        ActivityResultContracts.RequestMultiplePermissions()
-//    ) { permissions ->
-//        when {
-//            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-//                startMainScreen(true)
-//            }
-//            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-//                startMainScreen(true)
-//            }
-//            else -> {
-//                startMainScreen(false)
-//            }
-//        }
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         actionBar?.hide()
-
         startMainScreen()
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            locationPermissionRequest.launch(
-//                arrayOf(
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION,
-////                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                )
-//            )
-//        } else {
-//            locationPermissionRequest.launch(
-//                arrayOf(
-//                    Manifest.permission.ACCESS_COARSE_LOCATION,
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                )
-//            )
-//        }
     }
 
 
     private fun startMainScreen() {
-//        viewModel.fillCitiesList()
         val isDarkTheme = mutableStateOf(true)
         lifecycleScope.launch {
             dataStoreDataSource.isDarkThemeEnabled.collectLatest {

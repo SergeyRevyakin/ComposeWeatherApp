@@ -8,13 +8,14 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.Ext.dataStore
 
 class DataStoreDataSource(context: Context) {
     companion object {
-        val IS_DARK_THEME = booleanPreferencesKey("IS_DARK_THEME")
-        val IS_BACKGROUND_FETCH_ENABLED = booleanPreferencesKey("IS_BACKGROUND_FETCH_ENABLED")
-        val FETCH_FREQUENCY = intPreferencesKey("FETCH_FREQUENCY")
+        val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
+        val IS_BACKGROUND_FETCH_ENABLED = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
+        val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.IS_DARK_THEME)
     }
 
     private val dataStore = context.dataStore

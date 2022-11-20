@@ -61,7 +61,7 @@ fun Context.observeConnectivityAsFlow() = callbackFlow {
     connectivityManager.registerNetworkCallback(networkRequest, callback)
 
     val currentState = getCurrentConnectivityState(connectivityManager)
-    trySend(currentState)
+    send(currentState)
 
     awaitClose {
         connectivityManager.unregisterNetworkCallback(callback)
