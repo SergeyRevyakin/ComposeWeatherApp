@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             locationPermissionFlow.collect {
-                fillCitiesList(it.allGranted)
+                fillCitiesList(it.grantedPermissions.isNotEmpty())
             }
         }
 

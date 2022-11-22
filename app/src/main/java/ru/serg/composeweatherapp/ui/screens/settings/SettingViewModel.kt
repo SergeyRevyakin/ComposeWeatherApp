@@ -1,19 +1,19 @@
 package ru.serg.composeweatherapp.ui.screens.settings
 
+import android.Manifest
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
-//import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
-//    private val locationServiceImpl: LocationServiceImpl
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -56,7 +56,16 @@ class SettingViewModel @Inject constructor(
     }
 
     private fun initLocation() {
-        isLocationEnabled.value = true//locationServiceImpl.isLocationAvailable()
+        val locationPermissionFlow = PermissionFlow.getInstance().getMultiplePermissionState(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+
+        viewModelScope.launch {
+            locationPermissionFlow.collect {
+                isLocationEnabled.value = it.grantedPermissions.isNotEmpty()
+            }
+        }
     }
 
     fun onScreenModeChanged(isDark: Boolean) {

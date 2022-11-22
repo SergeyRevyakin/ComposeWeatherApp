@@ -58,7 +58,7 @@ fun NoCitiesMainScreenItem(
             Icon(
                 imageVector = Icons.Rounded.LocationSearching,
                 contentDescription = null,
-                Modifier.size(56.dp),
+                Modifier.size(48.dp),
                 tint = MaterialTheme.colors.primary
             )
         }
@@ -77,13 +77,14 @@ fun NoCitiesMainScreenItem(
                 .padding(horizontal = 24.dp)
                 .clickable {
                     onSearchClick?.invoke()
-                }
+                },
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Icon(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = null,
-                Modifier.size(56.dp),
+                Modifier.size(48.dp),
                 tint = MaterialTheme.colors.primary
             )
 
