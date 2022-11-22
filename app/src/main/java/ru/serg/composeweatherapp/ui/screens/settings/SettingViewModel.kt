@@ -7,11 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+//import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val dataStoreDataSource: DataStoreDataSource
+    private val dataStoreDataSource: DataStoreDataSource,
+//    private val locationServiceImpl: LocationServiceImpl
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -20,10 +22,13 @@ class SettingViewModel @Inject constructor(
 
     var fetchFrequencyValue = mutableStateOf(0f)
 
+    var isLocationEnabled = mutableStateOf(false)
+
     init {
         initDarkModeChange()
         initBackgroundFetchWeatherChange()
         initFetchFrequencyValue()
+        initLocation()
     }
 
     private fun initDarkModeChange() {
@@ -48,6 +53,10 @@ class SettingViewModel @Inject constructor(
                 fetchFrequencyValue.value = it.toFloat()
             }
         }
+    }
+
+    private fun initLocation() {
+        isLocationEnabled.value = true//locationServiceImpl.isLocationAvailable()
     }
 
     fun onScreenModeChanged(isDark: Boolean) {
