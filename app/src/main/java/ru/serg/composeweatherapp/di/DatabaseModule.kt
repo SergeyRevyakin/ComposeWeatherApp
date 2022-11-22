@@ -34,7 +34,7 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
-        return appDatabase.weatherUnitsDao()
+        return appDatabase.weatherDao()
     }
 
     @Provides

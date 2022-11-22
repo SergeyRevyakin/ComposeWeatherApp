@@ -15,11 +15,6 @@ class WorkerUseCase @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun fetchFavouriteCity() =
         localDataSource.getFavouriteCity().flatMapLatest {
-            weatherRepository.fetchCurrentLocationWeather(
-                CoordinatesWrapper(
-                    it.latitude,
-                    it.longitude
-                ), true
-            )
+            weatherRepository.fetchCityWeather(it, true)
         }
 }

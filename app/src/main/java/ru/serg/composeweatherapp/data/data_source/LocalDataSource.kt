@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
-import ru.serg.composeweatherapp.data.room.WeatherUnit
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
 import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
 import ru.serg.composeweatherapp.data.room.dao.WeatherDao
@@ -21,10 +20,6 @@ class LocalDataSource @Inject constructor(
     private val lastLocationDao: LastLocationDao,
     private val cityHistorySearchDao: CityHistorySearchDao
 ) {
-
-    suspend fun saveInDatabase(weatherUnit: WeatherUnit) {
-        weatherDao.insertWeatherUnit(weatherUnit)
-    }
 
     suspend fun getLastSavedLocation(): CoordinatesWrapper {
         lastLocationDao.getLocation()?.let {
