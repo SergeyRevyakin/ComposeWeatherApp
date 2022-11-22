@@ -17,8 +17,8 @@ import ru.serg.composeweatherapp.R
 @Composable
 fun WeatherParamRowItem(
     modifier: Modifier = Modifier,
-    paramIcon: Int = R.drawable.ic_wind_dir_north,
-    paramValue: String = "Wind speed: 12m/s",
+    paramIcon: Int,
+    paramValue: String,
     rotation: Int = 0
 ) {
     Row(
@@ -45,5 +45,9 @@ fun WeatherParamRowItem(
 @Preview
 @Composable
 fun PreviewWeatherParamRowItem() {
-    WeatherParamRowItem()
+    WeatherParamRowItem(
+        paramIcon = R.drawable.ic_wind_dir_north,
+        paramValue = "Wind speed: 12m/s",
+        rotation = 0
+    )
 }

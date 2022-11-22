@@ -62,5 +62,5 @@ fun CitySearchItem(
 @Preview
 @Composable
 fun PreviewCitySearchItem() {
-    CitySearchItem(cityItem = CityItem(name = "Moscow", null), onDelete = {}, onItemClick = {})
+    CitySearchItem(cityItem = CityItem(name = "Moscow", ""), onDelete = {}, onItemClick = {})
 }

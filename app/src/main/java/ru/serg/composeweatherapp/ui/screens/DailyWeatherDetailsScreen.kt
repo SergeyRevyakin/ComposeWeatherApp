@@ -70,7 +70,7 @@ fun DailyWeatherDetailsScreen(
                 ) {
 
                     Text(
-                        text = daily.weatherDescription.orEmpty(),
+                        text = daily.weatherDescription,
                         style = MaterialTheme.typography.descriptionSubHeader,
                         color = MaterialTheme.colors.primary,
                         textAlign = TextAlign.Center,
@@ -122,8 +122,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Morning: ${Ext.getTemp(daily.temp?.morningTemp)}")
-                        Text(text = "Day: ${Ext.getTemp(daily.temp?.dayTemp)}")
+                        Text(text = "Morning: ${Ext.getTemp(daily.temp.morningTemp)}")
+                        Text(text = "Day: ${Ext.getTemp(daily.temp.dayTemp)}")
                     }
 
                     Column(
@@ -132,8 +132,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Evening: ${Ext.getTemp(daily.temp?.eveningTemp)}")
-                        Text(text = "Night ${Ext.getTemp(daily.temp?.nightTemp)}")
+                        Text(text = "Evening: ${Ext.getTemp(daily.temp.eveningTemp)}")
+                        Text(text = "Night ${Ext.getTemp(daily.temp.nightTemp)}")
                     }
                 }
                 Divider(
@@ -149,7 +149,7 @@ fun DailyWeatherDetailsScreen(
                         .padding(8.dp),
                     paramIcon = R.drawable.ic_wind_dir_north,
                     paramValue = "Wind speed: ${daily.windSpeed}m/s",
-                    rotation = daily.windDirection ?: 0
+                    rotation = daily.windDirection
                 )
 
                 WeatherParamRowItem(

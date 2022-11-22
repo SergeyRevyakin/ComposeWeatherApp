@@ -75,7 +75,7 @@ class ChooseCityViewModel @Inject constructor(
                     val cityList = networkResult.data?.map {
                         CityItem(
                             name = it.name.orEmpty(),
-                            country = it.country,
+                            country = it.country.orEmpty(),
                             latitude = it.lat ?: 0.0,
                             longitude = it.lon ?: 0.0,
                             false

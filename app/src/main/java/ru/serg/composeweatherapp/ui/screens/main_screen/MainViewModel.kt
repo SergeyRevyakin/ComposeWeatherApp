@@ -52,7 +52,6 @@ class MainViewModel @Inject constructor(
                     val resultList = listOf(null) + items
                     resultList
                 }
-
             }.stateIn(
                 scope = viewModelScope,
                 initialValue = listOf(),

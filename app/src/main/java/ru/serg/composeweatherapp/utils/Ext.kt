@@ -69,7 +69,7 @@ object Ext {
 
     fun CityEntity.toCityItem() = CityItem(
         cityName,
-        country,
+        country.orEmpty(),
         latitude ?: 0.0,
         longitude ?: 0.0,
         isFavorite

@@ -1,19 +1,20 @@
-@file:OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class)
 
 package ru.serg.composeweatherapp.data
 
 import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.data.*
+import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
+import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
+import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.Ext.isNearTo
-import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import javax.inject.Inject
@@ -28,21 +29,21 @@ class WeatherRepository @Inject constructor(
     suspend fun fetchCurrentLocationWeather(
         coordinatesWrapper: CoordinatesWrapper,
         forced: Boolean = false
-    ): Flow<NetworkResult<WeatherItem>> =
-        fetchWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude, forced)
+    ): Flow<NetworkResult<WeatherItem>> = if (forced) fetchCoordinatesWeather(
+        coordinatesWrapper
+    )
+    else fetchWeather(coordinatesWrapper)
 
     suspend fun fetchCityWeather(
         cityItem: CityItem,
         forced: Boolean = false
-    ): Flow<NetworkResult<WeatherItem>> =
-        getLocalWeather(cityItem, forced)
+    ): Flow<NetworkResult<WeatherItem>> = if (forced) fetchWeather(cityItem)
+    else getLocalWeather(cityItem)
 
     private suspend fun getLocalWeather(
         cityItem: CityItem,
-        forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
-        if (forced) fetchWeather(cityItem)
-        else localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
+        localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
             list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
@@ -76,16 +77,13 @@ class WeatherRepository @Inject constructor(
         }
 
     private suspend fun fetchWeather(
-        latitude: Double,
-        longitude: Double,
-        forced: Boolean = false
+        coordinatesWrapper: CoordinatesWrapper
     ): Flow<NetworkResult<WeatherItem>> =
-        if (forced) fetchCoordinatesWeather(latitude, longitude)
-        else localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
+        localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
 
             list.find {
-                it.cityItem?.latitude isNearTo latitude &&
-                        it.cityItem?.longitude isNearTo longitude
+                it.cityItem?.latitude isNearTo coordinatesWrapper.latitude &&
+                        it.cityItem?.longitude isNearTo coordinatesWrapper.longitude
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
@@ -93,14 +91,14 @@ class WeatherRepository @Inject constructor(
                         flowOf(NetworkResult.Success(item))
                     } else {
                         if (networkStatus.isNetworkConnected()) {
-                            fetchCoordinatesWeather(latitude, longitude)
+                            fetchCoordinatesWeather(coordinatesWrapper)
                         } else {
                             flowOf(NetworkResult.Success(item))
                         }
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
-                fetchCoordinatesWeather(latitude, longitude)
+                fetchCoordinatesWeather(coordinatesWrapper)
             } else {
                 flowOf(
                     NetworkResult.Error(
@@ -111,9 +109,12 @@ class WeatherRepository @Inject constructor(
             }
         }
 
-    private suspend fun fetchCoordinatesWeather(latitude: Double, longitude: Double) = combine(
-        remoteDataSource.getWeather(latitude, longitude),
-        remoteDataSource.getOneCallWeather(latitude, longitude)
+    private suspend fun fetchCoordinatesWeather(coordinatesWrapper: CoordinatesWrapper) = combine(
+        remoteDataSource.getWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude),
+        remoteDataSource.getOneCallWeather(
+            coordinatesWrapper.latitude,
+            coordinatesWrapper.longitude
+        )
     ) { weatherResponse, oneCallResponse ->
         when {
             (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
@@ -125,71 +126,19 @@ class WeatherRepository @Inject constructor(
                 )
             }
             (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
-                val cityItem = CityItem(
-                    name = weatherResponse.data?.name.orEmpty(),
-                    country = weatherResponse.data?.sys?.country,
-                    latitude = weatherResponse.data?.coord?.lat ?: 0.0,
-                    longitude = weatherResponse.data?.coord?.lon ?: 0.0,
-                    true
-                )
+                if (weatherResponse.data != null && oneCallResponse.data != null) {
+                    val cityItem = DataMapper.mapCityItem(weatherResponse.data, true)
 
-                val hourlyList = oneCallResponse.data?.hourly?.map {
-                    HourWeatherItem(
-                        weatherIcon = IconMapper.map(it?.weather?.first()?.id),
-                        currentTemp = it?.feelsLike ?: 0.0,
-                        timestamp = (it?.dt ?: 0) * 1000L
-                    )
-                } ?: listOf()
-
-                val dailyList = oneCallResponse.data?.daily?.map { daily ->
-                    val feelsLikeIntraDay = IntraDayTempItem(
-                        morningTemp = daily?.feelsLike?.morn,
-                        dayTemp = daily?.feelsLike?.day,
-                        eveningTemp = daily?.feelsLike?.eve,
-                        nightTemp = daily?.feelsLike?.night,
+                    val weatherItem = DataMapper.getWeatherItem(
+                        weatherResponse.data,
+                        oneCallResponse.data,
+                        cityItem
                     )
 
-                    val tempIntraDay = IntraDayTempItem(
-                        morningTemp = daily?.temp?.morn,
-                        dayTemp = daily?.temp?.day,
-                        eveningTemp = daily?.temp?.eve,
-                        nightTemp = daily?.temp?.night,
-                    )
-
-                    DayWeatherItem(
-                        feelsLike = feelsLikeIntraDay,
-                        temp = tempIntraDay,
-                        windSpeed = daily?.windSpeed,
-                        windDirection = daily?.windDeg,
-                        humidity = daily?.humidity,
-                        pressure = daily?.pressure,
-                        weatherDescription = daily?.weather?.first()?.description,
-                        weatherIcon = IconMapper.map(daily?.weather?.first()?.id),
-                        dateTime = (daily?.dt ?: 0) * 1000L,
-                        sunrise = (daily?.sunrise?.toLong() ?: 0L) * 1000L,
-                        sunset = (daily?.sunset?.toLong() ?: 0L) * 1000L
-                    )
-                } ?: emptyList()
-
-                val weatherItem = WeatherItem(
-                    feelsLike = weatherResponse.data?.main?.feelsLike,
-                    currentTemp = weatherResponse.data?.main?.temp,
-                    windSpeed = weatherResponse.data?.wind?.speed,
-                    windDirection = weatherResponse.data?.wind?.deg,
-                    humidity = weatherResponse.data?.main?.humidity,
-                    pressure = weatherResponse.data?.main?.pressure,
-                    weatherDescription = weatherResponse.data?.weather?.first()?.description,
-                    weatherIcon = IconMapper.map(weatherResponse.data?.weather?.first()?.id),
-                    dateTime = (weatherResponse.data?.dt?.toLong() ?: 0) * 1000L,
-                    cityItem = cityItem,
-                    lastUpdatedTime = getTimeMillis(),
-                    dailyWeatherList = dailyList,
-                    hourlyWeatherList = hourlyList
-                )
-
-                localDataSource.insertCityItemToHistorySearch(cityItem)
-                localDataSource.saveWeather(weatherItem)
-                NetworkResult.Success(weatherItem)
+                    localDataSource.insertCityItemToHistorySearch(cityItem)
+                    localDataSource.saveWeather(weatherItem)
+                    NetworkResult.Success(weatherItem)
+                } else NetworkResult.Error(message = "No data!")
 
             }
 
@@ -215,68 +164,21 @@ class WeatherRepository @Inject constructor(
                 }
                 (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
 
-                    val hourlyList = oneCallResponse.data?.hourly?.map {
-                        HourWeatherItem(
-                            weatherIcon = IconMapper.map(it?.weather?.first()?.id),
-                            currentTemp = it?.feelsLike ?: 0.0,
-                            timestamp = (it?.dt ?: 0) * 1000L
-                        )
-                    } ?: listOf()
+                    if (weatherResponse.data != null && oneCallResponse.data != null) {
 
-                    val dailyList = oneCallResponse.data?.daily?.map { daily ->
-                        val feelsLikeIntraDay = IntraDayTempItem(
-                            morningTemp = daily?.feelsLike?.morn,
-                            dayTemp = daily?.feelsLike?.day,
-                            eveningTemp = daily?.feelsLike?.eve,
-                            nightTemp = daily?.feelsLike?.night,
+                        val weatherItem = DataMapper.getWeatherItem(
+                            weatherResponse.data,
+                            oneCallResponse.data,
+                            cityItem
                         )
 
-                        val tempIntraDay = IntraDayTempItem(
-                            morningTemp = daily?.temp?.morn,
-                            dayTemp = daily?.temp?.day,
-                            eveningTemp = daily?.temp?.eve,
-                            nightTemp = daily?.temp?.night,
-                        )
+                        localDataSource.saveWeather(weatherItem)
+                        NetworkResult.Success(weatherItem)
 
-                        DayWeatherItem(
-                            feelsLike = feelsLikeIntraDay,
-                            temp = tempIntraDay,
-                            windSpeed = daily?.windSpeed,
-                            windDirection = daily?.windDeg,
-                            humidity = daily?.humidity,
-                            pressure = daily?.pressure,
-                            weatherDescription = daily?.weather?.first()?.description,
-                            weatherIcon = IconMapper.map(daily?.weather?.first()?.id),
-                            dateTime = (daily?.dt ?: 0) * 1000L,
-                            sunrise = (daily?.sunrise?.toLong() ?: 0L) * 1000L,
-                            sunset = (daily?.sunset?.toLong() ?: 0L) * 1000L
-                        )
-                    } ?: emptyList()
-
-                    val weatherItem = WeatherItem(
-                        feelsLike = weatherResponse.data?.main?.feelsLike,
-                        currentTemp = weatherResponse.data?.main?.temp,
-                        windSpeed = weatherResponse.data?.wind?.speed,
-                        windDirection = weatherResponse.data?.wind?.deg,
-                        humidity = weatherResponse.data?.main?.humidity,
-                        pressure = weatherResponse.data?.main?.pressure,
-                        weatherDescription = weatherResponse.data?.weather?.first()?.description,
-                        weatherIcon = IconMapper.map(weatherResponse.data?.weather?.first()?.id),
-                        dateTime = (weatherResponse.data?.dt?.toLong() ?: 0) * 1000L,
-                        cityItem = cityItem,
-                        lastUpdatedTime = getTimeMillis(),
-                        dailyWeatherList = dailyList,
-                        hourlyWeatherList = hourlyList
-                    )
-
-
-                    localDataSource.saveWeather(weatherItem)
-                    NetworkResult.Success(weatherItem)
-
+                    } else NetworkResult.Error(message = "No data!")
                 }
 
                 else -> NetworkResult.Loading()
             }
         }
-
 }

@@ -79,7 +79,7 @@ class LocalDataSource @Inject constructor(
                         dateTime = it.weatherItemEntity.dateTime,
                         cityItem = CityItem(
                             it.cityEntity?.cityName.orEmpty(),
-                            it.cityEntity?.country,
+                            it.cityEntity?.country.orEmpty(),
                             it.cityEntity?.latitude ?: 0.0,
                             it.cityEntity?.longitude ?: 0.0,
                             it.cityEntity?.isFavorite ?: false
