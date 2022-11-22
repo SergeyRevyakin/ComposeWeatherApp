@@ -68,7 +68,7 @@ class LocationServiceImpl(
                         launch {
                             send(CoordinatesWrapper(location.latitude, location.longitude))
                         }
-                    }
+                    } ?: throw LocationService.LocationException("No location data")
                 }
             }
 

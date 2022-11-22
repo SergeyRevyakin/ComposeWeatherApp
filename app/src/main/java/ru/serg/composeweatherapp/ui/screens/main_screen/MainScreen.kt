@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -38,6 +40,8 @@ fun MainScreen(
         )
     )
 
+    val citiesList by viewModel.citiesList.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -53,7 +57,7 @@ fun MainScreen(
 
         val context = LocalContext.current
 
-        AnimatedVisibility(visible = viewModel.citiesList.value.isEmpty() && !viewModel.isLoading.value) {
+        AnimatedVisibility(visible = citiesList.isEmpty() && !viewModel.isLoading.value) {
 
             NoCitiesMainScreenItem(
                 onSearchClick = navigateToChooseCity,
@@ -62,20 +66,23 @@ fun MainScreen(
 
             )
         }
+//
+//        LaunchedEffect(multiplePermissionState.permissions != multiplePermissionState.revokedPermissions) {
+//            viewModel.fillCitiesList(true)
+//        }
+//        LaunchedEffect(multiplePermissionState.permissions == multiplePermissionState.revokedPermissions) {
+//            viewModel.fillCitiesList(false)
+//        }
 
-        if (multiplePermissionState.permissions != multiplePermissionState.revokedPermissions) {
-            viewModel.fillCitiesList(true)
-        }
-
-        AnimatedVisibility(visible = viewModel.citiesList.value.isNotEmpty()) {
+        AnimatedVisibility(visible = citiesList.isNotEmpty()) {
 
             HorizontalPager(
-                count = viewModel.citiesList.value.size,
+                count = viewModel.citiesList.collectAsState().value.size,
                 state = rememberPagerState(),
                 modifier = Modifier.fillMaxWidth()
             ) { page ->
                 PagerScreen(
-                    cityItem = viewModel.citiesList.value[page],
+                    cityItem = citiesList[page],
                     currentPage == page //To prevent preload of next page
                 )
             }

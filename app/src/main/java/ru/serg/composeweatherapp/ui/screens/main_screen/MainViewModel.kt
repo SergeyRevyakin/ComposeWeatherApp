@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(
     private val locationService: LocationServiceImpl
 ) : ViewModel() {
 
-    val citiesList = mutableStateOf(emptyList<CityItem?>())
+    var citiesList: StateFlow<List<CityItem?>> = MutableStateFlow(emptyList())
 
     var isLoading = mutableStateOf(false)
 
@@ -29,16 +29,22 @@ class MainViewModel @Inject constructor(
     fun fillCitiesList(hasLocationPermission: Boolean) {
         viewModelScope.launch {
             isLoading.value = true
-            localDataSource.getCityHistorySearchDao().collectLatest { items ->
+            citiesList = localDataSource.getCityHistorySearchDao().mapLatest { items ->
+                isLoading.value = false
+
                 if (!hasLocationPermission) {
-                    citiesList.value = items
-                    isLoading.value = false
+                    items
                 } else {
                     val resultList = listOf(null) + items
-                    citiesList.value = resultList
-                    isLoading.value = false
+                    resultList
                 }
-            }
+
+            }.stateIn(
+                scope = viewModelScope,
+                initialValue = listOf(),
+                started = SharingStarted.WhileSubscribed(5_000)
+            )
         }
+
     }
 }
