@@ -73,8 +73,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0-alpha02'
     implementation 'androidx.activity:activity-compose:1.6.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     debugImplementation "androidx.compose.ui:ui-tooling"
 
@@ -130,4 +130,9 @@ dependencies {
 
     //Data Store
     implementation "androidx.datastore:datastore-preferences:1.1.0-dev01"
+
+    //Permission as Flow
+    implementation "dev.shreyaspatil.permission-flow:permission-flow-android:1.0.0"
+    implementation "dev.shreyaspatil.permission-flow:permission-flow-compose:1.0.0"
+
 }
