@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +46,8 @@ fun ChooseCityScreen(
     viewModel: ChooseCityViewModel = hiltViewModel(),
     navController: NavController = rememberNavController()
 ) {
+
+    val favouriteCities by viewModel.favouriteCitiesList.collectAsState()
 
     Column(
         modifier = modifier
@@ -88,7 +91,7 @@ fun ChooseCityScreen(
 //                )
 //            }
 //        }
-        AnimatedVisibility(visible = viewModel.searchHistoryItems.isNotEmpty()) {
+        AnimatedVisibility(visible = favouriteCities.isNotEmpty()) {
 
             Column() {
                 Text(
@@ -103,7 +106,7 @@ fun ChooseCityScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     state = rememberLazyListState()
                 ) {
-                    items(viewModel.searchHistoryItems) {
+                    items(favouriteCities) {
                         CitySearchItem(
                             cityItem = it,
                             onDelete = viewModel::onDeleteClick,

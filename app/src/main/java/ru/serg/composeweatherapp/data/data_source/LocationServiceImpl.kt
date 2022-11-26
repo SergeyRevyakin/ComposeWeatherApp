@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.utils.Ext.hasLocationPermission
+import java.util.concurrent.TimeUnit
 
 class LocationServiceImpl(
     private val appContext: Context,
@@ -59,7 +60,7 @@ class LocationServiceImpl(
             }
 
             val request = LocationRequest.create()
-                .setInterval(150_000)
+                .setInterval(TimeUnit.MINUTES.toMillis(5))
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {

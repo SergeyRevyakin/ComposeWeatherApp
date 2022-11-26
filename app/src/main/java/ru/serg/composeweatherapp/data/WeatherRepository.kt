@@ -61,7 +61,7 @@ class WeatherRepository @Inject constructor(
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
-                localDataSource.getCityHistorySearchDao().flatMapLatest {
+                localDataSource.getCityHistorySearch().flatMapLatest {
                     if (it.contains(cityItem)) fetchWeather(cityItem)
                     else emptyFlow()
                 }

@@ -7,13 +7,11 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.ktor.util.date.*
-import kotlinx.coroutines.flow.first
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.Ext.showNotification
-import ru.serg.composeweatherapp.utils.NetworkResult
 import java.util.concurrent.TimeUnit
 
 @HiltWorker
@@ -78,18 +76,18 @@ class WeatherWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-
-            val r = workerUseCase.fetchFavouriteCity().first { networkResult ->
-                networkResult is NetworkResult.Success
-            }.data
-
-            r.let { data ->
-                showNotification(
-                    applicationContext,
-                    "Current weather in ${data?.cityItem?.name}",
-                    "${getHour(getTimeMillis())} temp: ${data?.feelsLike}"
-                )
-            }
+//
+//            val r = workerUseCase.fetchFavouriteCity().first { networkResult ->
+//                networkResult is NetworkResult.Success
+//            }.data
+//
+//            r.let { data ->
+//                showNotification(
+//                    applicationContext,
+//                    "Current weather in ${data?.cityItem?.name}",
+//                    "${getHour(getTimeMillis())} temp: ${data?.feelsLike}"
+//                )
+//            }
             Result.success()
 
         } catch (e: Exception) {

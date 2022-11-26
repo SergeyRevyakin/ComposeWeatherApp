@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.Ext.locationFlow
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PagerViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
+    private val locationService: LocationServiceImpl,
     private val dateUtils: DateUtils
 ) : ViewModel() {
 
@@ -67,7 +69,7 @@ class PagerViewModel @Inject constructor(
     private suspend fun fetchWeather(city: CityItem?) {
         if (city == null) {
             uiState =
-                fusedLocationProviderClient.locationFlow().flatMapLatest { coordinatesWrapper ->
+                locationService.getLocationUpdate().flatMapLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper
                     ).map { networkResult ->

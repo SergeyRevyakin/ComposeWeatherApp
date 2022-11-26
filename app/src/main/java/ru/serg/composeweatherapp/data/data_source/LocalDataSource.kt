@@ -28,7 +28,7 @@ class LocalDataSource @Inject constructor(
         return CoordinatesWrapper(0.0, 0.0)
     }
 
-    fun getCityHistorySearchDao(): Flow<List<CityItem>> {
+    fun getCityHistorySearch(): Flow<List<CityItem>> {
         return cityHistorySearchDao.getCitySearchHistory().map { list ->
             list.map { entity ->
                 entity.toCityItem()

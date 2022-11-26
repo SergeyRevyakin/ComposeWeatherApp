@@ -1,6 +1,5 @@
 package ru.serg.composeweatherapp.data.remote.responses
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

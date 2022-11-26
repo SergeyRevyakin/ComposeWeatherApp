@@ -36,14 +36,13 @@ class MainViewModel @Inject constructor(
             }
         }
 
-
     }
 
 
     private fun fillCitiesList(hasLocationPermission: Boolean) {
         viewModelScope.launch {
             isLoading.value = true
-            citiesList = localDataSource.getCityHistorySearchDao().mapLatest { items ->
+            citiesList = localDataSource.getCityHistorySearch().mapLatest { items ->
                 isLoading.value = false
 
                 if (!hasLocationPermission) {

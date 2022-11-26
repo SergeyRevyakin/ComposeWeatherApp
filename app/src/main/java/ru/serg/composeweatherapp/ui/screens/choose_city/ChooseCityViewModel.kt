@@ -8,20 +8,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ru.serg.composeweatherapp.data.CitySearchUseCase
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
-import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
 @FlowPreview
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
-    val remoteDataSource: RemoteDataSource,
+    private val citySearchUseCase: CitySearchUseCase,
     val localDataSource: LocalDataSource
 ) : ViewModel() {
 
@@ -33,7 +31,7 @@ class ChooseCityViewModel @Inject constructor(
     )
         private set
 
-    var searchHistoryItems by mutableStateOf(listOf<CityItem>())
+    var favouriteCitiesList: StateFlow<List<CityItem>> = MutableStateFlow(emptyList())
 
     var inputSharedFlow = MutableSharedFlow<String>(
         replay = 0,
@@ -42,8 +40,8 @@ class ChooseCityViewModel @Inject constructor(
     )
 
     init {
+        initFavouriteCities()
         initDebounceSearcher()
-        fillSearchHistory()
     }
 
     private fun initDebounceSearcher() {
@@ -54,16 +52,17 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    private fun fillSearchHistory() {
-        viewModelScope.launch {
-            localDataSource.getCityHistorySearchDao().collect {
-                searchHistoryItems = it
-            }
-        }
+    private fun initFavouriteCities() {
+        favouriteCitiesList = citySearchUseCase.getFavouriteCitiesFlow()
+            .stateIn(
+                scope = viewModelScope,
+                initialValue = emptyList(),
+                started = SharingStarted.WhileSubscribed(5_000)
+            )
     }
 
     private suspend fun fetchCities(input: String?) {
-        remoteDataSource.getCityForAutocomplete(input).collectLatest { networkResult ->
+        citySearchUseCase.fetchCityListFlow(input).collectLatest { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> {
                     setLoadingState()
@@ -72,15 +71,7 @@ class ChooseCityViewModel @Inject constructor(
                     setErrorState(networkResult.message)
                 }
                 is NetworkResult.Success -> {
-                    val cityList = networkResult.data?.map {
-                        CityItem(
-                            name = it.name.orEmpty(),
-                            country = it.country.orEmpty(),
-                            latitude = it.lat ?: 0.0,
-                            longitude = it.lon ?: 0.0,
-                            false
-                        )
-                    }
+                    val cityList = networkResult.data
                     if (cityList.isNullOrEmpty()) {
                         setErrorState(input, "No results found")
                     } else {
@@ -94,13 +85,13 @@ class ChooseCityViewModel @Inject constructor(
 
     fun onCityClicked(cityItem: CityItem) {
         viewModelScope.launch {
-            localDataSource.insertCityItemToHistorySearch(cityItem)
+            citySearchUseCase.saveCityItem(cityItem)
         }
     }
 
     fun onDeleteClick(cityItem: CityItem) {
         viewModelScope.launch {
-            localDataSource.deleteCityItemToHistorySearch(cityItem)
+            citySearchUseCase.deleteCityItem(cityItem)
         }
     }
 
