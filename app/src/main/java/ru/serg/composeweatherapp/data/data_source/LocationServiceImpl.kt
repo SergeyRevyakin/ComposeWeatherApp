@@ -41,7 +41,7 @@ class LocationServiceImpl(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLocationUpdate(): Flow<CoordinatesWrapper> {
+    override fun getLocationUpdate(isOneTimeRequest: Boolean, updateFrequency: Long): Flow<CoordinatesWrapper> {
         return callbackFlow {
             if (!appContext.hasLocationPermission()) {
                 throw LocationService.LocationException("No location permission")
@@ -60,7 +60,7 @@ class LocationServiceImpl(
             }
 
             val request = LocationRequest.create()
-                .setInterval(TimeUnit.MINUTES.toMillis(5))
+                .setInterval(TimeUnit.MINUTES.toMillis(updateFrequency))
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
@@ -69,6 +69,7 @@ class LocationServiceImpl(
                         launch {
                             send(CoordinatesWrapper(location.latitude, location.longitude))
                         }
+                        if (isOneTimeRequest) client.removeLocationUpdates(this)
                     } ?: throw LocationService.LocationException("No location data")
                 }
             }
@@ -77,7 +78,9 @@ class LocationServiceImpl(
                 request,
                 locationCallback,
                 Looper.getMainLooper()
-            )
+            ).addOnFailureListener {
+                close(it)
+            }
 
             awaitClose {
                 client.removeLocationUpdates(locationCallback)

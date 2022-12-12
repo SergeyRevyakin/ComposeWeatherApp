@@ -41,6 +41,7 @@ object Ext {
         return "${temp?.toInt().toString()}℃" //TODO Fahrenheit temp
     }
 
+    @SuppressLint("MissingPermission") //TODO add notification check for Android 13
     fun showNotification(context: Context, header: String?, text: String?) {
         val builder = NotificationCompat.Builder(context, "123")
             .setSmallIcon(R.drawable.ic_sun)
@@ -84,7 +85,7 @@ object Ext {
     }
 
     @SuppressLint("MissingPermission")
-    suspend fun FusedLocationProviderClient.locationFlow(): Flow<CoordinatesWrapper> =
+    fun FusedLocationProviderClient.locationFlow(): Flow<CoordinatesWrapper> =
         callbackFlow {
             val locationRequest = LocationRequest.create().apply {
                 interval = TimeUnit.SECONDS.toMillis(15_000)

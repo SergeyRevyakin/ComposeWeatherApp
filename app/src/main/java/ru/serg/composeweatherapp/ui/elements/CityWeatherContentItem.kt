@@ -1,18 +1,22 @@
 package ru.serg.composeweatherapp.ui.elements
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.service.FetchWeatherService
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
@@ -109,6 +113,15 @@ fun CityWeatherContentItem(
 
 
             }
+        }
+        val context = LocalContext.current
+        Button(onClick = {
+            Intent(context, FetchWeatherService::class.java).apply {
+                action = FetchWeatherService.START_ACTION
+                context.startService(this)
+            }
+        }) {
+            Text(text = "Start")
         }
 
         Spacer(modifier = Modifier.height(32.dp))

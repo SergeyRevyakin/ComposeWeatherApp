@@ -44,7 +44,7 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
         val id = Constants.Notifications.NOTIFICATION_CHANNEL_ID
         val name = Constants.Notifications.NOTIFICATION_CHANNEL
         val descriptionText = Constants.Notifications.NOTIFICATION_CHANNEL_DESCRIPTION
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_LOW
 
         val channel = NotificationChannel(id, name, importance).apply {
             description = descriptionText

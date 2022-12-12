@@ -1,15 +1,26 @@
 package ru.serg.composeweatherapp.worker
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import io.ktor.util.date.*
+import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
+import ru.serg.composeweatherapp.service.FetchWeatherService
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.Ext.showNotification
 import java.util.concurrent.TimeUnit
@@ -76,18 +87,10 @@ class WeatherWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-//
-//            val r = workerUseCase.fetchFavouriteCity().first { networkResult ->
-//                networkResult is NetworkResult.Success
-//            }.data
-//
-//            r.let { data ->
-//                showNotification(
-//                    applicationContext,
-//                    "Current weather in ${data?.cityItem?.name}",
-//                    "${getHour(getTimeMillis())} temp: ${data?.feelsLike}"
-//                )
-//            }
+            Intent(applicationContext, FetchWeatherService::class.java).apply {
+                action = FetchWeatherService.START_ACTION
+                applicationContext.startService(this)
+            }
             Result.success()
 
         } catch (e: Exception) {
@@ -96,6 +99,7 @@ class WeatherWorker @AssistedInject constructor(
                 "Worker failed",
                 e.message + getHour(getTimeMillis())
             )
+            Log.e(this::class.simpleName, "Worker failed: ${e.message}\n ${e.stackTrace}" )
             Result.failure()
         }
     }
