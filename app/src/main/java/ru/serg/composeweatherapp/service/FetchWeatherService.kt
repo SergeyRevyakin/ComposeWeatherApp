@@ -17,8 +17,8 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.WeatherServiceUseCase
 import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
+import ru.serg.composeweatherapp.utils.showDailyForecastNotification
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -72,22 +72,7 @@ class FetchWeatherService : Service() {
 
     private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem) {
         stop()
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val weatherNotification =
-            NotificationCompat.Builder(this, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Weather for ${DateUtils.getDate(weatherItem.lastUpdatedTime)} in ${weatherItem.cityItem?.name}")
-                .setContentText(
-                    "Right now feels like: ${weatherItem.feelsLike} " +
-                            "\nMorning: ${weatherItem.dailyWeatherList.first().temp.morningTemp}" +
-                            "\nDay: ${weatherItem.dailyWeatherList.first().temp.dayTemp}"
-                )
-                .setSmallIcon(R.drawable.ic_day_sunny)
-                .build()
-
-        notificationManager.notify(WEATHER_NOTIFICATION_ID, weatherNotification)
-
+        showDailyForecastNotification(applicationContext, weatherItem)
     }
 
     private fun stop() {
@@ -108,6 +93,5 @@ class FetchWeatherService : Service() {
         const val START_ACTION = "start"
         const val STOP_ACTION = "stop"
         private const val SERVICE_ID = 222
-        private const val WEATHER_NOTIFICATION_ID = 1122
     }
 }

@@ -120,7 +120,6 @@ fun TodayWeatherCardItem(
                     WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth(),
-//                            .padding(horizontal = 12.dp),
                         rotation = windDirection ?: 0,
                         paramValue = "Wind speed: ${windSpeed}m/s",
                         paramIcon = R.drawable.ic_wind_dir_north
@@ -130,7 +129,6 @@ fun TodayWeatherCardItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
-//                            .padding(horizontal = 12.dp),
                         paramIcon = R.drawable.ic_humidity,
                         paramValue = "Humidity: $humidity%",
                     )

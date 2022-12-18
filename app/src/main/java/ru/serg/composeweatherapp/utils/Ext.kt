@@ -8,8 +8,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Looper
 import android.provider.Settings
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -22,7 +20,6 @@ import io.ktor.util.date.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.IntraDayTempItem
@@ -39,20 +36,6 @@ object Ext {
 
     fun getTemp(temp: Double?): String {
         return "${temp?.toInt().toString()}℃" //TODO Fahrenheit temp
-    }
-
-    @SuppressLint("MissingPermission") //TODO add notification check for Android 13
-    fun showNotification(context: Context, header: String?, text: String?) {
-        val builder = NotificationCompat.Builder(context, "123")
-            .setSmallIcon(R.drawable.ic_sun)
-            .setContentTitle(header)
-            .setContentText(text)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
-
-        with(NotificationManagerCompat.from(context)) {
-            notify(Random().nextInt(), builder.build())
-        }
     }
 
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")

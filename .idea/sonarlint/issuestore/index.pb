@@ -19,3 +19,27 @@ o
 ?app/src/main/java/ru/serg/composeweatherapp/di/NetworkModule.kt,1\d\1d7d1502a1a901ed5f291d9a45db26c4c77cc045
 u
 Eapp/src/main/java/ru/serg/composeweatherapp/data/CitySearchUseCase.kt,b\4\b460d47ec406212b4dedee499d8c9666ac87ee23
+x
+Happ/src/main/java/ru/serg/composeweatherapp/data/data/HourWeatherItem.kt,6\2\62ceb0475c85b8281ee63fe12e467102f560588c
+y
+Iapp/src/main/java/ru/serg/composeweatherapp/data/data/IntraDayTempItem.kt,4\e\4e7f8d10e5fb29a342c3866082a3c8a25579ebc4
+k
+;app/src/main/java/ru/serg/composeweatherapp/di/AppModule.kt,9\3\93f1947727a06f829c40ab5945b07ccc5a1d1c3d
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+z
+Japp/src/main/java/ru/serg/composeweatherapp/utils/ServiceFetchingResult.kt,0\f\0f1abf6dd097da238c49cd2527e24216a5ea6b42
+p
+@app/src/main/java/ru/serg/composeweatherapp/ComposeWeatherApp.kt,b\8\b8a08635e980c35ecc715851ce12f48987e21469
+n
+>app/src/main/java/ru/serg/composeweatherapp/utils/DateUtils.kt,1\5\15232b54a478facdaae85bffa057332ef3980943
+|
+Lapp/src/main/java/ru/serg/composeweatherapp/ui/elements/HourlyWeatherItem.kt,2\7\27d1f168dd82ae82dae2032a780418a5e3aa2c92
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
+
+Oapp/src/main/java/ru/serg/composeweatherapp/data/data_source/LocationService.kt,a\c\acf4e727a122df2c435e37bb916c12495bbfa184
+w
+Gapp/src/main/java/ru/serg/composeweatherapp/data/data/DayWeatherItem.kt,a\d\ad652128a05ef29754aee939a4acf4b39b26e45d
+ƒ
+Sapp/src/main/java/ru/serg/composeweatherapp/data/data_source/LocationServiceImpl.kt,f\3\f3d4e37c7594f8b0f2fbcffb5fe1fdac9348012c
