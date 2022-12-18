@@ -25,8 +25,6 @@ y
 Iapp/src/main/java/ru/serg/composeweatherapp/data/data/IntraDayTempItem.kt,4\e\4e7f8d10e5fb29a342c3866082a3c8a25579ebc4
 k
 ;app/src/main/java/ru/serg/composeweatherapp/di/AppModule.kt,9\3\93f1947727a06f829c40ab5945b07ccc5a1d1c3d
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 z
 Japp/src/main/java/ru/serg/composeweatherapp/utils/ServiceFetchingResult.kt,0\f\0f1abf6dd097da238c49cd2527e24216a5ea6b42
 p
