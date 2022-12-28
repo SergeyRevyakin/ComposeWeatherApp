@@ -32,4 +32,6 @@ object Constants {
         const val IS_BACKGROUND_FETCH_ENABLED = "IS_BACKGROUND_FETCH_ENABLED"
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
     }
+
+    const val ALARM_REQUEST_CODE = 1122
 }

@@ -17,7 +17,6 @@ import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.worker.WeatherWorker
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,7 +33,6 @@ class MainActivity : ComponentActivity() {
         startMainScreen()
     }
 
-
     private fun startMainScreen() {
         val isDarkTheme = mutableStateOf(true)
         lifecycleScope.launch {
@@ -42,8 +40,6 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme.value = it
             }
         }
-
-        WeatherWorker.setupPeriodicWork(applicationContext)
 
         setContent {
             ComposeWeatherAppTheme(

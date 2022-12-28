@@ -30,10 +30,11 @@ class FetchWeatherService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            START_ACTION -> start()
-            STOP_ACTION -> stop()
-        }
+//        when (intent?.action) {
+//            START_ACTION -> start()
+//            STOP_ACTION -> stop()
+//        }
+        start()
         return super.onStartCommand(intent, flags, startId)
     }
 
