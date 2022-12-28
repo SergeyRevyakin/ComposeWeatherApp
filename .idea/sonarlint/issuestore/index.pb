@@ -41,8 +41,6 @@ y
 Iapp/src/main/java/ru/serg/composeweatherapp/data/WeatherServiceUseCase.kt,a\b\ab7c163f85264136496bd99f03f60c79c421fd8a
 h
 8app/src/main/java/ru/serg/composeweatherapp/utils/Ext.kt,4\7\47c6a85bafcb998fa8f8bd85ed86d2e79b49da9a
-
-Oapp/src/main/java/ru/serg/composeweatherapp/ui/elements/TodayWeatherCardItem.kt,1\e\1e588d7766f653fdb1fb1b8455e911e8aed4ed55
 r
 Bapp/src/main/java/ru/serg/composeweatherapp/utils/Notifications.kt,c\d\cdc1b8b4324052e9649069162017825fa69a137c
 o
@@ -57,5 +55,3 @@ _app/src/main/java/ru/serg/composeweatherapp/ui/screens/city_weather_screen/City
 Napp/src/main/java/ru/serg/composeweatherapp/ui/screens/pager/PagerViewModel.kt,3\c\3c78fb75f1410a555d8e82a0f39033df7ed7dd2b
 {
 Kapp/src/main/java/ru/serg/composeweatherapp/ui/screens/pager/PagerScreen.kt,2\5\2590b4238a51e7a59b7968e03aaf283a21ad46d4
-€
-Papp/src/main/java/ru/serg/composeweatherapp/ui/screens/main_screen/MainScreen.kt,2\e\2ee3441a6adb16ac843a931feea1aaea390ff3bf

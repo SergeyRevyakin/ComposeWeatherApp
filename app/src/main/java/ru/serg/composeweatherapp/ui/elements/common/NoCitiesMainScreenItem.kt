@@ -1,16 +1,17 @@
 package ru.serg.composeweatherapp.ui.elements.common
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationSearching
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,66 +35,38 @@ fun NoCitiesMainScreenItem(
             style = MaterialTheme.typography.headerStyle,
             modifier = Modifier
                 .headerModifier()
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
         )
 
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 12.dp)
-                .clickable {
-                    onRequestPermissionClick?.invoke()
-                },
-            verticalAlignment = Alignment.CenterVertically
+        CardButton(
+            buttonText = "Please allow us to get location access",
+            image = Icons.Rounded.LocationSearching
         ) {
-
-            Text(
-                text = "Please allow us to get location access",
-                fontSize = 22.sp,
-                modifier = Modifier
-                    .padding(end = 12.dp)
-                    .weight(1f)
-            )
-
-            Icon(
-                imageVector = Icons.Rounded.LocationSearching,
-                contentDescription = null,
-                Modifier.size(48.dp),
-                tint = MaterialTheme.colors.primary
-            )
+            onRequestPermissionClick?.invoke()
         }
+
         Text(
             text = "Click here to change it in settings",
             fontSize = 22.sp,
             modifier = Modifier
-                .padding(bottom = 24.dp)
-                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .padding(bottom = 32.dp)
                 .clickable {
                     goToSettings?.invoke()
-                }
-        )
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .clickable {
-                    onSearchClick?.invoke()
                 },
-            verticalAlignment = Alignment.CenterVertically
+            color = MaterialTheme.colors.primary,
+            textAlign = TextAlign.Center
+        )
+
+        CardButton(
+            buttonText = "Or find city manually",
+            image = Icons.Rounded.Search
         ) {
-
-            Icon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = null,
-                Modifier.size(48.dp),
-                tint = MaterialTheme.colors.primary
-            )
-
-            Text(
-                text = "Or find city manually",
-                fontSize = 22.sp,
-                modifier = Modifier.padding(start = 12.dp)
-            )
+            onSearchClick?.invoke()
         }
+
     }
 }
 
