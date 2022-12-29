@@ -5,7 +5,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -73,23 +80,6 @@ fun ChooseCityScreen(
                 .fillMaxWidth()
         )
 
-//        LazyHorizontalStaggeredGrid(
-//            rows = StaggeredGridCells.Fixed(2),
-//            state = rememberLazyStaggeredGridState(),
-//            contentPadding = PaddingValues(16.dp),
-//            modifier = Modifier.height(128.dp)
-//                .fillMaxWidth(),
-//            verticalArrangement = Arrangement.spacedBy(8.dp),
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//        ) {
-//
-//            items(viewModel.searchHistoryItems) {
-//                CitySearchItem(
-//                    cityItem = it,
-//                    onDelete = viewModel::onDeleteClick
-//                )
-//            }
-//        }
         AnimatedVisibility(visible = favouriteCities.isNotEmpty()) {
 
             Column() {
@@ -153,6 +143,7 @@ fun ChooseCityScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) { }
             }
+
             (viewModel.screenState.data.isNotEmpty()) -> {
                 Text(
                     text = "Are you looking for one of this?",
