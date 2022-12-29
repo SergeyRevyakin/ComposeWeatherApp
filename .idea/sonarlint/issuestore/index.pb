@@ -23,8 +23,6 @@ p
 @app/src/main/java/ru/serg/composeweatherapp/ComposeWeatherApp.kt,b\8\b8a08635e980c35ecc715851ce12f48987e21469
 |
 Lapp/src/main/java/ru/serg/composeweatherapp/ui/elements/HourlyWeatherItem.kt,2\7\27d1f168dd82ae82dae2032a780418a5e3aa2c92
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 
 Oapp/src/main/java/ru/serg/composeweatherapp/data/data_source/LocationService.kt,a\c\acf4e727a122df2c435e37bb916c12495bbfa184
 w

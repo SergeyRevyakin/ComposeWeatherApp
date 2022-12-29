@@ -32,7 +32,7 @@ fun NoCitiesMainScreenItem(
     ) {
         Text(
             text = "No weather data available",
-            style = MaterialTheme.typography.headerStyle,
+            style = headerStyle,
             modifier = Modifier
                 .headerModifier()
                 .fillMaxWidth()

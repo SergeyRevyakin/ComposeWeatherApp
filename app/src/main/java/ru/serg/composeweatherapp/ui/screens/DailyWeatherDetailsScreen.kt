@@ -52,7 +52,7 @@ fun DailyWeatherDetailsScreen(
             Column {
                 Text(
                     text = getFullDate(daily.dateTime),
-                    style = MaterialTheme.typography.headerStyle,
+                    style = headerStyle,
                     modifier = Modifier
                         .headerModifier()
                 )
@@ -71,7 +71,7 @@ fun DailyWeatherDetailsScreen(
 
                     Text(
                         text = daily.weatherDescription,
-                        style = MaterialTheme.typography.descriptionSubHeader,
+                        style = descriptionSubHeader,
                         color = MaterialTheme.colors.primary,
                         textAlign = TextAlign.Center,
                         modifier = Modifier

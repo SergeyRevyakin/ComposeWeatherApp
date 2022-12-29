@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,7 +46,7 @@ fun CityWeatherContentItem(
 
         Text(
             text = city,
-            style = MaterialTheme.typography.headerStyle,
+            style = headerStyle,
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .fillMaxWidth(),
@@ -69,7 +68,7 @@ fun CityWeatherContentItem(
 
         Text(
             text = "Hourly",
-            style = MaterialTheme.typography.headerStyle,
+            style = headerStyle,
             modifier = Modifier
                 .headerModifier()
         )
@@ -88,7 +87,7 @@ fun CityWeatherContentItem(
 
         Text(
             text = "Daily",
-            style = MaterialTheme.typography.headerStyle,
+            style = headerStyle,
             modifier = Modifier
                 .headerModifier()
                 .padding(top = 12.dp)

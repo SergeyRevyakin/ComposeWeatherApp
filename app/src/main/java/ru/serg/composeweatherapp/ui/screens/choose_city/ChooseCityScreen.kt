@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -96,7 +95,7 @@ fun ChooseCityScreen(
             Column() {
                 Text(
                     text = "Favourite cities",
-                    style = MaterialTheme.typography.headerStyle,
+                    style = headerStyle,
                     modifier = Modifier
                         .headerModifier()
                 )
@@ -157,7 +156,7 @@ fun ChooseCityScreen(
             (viewModel.screenState.data.isNotEmpty()) -> {
                 Text(
                     text = "Are you looking for one of this?",
-                    style = MaterialTheme.typography.headerStyle,
+                    style = headerStyle,
                     modifier = Modifier
                         .headerModifier()
                 )
