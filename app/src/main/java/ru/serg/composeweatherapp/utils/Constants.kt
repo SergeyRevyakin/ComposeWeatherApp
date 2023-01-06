@@ -31,6 +31,13 @@ object Constants {
         const val IS_DARK_THEME = "IS_DARK_THEME"
         const val IS_BACKGROUND_FETCH_ENABLED = "IS_BACKGROUND_FETCH_ENABLED"
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
+        const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
+
+        enum class Units(val parameterCode: String, val title: String, val description: String){
+            METRIC("metric", "Metric", "Temperature in Celsius, wind speed in meter/sec"),
+            IMPERIAL( "imperial", "Imperial", "Temperature in Fahrenheit and wind speed in miles/hour"),
+            KELVIN("standard", "Kelvin", "Temperature in Kelvin and wind speed in meter/sec")
+        }
     }
 
     const val ALARM_REQUEST_CODE = 1122

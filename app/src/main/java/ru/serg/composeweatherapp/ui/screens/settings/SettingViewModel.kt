@@ -24,11 +24,14 @@ class SettingViewModel @Inject constructor(
 
     var isLocationEnabled = mutableStateOf(false)
 
+    var measurementUnits = mutableStateOf(0)
+
     init {
         initDarkModeChange()
         initBackgroundFetchWeatherChange()
         initFetchFrequencyValue()
         initLocation()
+        initUnits()
     }
 
     private fun initDarkModeChange() {
@@ -68,6 +71,14 @@ class SettingViewModel @Inject constructor(
         }
     }
 
+    private fun initUnits() {
+        viewModelScope.launch {
+            dataStoreDataSource.measurementUnits.collectLatest {
+                measurementUnits.value = it
+            }
+        }
+    }
+
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
             dataStoreDataSource.saveDarkMode(isDark)
@@ -83,6 +94,12 @@ class SettingViewModel @Inject constructor(
     fun onFrequencyChanged(positionInList: Int) {
         viewModelScope.launch {
             dataStoreDataSource.saveFetchFrequency(positionInList)
+        }
+    }
+
+    fun onUnitsChanged(position: Int) {
+        viewModelScope.launch {
+            dataStoreDataSource.saveMeasurementUnits(position)
         }
     }
 

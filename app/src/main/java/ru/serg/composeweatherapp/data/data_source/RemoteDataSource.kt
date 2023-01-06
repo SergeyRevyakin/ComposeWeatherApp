@@ -16,44 +16,52 @@ import javax.inject.Named
 class RemoteDataSource @Inject constructor(
     @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
     @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
-    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient
+    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient,
+    val dataStoreDataSource: DataStoreDataSource
 ) {
 
     suspend fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
-                httpClientOneCall.get {
-                    parameter("exclude", "minutely")
-                    parameter("lon", lon)
-                    parameter("lat", lat)
-                }.let {
-                    if (it.status.value == 200) {
-                        emit(NetworkResult.Success(it.body()))
-                    } else {
-                        emit(NetworkResult.Error(data = it.body(), message = ""))
+                dataStoreDataSource.measurementUnits.collect { value ->
+                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    httpClientOneCall.get {
+                        parameter("units", units)
+                        parameter("exclude", "minutely")
+                        parameter("lon", lon)
+                        parameter("lat", lat)
+                    }.let {
+                        if (it.status.value == 200) {
+                            emit(NetworkResult.Success(it.body()))
+                        } else {
+                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                        }
                     }
                 }
             } catch (e: Exception) {
                 emit(NetworkResult.Error(e.localizedMessage))
             }
         }
-        //.flowOn(Dispatchers.IO)
     }
 
     suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
-                httpClientWeather.get {
-                    parameter("exclude", "minutely")
-                    parameter("lon", lon)
-                    parameter("lat", lat)
-                }.let {
-                    if (it.status.value == 200) {
-                        emit(NetworkResult.Success(it.body()))
-                    } else {
-                        emit(NetworkResult.Error(data = it.body(), message = ""))
+                dataStoreDataSource.measurementUnits.collect { value ->
+                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    httpClientWeather.get {
+                        parameter("units", units)
+                        parameter("exclude", "minutely")
+                        parameter("lon", lon)
+                        parameter("lat", lat)
+                    }.let {
+                        if (it.status.value == 200) {
+                            emit(NetworkResult.Success(it.body()))
+                        } else {
+                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                        }
                     }
                 }
             } catch (e: Exception) {

@@ -17,6 +17,7 @@ class DataStoreDataSource(context: Context) {
         val IS_BACKGROUND_FETCH_ENABLED =
             booleanPreferencesKey(Constants.DataStore.IS_BACKGROUND_FETCH_ENABLED)
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
+        val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
     }
 
     private val dataStore = context.dataStore
@@ -52,6 +53,17 @@ class DataStoreDataSource(context: Context) {
     suspend fun saveFetchFrequency(positionInList: Int) {
         dataStore.edit {
             it[FETCH_FREQUENCY] = positionInList
+        }
+    }
+
+    //Units of measurement with enum
+    val measurementUnits = dataStore.data.map {
+        it[MEASUREMENT_UNITS] ?: 0
+    }
+
+    suspend fun saveMeasurementUnits(enumPosition: Int) {
+        dataStore.edit {
+            it[MEASUREMENT_UNITS] = enumPosition
         }
     }
 

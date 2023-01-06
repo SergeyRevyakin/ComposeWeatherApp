@@ -8,10 +8,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.serg.composeweatherapp.ui.theme.settingsSubText
 
 @Composable
 fun MenuRowWithRadioButton(
@@ -41,10 +41,9 @@ fun MenuRowWithRadioButton(
 
                 Text(
                     text = descriptionText,
-                    fontSize = 16.sp,
-                    color = Color.Gray,
                     modifier = modifier
-                        .padding(top = 8.dp)
+                        .padding(top = 8.dp),
+                    style = settingsSubText
                 )
             }
         } else {

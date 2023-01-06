@@ -5,6 +5,7 @@ import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
@@ -49,5 +50,14 @@ val descriptionSubHeader: TextStyle
         return TextStyle(
             fontSize = 24.sp,
             letterSpacing = 2.sp
+        )
+    }
+
+val settingsSubText: TextStyle
+    @Composable
+    get() {
+        return TextStyle(
+            fontSize = 16.sp,
+            color = Color.Gray,
         )
     }
