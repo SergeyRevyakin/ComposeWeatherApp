@@ -2,7 +2,12 @@ package ru.serg.composeweatherapp.ui.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -24,6 +29,7 @@ import ru.serg.composeweatherapp.utils.Ext.getMinMaxTemp
 @Composable
 fun DailyWeatherItem(
     item: DayWeatherItem,
+    units: String,
     onClick: () -> Unit
 ) {
     Card(
@@ -54,7 +60,7 @@ fun DailyWeatherItem(
             Text(text = getDate(item.dateTime), modifier = Modifier.weight(1f))
 
             Text(
-                text = getMinMaxTemp(item.temp),
+                text = getMinMaxTemp(item.temp, units),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f)
             )

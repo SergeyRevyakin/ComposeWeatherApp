@@ -29,6 +29,7 @@ import ru.serg.composeweatherapp.utils.Ext
 @Composable
 fun DailyWeatherDetailsScreen(
     daily: DayWeatherItem,
+    units: String,
     modifier: Modifier,
     onDismiss: () -> Unit
 ) {
@@ -122,8 +123,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Morning: ${Ext.getTemp(daily.temp.morningTemp)}")
-                        Text(text = "Day: ${Ext.getTemp(daily.temp.dayTemp)}")
+                        Text(text = "Morning: ${Ext.getTemp(daily.temp.morningTemp, units)}")
+                        Text(text = "Day: ${Ext.getTemp(daily.temp.dayTemp, units)}")
                     }
 
                     Column(
@@ -132,8 +133,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Evening: ${Ext.getTemp(daily.temp.eveningTemp)}")
-                        Text(text = "Night ${Ext.getTemp(daily.temp.nightTemp)}")
+                        Text(text = "Evening: ${Ext.getTemp(daily.temp.eveningTemp, units)}")
+                        Text(text = "Night ${Ext.getTemp(daily.temp.nightTemp, units)}")
                     }
                 }
                 Divider(
@@ -199,6 +200,7 @@ fun PreviewDailyWeatherDetailsScreen() {
                 sunrise = getTimeMillis() + (60L * 60L * 6L * 1000),
                 sunset = getTimeMillis() + (60L * 60L * 16L * 1000),
             ),
+            units = "℃",
             onDismiss = {},
             modifier = Modifier
         )
@@ -229,6 +231,7 @@ fun PreviewLightDailyWeatherDetailsScreen() {
                 sunrise = getTimeMillis() + (60L * 60L * 6L * 1000),
                 sunset = getTimeMillis() + (60L * 60L * 16L * 1000),
             ),
+            units = "℃",
             onDismiss = {},
             modifier = Modifier
         )

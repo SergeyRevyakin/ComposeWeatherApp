@@ -1,7 +1,13 @@
 package ru.serg.composeweatherapp.ui.elements
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -21,23 +27,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
+import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
-import ru.serg.composeweatherapp.utils.Ext
 import ru.serg.composeweatherapp.utils.Ext.firstLetterToUpperCase
+import ru.serg.composeweatherapp.utils.Ext.getTemp
 
 @Composable
 fun TodayWeatherCardItem(
-    weatherIcon: Int? = R.drawable.ic_rain,
-    currentTemp: Int? = 12,
-    feelsLikeTemp: Int? = 10,
-    weatherDesc: String = "Rain",
-    windDirection: Int? = 90,
-    windSpeed: Int? = 5,
-    humidity: Int? = 55,
-    pressure: Int? = 967,
-    timestamp: Long? = 0L
+    weatherItem: WeatherItem,
+    units: String
 ) {
     Card(
         shape = RoundedCornerShape(24.dp),
@@ -58,7 +58,7 @@ fun TodayWeatherCardItem(
 
             Icon(
                 painter = painterResource(
-                    id = weatherIcon ?: R.drawable.ic_rain
+                    id = weatherItem.weatherIcon ?: R.drawable.ic_rain
                 ),
                 contentDescription = "Weather icon",
                 modifier = Modifier
@@ -67,7 +67,7 @@ fun TodayWeatherCardItem(
             )
 
             Text(
-                text = weatherDesc.firstLetterToUpperCase(),
+                text = weatherItem.weatherDescription.firstLetterToUpperCase(),
                 fontSize = 28.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
@@ -98,7 +98,12 @@ fun TodayWeatherCardItem(
                             .fillMaxWidth()
                             .height(24.dp),
                         paramIcon = R.drawable.ic_thermometer,
-                        paramValue = "Temperature: ${Ext.getTemp(temp = currentTemp?.toDouble())}",
+                        paramValue = "Temperature: ${
+                            getTemp(
+                                temp = weatherItem.currentTemp,
+                                units
+                            )
+                        }",
                     )
 
                     WeatherParamRowItem(
@@ -107,7 +112,7 @@ fun TodayWeatherCardItem(
                             .padding(top = 16.dp)
                             .height(24.dp),
                         paramIcon = R.drawable.ic_thermometer,
-                        paramValue = "Feels like: ${Ext.getTemp(feelsLikeTemp?.toDouble())}",
+                        paramValue = "Feels like: ${getTemp(temp = weatherItem.feelsLike, units)}",
                     )
                 }
 
@@ -120,8 +125,8 @@ fun TodayWeatherCardItem(
                     WeatherParamRowItem(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        rotation = windDirection ?: 0,
-                        paramValue = "Wind speed: ${windSpeed}m/s",
+                        rotation = weatherItem.windDirection ?: 0,
+                        paramValue = "Wind speed: ${weatherItem.windSpeed}m/s",
                         paramIcon = R.drawable.ic_wind_dir_north
                     )
 
@@ -130,7 +135,7 @@ fun TodayWeatherCardItem(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                         paramIcon = R.drawable.ic_humidity,
-                        paramValue = "Humidity: $humidity%",
+                        paramValue = "Humidity: ${weatherItem.humidity}%",
                     )
                 }
             }
@@ -143,11 +148,11 @@ fun TodayWeatherCardItem(
                     .padding(bottom = 16.dp)
                     .padding(horizontal = 12.dp),
                 paramIcon = R.drawable.ic_barometer,
-                paramValue = "Pressure: $pressure",
+                paramValue = "Pressure: ${weatherItem.pressure}",
             )
 
             Text(
-                text = "Last updated: ${getFormattedLastUpdateDate(timestamp ?: 0L)}",
+                text = "Last updated: ${getFormattedLastUpdateDate(weatherItem.lastUpdatedTime)}",
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -165,6 +170,9 @@ fun TodayWeatherCardItemPreview() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        TodayWeatherCardItem()
+        TodayWeatherCardItem(
+            WeatherItem.defaultItem(),
+            "℃"
+        )
     }
 }

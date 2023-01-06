@@ -1,5 +1,8 @@
 package ru.serg.composeweatherapp.data.data
 
+import io.ktor.util.date.getTimeMillis
+import ru.serg.composeweatherapp.R
+
 data class WeatherItem(
     val feelsLike: Double?,
     val currentTemp: Double?,
@@ -14,4 +17,24 @@ data class WeatherItem(
     val lastUpdatedTime: Long,
     val hourlyWeatherList: List<HourWeatherItem>,
     val dailyWeatherList: List<DayWeatherItem>
-)
+) {
+    companion object {
+        fun defaultItem() = WeatherItem(
+            feelsLike = 12.5,
+            currentTemp = 15.0,
+            windDirection = 90,
+            windSpeed = 5.2,
+            humidity = 52,
+            pressure = 980,
+            weatherDescription = "Sunny",
+            weatherIcon = R.drawable.ic_day_sunny,
+            dateTime = getTimeMillis(),
+            cityItem = CityItem(
+                name = "Moscow"
+            ),
+            lastUpdatedTime = getTimeMillis(),
+            hourlyWeatherList = listOf(),
+            dailyWeatherList = listOf()
+        )
+    }
+}

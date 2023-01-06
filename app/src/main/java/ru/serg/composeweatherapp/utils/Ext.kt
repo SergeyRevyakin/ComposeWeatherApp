@@ -30,18 +30,20 @@ import kotlin.math.absoluteValue
 
 object Ext {
 
-    fun getMinMaxTemp(temp: IntraDayTempItem?): String {
-        return "${temp?.nightTemp?.toInt()}-${temp?.dayTemp?.toInt()}℃"
+    fun getMinMaxTemp(temp: IntraDayTempItem?, units: String): String {
+        return "${temp?.nightTemp?.toInt()}-${temp?.dayTemp?.toInt()}$units"
     }
 
-    fun getTemp(temp: Double?): String {
-        return "${temp?.toInt().toString()}℃" //TODO Fahrenheit temp
+    fun getTemp(temp: Double?, units: String): String {
+        return "${temp?.toInt().toString()}$units" //TODO Fahrenheit temp
     }
 
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-    fun String.firstLetterToUpperCase() =
-        replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    fun String?.firstLetterToUpperCase() =
+        this?.let {
+            replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        } ?: Constants.EMPTY_STRING
 
     fun CityItem.toCityEntity() = CityEntity(
         name,

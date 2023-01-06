@@ -32,7 +32,7 @@ import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAcce
 import ru.serg.composeweatherapp.utils.Ext.getTemp
 
 @Composable
-fun HourlyWeatherItem(item: HourWeatherItem) {
+fun HourlyWeatherItem(item: HourWeatherItem, units: String) {
     Card(
         elevation = 8.dp,
         shape = RoundedCornerShape(8.dp),
@@ -74,7 +74,7 @@ fun HourlyWeatherItem(item: HourWeatherItem) {
                     .padding(bottom = 12.dp)
             ) {
                 Text(
-                    text = getTemp(item.currentTemp),
+                    text = getTemp(item.currentTemp, units),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -97,7 +97,8 @@ fun PreviewDarkHourlyItem() {
                 ru.serg.composeweatherapp.R.drawable.ic_cloudy,
                 12.5,
                 getTimeMillis()
-            )
+            ),
+            units = "℃"
         )
     }
 }
@@ -114,7 +115,8 @@ fun PreviewLightHourlyItem() {
                 ru.serg.composeweatherapp.R.drawable.ic_cloudy,
                 12.5,
                 getTimeMillis()
-            )
+            ),
+            units = "℃"
         )
     }
 }

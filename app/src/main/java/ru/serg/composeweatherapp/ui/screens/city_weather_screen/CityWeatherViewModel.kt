@@ -4,7 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -24,19 +28,20 @@ class CityWeatherViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            savedStateHandle.get<String>(Constants.CITY_ITEM)?.let {
+            savedStateHandle.get<String>(Constants.CITY_ITEM)?.let { city ->
                 uiState =
-                    weatherRepository.fetchWeather(Json.decodeFromString(it)).map { networkResult ->
-                        when (networkResult) {
-                            is NetworkResult.Loading -> ScreenState.Loading
-                            is NetworkResult.Error -> ScreenState.Error(networkResult.message)
-                            is NetworkResult.Success -> networkResult.data?.let {
-                                ScreenState.Success(
-                                    it
-                                )
-                            } ?: ScreenState.Error("Can't recognise data")
-                        }
-                    }.stateIn(
+                    weatherRepository.fetchWeather(Json.decodeFromString(city))
+                        .map { networkResult ->
+                            when (networkResult) {
+                                is NetworkResult.Loading -> ScreenState.Loading
+                                is NetworkResult.Error -> ScreenState.Error(networkResult.message)
+                                is NetworkResult.Success -> networkResult.data?.let { weatherItem ->
+                                    ScreenState.Success(
+                                        weatherItem
+                                    )
+                                } ?: ScreenState.Error("Can't recognise data")
+                            }
+                        }.stateIn(
                         scope = viewModelScope,
                         initialValue = ScreenState.Empty,
                         started = SharingStarted.WhileSubscribed(5_000)

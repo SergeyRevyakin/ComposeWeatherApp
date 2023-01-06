@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.headerModifier
@@ -30,13 +32,18 @@ import ru.serg.composeweatherapp.ui.theme.headerStyle
 @Composable
 fun CityWeatherContentItem(
     weatherItem: WeatherItem,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CityWeatherContentItemViewModel = hiltViewModel()
 ) {
     val hourlyWeatherListState = rememberLazyListState()
 
     val city = weatherItem.cityItem?.name.orEmpty()
 
     val columnState = rememberScrollState()
+
+    val units =
+        viewModel.units.collectAsState()
+
 
     Column(
         modifier = modifier
@@ -54,16 +61,18 @@ fun CityWeatherContentItem(
         )
 
         TodayWeatherCardItem(
-            weatherIcon = weatherItem.weatherIcon,
-            weatherDesc = weatherItem.weatherDescription.orEmpty(),
-            currentTemp = weatherItem.currentTemp?.toInt(),
-            feelsLikeTemp = weatherItem.feelsLike?.toInt()
-                ?: 0,
-            windDirection = weatherItem.windDirection,
-            windSpeed = weatherItem.windSpeed?.toInt(),
-            humidity = weatherItem.humidity ?: 0,
-            pressure = weatherItem.pressure ?: 0,
-            timestamp = weatherItem.lastUpdatedTime
+//            weatherIcon = weatherItem.weatherIcon,
+//            weatherDesc = weatherItem.weatherDescription.orEmpty(),
+//            currentTemp = weatherItem.currentTemp?.toInt(),
+//            feelsLikeTemp = weatherItem.feelsLike?.toInt()
+//                ?: 0,
+//            windDirection = weatherItem.windDirection,
+//            windSpeed = weatherItem.windSpeed?.toInt(),
+//            humidity = weatherItem.humidity ?: 0,
+//            pressure = weatherItem.pressure ?: 0,
+//            timestamp = weatherItem.lastUpdatedTime,
+            weatherItem = weatherItem,
+            units = units.value
         )
 
         Text(
@@ -81,7 +90,7 @@ fun CityWeatherContentItem(
             val list =
                 weatherItem.hourlyWeatherList
             items(list) {
-                HourlyWeatherItem(item = it)
+                HourlyWeatherItem(item = it, units = units.value)
             }
         }
 
@@ -107,10 +116,11 @@ fun CityWeatherContentItem(
                     mutableStateOf(false)
                 }
 
-                DailyWeatherItem(item = daily) { isDailyItemOpen = true }
+                DailyWeatherItem(item = daily, viewModel.units.value) { isDailyItemOpen = true }
                 if (isDailyItemOpen) {
                     DailyWeatherDetailsScreen(
                         daily = daily,
+                        units = units.value,
                         modifier = Modifier
                     ) {
                         isDailyItemOpen = !isDailyItemOpen

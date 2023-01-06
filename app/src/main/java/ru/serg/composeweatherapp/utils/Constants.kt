@@ -33,10 +33,10 @@ object Constants {
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
         const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
 
-        enum class Units(val parameterCode: String, val title: String, val description: String){
-            METRIC("metric", "Metric", "Temperature in Celsius, wind speed in meter/sec"),
-            IMPERIAL( "imperial", "Imperial", "Temperature in Fahrenheit and wind speed in miles/hour"),
-            KELVIN("standard", "Kelvin", "Temperature in Kelvin and wind speed in meter/sec")
+        enum class Units(val parameterCode: String, val title: String, val description: String, val tempUnits: String, val windUnits: String){
+            METRIC("metric", "Metric", "Temperature in Celsius, wind speed in meter/sec", "℃", "m/s"),
+            IMPERIAL( "imperial", "Imperial", "Temperature in Fahrenheit and wind speed in miles/hour", "℉", "mph"),
+            KELVIN("standard", "Kelvin", "Temperature in Kelvin and wind speed in meter/sec", "K", "m/s")
         }
     }
 
