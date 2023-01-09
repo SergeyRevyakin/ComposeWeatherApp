@@ -9,14 +9,6 @@ import ru.serg.composeweatherapp.utils.Constants
 
 @Entity(
     tableName = Constants.WEATHER_ITEMS,
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = CityEntity::class,
-//            parentColumns = ["cityName"],
-//            childColumns = ["cityName"],
-//            onDelete = ForeignKey.CASCADE,
-//        )
-//    ]
 )
 data class WeatherItemEntity(
     val feelsLike: Double?,

@@ -140,7 +140,6 @@ fun TodayWeatherCardItem(
                 }
             }
 
-
             WeatherParamRowItem(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -159,7 +158,6 @@ fun TodayWeatherCardItem(
                     .padding(16.dp)
             )
         }
-
     }
 }
 

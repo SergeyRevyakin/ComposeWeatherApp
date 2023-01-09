@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ErrorItem(
     errorText: String?,
-    stringResource: Int? = null
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -66,5 +65,5 @@ fun ErrorItem(
 @Preview
 @Composable
 fun PreviewErrorItem() {
-    ErrorItem(errorText = "No connection!", null)
+    ErrorItem(errorText = "No connection!")
 }

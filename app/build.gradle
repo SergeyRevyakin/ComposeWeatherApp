@@ -14,8 +14,8 @@ android {
         applicationId "ru.serg.composeweatherapp"
         minSdk 27
         targetSdk 33
-        versionCode 8
-        versionName "0.08"
+        versionCode 9
+        versionName "0.09"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

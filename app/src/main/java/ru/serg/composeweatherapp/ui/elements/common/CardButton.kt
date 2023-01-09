@@ -69,7 +69,5 @@ fun CardButton(
 fun PreviewCardButton() {
     CardButton(
         "Find city manually", Icons.Rounded.Search
-    ) {
-
-    }
+    ) { }
 }

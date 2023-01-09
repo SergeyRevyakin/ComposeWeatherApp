@@ -1,6 +1,6 @@
 package ru.serg.composeweatherapp.data.data_source
 
-import io.ktor.util.date.*
+import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -58,7 +58,7 @@ class LocalDataSource @Inject constructor(
         weatherDao.deleteWeatherWithCity(cityItem.name)
     }
 
-    suspend fun getCurrentWeatherItem(): Flow<List<WeatherItem>> {
+    fun getCurrentWeatherItem(): Flow<List<WeatherItem>> {
         return flow {
             weatherDao.getWeatherWithCity().collect { list ->
                 emit(list.map {

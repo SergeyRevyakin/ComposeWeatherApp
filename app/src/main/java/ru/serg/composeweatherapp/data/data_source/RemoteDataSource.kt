@@ -20,7 +20,7 @@ class RemoteDataSource @Inject constructor(
     val dataStoreDataSource: DataStoreDataSource
 ) {
 
-    suspend fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
+    fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
@@ -45,7 +45,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
+    fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
@@ -70,7 +70,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
+    fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())

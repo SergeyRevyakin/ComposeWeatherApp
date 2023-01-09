@@ -28,7 +28,6 @@ fun CityRow(
             }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
             text = "${cityItem.name}, ${cityItem.country}",

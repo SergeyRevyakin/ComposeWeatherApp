@@ -1,10 +1,14 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package ru.serg.composeweatherapp.data
 
-import io.ktor.util.date.*
+import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
@@ -26,21 +30,22 @@ class WeatherRepository @Inject constructor(
     private val networkStatus: NetworkStatus
 ) {
 
-    suspend fun fetchCurrentLocationWeather(
+    fun fetchCurrentLocationWeather(
         coordinatesWrapper: CoordinatesWrapper,
         forced: Boolean = false
-    ): Flow<NetworkResult<WeatherItem>> = if (forced) fetchCoordinatesWeather(
-        coordinatesWrapper
-    )
-    else fetchWeather(coordinatesWrapper)
+    ): Flow<NetworkResult<WeatherItem>> =
+        if (forced) fetchCoordinatesWeather(
+            coordinatesWrapper
+        ) else fetchWeather(coordinatesWrapper)
 
-    suspend fun fetchCityWeather(
+    fun fetchCityWeather(
         cityItem: CityItem,
         forced: Boolean = false
-    ): Flow<NetworkResult<WeatherItem>> = if (forced) fetchWeather(cityItem)
-    else getLocalWeather(cityItem)
+    ): Flow<NetworkResult<WeatherItem>> =
+        if (forced) fetchWeather(cityItem)
+        else getLocalWeather(cityItem)
 
-    private suspend fun getLocalWeather(
+    private fun getLocalWeather(
         cityItem: CityItem,
     ): Flow<NetworkResult<WeatherItem>> =
         localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
@@ -57,7 +62,6 @@ class WeatherRepository @Inject constructor(
                         } else {
                             flowOf(NetworkResult.Success(item))
                         }
-
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
@@ -65,18 +69,12 @@ class WeatherRepository @Inject constructor(
                     if (it.contains(cityItem)) fetchWeather(cityItem)
                     else emptyFlow()
                 }
-
             } else {
-                flowOf(
-                    NetworkResult.Error(
-                        message = "No Internet Connection",
-                        errorTextResource = R.string.no_connection
-                    )
-                )
+                noConnectionErrorFlow()
             }
         }
 
-    private suspend fun fetchWeather(
+    private fun fetchWeather(
         coordinatesWrapper: CoordinatesWrapper
     ): Flow<NetworkResult<WeatherItem>> =
         localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
@@ -100,16 +98,11 @@ class WeatherRepository @Inject constructor(
             } ?: if (networkStatus.isNetworkConnected()) {
                 fetchCoordinatesWeather(coordinatesWrapper)
             } else {
-                flowOf(
-                    NetworkResult.Error(
-                        message = "No Internet Connection",
-                        errorTextResource = R.string.no_connection
-                    )
-                )
+                noConnectionErrorFlow()
             }
         }
 
-    private suspend fun fetchCoordinatesWeather(coordinatesWrapper: CoordinatesWrapper) = combine(
+    private fun fetchCoordinatesWeather(coordinatesWrapper: CoordinatesWrapper) = combine(
         remoteDataSource.getWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude),
         remoteDataSource.getOneCallWeather(
             coordinatesWrapper.latitude,
@@ -120,11 +113,13 @@ class WeatherRepository @Inject constructor(
             (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
                 NetworkResult.Loading()
             }
+
             (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
                 NetworkResult.Error(
                     weatherResponse.data?.message ?: oneCallResponse.data?.message
                 )
             }
+
             (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
                 if (weatherResponse.data != null && oneCallResponse.data != null) {
                     val cityItem = DataMapper.mapCityItem(weatherResponse.data, true)
@@ -146,7 +141,7 @@ class WeatherRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchWeather(
+    fun fetchWeather(
         cityItem: CityItem
     ): Flow<NetworkResult<WeatherItem>> =
         combine(
@@ -157,11 +152,13 @@ class WeatherRepository @Inject constructor(
                 (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
                     NetworkResult.Loading()
                 }
+
                 (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
                     NetworkResult.Error(
                         weatherResponse.data?.message ?: oneCallResponse.data?.message
                     )
                 }
+
                 (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
 
                     if (weatherResponse.data != null && oneCallResponse.data != null) {
@@ -181,4 +178,11 @@ class WeatherRepository @Inject constructor(
                 else -> NetworkResult.Loading()
             }
         }
+
+    private fun noConnectionErrorFlow(): Flow<NetworkResult<WeatherItem>> = flowOf(
+        NetworkResult.Error(
+            message = "No Internet Connection",
+            errorTextResource = R.string.no_connection
+        )
+    )
 }

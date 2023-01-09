@@ -65,6 +65,5 @@ fun MenuLocationRowWithIcon(
 @Preview
 @Composable
 fun PreviewMenuRowWithIcon() {
-
     MenuLocationRowWithIcon(true) {}
 }
