@@ -17,7 +17,7 @@ class RemoteDataSource @Inject constructor(
     @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
     @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
     @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient,
-    val dataStoreDataSource: DataStoreDataSource
+    private val dataStoreDataSource: DataStoreDataSource
 ) {
 
     fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
