@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import ru.serg.composeweatherapp.utils.NetworkStatus
+import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import javax.inject.Singleton
 
 @Module
@@ -40,5 +41,11 @@ class AppModule {
         @ApplicationContext context: Context,
         client: FusedLocationProviderClient
     ): LocationServiceImpl = LocationServiceImpl(context, client)
+
+    @Singleton
+    @Provides
+    fun provideWeatherAlarmManager(
+        @ApplicationContext context: Context
+    ): WeatherAlarmManager = WeatherAlarmManager(context)
 
 }

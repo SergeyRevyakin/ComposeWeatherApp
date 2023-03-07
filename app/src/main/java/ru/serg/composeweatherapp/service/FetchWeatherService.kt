@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +53,7 @@ class FetchWeatherService : Service() {
 
         weatherServiceUseCase.checkCurrentLocationAndWeather()
             .onEach {
+                Log.e(this::class.simpleName, "Fetch service $it")
                 when (it) {
                     is ServiceFetchingResult.Success -> {
                         onWeatherFetchedSuccessful(it.data)

@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -31,6 +33,8 @@ import ru.serg.composeweatherapp.ui.elements.settings.RadioButtonGroup
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.Ext.openAppSystemSettings
+import ru.serg.composeweatherapp.utils.WeatherAlarmManager
+import ru.serg.composeweatherapp.worker.WeatherWorker
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -45,16 +49,11 @@ fun SettingsScreen(
     val intent = Intent(context, FetchWeatherService::class.java)
 
     //TODO Rework alarm manager status
-    val isAlarmOn = remember {
-        mutableStateOf(
-            PendingIntent.getForegroundService(
-                context,
-                Constants.ALARM_REQUEST_CODE,
-                intent,
-                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_NO_CREATE
-            ) != null
-        )
-    }
+//    val workerState = WeatherWorker.isWeatherWorkerSetFlow(context).collectAsState(initial = false)
+//    val alarmState = WeatherAlarmManager().isAlarmSet(context).collectAsState(initial = false)
+//    val isAlarmOn = remember {
+//        alarmState
+//    }
 
     Column(
         modifier = Modifier
@@ -102,8 +101,8 @@ fun SettingsScreen(
             optionName = "Fetch weather every morning",
             descriptionText = "Allow app get weather data every morning and show in notification. It will consume some network traffic",
             modifier = Modifier,
-            buttonState = isAlarmOn,
-            onSwitchClick = { setAlarm(context.applicationContext) }
+            buttonState = viewModel.alarmState,
+            onSwitchClick = { viewModel.onAlarmChanged() }
         )
 
         RadioButtonGroup(
@@ -125,7 +124,7 @@ fun setAlarm(context: Context) {
         context,
         Constants.ALARM_REQUEST_CODE,
         intent,
-        PendingIntent.FLAG_MUTABLE
+        PendingIntent.FLAG_IMMUTABLE
     )
 
     val tommorrowMorning =
@@ -142,6 +141,17 @@ fun setAlarm(context: Context) {
         AlarmManager.INTERVAL_FIFTEEN_MINUTES,
         pendingIntent
     )
+}
+
+fun setWorkManager(context: Context, state: MutableState<Boolean>) {
+    WeatherWorker.run {
+        if (isWeatherWorkerSet(context)) {
+            cancelPeriodicWork(context)
+        } else {
+            setupPeriodicWork(context)
+        }
+        state.value = !state.value
+    }
 }
 
 @Preview(showBackground = true)

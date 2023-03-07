@@ -1,10 +1,15 @@
 package ru.serg.composeweatherapp.ui.elements.settings
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +23,7 @@ fun MenuRowWithRadioButton(
     optionName: String,
     modifier: Modifier = Modifier,
     descriptionText: String? = null,
-    buttonState: MutableState<Boolean> = mutableStateOf(false),
+    buttonState: State<Boolean> = mutableStateOf(false),
     onSwitchClick: ((Boolean) -> Unit) = {}
 ) {
     Row(

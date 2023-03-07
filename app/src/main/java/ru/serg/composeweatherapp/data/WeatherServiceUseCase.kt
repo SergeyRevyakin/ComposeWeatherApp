@@ -2,6 +2,7 @@
 
 package ru.serg.composeweatherapp.data
 
+import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -25,6 +26,7 @@ class WeatherServiceUseCase @Inject constructor(
                 isOneTimeRequest = true,
                 updateFrequency = fetchFrequency.toLong()
             ).flatMapLatest { coordinatesWrapper ->
+                Log.e(this::class.simpleName, "Coordinates are $coordinatesWrapper")
                 weatherRepository.fetchCurrentLocationWeather(
                     coordinatesWrapper, true
                 ).map { networkResult ->

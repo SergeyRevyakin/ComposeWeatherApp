@@ -9,11 +9,13 @@ import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
+    private val weatherAlarmManager: WeatherAlarmManager
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -26,12 +28,15 @@ class SettingViewModel @Inject constructor(
 
     var measurementUnits = mutableStateOf(0)
 
+    var alarmState = mutableStateOf(false)
+
     init {
         initDarkModeChange()
         initBackgroundFetchWeatherChange()
         initFetchFrequencyValue()
         initLocation()
         initUnits()
+        initAlarmState()
     }
 
     private fun initDarkModeChange() {
@@ -79,6 +84,12 @@ class SettingViewModel @Inject constructor(
         }
     }
 
+    private fun initAlarmState() {
+        weatherAlarmManager.isAlarmSet().let {
+            alarmState.value = it
+        }
+    }
+
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
             dataStoreDataSource.saveDarkMode(isDark)
@@ -101,6 +112,11 @@ class SettingViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreDataSource.saveMeasurementUnits(position)
         }
+    }
+
+    fun onAlarmChanged() {
+        weatherAlarmManager.setOrCancelAlarm()
+        initAlarmState()
     }
 
 }

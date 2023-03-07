@@ -3,15 +3,12 @@ package ru.serg.composeweatherapp.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class NetworkStatus(val context: Context) {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeConnectivityFlow() = context.observeConnectivityAsFlow()
 
     fun isNetworkConnected() = context.currentConnectionsState == ConnectionState.Available
 }
@@ -31,21 +28,9 @@ val Context.currentConnectionsState: ConnectionState
 private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager): ConnectionState {
     val network = connectivityManager.activeNetwork
     network?.let {
-        val actNetwork = connectivityManager.getNetworkCapabilities(network)
-            ?: return ConnectionState.Unavailable
-        return when {
-            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                ConnectionState.Available
-            }
-            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                ConnectionState.Available
-            }
-            else -> {
-                ConnectionState.Available
-            }
-        }
-    }
-    return ConnectionState.Unavailable
+        connectivityManager.getNetworkCapabilities(network) ?: return ConnectionState.Unavailable
+        return ConnectionState.Available
+    }?: return ConnectionState.Unavailable
 }
 
 @ExperimentalCoroutinesApi
@@ -54,19 +39,12 @@ fun Context.observeConnectivityAsFlow() = callbackFlow {
 
     val callback = NetworkCallback { connectionState -> trySend(connectionState) }
 
-    val networkRequest = NetworkRequest.Builder()
-        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        .build()
-
-    connectivityManager.registerNetworkCallback(networkRequest, callback)
-
-    val currentState = getCurrentConnectivityState(connectivityManager)
-    send(currentState)
+    connectivityManager.registerDefaultNetworkCallback(callback)
 
     awaitClose {
         connectivityManager.unregisterNetworkCallback(callback)
     }
-}
+}.distinctUntilChanged()
 
 fun NetworkCallback(callback: (ConnectionState) -> Unit): ConnectivityManager.NetworkCallback {
     return object : ConnectivityManager.NetworkCallback() {
@@ -84,6 +62,7 @@ fun NetworkCallback(callback: (ConnectionState) -> Unit): ConnectivityManager.Ne
 
         override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
             if (blocked) callback(ConnectionState.Unavailable)
+            else callback(ConnectionState.Available)
         }
     }
 }
