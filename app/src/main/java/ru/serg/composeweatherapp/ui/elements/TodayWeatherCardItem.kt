@@ -31,8 +31,8 @@ import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
-import ru.serg.composeweatherapp.utils.Ext.firstLetterToUpperCase
-import ru.serg.composeweatherapp.utils.Ext.getTemp
+import ru.serg.composeweatherapp.utils.firstLetterToUpperCase
+import ru.serg.composeweatherapp.utils.getTemp
 
 @Composable
 fun TodayWeatherCardItem(

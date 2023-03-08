@@ -20,9 +20,7 @@ class WeatherAlarmManager(private val context: Context) {
         )
 
         return (alarm != null)
-
     }
-
 
     fun setOrCancelAlarm() {
         if (isAlarmSet()) {

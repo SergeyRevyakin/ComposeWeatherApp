@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,11 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItem
+import ru.serg.composeweatherapp.ui.elements.PullRefreshBox
 import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 
@@ -35,6 +35,7 @@ import ru.serg.composeweatherapp.ui.screens.ScreenState
 fun PagerScreen(
     cityItem: CityItem?,
     startLoading: Boolean,
+    isRefreshing: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
 
@@ -46,6 +47,12 @@ fun PagerScreen(
     }
 
     val uiState by viewModel.uiState.collectAsState()
+
+    val refreshing by viewModel.isRefreshing.collectAsState()
+
+    LaunchedEffect(refreshing) {
+        isRefreshing.value = refreshing
+    }
 
     AnimatedVisibility(
         visible = uiState is ScreenState.Loading,
@@ -77,9 +84,10 @@ fun PagerScreen(
     ) {
         val weatherItem = (uiState as? ScreenState.Success)?.weatherItem
 
-        SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = uiState is ScreenState.Loading),
-            onRefresh = { viewModel.refresh(cityItem) }) {
-
+        PullRefreshBox(
+            refreshing = refreshing,
+            onRefresh = { viewModel.refresh(cityItem) }
+        ) {
             weatherItem?.let {
                 CityWeatherContentItem(
                     weatherItem = weatherItem,

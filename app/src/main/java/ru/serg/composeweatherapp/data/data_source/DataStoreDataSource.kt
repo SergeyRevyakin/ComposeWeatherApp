@@ -9,7 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.Ext.dataStore
+import ru.serg.composeweatherapp.utils.dataStore
 
 class DataStoreDataSource(context: Context) {
     companion object {

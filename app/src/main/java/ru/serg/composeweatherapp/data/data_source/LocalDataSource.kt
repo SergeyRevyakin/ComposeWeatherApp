@@ -2,31 +2,22 @@ package ru.serg.composeweatherapp.data.data_source
 
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
-import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
 import ru.serg.composeweatherapp.data.room.dao.WeatherDao
 import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
-import ru.serg.composeweatherapp.utils.Ext.toCityEntity
-import ru.serg.composeweatherapp.utils.Ext.toCityItem
+import ru.serg.composeweatherapp.utils.toCityEntity
+import ru.serg.composeweatherapp.utils.toCityItem
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
-    private val lastLocationDao: LastLocationDao,
     private val cityHistorySearchDao: CityHistorySearchDao
 ) {
-
-    suspend fun getLastSavedLocation(): CoordinatesWrapper {
-        lastLocationDao.getLocation()?.let {
-            return CoordinatesWrapper(it.latitude, it.longitude)
-        }
-        return CoordinatesWrapper(0.0, 0.0)
-    }
 
     fun getCityHistorySearch(): Flow<List<CityItem>> {
         return cityHistorySearchDao.getCitySearchHistory().map { list ->
@@ -89,7 +80,7 @@ class LocalDataSource @Inject constructor(
                     )
                 })
             }
-        }
+        }.distinctUntilChanged()
     }
 
     suspend fun saveWeather(weatherItem: WeatherItem) {

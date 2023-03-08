@@ -1,15 +1,13 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class)
 
 package ru.serg.composeweatherapp.data
 
-import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.data.WeatherItem
@@ -18,9 +16,10 @@ import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.Ext.isNearTo
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.NetworkStatus
+import ru.serg.composeweatherapp.utils.isNearTo
+import ru.serg.composeweatherapp.utils.isSavedDataExpired
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
@@ -34,9 +33,8 @@ class WeatherRepository @Inject constructor(
         coordinatesWrapper: CoordinatesWrapper,
         forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
-        if (forced) fetchCoordinatesWeather(
-            coordinatesWrapper
-        ) else fetchWeather(coordinatesWrapper)
+        if (forced) fetchCoordinatesWeather(coordinatesWrapper)
+        else fetchWeather(coordinatesWrapper)
 
     fun fetchCityWeather(
         cityItem: CityItem,
@@ -54,14 +52,14 @@ class WeatherRepository @Inject constructor(
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
-                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 60L * 1000L))) {
-                        flowOf(NetworkResult.Success(item))
-                    } else {
+                    if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
                             fetchWeather(cityItem)
                         } else {
                             flowOf(NetworkResult.Success(item))
                         }
+                    } else {
+                        flowOf(NetworkResult.Success(item))
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
@@ -85,14 +83,14 @@ class WeatherRepository @Inject constructor(
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
-                    if (item.lastUpdatedTime > (getTimeMillis() - (delayInHours * 60L * 60L * 1000L))) {
-                        flowOf(NetworkResult.Success(item))
-                    } else {
+                    if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
                             fetchCoordinatesWeather(coordinatesWrapper)
                         } else {
                             flowOf(NetworkResult.Success(item))
                         }
+                    } else {
+                        flowOf(NetworkResult.Success(item))
                     }
                 }
             } ?: if (networkStatus.isNetworkConnected()) {
@@ -182,7 +180,6 @@ class WeatherRepository @Inject constructor(
     private fun noConnectionErrorFlow(): Flow<NetworkResult<WeatherItem>> = flowOf(
         NetworkResult.Error(
             message = "No Internet Connection",
-            errorTextResource = R.string.no_connection
         )
     )
 }

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.data.data.DayWeatherItem
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getDate
-import ru.serg.composeweatherapp.utils.Ext.getMinMaxTemp
+import ru.serg.composeweatherapp.utils.getMinMaxTemp
 
 @Composable
 fun DailyWeatherItem(

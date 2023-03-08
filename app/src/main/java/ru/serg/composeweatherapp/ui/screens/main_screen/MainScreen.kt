@@ -22,7 +22,7 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.screens.pager.PagerScreen
-import ru.serg.composeweatherapp.utils.Ext.openAppSystemSettings
+import ru.serg.composeweatherapp.utils.openAppSystemSettings
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -75,7 +75,8 @@ fun MainScreen(
             ) { page ->
                 PagerScreen(
                     cityItem = citiesList[page],
-                    currentPage == page //To prevent preload of next page
+                    currentPage == page, //To prevent preload of next page,
+                    viewModel.isLoading
                 )
             }
         }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
-import ru.serg.composeweatherapp.utils.Ext.hasLocationPermission
+import ru.serg.composeweatherapp.utils.hasLocationPermission
 import java.util.concurrent.TimeUnit
 
 class LocationServiceImpl(
@@ -41,7 +41,10 @@ class LocationServiceImpl(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLocationUpdate(isOneTimeRequest: Boolean, updateFrequency: Long): Flow<CoordinatesWrapper> {
+    override fun getLocationUpdate(
+        isOneTimeRequest: Boolean,
+        updateFrequency: Long
+    ): Flow<CoordinatesWrapper> {
         return callbackFlow {
             if (!appContext.hasLocationPermission()) {
                 throw LocationService.LocationException("No location permission")

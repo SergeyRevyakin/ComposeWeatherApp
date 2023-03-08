@@ -21,6 +21,10 @@ object Constants {
 
     const val CITY_ITEM = "city_item"
 
+    object Time {
+        const val millisecondsToHour:Long = 60L * 60L * 1000L
+    }
+
     object Notifications {
         const val NOTIFICATION_CHANNEL = "weather_channel"
         const val NOTIFICATION_CHANNEL_DESCRIPTION = "Weather notifications"

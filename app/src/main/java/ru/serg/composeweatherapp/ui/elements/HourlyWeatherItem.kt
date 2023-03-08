@@ -29,7 +29,7 @@ import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.data.data.HourWeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAccent
-import ru.serg.composeweatherapp.utils.Ext.getTemp
+import ru.serg.composeweatherapp.utils.getTemp
 
 @Composable
 fun HourlyWeatherItem(item: HourWeatherItem, units: String) {

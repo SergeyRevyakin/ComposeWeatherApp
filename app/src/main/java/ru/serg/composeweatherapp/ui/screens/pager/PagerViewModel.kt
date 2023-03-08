@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package ru.serg.composeweatherapp.ui.screens.pager
 
@@ -17,7 +17,6 @@ import ru.serg.composeweatherapp.data.data.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
-import ru.serg.composeweatherapp.utils.Ext.locationFlow
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
@@ -33,6 +32,9 @@ class PagerViewModel @Inject constructor(
 
     var uiState: StateFlow<ScreenState> = MutableStateFlow(ScreenState.Empty)
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
     @SuppressLint("MissingPermission")
     fun initialize(city: CityItem? = null) {
         viewModelScope.launch {
@@ -47,9 +49,10 @@ class PagerViewModel @Inject constructor(
     }
 
     fun refresh(city: CityItem?) {
+        _isRefreshing.compareAndSet(expect = false, update = true)
         viewModelScope.launch {
             if (city == null) {
-                fusedLocationProviderClient.locationFlow().flatMapLatest { coordinatesWrapper ->
+                locationService.getLocationUpdate().flatMapLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper,
                         true
@@ -66,7 +69,7 @@ class PagerViewModel @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    private suspend fun fetchWeather(city: CityItem?) {
+    private fun fetchWeather(city: CityItem?) {
         if (city == null) {
             uiState =
                 locationService.getLocationUpdate().flatMapLatest { coordinatesWrapper ->
@@ -77,6 +80,7 @@ class PagerViewModel @Inject constructor(
                             is NetworkResult.Loading -> ScreenState.Loading
                             is NetworkResult.Error -> ScreenState.Error(networkResult.message)
                             is NetworkResult.Success -> networkResult.data?.let {
+                                _isRefreshing.compareAndSet(expect = true, update = false)
                                 ScreenState.Success(
                                     it
                                 )
@@ -94,6 +98,7 @@ class PagerViewModel @Inject constructor(
                     is NetworkResult.Loading -> ScreenState.Loading
                     is NetworkResult.Error -> ScreenState.Error(networkResult.message)
                     is NetworkResult.Success -> networkResult.data?.let {
+                        _isRefreshing.compareAndSet(expect = true, update = false)
                         ScreenState.Success(
                             it
                         )

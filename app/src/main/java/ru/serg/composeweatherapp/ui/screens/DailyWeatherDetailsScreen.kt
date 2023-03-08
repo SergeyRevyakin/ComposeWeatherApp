@@ -1,13 +1,24 @@
 package ru.serg.composeweatherapp.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -15,17 +26,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.ktor.util.date.*
+import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.data.DayWeatherItem
 import ru.serg.composeweatherapp.data.data.IntraDayTempItem
 import ru.serg.composeweatherapp.ui.elements.WeatherParamRowItem
-import ru.serg.composeweatherapp.ui.theme.*
+import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
+import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
+import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.composeweatherapp.ui.theme.headerModifier
+import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.Ext
+import ru.serg.composeweatherapp.utils.getTemp
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DailyWeatherDetailsScreen(
     daily: DayWeatherItem,
@@ -123,8 +137,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Morning: ${Ext.getTemp(daily.temp.morningTemp, units)}")
-                        Text(text = "Day: ${Ext.getTemp(daily.temp.dayTemp, units)}")
+                        Text(text = "Morning: ${getTemp(daily.temp.morningTemp, units)}")
+                        Text(text = "Day: ${getTemp(daily.temp.dayTemp, units)}")
                     }
 
                     Column(
@@ -133,8 +147,8 @@ fun DailyWeatherDetailsScreen(
                             .weight(1f)
                             .fillMaxHeight()
                     ) {
-                        Text(text = "Evening: ${Ext.getTemp(daily.temp.eveningTemp, units)}")
-                        Text(text = "Night ${Ext.getTemp(daily.temp.nightTemp, units)}")
+                        Text(text = "Evening: ${getTemp(daily.temp.eveningTemp, units)}")
+                        Text(text = "Night ${getTemp(daily.temp.nightTemp, units)}")
                     }
                 }
                 Divider(
