@@ -52,6 +52,12 @@ fun Context.openAppSystemSettings() {
         data = Uri.fromParts("package", packageName, null)
     })
 }
+fun Context.setExactAlarm() {
+    startActivity(Intent().apply {
+        action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+        data = Uri.fromParts("package", packageName, null)
+    })
+}
 
 fun Context.hasLocationPermission(): Boolean {
     return (ContextCompat.checkSelfPermission(

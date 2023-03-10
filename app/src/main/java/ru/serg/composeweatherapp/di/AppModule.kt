@@ -11,6 +11,7 @@ import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
+import ru.serg.composeweatherapp.utils.WorkerManager
 import javax.inject.Singleton
 
 @Module
@@ -47,5 +48,11 @@ class AppModule {
     fun provideWeatherAlarmManager(
         @ApplicationContext context: Context
     ): WeatherAlarmManager = WeatherAlarmManager(context)
+
+    @Singleton
+    @Provides
+    fun provideWorkerManager(
+        @ApplicationContext context: Context,
+    ): WorkerManager = WorkerManager(context)
 
 }

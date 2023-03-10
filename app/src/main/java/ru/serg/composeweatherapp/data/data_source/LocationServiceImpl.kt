@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
 import android.os.Looper
+import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -65,15 +66,19 @@ class LocationServiceImpl(
             val request = LocationRequest.create()
                 .setInterval(TimeUnit.MINUTES.toMillis(updateFrequency))
 
+            Log.e(this::class.simpleName, "Passed to location callback")
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
+                    Log.e(this::class.simpleName, "Entered callback")
                     super.onLocationResult(result)
                     result.lastLocation?.let { location ->
+                        Log.e(this::class.simpleName, "Got location $location")
                         launch {
                             send(CoordinatesWrapper(location.latitude, location.longitude))
                         }
                         if (isOneTimeRequest) client.removeLocationUpdates(this)
                     } ?: throw LocationService.LocationException("No location data")
+                    Log.e(this::class.simpleName, "Finished callback")
                 }
             }
 
@@ -82,10 +87,16 @@ class LocationServiceImpl(
                 locationCallback,
                 Looper.getMainLooper()
             ).addOnFailureListener {
+                Log.e(this::class.simpleName, "Failed")
                 close(it)
+            }.addOnSuccessListener {
+                Log.e(this::class.simpleName, "Success")
+            }.addOnCompleteListener {
+                Log.e(this::class.simpleName, "Completed")
             }
 
             awaitClose {
+                Log.e(this::class.simpleName, "Closed")
                 client.removeLocationUpdates(locationCallback)
             }
         }

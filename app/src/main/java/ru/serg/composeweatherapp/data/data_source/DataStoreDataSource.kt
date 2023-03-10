@@ -14,8 +14,6 @@ import ru.serg.composeweatherapp.utils.dataStore
 class DataStoreDataSource(context: Context) {
     companion object {
         val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
-        val IS_BACKGROUND_FETCH_ENABLED =
-            booleanPreferencesKey(Constants.DataStore.IS_BACKGROUND_FETCH_ENABLED)
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
     }
@@ -34,20 +32,14 @@ class DataStoreDataSource(context: Context) {
         }
     }
 
-    //Is app able to fetch weather in background
-    val isBackgroundFetchWeatherEnabled = dataStore.data.map {
-        it[IS_BACKGROUND_FETCH_ENABLED] ?: false
-    }
-
-    suspend fun saveBackgroundFetchWeatherEnabled(isEnabled: Boolean) {
-        dataStore.edit {
-            it[IS_BACKGROUND_FETCH_ENABLED] = isEnabled
-        }
-    }
-
     //Fetch frequency for background worker
     val fetchFrequency = dataStore.data.map {
         it[FETCH_FREQUENCY] ?: 2
+    }
+
+    val fetchFrequencyInHours = dataStore.data.map {
+        val positionInList = it[FETCH_FREQUENCY] ?: 2
+        Constants.HOUR_FREQUENCY_LIST[positionInList]
     }
 
     suspend fun saveFetchFrequency(positionInList: Int) {

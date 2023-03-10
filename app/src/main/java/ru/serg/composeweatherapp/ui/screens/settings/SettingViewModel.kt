@@ -7,15 +7,19 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
+import ru.serg.composeweatherapp.utils.WorkerManager
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
-    private val weatherAlarmManager: WeatherAlarmManager
+    private val weatherAlarmManager: WeatherAlarmManager,
+    private val workerManager: WorkerManager
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -29,6 +33,8 @@ class SettingViewModel @Inject constructor(
     var measurementUnits = mutableStateOf(0)
 
     var alarmState = mutableStateOf(false)
+
+    private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
 
     init {
         initDarkModeChange()
@@ -48,11 +54,7 @@ class SettingViewModel @Inject constructor(
     }
 
     private fun initBackgroundFetchWeatherChange() {
-        viewModelScope.launch {
-            dataStoreDataSource.isBackgroundFetchWeatherEnabled.collectLatest {
-                isBackgroundFetchWeatherEnabled.value = it
-            }
-        }
+        isBackgroundFetchWeatherEnabled.value = workerManager.isWorkerSet()
     }
 
     private fun initFetchFrequencyValue() {
@@ -97,14 +99,23 @@ class SettingViewModel @Inject constructor(
     }
 
     fun onBackgroundFetchChanged(isEnabled: Boolean) {
-        viewModelScope.launch {
-            dataStoreDataSource.saveBackgroundFetchWeatherEnabled(isEnabled)
+        if (isEnabled) {
+            viewModelScope.launch {
+                fetchFrequency.collectLatest {
+                    workerManager.setWeatherWorker(it)
+                }
+            }
+        } else {
+            workerManager.disableWeatherWorker()
         }
+
+        initBackgroundFetchWeatherChange()
     }
 
     fun onFrequencyChanged(positionInList: Int) {
         viewModelScope.launch {
             dataStoreDataSource.saveFetchFrequency(positionInList)
+            workerManager.setWeatherWorker(Constants.HOUR_FREQUENCY_LIST[positionInList])
         }
     }
 

@@ -7,8 +7,6 @@ m
 =app/src/main/java/ru/serg/composeweatherapp/ui/theme/Shape.kt,7\0\70aa001292ed54197a39c1b496ab1730c8eddd1f
 m
 =app/src/main/java/ru/serg/composeweatherapp/ui/theme/Theme.kt,a\d\ad1a20db858dc1a4e6d2d5f0d9571a3ea54fcba6
-n
->app/src/main/java/ru/serg/composeweatherapp/utils/DateUtils.kt,1\5\15232b54a478facdaae85bffa057332ef3980943
 p
 @app/src/main/java/ru/serg/composeweatherapp/ui/theme/Modifier.kt,0\5\05843eec1d6ba1a1213b4e0f3ecd0df924d0ae6c
 l
@@ -17,10 +15,6 @@ u
 Eapp/src/main/java/ru/serg/composeweatherapp/data/CitySearchUseCase.kt,b\4\b460d47ec406212b4dedee499d8c9666ac87ee23
 è
 _app/src/main/java/ru/serg/composeweatherapp/ui/screens/city_weather_screen/CityWeatherScreen.kt,1\2\12382e02567d736cbe946d2379bbb03fde0b28ca
-â
-Yapp/src/main/java/ru/serg/composeweatherapp/ui/screens/choose_city/ChooseCityViewModel.kt,7\d\7de329466c77c0b93c26bdd548d15ba929b0dcf4
-q
-Aapp/src/main/java/ru/serg/composeweatherapp/data/WorkerUseCase.kt,e\b\eb8b511df05e1f9dbf618e11f6bf3131259eef85
 {
 Kapp/src/main/java/ru/serg/composeweatherapp/data/data/CoordinatesWrapper.kt,f\5\f5e966ad170a1f1ace11f6b4a1cbccf06fa19caa
 q
@@ -61,8 +55,6 @@ Qapp/src/main/java/ru/serg/composeweatherapp/data/room/entity/WeatherItemEntity.
 Rapp/src/main/java/ru/serg/composeweatherapp/ui/elements/settings/HourSliderItem.kt,4\8\484e179d8625edb9cbc07605ae06f4050bdd7508
 o
 ?app/src/main/java/ru/serg/composeweatherapp/di/NetworkModule.kt,1\d\1d7d1502a1a901ed5f291d9a45db26c4c77cc045
-í
-bapp/src/main/java/ru/serg/composeweatherapp/ui/screens/city_weather_screen/CityWeatherViewModel.kt,9\7\979d92507882f2bb09713776891c3e2b1e66248c
 X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 w

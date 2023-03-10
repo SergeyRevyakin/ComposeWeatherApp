@@ -33,7 +33,6 @@ object Constants {
 
     object DataStore {
         const val IS_DARK_THEME = "IS_DARK_THEME"
-        const val IS_BACKGROUND_FETCH_ENABLED = "IS_BACKGROUND_FETCH_ENABLED"
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
         const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
 

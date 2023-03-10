@@ -41,7 +41,7 @@ class WeatherAlarmManager(private val context: Context) {
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             getTimeMillis(),
-            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+            2*60*1000,
             pendingIntent
         )
 

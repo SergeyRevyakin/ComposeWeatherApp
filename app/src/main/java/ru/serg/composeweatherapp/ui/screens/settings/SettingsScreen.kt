@@ -1,6 +1,5 @@
 package ru.serg.composeweatherapp.ui.screens.settings
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +23,6 @@ import ru.serg.composeweatherapp.ui.elements.settings.RadioButtonGroup
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
-import ru.serg.composeweatherapp.worker.WeatherWorker
 
 @Composable
 fun SettingsScreen(
@@ -35,9 +32,6 @@ fun SettingsScreen(
     val scrollableState = rememberScrollState()
 
     val context = LocalContext.current
-
-    //TODO Rework alarm manager status
-//    val workerState = WeatherWorker.isWeatherWorkerSetFlow(context).collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -97,17 +91,6 @@ fun SettingsScreen(
         ) {
             viewModel.onUnitsChanged(it)
         }
-    }
-}
-
-fun setWorkManager(context: Context, state: MutableState<Boolean>) {
-    WeatherWorker.run {
-        if (isWeatherWorkerSet(context)) {
-            cancelPeriodicWork(context)
-        } else {
-            setupPeriodicWork(context)
-        }
-        state.value = !state.value
     }
 }
 

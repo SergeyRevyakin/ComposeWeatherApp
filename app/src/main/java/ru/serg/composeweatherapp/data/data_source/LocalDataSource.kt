@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.data.data_source
 
+import android.util.Log
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -40,6 +41,19 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun insertCityItemToHistorySearch(cityItem: CityItem) {
+        if (cityItem.isFavorite) {
+            cityHistorySearchDao.getCitySearchHistory().map { list ->
+                Log.e(this::class.simpleName, "list contains $list")
+                list.map {
+                    if (it.isFavorite) {
+                        Log.e(this::class.simpleName, "Deleting $it")
+                        deleteCityItemToHistorySearch(it.toCityItem())
+                    }
+                }
+                Log.e(this::class.simpleName, "Deleting done")
+            }
+        }
+        Log.e(this::class.simpleName, "Continue")
         cityHistorySearchDao.addCityToHistory(
             cityItem.toCityEntity()
         )

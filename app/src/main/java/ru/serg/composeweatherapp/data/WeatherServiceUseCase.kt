@@ -22,6 +22,7 @@ class WeatherServiceUseCase @Inject constructor(
     fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<WeatherItem>> =
 
         dataStoreDataSource.fetchFrequency.flatMapLatest { fetchFrequency ->
+            Log.e(this::class.simpleName, "Fetch frequency $fetchFrequency")
             locationService.getLocationUpdate(
                 isOneTimeRequest = true,
                 updateFrequency = fetchFrequency.toLong()

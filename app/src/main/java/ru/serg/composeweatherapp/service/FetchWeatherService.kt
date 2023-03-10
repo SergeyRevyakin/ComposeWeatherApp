@@ -4,6 +4,8 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -40,6 +42,7 @@ class FetchWeatherService : Service() {
     }
 
     private fun start() {
+        Log.e(this::class.simpleName, "Start command")
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -50,6 +53,13 @@ class FetchWeatherService : Service() {
                 .setContentText("Starting...")
                 .setSmallIcon(R.drawable.ic_day_sunny)
                 .setOngoing(true)
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(SERVICE_ID, serviceNotification.build(), FOREGROUND_SERVICE_TYPE_LOCATION)
+        } else {
+            startForeground(SERVICE_ID, serviceNotification.build())
+        }
 
         weatherServiceUseCase.checkCurrentLocationAndWeather()
             .onEach {
@@ -69,7 +79,6 @@ class FetchWeatherService : Service() {
                 }
             }.launchIn(serviceScope)
 
-        startForeground(SERVICE_ID, serviceNotification.build())
 
     }
 

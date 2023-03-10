@@ -66,6 +66,31 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
     }
 }
 
+@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+fun showFetchErrorNotification(context: Context, errorText: String?) {
+
+    val notificationIntent = Intent(context, MainActivity::class.java)
+        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+    val pendingIntent = PendingIntent.getActivity(
+        context, 0, notificationIntent,
+        PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val builder =
+        NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
+            .setContentTitle("Not able to fetch weather")
+            .setContentText(errorText)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSmallIcon(R.drawable.ic_sunny_day)
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+    with(NotificationManagerCompat.from(context)) {
+        notify(Random().nextInt(), builder.build())
+    }
+}
+
 fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     val drawable = ContextCompat.getDrawable(context, drawableId)
     drawable?.setTint(ContextCompat.getColor(context, R.color.primary))

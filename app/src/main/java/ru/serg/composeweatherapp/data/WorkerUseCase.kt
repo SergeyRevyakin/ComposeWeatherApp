@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package ru.serg.composeweatherapp.data
 
 import io.ktor.util.date.*
@@ -12,8 +14,7 @@ class WorkerUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun fetchFavouriteCity() =
+    fun fetchFavouriteCity() =
         localDataSource.getFavouriteCity().flatMapLatest {
             weatherRepository.fetchCityWeather(it, true)
         }
