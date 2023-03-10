@@ -61,16 +61,6 @@ fun CityWeatherContentItem(
         )
 
         TodayWeatherCardItem(
-//            weatherIcon = weatherItem.weatherIcon,
-//            weatherDesc = weatherItem.weatherDescription.orEmpty(),
-//            currentTemp = weatherItem.currentTemp?.toInt(),
-//            feelsLikeTemp = weatherItem.feelsLike?.toInt()
-//                ?: 0,
-//            windDirection = weatherItem.windDirection,
-//            windSpeed = weatherItem.windSpeed?.toInt(),
-//            humidity = weatherItem.humidity ?: 0,
-//            pressure = weatherItem.pressure ?: 0,
-//            timestamp = weatherItem.lastUpdatedTime,
             weatherItem = weatherItem,
             units = units.value
         )

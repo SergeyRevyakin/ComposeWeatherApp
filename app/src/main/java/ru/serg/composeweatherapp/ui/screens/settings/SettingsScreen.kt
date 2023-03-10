@@ -8,6 +8,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.LocationOff
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,11 +21,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.serg.composeweatherapp.ui.elements.settings.HourSliderItem
-import ru.serg.composeweatherapp.ui.elements.settings.MenuLocationRowWithIcon
 import ru.serg.composeweatherapp.ui.elements.settings.MenuRowWithRadioButton
+import ru.serg.composeweatherapp.ui.elements.settings.MenuSettingsRowWithIcon
 import ru.serg.composeweatherapp.ui.elements.settings.RadioButtonGroup
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
 
 @Composable
@@ -55,6 +60,18 @@ fun SettingsScreen(
             onSwitchClick = viewModel::onScreenModeChanged
         )
 
+        if (isTiramisuOrAbove()) {
+            MenuSettingsRowWithIcon(
+                onClick = { context.openAppSystemSettings() },
+                iconImageVector = if (viewModel.isNotificationEnabled.value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff,
+                headerText = if (viewModel.isNotificationEnabled.value) "Now app can send you notifications"
+                else "Now app can't send you notifications",
+                descriptionText = if (viewModel.isNotificationEnabled.value) "Tap if you want to turn it off"
+                else "Tap if you want to turn it on"
+
+            )
+        }
+
         MenuRowWithRadioButton(
             optionName = "Update weather in background",
             descriptionText = "Allow map get data about weather in background. It will consume some network traffic",
@@ -70,9 +87,14 @@ fun SettingsScreen(
             onValueChanged = viewModel::onFrequencyChanged
         )
 
-        MenuLocationRowWithIcon(
-            isLocationAvailable = viewModel.isLocationEnabled.value,
-            onClick = { context.openAppSystemSettings() }
+        MenuSettingsRowWithIcon(
+            onClick = { context.openAppSystemSettings() },
+            iconImageVector = if (viewModel.isLocationEnabled.value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff,
+            headerText = if (viewModel.isLocationEnabled.value) "Right now application has access to your device location"
+            else "Right now application don't have access to your device location",
+            descriptionText = if (viewModel.isLocationEnabled.value) "Tap if you want to turn it off"
+            else "Tap if you want to turn it on"
+
         )
 
         MenuRowWithRadioButton(

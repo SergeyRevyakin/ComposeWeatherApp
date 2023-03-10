@@ -1,6 +1,8 @@
 package ru.serg.composeweatherapp.ui.screens.settings
 
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +15,7 @@ import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import ru.serg.composeweatherapp.utils.WorkerManager
+import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +37,8 @@ class SettingViewModel @Inject constructor(
 
     var alarmState = mutableStateOf(false)
 
+    var isNotificationEnabled = mutableStateOf(false)
+
     private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
 
     init {
@@ -43,6 +48,7 @@ class SettingViewModel @Inject constructor(
         initLocation()
         initUnits()
         initAlarmState()
+        if (isTiramisuOrAbove()) initNotification()
     }
 
     private fun initDarkModeChange() {
@@ -89,6 +95,19 @@ class SettingViewModel @Inject constructor(
     private fun initAlarmState() {
         weatherAlarmManager.isAlarmSet().let {
             alarmState.value = it
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun initNotification() {
+        val locationPermissionFlow = PermissionFlow.getInstance().getPermissionState(
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
+
+        viewModelScope.launch {
+            locationPermissionFlow.collect {
+                isNotificationEnabled.value = it.isGranted
+            }
         }
     }
 
