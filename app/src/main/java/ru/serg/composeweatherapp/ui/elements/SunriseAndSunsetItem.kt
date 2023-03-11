@@ -34,7 +34,6 @@ fun SunriseSunsetItem(
 ) {
     Column (
         modifier = Modifier
-
     ) {
 
         Text(

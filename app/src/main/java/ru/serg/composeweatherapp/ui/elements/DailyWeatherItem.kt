@@ -15,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -41,6 +42,7 @@ fun DailyWeatherItem(
                 borderWidth = 1,
                 cornerRadius = 16
             )
+            .clip(RoundedCornerShape(16.dp))
             .clickable {
                 onClick.invoke()
             }
@@ -51,7 +53,6 @@ fun DailyWeatherItem(
             Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .clickable(onClick = { onClick.invoke() })
                 .height(42.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
