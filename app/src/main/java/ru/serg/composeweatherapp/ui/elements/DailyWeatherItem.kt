@@ -34,7 +34,7 @@ fun DailyWeatherItem(
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = 6.dp,
+        elevation = 10.dp,
         modifier = Modifier
             .fillMaxWidth()
             .gradientBorder(

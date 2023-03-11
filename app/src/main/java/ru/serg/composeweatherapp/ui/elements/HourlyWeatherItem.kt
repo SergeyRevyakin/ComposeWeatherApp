@@ -34,7 +34,7 @@ import ru.serg.composeweatherapp.utils.getTemp
 @Composable
 fun HourlyWeatherItem(item: HourWeatherItem, units: String) {
     Card(
-        elevation = 8.dp,
+        elevation = 10.dp,
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .width(80.dp)

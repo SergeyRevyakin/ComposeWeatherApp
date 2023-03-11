@@ -65,6 +65,10 @@ fun CityWeatherContentItem(
             units = units.value
         )
 
+        val todayWeather = weatherItem.dailyWeatherList.first()
+
+        SunriseSunsetItem(sunriseTime = todayWeather.sunrise, sunsetTime = todayWeather.sunset)
+
         Text(
             text = "Hourly",
             style = headerStyle,
