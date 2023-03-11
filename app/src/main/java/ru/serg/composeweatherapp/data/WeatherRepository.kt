@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource

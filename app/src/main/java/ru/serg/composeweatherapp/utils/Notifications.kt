@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import ru.serg.composeweatherapp.MainActivity
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import java.util.Random
 
 

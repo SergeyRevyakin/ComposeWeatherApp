@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import ru.serg.composeweatherapp.data.data.DayWeatherItem
+import ru.serg.composeweatherapp.data.dto.DayWeatherItem
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getDate
 import ru.serg.composeweatherapp.utils.getMinMaxTemp

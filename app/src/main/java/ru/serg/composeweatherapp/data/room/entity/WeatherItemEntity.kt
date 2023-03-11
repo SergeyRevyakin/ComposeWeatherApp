@@ -3,8 +3,8 @@ package ru.serg.composeweatherapp.data.room.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
-import ru.serg.composeweatherapp.data.data.DayWeatherItem
-import ru.serg.composeweatherapp.data.data.HourWeatherItem
+import ru.serg.composeweatherapp.data.dto.DayWeatherItem
+import ru.serg.composeweatherapp.data.dto.HourWeatherItem
 import ru.serg.composeweatherapp.utils.Constants
 
 @Entity(

@@ -11,7 +11,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.CitySearchUseCase
-import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject

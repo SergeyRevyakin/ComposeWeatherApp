@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.ui.screens.DailyWeatherDetailsScreen
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle

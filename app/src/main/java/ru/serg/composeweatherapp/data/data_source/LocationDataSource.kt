@@ -5,25 +5,27 @@ import android.content.Context
 import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
+import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 import ru.serg.composeweatherapp.utils.hasLocationPermission
 import java.util.concurrent.TimeUnit
 
-class LocationServiceImpl(
-    private val appContext: Context,
-    private val client: FusedLocationProviderClient
+class LocationDataSource(
+    private val appContext: Context
 ) : LocationService {
 
     private var locationManager: LocationManager =
         appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    private val client = LocationServices.getFusedLocationProviderClient(appContext)
 
     override fun isLocationAvailable(): Boolean {
         if (!appContext.hasLocationPermission()) {
@@ -63,8 +65,9 @@ class LocationServiceImpl(
                 throw LocationService.LocationException("GPS is disabled")
             }
 
-            val request = LocationRequest.create()
-                .setInterval(TimeUnit.MINUTES.toMillis(updateFrequency))
+            val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, TimeUnit.MINUTES.toMillis(updateFrequency))
+                .setWaitForAccurateLocation(true)
+                .build()
 
             Log.e(this::class.simpleName, "Passed to location callback")
             val locationCallback = object : LocationCallback() {

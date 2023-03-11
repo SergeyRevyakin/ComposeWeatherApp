@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ktor.util.date.getTimeMillis
-import ru.serg.composeweatherapp.data.data.HourWeatherItem
+import ru.serg.composeweatherapp.data.dto.HourWeatherItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAccent
 import ru.serg.composeweatherapp.utils.getTemp

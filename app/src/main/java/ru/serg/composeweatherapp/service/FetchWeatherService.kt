@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.WeatherServiceUseCase
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import ru.serg.composeweatherapp.utils.showDailyForecastNotification

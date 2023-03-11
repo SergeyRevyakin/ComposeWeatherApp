@@ -11,7 +11,7 @@ import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import javax.inject.Inject
 

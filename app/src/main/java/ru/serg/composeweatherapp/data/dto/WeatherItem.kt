@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data.data
+package ru.serg.composeweatherapp.data.dto
 
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R

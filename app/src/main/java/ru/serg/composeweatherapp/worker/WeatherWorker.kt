@@ -20,7 +20,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.composeweatherapp.data.WorkerUseCase
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.showDailyForecastNotification

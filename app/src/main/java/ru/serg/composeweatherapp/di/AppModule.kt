@@ -1,14 +1,13 @@
 package ru.serg.composeweatherapp.di
 
 import android.content.Context
-import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
-import ru.serg.composeweatherapp.data.data_source.LocationServiceImpl
+import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import ru.serg.composeweatherapp.utils.WorkerManager
@@ -26,12 +25,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFusedLocationProviderClient(
-        @ApplicationContext app: Context
-    ): FusedLocationProviderClient = FusedLocationProviderClient(app)
-
-    @Singleton
-    @Provides
     fun provideNetworkStatus(
         @ApplicationContext context: Context
     ): NetworkStatus = NetworkStatus(context)
@@ -40,8 +33,7 @@ class AppModule {
     @Provides
     fun provideLocationService(
         @ApplicationContext context: Context,
-        client: FusedLocationProviderClient
-    ): LocationServiceImpl = LocationServiceImpl(context, client)
+    ): LocationDataSource = LocationDataSource(context)
 
     @Singleton
     @Provides

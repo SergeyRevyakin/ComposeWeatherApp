@@ -8,7 +8,10 @@ import ru.serg.composeweatherapp.utils.Constants
 @Dao
 interface CityHistorySearchDao {
     @Query("SELECT * FROM ${Constants.SEARCH_HISTORY}")
-    fun getCitySearchHistory(): Flow<List<CityEntity>>
+    fun citySearchHistoryFlow(): Flow<List<CityEntity>>
+
+    @Query("SELECT * FROM ${Constants.SEARCH_HISTORY}")
+    suspend fun citySearchHistory(): List<CityEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCityToHistory(cityEntity: CityEntity)

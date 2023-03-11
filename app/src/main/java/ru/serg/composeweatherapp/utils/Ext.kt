@@ -5,13 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import ru.serg.composeweatherapp.data.data.CityItem
+import io.ktor.util.date.getTimeMillis
+import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.room.entity.CityEntity
+import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
+import ru.serg.composeweatherapp.data.room.entity.WeatherWithCity
 import java.util.Locale
 import kotlin.math.absoluteValue
 
@@ -52,6 +58,8 @@ fun Context.openAppSystemSettings() {
         data = Uri.fromParts("package", packageName, null)
     })
 }
+
+@RequiresApi(Build.VERSION_CODES.S)
 fun Context.setExactAlarm() {
     startActivity(Intent().apply {
         action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
@@ -72,3 +80,45 @@ fun Context.hasLocationPermission(): Boolean {
 }
 
 fun Int.hoursToMilliseconds() = this * Constants.Time.millisecondsToHour
+
+fun WeatherWithCity.toWeatherItem() = WeatherItem(
+    feelsLike = weatherItemEntity.feelsLike,
+    currentTemp = weatherItemEntity.currentTemp,
+    windDirection = weatherItemEntity.windDirection,
+    windSpeed = weatherItemEntity.windSpeed,
+    humidity = weatherItemEntity.humidity,
+    pressure = weatherItemEntity.pressure,
+    weatherDescription = weatherItemEntity.weatherDescription,
+    weatherIcon = weatherItemEntity.weatherIcon,
+    dateTime = weatherItemEntity.dateTime,
+    cityItem = CityItem(
+        cityEntity?.cityName.orEmpty(),
+        cityEntity?.country.orEmpty(),
+        cityEntity?.latitude ?: 0.0,
+        cityEntity?.longitude ?: 0.0,
+        cityEntity?.isFavorite ?: false
+    ),
+    lastUpdatedTime = weatherItemEntity.lastUpdatedTime,
+    hourlyWeatherList = weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->
+        hourWeatherItem.timestamp > getTimeMillis()
+    },
+    dailyWeatherList = weatherItemEntity.dailyWeatherList.list.filter { dayWeatherItem ->
+        dayWeatherItem.dateTime > getTimeMillis()
+    }
+)
+
+fun WeatherItem.toWeatherEntity() = WeatherItemEntity(
+    feelsLike = feelsLike,
+    currentTemp = currentTemp,
+    windDirection = windDirection,
+    windSpeed = windSpeed,
+    humidity = humidity,
+    pressure = pressure,
+    weatherDescription = weatherDescription,
+    weatherIcon = weatherIcon,
+    dateTime = dateTime,
+    cityName = cityItem?.name.orEmpty(),
+    lastUpdatedTime = lastUpdatedTime,
+    hourlyWeatherList = WeatherItemEntity.HourItemList(hourlyWeatherList),
+    dailyWeatherList = WeatherItemEntity.DailyItemList(dailyWeatherList)
+)

@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.data.CityItem
+import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItem
 import ru.serg.composeweatherapp.ui.elements.PullRefreshBox
 import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
