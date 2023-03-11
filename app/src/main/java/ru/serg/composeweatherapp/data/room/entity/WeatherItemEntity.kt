@@ -3,20 +3,12 @@ package ru.serg.composeweatherapp.data.room.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
-import ru.serg.composeweatherapp.data.data.DayWeatherItem
-import ru.serg.composeweatherapp.data.data.HourWeatherItem
+import ru.serg.composeweatherapp.data.dto.DayWeatherItem
+import ru.serg.composeweatherapp.data.dto.HourWeatherItem
 import ru.serg.composeweatherapp.utils.Constants
 
 @Entity(
     tableName = Constants.WEATHER_ITEMS,
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = CityEntity::class,
-//            parentColumns = ["cityName"],
-//            childColumns = ["cityName"],
-//            onDelete = ForeignKey.CASCADE,
-//        )
-//    ]
 )
 data class WeatherItemEntity(
     val feelsLike: Double?,

@@ -21,6 +21,10 @@ object Constants {
 
     const val CITY_ITEM = "city_item"
 
+    object Time {
+        const val millisecondsToHour:Long = 60L * 60L * 1000L
+    }
+
     object Notifications {
         const val NOTIFICATION_CHANNEL = "weather_channel"
         const val NOTIFICATION_CHANNEL_DESCRIPTION = "Weather notifications"
@@ -29,7 +33,15 @@ object Constants {
 
     object DataStore {
         const val IS_DARK_THEME = "IS_DARK_THEME"
-        const val IS_BACKGROUND_FETCH_ENABLED = "IS_BACKGROUND_FETCH_ENABLED"
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
+        const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
+
+        enum class Units(val parameterCode: String, val title: String, val description: String, val tempUnits: String, val windUnits: String){
+            METRIC("metric", "Metric", "Temperature in Celsius, wind speed in meter/sec", "℃", "m/s"),
+            IMPERIAL( "imperial", "Imperial", "Temperature in Fahrenheit and wind speed in miles/hour", "℉", "mph"),
+            KELVIN("standard", "Kelvin", "Temperature in Kelvin and wind speed in meter/sec", "K", "m/s")
+        }
     }
+
+    const val ALARM_REQUEST_CODE = 1122
 }

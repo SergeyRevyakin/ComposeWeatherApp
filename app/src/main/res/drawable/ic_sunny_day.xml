@@ -10,7 +10,7 @@
         android:translateY="9">
       <path
           android:pathData="M0 0L0 3"
-          android:strokeColor="#FFA500"
+          android:strokeColor="@color/primary"
           android:strokeWidth="2"
           android:strokeLineCap="round" />
     </group>
@@ -20,7 +20,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -31,7 +31,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -42,7 +42,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -53,7 +53,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -64,7 +64,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -75,7 +75,7 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
@@ -86,15 +86,15 @@
           android:translateY="9">
         <path
             android:pathData="M0 0L0 3"
-            android:strokeColor="#FFA500"
+            android:strokeColor="@color/primary"
             android:strokeWidth="2"
             android:strokeLineCap="round" />
       </group>
     </group>
     <path
         android:pathData="M5 0A5 5 0 0 1 -5 0A5 5 0 0 1 5 0Z"
-        android:fillColor="#FFA500"
-        android:strokeColor="#FFA500"
+        android:fillColor="@color/primary"
+        android:strokeColor="@color/primary"
         android:strokeWidth="2" />
   </group>
 </vector>

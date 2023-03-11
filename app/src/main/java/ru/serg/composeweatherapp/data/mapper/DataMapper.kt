@@ -1,7 +1,7 @@
 package ru.serg.composeweatherapp.data.mapper
 
 import io.ktor.util.date.*
-import ru.serg.composeweatherapp.data.data.*
+import ru.serg.composeweatherapp.data.dto.*
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.utils.IconMapper

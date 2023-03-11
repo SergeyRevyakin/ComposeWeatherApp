@@ -61,7 +61,6 @@ class NetworkModule {
                 host = Constants.BASE_URL_ONECALL
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameters.append("units", "metric")
                     parameters.append("appid", BuildConfig.OWM_API_KEY)
                     parameters.append("lang", Locale.getDefault().country)
                 }
@@ -108,7 +107,6 @@ class NetworkModule {
                 host = Constants.BASE_URL_WEATHER
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameters.append("units", "metric")
                     parameters.append("appid", BuildConfig.OWM_API_KEY)
                     parameters.append("lang", Locale.getDefault().country)
                 }

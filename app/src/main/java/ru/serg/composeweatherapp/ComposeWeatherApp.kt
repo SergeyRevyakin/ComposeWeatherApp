@@ -18,11 +18,6 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
-//
-//    @Inject
-//    lateinit var appDatabase: AppDatabase
-
-//    private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
@@ -34,9 +29,6 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
         super.onCreate()
         createNotificationChannel()
         PermissionFlow.init(this, Dispatchers.Default)
-//        applicationScope.launch {
-//            appDatabase.clearAllTables()
-//        }
     }
 
     private fun createNotificationChannel() {
@@ -44,7 +36,7 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
         val id = Constants.Notifications.NOTIFICATION_CHANNEL_ID
         val name = Constants.Notifications.NOTIFICATION_CHANNEL
         val descriptionText = Constants.Notifications.NOTIFICATION_CHANNEL_DESCRIPTION
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_LOW
 
         val channel = NotificationChannel(id, name, importance).apply {
             description = descriptionText

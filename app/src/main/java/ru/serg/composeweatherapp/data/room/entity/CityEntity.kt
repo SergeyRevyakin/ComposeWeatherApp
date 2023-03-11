@@ -5,15 +5,7 @@ import androidx.room.PrimaryKey
 import ru.serg.composeweatherapp.utils.Constants
 
 @Entity(
-    tableName = Constants.SEARCH_HISTORY,
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = WeatherItemEntity::class,
-//            parentColumns = ["cityName"],
-//            childColumns = ["cityName"],
-//            onDelete = ForeignKey.CASCADE,
-//        )
-//    ]
+    tableName = Constants.SEARCH_HISTORY
 )
 data class CityEntity(
     @PrimaryKey

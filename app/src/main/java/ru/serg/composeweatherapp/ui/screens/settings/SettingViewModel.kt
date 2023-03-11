@@ -1,19 +1,28 @@
 package ru.serg.composeweatherapp.ui.screens.settings
 
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.WeatherAlarmManager
+import ru.serg.composeweatherapp.utils.WorkerManager
+import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
+    private val weatherAlarmManager: WeatherAlarmManager,
+    private val workerManager: WorkerManager
 ) : ViewModel() {
 
     var isDarkModeEnabled = mutableStateOf(false)
@@ -24,11 +33,22 @@ class SettingViewModel @Inject constructor(
 
     var isLocationEnabled = mutableStateOf(false)
 
+    var measurementUnits = mutableStateOf(0)
+
+    var alarmState = mutableStateOf(false)
+
+    var isNotificationEnabled = mutableStateOf(false)
+
+    private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
+
     init {
         initDarkModeChange()
         initBackgroundFetchWeatherChange()
         initFetchFrequencyValue()
         initLocation()
+        initUnits()
+        initAlarmState()
+        if (isTiramisuOrAbove()) initNotification()
     }
 
     private fun initDarkModeChange() {
@@ -40,11 +60,7 @@ class SettingViewModel @Inject constructor(
     }
 
     private fun initBackgroundFetchWeatherChange() {
-        viewModelScope.launch {
-            dataStoreDataSource.isBackgroundFetchWeatherEnabled.collectLatest {
-                isBackgroundFetchWeatherEnabled.value = it
-            }
-        }
+        isBackgroundFetchWeatherEnabled.value = workerManager.isWorkerSet()
     }
 
     private fun initFetchFrequencyValue() {
@@ -68,6 +84,33 @@ class SettingViewModel @Inject constructor(
         }
     }
 
+    private fun initUnits() {
+        viewModelScope.launch {
+            dataStoreDataSource.measurementUnits.collectLatest {
+                measurementUnits.value = it
+            }
+        }
+    }
+
+    private fun initAlarmState() {
+        weatherAlarmManager.isAlarmSet().let {
+            alarmState.value = it
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun initNotification() {
+        val locationPermissionFlow = PermissionFlow.getInstance().getPermissionState(
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
+
+        viewModelScope.launch {
+            locationPermissionFlow.collect {
+                isNotificationEnabled.value = it.isGranted
+            }
+        }
+    }
+
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
             dataStoreDataSource.saveDarkMode(isDark)
@@ -75,15 +118,35 @@ class SettingViewModel @Inject constructor(
     }
 
     fun onBackgroundFetchChanged(isEnabled: Boolean) {
-        viewModelScope.launch {
-            dataStoreDataSource.saveBackgroundFetchWeatherEnabled(isEnabled)
+        if (isEnabled) {
+            viewModelScope.launch {
+                fetchFrequency.collectLatest {
+                    workerManager.setWeatherWorker(it)
+                }
+            }
+        } else {
+            workerManager.disableWeatherWorker()
         }
+
+        initBackgroundFetchWeatherChange()
     }
 
     fun onFrequencyChanged(positionInList: Int) {
         viewModelScope.launch {
             dataStoreDataSource.saveFetchFrequency(positionInList)
+            workerManager.setWeatherWorker(Constants.HOUR_FREQUENCY_LIST[positionInList])
         }
+    }
+
+    fun onUnitsChanged(position: Int) {
+        viewModelScope.launch {
+            dataStoreDataSource.saveMeasurementUnits(position)
+        }
+    }
+
+    fun onAlarmChanged() {
+        weatherAlarmManager.setOrCancelAlarm()
+        initAlarmState()
     }
 
 }

@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.utils
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,14 +42,54 @@ class DateUtils @Inject constructor(
             val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
             val now = LocalDateTime.now()
             return when {
-                (((l ?: 0)) - getTimeMillis() < 60L * 1000L) -> "NOW"
+                ((l ?: 0) - getTimeMillis() < 60L * 1000L) -> "NOW"
                 date.dayOfYear > now.dayOfYear -> {
                     SimpleDateFormat("HH:mm", Locale.getDefault())
                         .format((l ?: 0L)) + " +${date.dayOfYear - now.dayOfYear}"
                 }
+
                 else -> SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
             }
 
+        }
+
+        fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
+            return if (timestamp == null) buildAnnotatedString { append("") }
+            else {
+                val time = Instant.fromEpochMilliseconds(timestamp)
+                val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
+                val now = LocalDateTime.now()
+                return when {
+                    (timestamp - getTimeMillis() < 60L * 1000L) -> buildAnnotatedString {
+
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = color)) {
+                            append("NOW")
+                        }
+                    }
+
+                    date.dayOfYear > now.dayOfYear -> {
+                        buildAnnotatedString {
+                            append(
+                                SimpleDateFormat("HH:mm", Locale.getDefault())
+                                    .format(timestamp)
+                            )
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    color = color
+                                )
+                            ) {
+                                append(" +${date.dayOfYear - now.dayOfYear}")
+                            }
+                        }
+                    }
+
+                    else -> buildAnnotatedString {
+                        append(SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp))
+                    }
+
+                }
+            }
         }
 
         fun getFormattedLastUpdateDate(timestamp: Long): String {
@@ -61,12 +102,14 @@ class DateUtils @Inject constructor(
                         Locale.getDefault()
                     ).format(timestamp)
                 }"
+
                 (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> "Yesterday ${
                     SimpleDateFormat(
                         "HH:mm",
                         Locale.getDefault()
                     ).format(timestamp)
                 }"
+
                 else -> SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault()).format(timestamp)
             }
         }

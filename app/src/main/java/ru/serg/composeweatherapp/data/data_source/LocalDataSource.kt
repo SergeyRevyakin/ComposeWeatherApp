@@ -1,35 +1,25 @@
 package ru.serg.composeweatherapp.data.data_source
 
-import io.ktor.util.date.*
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import ru.serg.composeweatherapp.data.data.CityItem
-import ru.serg.composeweatherapp.data.data.CoordinatesWrapper
-import ru.serg.composeweatherapp.data.data.WeatherItem
+import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
-import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
 import ru.serg.composeweatherapp.data.room.dao.WeatherDao
-import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
-import ru.serg.composeweatherapp.utils.Ext.toCityEntity
-import ru.serg.composeweatherapp.utils.Ext.toCityItem
+import ru.serg.composeweatherapp.utils.toCityEntity
+import ru.serg.composeweatherapp.utils.toCityItem
+import ru.serg.composeweatherapp.utils.toWeatherEntity
+import ru.serg.composeweatherapp.utils.toWeatherItem
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
-    private val lastLocationDao: LastLocationDao,
     private val cityHistorySearchDao: CityHistorySearchDao
 ) {
 
-    suspend fun getLastSavedLocation(): CoordinatesWrapper {
-        lastLocationDao.getLocation()?.let {
-            return CoordinatesWrapper(it.latitude, it.longitude)
-        }
-        return CoordinatesWrapper(0.0, 0.0)
-    }
-
     fun getCityHistorySearch(): Flow<List<CityItem>> {
-        return cityHistorySearchDao.getCitySearchHistory().map { list ->
+        return cityHistorySearchDao.citySearchHistoryFlow().map { list ->
             list.map { entity ->
                 entity.toCityItem()
             }.filter {
@@ -39,7 +29,7 @@ class LocalDataSource @Inject constructor(
     }
 
     fun getFavouriteCity(): Flow<CityItem> {
-        return cityHistorySearchDao.getCitySearchHistory().map { list ->
+        return cityHistorySearchDao.citySearchHistoryFlow().map { list ->
             list.map { entity ->
                 entity.toCityItem()
             }.first {
@@ -49,6 +39,17 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun insertCityItemToHistorySearch(cityItem: CityItem) {
+        Log.e(this::class.simpleName, "Entering insert fun\n $cityItem")
+        if (cityItem.isFavorite) {
+            Log.e(this::class.simpleName, "Entering if")
+            cityHistorySearchDao.citySearchHistory().forEach {
+                if (it.isFavorite && it.cityName != cityItem.name) {
+                    Log.e(this::class.simpleName, "Deleting $it")
+                    deleteCityItemToHistorySearch(it.toCityItem())
+                }
+            }
+        }
+        Log.e(this::class.simpleName, "Continue")
         cityHistorySearchDao.addCityToHistory(
             cityItem.toCityEntity()
         )
@@ -58,57 +59,16 @@ class LocalDataSource @Inject constructor(
         weatherDao.deleteWeatherWithCity(cityItem.name)
     }
 
-    suspend fun getCurrentWeatherItem(): Flow<List<WeatherItem>> {
-        return flow {
-            weatherDao.getWeatherWithCity().collect { list ->
-                emit(list.map {
-                    WeatherItem(
-                        feelsLike = it.weatherItemEntity.feelsLike,
-                        currentTemp = it.weatherItemEntity.currentTemp,
-                        windDirection = it.weatherItemEntity.windDirection,
-                        windSpeed = it.weatherItemEntity.windSpeed,
-                        humidity = it.weatherItemEntity.humidity,
-                        pressure = it.weatherItemEntity.pressure,
-                        weatherDescription = it.weatherItemEntity.weatherDescription,
-                        weatherIcon = it.weatherItemEntity.weatherIcon,
-                        dateTime = it.weatherItemEntity.dateTime,
-                        cityItem = CityItem(
-                            it.cityEntity?.cityName.orEmpty(),
-                            it.cityEntity?.country.orEmpty(),
-                            it.cityEntity?.latitude ?: 0.0,
-                            it.cityEntity?.longitude ?: 0.0,
-                            it.cityEntity?.isFavorite ?: false
-                        ),
-                        lastUpdatedTime = it.weatherItemEntity.lastUpdatedTime,
-                        hourlyWeatherList = it.weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->
-                            hourWeatherItem.timestamp > getTimeMillis()
-                        },
-                        dailyWeatherList = it.weatherItemEntity.dailyWeatherList.list.filter { dayWeatherItem ->
-                            dayWeatherItem.dateTime > getTimeMillis()
-                        }
-                    )
-                })
+    fun getCurrentWeatherItem(): Flow<List<WeatherItem>> =
+        weatherDao.getWeatherWithCity().map { list ->
+            list.map {
+                it.toWeatherItem()
             }
         }
-    }
 
     suspend fun saveWeather(weatherItem: WeatherItem) {
         weatherDao.saveWeatherEntity(
-            WeatherItemEntity(
-                feelsLike = weatherItem.feelsLike,
-                currentTemp = weatherItem.currentTemp,
-                windDirection = weatherItem.windDirection,
-                windSpeed = weatherItem.windSpeed,
-                humidity = weatherItem.humidity,
-                pressure = weatherItem.pressure,
-                weatherDescription = weatherItem.weatherDescription,
-                weatherIcon = weatherItem.weatherIcon,
-                dateTime = weatherItem.dateTime,
-                cityName = weatherItem.cityItem?.name.orEmpty(),
-                lastUpdatedTime = weatherItem.lastUpdatedTime,
-                hourlyWeatherList = WeatherItemEntity.HourItemList(weatherItem.hourlyWeatherList),
-                dailyWeatherList = WeatherItemEntity.DailyItemList(weatherItem.dailyWeatherList)
-            )
+            weatherItem.toWeatherEntity()
         )
     }
 }

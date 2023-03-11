@@ -16,25 +16,27 @@ import javax.inject.Named
 class RemoteDataSource @Inject constructor(
     @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
     @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
-    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient
-) : IRemoteDataSource {
+    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient,
+    private val dataStoreDataSource: DataStoreDataSource
+): IRemoteDataSource  {
 
-    override suspend fun getOneCallWeather(
-        lat: Double,
-        lon: Double
-    ): Flow<NetworkResult<OneCallResponse>> {
+    override fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
-                httpClientOneCall.get {
-                    parameter("exclude", "minutely")
-                    parameter("lon", lon)
-                    parameter("lat", lat)
-                }.let {
-                    if (it.status.value == 200) {
-                        emit(NetworkResult.Success(it.body()))
-                    } else {
-                        emit(NetworkResult.Error(data = it.body(), message = ""))
+                dataStoreDataSource.measurementUnits.collect { value ->
+                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    httpClientOneCall.get {
+                        parameter("units", units)
+                        parameter("exclude", "minutely")
+                        parameter("lon", lon)
+                        parameter("lat", lat)
+                    }.let {
+                        if (it.status.value == 200) {
+                            emit(NetworkResult.Success(it.body()))
+                        } else {
+                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -43,22 +45,23 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getWeather(
-        lat: Double,
-        lon: Double
-    ): Flow<NetworkResult<WeatherResponse>> {
+    override fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
-                httpClientWeather.get {
-                    parameter("exclude", "minutely")
-                    parameter("lon", lon)
-                    parameter("lat", lat)
-                }.let {
-                    if (it.status.value == 200) {
-                        emit(NetworkResult.Success(it.body()))
-                    } else {
-                        emit(NetworkResult.Error(data = it.body(), message = ""))
+                dataStoreDataSource.measurementUnits.collect { value ->
+                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    httpClientWeather.get {
+                        parameter("units", units)
+                        parameter("exclude", "minutely")
+                        parameter("lon", lon)
+                        parameter("lat", lat)
+                    }.let {
+                        if (it.status.value == 200) {
+                            emit(NetworkResult.Success(it.body()))
+                        } else {
+                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -67,7 +70,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
+    override fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
         return flow {
             try {
                 emit(NetworkResult.Loading())
