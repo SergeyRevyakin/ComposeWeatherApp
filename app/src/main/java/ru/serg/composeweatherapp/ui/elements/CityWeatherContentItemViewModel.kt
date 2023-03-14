@@ -9,20 +9,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.DataStoreRepository
 import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Inject
 
 @HiltViewModel
 class CityWeatherContentItemViewModel @Inject constructor(
-    private val dataStoreDataSource: DataStoreDataSource
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     var units: StateFlow<String> = MutableStateFlow(Constants.EMPTY_STRING)
 
     init {
         viewModelScope.launch {
-            units = dataStoreDataSource.measurementUnits.map {
+            units = dataStoreRepository.measurementUnits.map {
                 Constants.DataStore.Units.values()[it].tempUnits
             }.stateIn(
                 scope = viewModelScope,

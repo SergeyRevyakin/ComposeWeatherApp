@@ -3,7 +3,8 @@
 package ru.serg.composewetherapp.data_source.remote
 
 import io.ktor.client.*
-import io.ktor.client.engine.mock.*
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

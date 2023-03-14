@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.DataStoreRepository
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle
@@ -20,11 +20,11 @@ import java.util.*
 import javax.inject.Inject
 
 class DateUtils @Inject constructor(
-    val dataStoreDataSource: DataStoreDataSource
+    val dataStoreRepository: DataStoreRepository
 ) {
 
     suspend fun isFetchDateExpired(timestamp: Long): Boolean {
-        return dataStoreDataSource.fetchFrequency.map {
+        return dataStoreRepository.fetchFrequency.map {
             (((Constants.HOUR_FREQUENCY_LIST[it]) * 60L * 60L * 1000L + timestamp) - getTimeMillis()) < 0
         }.first()
 

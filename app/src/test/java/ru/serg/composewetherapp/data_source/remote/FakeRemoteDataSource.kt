@@ -11,13 +11,11 @@ import ru.serg.composeweatherapp.utils.NetworkResult
 //@RunWith(JUnit4::class)
 class FakeRemoteDataSource {
 
-//    @get:Rule
-//    val rule = HiltAndroidRule(this)
-
     private val remoteDataSource = RemoteDataSource(
         FakeNetworkModule().provideHttpWeatherClient(),
         FakeNetworkModule().provideHttpOneCallClient(),
         FakeNetworkModule().provideHttpCityClient(),
+        FakeDataStoreDataSource()
     )
 
     @Test

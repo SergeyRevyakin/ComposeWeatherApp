@@ -3,6 +3,8 @@ package ru.serg.composeweatherapp.data.data_source
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -10,15 +12,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.dataStore
+import javax.inject.Inject
 
-class DataStoreDataSource(context: Context) {
+class DataStoreRepository @Inject constructor(private val dataStore: DataStore<Preferences>, context: Context):IDataStoreDataSource {
     companion object {
         val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
     }
 
-    private val dataStore = context.dataStore
+//    private val dataStore = context.dataStore
 
     //DarkMode flag
     val isDarkThemeEnabled: Flow<Boolean> = dataStore.data.map {
@@ -49,7 +52,7 @@ class DataStoreDataSource(context: Context) {
     }
 
     //Units of measurement with enum
-    val measurementUnits = dataStore.data.map {
+    override val measurementUnits = dataStore.data.map {
         it[MEASUREMENT_UNITS] ?: 0
     }
 

@@ -11,7 +11,7 @@ import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.DataStoreRepository
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import ru.serg.composeweatherapp.utils.WorkerManager
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val dataStoreDataSource: DataStoreDataSource,
+    private val dataStoreRepository: DataStoreRepository,
     private val weatherAlarmManager: WeatherAlarmManager,
     private val workerManager: WorkerManager
 ) : ViewModel() {
@@ -39,7 +39,7 @@ class SettingViewModel @Inject constructor(
 
     var isNotificationEnabled = mutableStateOf(false)
 
-    private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
+    private val fetchFrequency = dataStoreRepository.fetchFrequencyInHours.distinctUntilChanged()
 
     init {
         initDarkModeChange()
@@ -53,7 +53,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initDarkModeChange() {
         viewModelScope.launch {
-            dataStoreDataSource.isDarkThemeEnabled.collectLatest {
+            dataStoreRepository.isDarkThemeEnabled.collectLatest {
                 isDarkModeEnabled.value = it
             }
         }
@@ -65,7 +65,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initFetchFrequencyValue() {
         viewModelScope.launch {
-            dataStoreDataSource.fetchFrequency.collectLatest {
+            dataStoreRepository.fetchFrequency.collectLatest {
                 fetchFrequencyValue.value = it.toFloat()
             }
         }
@@ -86,7 +86,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initUnits() {
         viewModelScope.launch {
-            dataStoreDataSource.measurementUnits.collectLatest {
+            dataStoreRepository.measurementUnits.collectLatest {
                 measurementUnits.value = it
             }
         }
@@ -113,7 +113,7 @@ class SettingViewModel @Inject constructor(
 
     fun onScreenModeChanged(isDark: Boolean) {
         viewModelScope.launch {
-            dataStoreDataSource.saveDarkMode(isDark)
+            dataStoreRepository.saveDarkMode(isDark)
         }
     }
 
@@ -133,14 +133,14 @@ class SettingViewModel @Inject constructor(
 
     fun onFrequencyChanged(positionInList: Int) {
         viewModelScope.launch {
-            dataStoreDataSource.saveFetchFrequency(positionInList)
+            dataStoreRepository.saveFetchFrequency(positionInList)
             workerManager.setWeatherWorker(Constants.HOUR_FREQUENCY_LIST[positionInList])
         }
     }
 
     fun onUnitsChanged(position: Int) {
         viewModelScope.launch {
-            dataStoreDataSource.saveMeasurementUnits(position)
+            dataStoreRepository.saveMeasurementUnits(position)
         }
     }
 

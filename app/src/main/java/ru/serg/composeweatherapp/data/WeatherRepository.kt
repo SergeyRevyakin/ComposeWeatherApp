@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOf
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.dto.WeatherItem
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.DataStoreRepository
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.mapper.DataMapper
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val dataStoreDataSource: DataStoreDataSource,
+    private val dataStoreRepository: DataStoreRepository,
     private val networkStatus: NetworkStatus
 ) {
 
@@ -50,7 +50,7 @@ class WeatherRepository @Inject constructor(
             list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
-                dataStoreDataSource.fetchFrequency.flatMapLatest {
+                dataStoreRepository.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
@@ -81,7 +81,7 @@ class WeatherRepository @Inject constructor(
                 it.cityItem?.latitude isNearTo coordinatesWrapper.latitude &&
                         it.cityItem?.longitude isNearTo coordinatesWrapper.longitude
             }?.let { item ->
-                dataStoreDataSource.fetchFrequency.flatMapLatest {
+                dataStoreRepository.fetchFrequency.flatMapLatest {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {

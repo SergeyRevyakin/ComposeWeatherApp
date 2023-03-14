@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.dto.WeatherItem
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.composeweatherapp.data.data_source.DataStoreRepository
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
@@ -17,11 +17,11 @@ import javax.inject.Inject
 class WeatherServiceUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationService: LocationDataSource,
-    private val dataStoreDataSource: DataStoreDataSource
+    private val dataStoreRepository: DataStoreRepository
 ) {
     fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<WeatherItem>> =
 
-        dataStoreDataSource.fetchFrequency.flatMapLatest { fetchFrequency ->
+        dataStoreRepository.fetchFrequency.flatMapLatest { fetchFrequency ->
             Log.e(this::class.simpleName, "Fetch frequency $fetchFrequency")
             locationService.getLocationUpdate(
                 isOneTimeRequest = true,
