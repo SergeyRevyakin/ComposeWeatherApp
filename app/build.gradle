@@ -82,7 +82,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0-beta01'
     implementation 'androidx.activity:activity-compose:1.7.0'
-    debugImplementation "androidx.compose.ui:ui-tooling"
+//    debugImplementation "androidx.compose.ui:ui-tooling:1.4.0"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.5.0-alpha01"
 
     //Compose
     implementation "androidx.compose.ui:ui:1.5.0-alpha01"
@@ -161,8 +162,9 @@ dependencies {
     //Instrumentation tests
 //    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
 //    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-//    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "junit:junit:4.13.2"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.4.0'
 //    androidTestImplementation "org.jetbrains.kotlin:kotlin-test:1.8.10"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
 //    androidTestImplementation "com.google.truth:truth:1.1.3"

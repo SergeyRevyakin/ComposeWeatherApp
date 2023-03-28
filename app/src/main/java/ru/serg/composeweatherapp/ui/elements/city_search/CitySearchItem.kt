@@ -13,11 +13,13 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.composeweatherapp.utils.Constants
 
 @Composable
 fun CitySearchItem(
@@ -54,6 +56,7 @@ fun CitySearchItem(
                     .clickable {
                         onDelete.invoke(cityItem)
                     }
+                    .testTag(Constants.TestTag.CITY_SEARCH_DELETE_TEST_TAG)
             )
         }
     }

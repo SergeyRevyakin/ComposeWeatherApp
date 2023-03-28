@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.composeweatherapp.utils.Constants
 
 @Composable
 fun CardButton(
@@ -48,7 +50,9 @@ fun CardButton(
             Icon(
                 imageVector = image,
                 contentDescription = null,
-                Modifier.size(48.dp),
+                modifier = Modifier
+                    .size(48.dp)
+                    .testTag(Constants.TestTag.CARD_BUTTON_TEST_TAG),
                 tint = MaterialTheme.colors.primary
             )
 

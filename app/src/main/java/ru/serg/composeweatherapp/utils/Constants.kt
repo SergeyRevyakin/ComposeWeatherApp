@@ -44,4 +44,12 @@ object Constants {
     }
 
     const val ALARM_REQUEST_CODE = 1122
+
+    object TestTag {
+        const val CITY_ROW_TEST_TAG = "city_row"
+        const val CITY_SEARCH_DELETE_TEST_TAG = "city_search_delete"
+
+        const val CARD_BUTTON_TEST_TAG = "card_button"
+    }
+
 }

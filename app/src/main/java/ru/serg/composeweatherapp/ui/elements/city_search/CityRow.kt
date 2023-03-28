@@ -9,10 +9,12 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.utils.Constants
 
 @Composable
 fun CityRow(
@@ -47,6 +49,7 @@ fun CityRow(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)
+                    .testTag(Constants.TestTag.CITY_ROW_TEST_TAG)
             )
         }
     }
