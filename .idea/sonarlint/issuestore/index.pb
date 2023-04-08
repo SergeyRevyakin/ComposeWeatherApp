@@ -1,14 +1,4 @@
 
-{
-Kapp/src/main/java/ru/serg/composeweatherapp/data/data/CoordinatesWrapper.kt,f\5\f5e966ad170a1f1ace11f6b4a1cbccf06fa19caa
-q
-Aapp/src/main/java/ru/serg/composeweatherapp/data/data/CityItem.kt,f\0\f0b28c051709ee21fe99422bc40d962931013117
-x
-Happ/src/main/java/ru/serg/composeweatherapp/data/data/HourWeatherItem.kt,6\2\62ceb0475c85b8281ee63fe12e467102f560588c
-y
-Iapp/src/main/java/ru/serg/composeweatherapp/data/data/IntraDayTempItem.kt,4\e\4e7f8d10e5fb29a342c3866082a3c8a25579ebc4
-t
-Dapp/src/main/java/ru/serg/composeweatherapp/data/room/AppDatabase.kt,b\a\bae125d7add42dc388dff625a8c97b643daf04a4
 ~
 Napp/src/main/java/ru/serg/composeweatherapp/data/room/WeatherTypeConverters.kt,5\b\5bd5fa612efb9bdf0e1a5af0b2f18e73d0240e05
 Ç
@@ -31,5 +21,9 @@ Xapp/src/main/java/ru/serg/composeweatherapp/ui/elements/common/NoCitiesMainScre
 Tapp/src/main/java/ru/serg/composeweatherapp/ui/elements/settings/RadioButtonGroup.kt,7\c\7cd84e5f9b26efdd6e1ea8fa49f08bbd06043136
 Ü
 Vapp/src/main/java/ru/serg/composeweatherapp/ui/elements/top_item/ConnectivityStatus.kt,9\3\938d479077494fa65d6b1035c174a0757d048eb1
+Å
+Qapp/src/main/java/ru/serg/composeweatherapp/ui/elements/CityWeatherContentItem.kt,c\a\cae8709e85259ea0995080f0573b79311515ff54
+~
+Napp/src/main/java/ru/serg/composeweatherapp/ui/screens/pager/PagerViewModel.kt,3\c\3c78fb75f1410a555d8e82a0f39033df7ed7dd2b
 l
 <app/src/main/java/ru/serg/composeweatherapp/ui/Navigation.kt,c\2\c2ccdc38199802f9ee3c23d5fe59f1d434f626e6
