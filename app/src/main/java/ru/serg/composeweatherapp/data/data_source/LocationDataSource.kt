@@ -50,7 +50,7 @@ class LocationDataSource(
     ): Flow<CoordinatesWrapper> {
         return callbackFlow {
             if (!appContext.hasLocationPermission()) {
-                throw LocationService.LocationException("No location permission")
+                throw LocationService.LocationException(message = "No location permission")
             }
 
             val locationManager =
@@ -62,10 +62,13 @@ class LocationDataSource(
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
             if (!isGpsEnabled && !isNetworkEnabled) {
-                throw LocationService.LocationException("GPS is disabled")
+                throw LocationService.LocationException(message = "GPS is disabled")
             }
 
-            val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, TimeUnit.MINUTES.toMillis(updateFrequency))
+            val request = LocationRequest.Builder(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                TimeUnit.MINUTES.toMillis(updateFrequency)
+            )
                 .setWaitForAccurateLocation(true)
                 .build()
 
@@ -80,7 +83,7 @@ class LocationDataSource(
                             send(CoordinatesWrapper(location.latitude, location.longitude))
                         }
                         if (isOneTimeRequest) client.removeLocationUpdates(this)
-                    } ?: throw LocationService.LocationException("No location data")
+                    } ?: throw LocationService.LocationException(message = "No location data")
                     Log.e(this::class.simpleName, "Finished callback")
                 }
             }
