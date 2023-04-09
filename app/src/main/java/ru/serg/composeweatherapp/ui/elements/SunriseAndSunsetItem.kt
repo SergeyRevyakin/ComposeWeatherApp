@@ -62,7 +62,7 @@ fun SunriseSunsetItem(
 
         ) {
             Column(
-                Modifier.weight(0.5f), verticalArrangement = Arrangement.Center
+                Modifier.weight(1f), verticalArrangement = Arrangement.Center
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -86,7 +86,7 @@ fun SunriseSunsetItem(
             }
 
             Column(
-                Modifier.weight(0.5f),
+                Modifier.weight(1f),
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ) {
