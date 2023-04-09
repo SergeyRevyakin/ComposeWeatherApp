@@ -71,7 +71,7 @@ fun MenuSettingsRowWithIcon(
                 )
                 Text(
                     text = descriptionText,
-                    color = Color.Gray,
+                    color = MaterialTheme.colors.primary,
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .fillMaxWidth()
