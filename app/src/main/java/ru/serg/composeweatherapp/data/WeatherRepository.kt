@@ -2,12 +2,14 @@
 
 package ru.serg.composeweatherapp.data
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 import ru.serg.composeweatherapp.data.dto.WeatherItem
@@ -33,15 +35,15 @@ class WeatherRepository @Inject constructor(
         coordinatesWrapper: CoordinatesWrapper,
         forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
-        if (forced) fetchCoordinatesWeather(coordinatesWrapper)
-        else fetchWeather(coordinatesWrapper)
+        if (forced) fetchCoordinatesWeather(coordinatesWrapper).flowOn(Dispatchers.IO)
+        else fetchWeather(coordinatesWrapper).flowOn(Dispatchers.IO)
 
     fun fetchCityWeather(
         cityItem: CityItem,
         forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
-        if (forced) fetchWeather(cityItem)
-        else getLocalWeather(cityItem)
+        if (forced) fetchWeather(cityItem).flowOn(Dispatchers.IO)
+        else getLocalWeather(cityItem).flowOn(Dispatchers.IO)
 
     private fun getLocalWeather(
         cityItem: CityItem,

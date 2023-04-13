@@ -1,8 +1,5 @@
 package ru.serg.composeweatherapp.utils
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 sealed class NetworkResult<T>(
     val data: T? = null,
     var message: String? = null

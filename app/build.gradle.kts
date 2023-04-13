@@ -6,6 +6,7 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.devtools.ksp")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -15,8 +16,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = 27
         targetSdk = 33
-        versionCode = 13
-        versionName = "0.13"
+        versionCode = 14
+        versionName = "0.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -69,6 +70,13 @@ android {
     }
 
     namespace = "ru.serg.composeweatherapp"
+
+//    androidComponents {
+//        onVariants(selector().withBuildType("release")) {
+//            // Exclude AndroidX version files
+//            it.packaging.resources.excludes.add("META-INF/*.version")
+//        }
+//    }
 }
 
 dependencies {
@@ -83,14 +91,13 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.1")
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.1")
 
     //Compose
     implementation("androidx.compose.ui:ui:1.5.0-alpha02")
     implementation("androidx.compose.material:material:1.5.0-alpha02")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.1")
-//    implementation ("androidx.compose.animation:animation:1.3.3"
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.compose.foundation:foundation")
 
