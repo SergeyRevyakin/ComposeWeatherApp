@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -25,19 +27,25 @@ class SettingViewModel @Inject constructor(
     private val workerManager: WorkerManager
 ) : ViewModel() {
 
-    var isDarkModeEnabled = mutableStateOf(false)
+    private val _isDarkModeEnabled = MutableStateFlow(false)
+    val isDarkModeEnabled = _isDarkModeEnabled.asStateFlow()
 
-    var isBackgroundFetchWeatherEnabled = mutableStateOf(false)
+    private var _isBackgroundFetchWeatherEnabled = MutableStateFlow(false)
+    var isBackgroundFetchWeatherEnabled = _isBackgroundFetchWeatherEnabled.asStateFlow()
 
-    var fetchFrequencyValue = mutableStateOf(0f)
+    private var _fetchFrequencyValue = MutableStateFlow(0f)
+    var fetchFrequencyValue = _fetchFrequencyValue.asStateFlow()
 
-    var isLocationEnabled = mutableStateOf(false)
+    private var _isLocationEnabled = MutableStateFlow(false)
+    var isLocationEnabled = _isLocationEnabled.asStateFlow()
 
     var measurementUnits = mutableStateOf(0)
 
-    var alarmState = mutableStateOf(false)
+    private var _alarmState = MutableStateFlow(false)
+    var alarmState = _alarmState.asStateFlow()
 
-    var isNotificationEnabled = mutableStateOf(false)
+    private var _isNotificationEnabled = MutableStateFlow(false)
+    var isNotificationEnabled = _isNotificationEnabled.asStateFlow()
 
     private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
 
@@ -54,19 +62,19 @@ class SettingViewModel @Inject constructor(
     private fun initDarkModeChange() {
         viewModelScope.launch {
             dataStoreDataSource.isDarkThemeEnabled.collectLatest {
-                isDarkModeEnabled.value = it
+                _isDarkModeEnabled.value = it
             }
         }
     }
 
     private fun initBackgroundFetchWeatherChange() {
-        isBackgroundFetchWeatherEnabled.value = workerManager.isWorkerSet()
+        _isBackgroundFetchWeatherEnabled.value = workerManager.isWorkerSet()
     }
 
     private fun initFetchFrequencyValue() {
         viewModelScope.launch {
             dataStoreDataSource.fetchFrequency.collectLatest {
-                fetchFrequencyValue.value = it.toFloat()
+                _fetchFrequencyValue.value = it.toFloat()
             }
         }
     }
@@ -79,7 +87,7 @@ class SettingViewModel @Inject constructor(
 
         viewModelScope.launch {
             locationPermissionFlow.collect {
-                isLocationEnabled.value = it.grantedPermissions.isNotEmpty()
+                _isLocationEnabled.value = it.grantedPermissions.isNotEmpty()
             }
         }
     }
@@ -94,7 +102,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initAlarmState() {
         weatherAlarmManager.isAlarmSet().let {
-            alarmState.value = it
+            _alarmState.value = it
         }
     }
 
@@ -106,7 +114,7 @@ class SettingViewModel @Inject constructor(
 
         viewModelScope.launch {
             locationPermissionFlow.collect {
-                isNotificationEnabled.value = it.isGranted
+                _isNotificationEnabled.value = it.isGranted
             }
         }
     }
@@ -122,13 +130,13 @@ class SettingViewModel @Inject constructor(
             viewModelScope.launch {
                 fetchFrequency.collectLatest {
                     workerManager.setWeatherWorker(it)
+                    initBackgroundFetchWeatherChange()
                 }
             }
         } else {
             workerManager.disableWeatherWorker()
+            initBackgroundFetchWeatherChange()
         }
-
-        initBackgroundFetchWeatherChange()
     }
 
     fun onFrequencyChanged(positionInList: Int) {

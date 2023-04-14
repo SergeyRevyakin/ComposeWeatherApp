@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.dataStore
@@ -24,7 +25,7 @@ class DataStoreDataSource(context: Context) {
     val isDarkThemeEnabled: Flow<Boolean> = dataStore.data.map {
         it[IS_DARK_THEME]
             ?: (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES)
-    }
+    }.distinctUntilChanged()
 
     suspend fun saveDarkMode(isDark: Boolean) {
         dataStore.edit {
@@ -35,7 +36,7 @@ class DataStoreDataSource(context: Context) {
     //Fetch frequency for background worker
     val fetchFrequency = dataStore.data.map {
         it[FETCH_FREQUENCY] ?: 2
-    }
+    }.distinctUntilChanged()
 
     val fetchFrequencyInHours = dataStore.data.map {
         val positionInList = it[FETCH_FREQUENCY] ?: 2
@@ -51,7 +52,7 @@ class DataStoreDataSource(context: Context) {
     //Units of measurement with enum
     val measurementUnits = dataStore.data.map {
         it[MEASUREMENT_UNITS] ?: 0
-    }
+    }.distinctUntilChanged()
 
     suspend fun saveMeasurementUnits(enumPosition: Int) {
         dataStore.edit {

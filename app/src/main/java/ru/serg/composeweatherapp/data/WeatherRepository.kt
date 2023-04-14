@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import ru.serg.composeweatherapp.data.dto.CityItem
@@ -52,7 +53,7 @@ class WeatherRepository @Inject constructor(
             list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
-                dataStoreDataSource.fetchFrequency.flatMapLatest {
+                dataStoreDataSource.fetchFrequency.flatMapMerge {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
@@ -83,7 +84,7 @@ class WeatherRepository @Inject constructor(
                 it.cityItem?.latitude isNearTo coordinatesWrapper.latitude &&
                         it.cityItem?.longitude isNearTo coordinatesWrapper.longitude
             }?.let { item ->
-                dataStoreDataSource.fetchFrequency.flatMapLatest {
+                dataStoreDataSource.fetchFrequency.flatMapMerge {
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {

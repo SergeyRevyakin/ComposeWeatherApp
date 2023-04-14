@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,17 +57,17 @@ fun SettingsScreen(
         MenuRowWithRadioButton(
             optionName = "Use dark mode",
             modifier = Modifier,
-            buttonState = viewModel.isDarkModeEnabled,
+            buttonState = viewModel.isDarkModeEnabled.collectAsState(),
             onSwitchClick = viewModel::onScreenModeChanged
         )
 
         if (isTiramisuOrAbove()) {
             MenuSettingsRowWithIcon(
                 onClick = { context.openAppSystemSettings() },
-                iconImageVector = if (viewModel.isNotificationEnabled.value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff,
-                headerText = if (viewModel.isNotificationEnabled.value) "Now app can send you notifications"
+                iconImageVector = if (viewModel.isNotificationEnabled.collectAsState().value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff,
+                headerText = if (viewModel.isNotificationEnabled.collectAsState().value) "Now app can send you notifications"
                 else "Now app can't send you notifications",
-                descriptionText = if (viewModel.isNotificationEnabled.value) "Tap if you want to turn it off"
+                descriptionText = if (viewModel.isNotificationEnabled.collectAsState().value) "Tap if you want to turn it off"
                 else "Tap if you want to turn it on"
 
             )
@@ -76,23 +77,23 @@ fun SettingsScreen(
             optionName = "Update weather in background",
             descriptionText = "Allow map get data about weather in background. It will consume some network traffic",
             modifier = Modifier,
-            buttonState = viewModel.isBackgroundFetchWeatherEnabled,
+            buttonState = viewModel.isBackgroundFetchWeatherEnabled.collectAsState(),
             onSwitchClick = viewModel::onBackgroundFetchChanged
         )
 
         HourSliderItem(
-            isVisible = viewModel.isBackgroundFetchWeatherEnabled.value,
+            isVisible = viewModel.isBackgroundFetchWeatherEnabled.collectAsState().value,
             hours = Constants.HOUR_FREQUENCY_LIST,
-            value = viewModel.fetchFrequencyValue.value,
+            value = viewModel.fetchFrequencyValue.collectAsState().value,
             onValueChanged = viewModel::onFrequencyChanged
         )
 
         MenuSettingsRowWithIcon(
             onClick = { context.openAppSystemSettings() },
-            iconImageVector = if (viewModel.isLocationEnabled.value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff,
-            headerText = if (viewModel.isLocationEnabled.value) "Right now application has access to your device location"
+            iconImageVector = if (viewModel.isLocationEnabled.collectAsState().value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff,
+            headerText = if (viewModel.isLocationEnabled.collectAsState().value) "Right now application has access to your device location"
             else "Right now application don't have access to your device location",
-            descriptionText = if (viewModel.isLocationEnabled.value) "Tap if you want to turn it off"
+            descriptionText = if (viewModel.isLocationEnabled.collectAsState().value) "Tap if you want to turn it off"
             else "Tap if you want to turn it on"
 
         )
@@ -101,7 +102,7 @@ fun SettingsScreen(
             optionName = "Fetch weather every morning",
             descriptionText = "Allow app get weather data every morning and show in notification. It will consume some network traffic",
             modifier = Modifier,
-            buttonState = viewModel.alarmState,
+            buttonState = viewModel.alarmState.collectAsState(),
             onSwitchClick = { viewModel.onAlarmChanged() }
         )
 
