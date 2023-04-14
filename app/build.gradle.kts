@@ -16,8 +16,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = 27
         targetSdk = 33
-        versionCode = 14
-        versionName = "0.14"
+        versionCode = 15
+        versionName = "0.15"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -60,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = "1.4.5"
     }
 
     packaging {
@@ -147,8 +147,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
 
     //Permission as Flow
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-android:1.0.0")
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.0.0")
+    implementation("dev.shreyaspatil.permission-flow:permission-flow-android:1.1.0")
+    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.1.0")
 
     testImplementation("androidx.room:room-testing:2.5.1")
 
