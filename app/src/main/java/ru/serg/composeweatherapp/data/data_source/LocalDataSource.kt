@@ -32,9 +32,9 @@ class LocalDataSource @Inject constructor(
         return cityHistorySearchDao.citySearchHistoryFlow().map { list ->
             list.map { entity ->
                 entity.toCityItem()
-            }.first {
+            }.find {
                 it.isFavorite
-            }
+            } ?: list.first().toCityItem()
         }
     }
 
