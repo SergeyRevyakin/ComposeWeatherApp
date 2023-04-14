@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
-import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
+import ru.serg.composeweatherapp.ui.elements.top_item.PagerTopItem
 import ru.serg.composeweatherapp.ui.screens.pager.PagerScreen
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
 
@@ -37,17 +37,25 @@ fun MainScreen(
 
     val citiesList by viewModel.citiesList.collectAsState()
 
+    val pagerState = rememberPagerState()
+
+//    val p
+
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        TopItem(
-            header = "Current weather in",
+        PagerTopItem(
             leftIconImageVector = Icons.Rounded.Search,
             rightIconImageVector = Icons.Rounded.Settings,
             onLeftIconClick = navigateToChooseCity,
             onRightIconClick = navigateToSettings,
-            isLoading = viewModel.isLoading.value
+            isLoading = viewModel.isLoading.value,
+            pageCount = viewModel.citiesList.collectAsState().value.size,
+            pagerState = pagerState,
+            hasFavourite = viewModel.citiesList.collectAsState().value.any {
+                it?.isFavorite ?: true
+            }
         )
 
         val context = LocalContext.current
@@ -67,8 +75,6 @@ fun MainScreen(
         }
 
         AnimatedVisibility(visible = citiesList.isNotEmpty()) {
-
-            val pagerState = rememberPagerState()
 
             HorizontalPager(
                 pageCount = viewModel.citiesList.collectAsState().value.size,

@@ -35,9 +35,7 @@ class MainViewModel @Inject constructor(
                 fillCitiesList(it.grantedPermissions.isNotEmpty())
             }
         }
-
     }
-
 
     private fun fillCitiesList(hasLocationPermission: Boolean) {
         viewModelScope.launch {
