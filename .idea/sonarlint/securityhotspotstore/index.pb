@@ -9,8 +9,6 @@ S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-
-Qapp/src/main/java/ru/serg/composeweatherapp/ui/elements/CityWeatherContentItem.kt,c\a\cae8709e85259ea0995080f0573b79311515ff54
 
 Oapp/src/main/java/ru/serg/composeweatherapp/ui/elements/TodayWeatherCardItem.kt,1\e\1e588d7766f653fdb1fb1b8455e911e8aed4ed55
 {
@@ -39,8 +37,6 @@ h
 Tapp/src/main/java/ru/serg/composeweatherapp/data/remote/responses/WeatherResponse.kt,e\8\e8ad5162eb2f56157dadfd14f2137f9b256c6bdb
 o
 ?app/src/main/java/ru/serg/composeweatherapp/di/NetworkModule.kt,1\d\1d7d1502a1a901ed5f291d9a45db26c4c77cc045
-n
->app/src/main/java/ru/serg/composeweatherapp/utils/Constants.kt,9\c\9c17fedc0334b3d5ba20d1bc66ad59bd6f47ca78
 F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
 r
@@ -59,8 +55,6 @@ m
 Rapp/src/main/java/ru/serg/composeweatherapp/ui/elements/settings/HourSliderItem.kt,4\8\484e179d8625edb9cbc07605ae06f4050bdd7508
 Š
 Zapp/src/main/java/ru/serg/composeweatherapp/ui/elements/settings/MenuRowWithRadioButton.kt,8\2\82866949e5a900d87f69f3f3d70d3e970ed83a1f
-‚
-Rapp/src/main/java/ru/serg/composeweatherapp/ui/elements/DailyWeatherBottomSheet.kt,c\7\c76fb2c0ba323764bc6e71968d96da34676cf7e1
 n
 >app/src/main/java/ru/serg/composeweatherapp/utils/DateUtils.kt,1\5\15232b54a478facdaae85bffa057332ef3980943
 r

@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,7 +80,9 @@ fun CityWeatherContentItem(
             }
         },
         modifier = Modifier.fillMaxSize(),
-        sheetShape = RoundedCornerShape(24.dp, 24.dp)
+        sheetShape = RoundedCornerShape(24.dp),
+        sheetElevation = 10.dp,
+        sheetBackgroundColor = Color.Transparent,
     ) {
 
         Column(

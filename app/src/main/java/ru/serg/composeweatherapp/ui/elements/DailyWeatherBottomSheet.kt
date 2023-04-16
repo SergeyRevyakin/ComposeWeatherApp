@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
@@ -49,12 +48,13 @@ fun DailyWeatherBottomSheet(
 
     Column(
         modifier = Modifier
+            .padding(12.dp)
             .fillMaxWidth()
             .background(
                 MaterialTheme.colors.surface
                     .copy(alpha = 0.9f)
                     .compositeOver(Color.White),
-                RoundedCornerShape(24.dp, 24.dp)
+                RoundedCornerShape(24.dp)
             )
             .clickable {
                 onDismiss()
