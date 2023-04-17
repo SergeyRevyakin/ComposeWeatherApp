@@ -21,7 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,9 +53,10 @@ fun DailyWeatherBottomSheet(
             .background(
                 MaterialTheme.colors.surface
                     .copy(alpha = 0.9f)
-                    .compositeOver(Color.White),
+                    .compositeOver(MaterialTheme.colors.onBackground),
                 RoundedCornerShape(24.dp)
             )
+            .clip(RoundedCornerShape(24.dp))
             .clickable {
                 onDismiss()
             }
