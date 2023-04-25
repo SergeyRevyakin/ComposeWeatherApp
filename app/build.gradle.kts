@@ -81,22 +81,22 @@ android {
 
 dependencies {
 
-    api(platform("androidx.compose:compose-bom:2023.04.00"))
-    androidTestApi(platform("androidx.compose:compose-bom:2023.04.00"))
+    api(platform("androidx.compose:compose-bom:2023.04.01"))
+    androidTestApi(platform("androidx.compose:compose-bom:2023.04.01"))
 
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0-beta01")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.activity:activity-compose:1.7.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.1")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.2")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.2")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.2")
 
     //Compose
-    implementation("androidx.compose.ui:ui:1.5.0-alpha02")
-    implementation("androidx.compose.material:material:1.5.0-alpha02")
+    implementation("androidx.compose.ui:ui:1.5.0-alpha03")
+    implementation("androidx.compose.material:material:1.5.0-alpha03")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.compose.foundation:foundation")
@@ -113,12 +113,12 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.2.4")
-    implementation("io.ktor:ktor-client-android:2.2.4")
-    implementation("io.ktor:ktor-client-serialization:2.2.4")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
-    implementation("io.ktor:ktor-client-logging:2.2.4")
+    implementation("io.ktor:ktor-client-core:2.3.0")
+    implementation("io.ktor:ktor-client-android:2.3.0")
+    implementation("io.ktor:ktor-client-serialization:2.3.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+    implementation("io.ktor:ktor-client-logging:2.3.0")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha")
     implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha")
