@@ -2,6 +2,7 @@
 
 package ru.serg.composeweatherapp.data
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -50,10 +51,13 @@ class WeatherRepository @Inject constructor(
         cityItem: CityItem,
     ): Flow<NetworkResult<WeatherItem>> =
         localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
+            Log.d("getLocalWeather", "getLocalWeather: $list")
             list.find {
                 it.cityItem?.name == cityItem.name
             }?.let { item ->
+                Log.d("getLocalWeather", "getLocalWeather: $item")
                 dataStoreDataSource.fetchFrequency.flatMapMerge {
+                    Log.d("getLocalWeather", "DataStore")
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
@@ -79,12 +83,13 @@ class WeatherRepository @Inject constructor(
         coordinatesWrapper: CoordinatesWrapper
     ): Flow<NetworkResult<WeatherItem>> =
         localDataSource.getCurrentWeatherItem().flatMapLatest { list ->
-
+            Log.d("fetchWeather", "fetchWeather: $list")
             list.find {
                 it.cityItem?.latitude isNearTo coordinatesWrapper.latitude &&
                         it.cityItem?.longitude isNearTo coordinatesWrapper.longitude
             }?.let { item ->
                 dataStoreDataSource.fetchFrequency.flatMapMerge {
+                    Log.d("fetchWeather", "DataStore")
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {

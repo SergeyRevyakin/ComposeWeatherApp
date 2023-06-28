@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -35,7 +36,6 @@ fun PagerTopItem(
     onLeftIconClick: (() -> Unit)? = null,
     onRightIconClick: (() -> Unit)? = null,
     isLoading: Boolean = false,
-    pageCount: Int,
     pagerState: PagerState,
     hasFavourite: Boolean
 ) {
@@ -67,9 +67,9 @@ fun PagerTopItem(
                 }
             }
 
-            if (pageCount > 1) {
+            if (pagerState.pageCount > 1) {
                 PageIndicator(
-                    itemsCount = pageCount,
+                    itemsCount = pagerState.pageCount,
                     selectedItem = pagerState.currentPage,
                     hasFavourite = hasFavourite,
                     modifier = Modifier
@@ -123,8 +123,9 @@ fun PreviewPagerTopItem() {
             rightIconImageVector = Icons.Rounded.Settings,
             onLeftIconClick = {},
             onRightIconClick = {},
-            pageCount = 4,
-            pagerState = PagerState(),
+            pagerState = rememberPagerState(1, 0f) {
+                3
+            },
             hasFavourite = true
         )
     }
@@ -140,8 +141,9 @@ fun PreviewNoItemPagerTopItem() {
             rightIconImageVector = Icons.Rounded.Settings,
             onLeftIconClick = {},
             onRightIconClick = {},
-            pageCount = 0,
-            pagerState = PagerState(),
+            pagerState = rememberPagerState(0, 0f) {
+                0
+            },
             hasFavourite = false
         )
     }

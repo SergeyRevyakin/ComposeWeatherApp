@@ -5,9 +5,11 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
@@ -37,9 +39,12 @@ fun MainScreen(
 
     val citiesList by viewModel.citiesList.collectAsState()
 
-    val pagerState = rememberPagerState()
-
-//    val p
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        viewModel.citiesList.value.size
+    }
 
     Column(
         modifier = modifier
@@ -76,17 +81,22 @@ fun MainScreen(
 
         AnimatedVisibility(visible = citiesList.isNotEmpty()) {
 
+            viewModel.citiesList.collectAsState().value.size
+            //To prevent preload of next page,
             HorizontalPager(
-                pageCount = viewModel.citiesList.collectAsState().value.size,
+                modifier = Modifier.fillMaxWidth(),
                 state = pagerState,
-                modifier = Modifier.fillMaxWidth()
-            ) { page ->
-                PagerScreen(
-                    cityItem = citiesList[page],
-                    pagerState.currentPage == page, //To prevent preload of next page,
-                    viewModel.isLoading
-                )
-            }
+                userScrollEnabled = true,
+                reverseLayout = false,
+                beyondBoundsPageCount = 0,
+                pageContent = {
+                    PagerScreen(
+                        cityItem = citiesList[it],
+                        pagerState.currentPage == it, //To prevent preload of next page,
+                        viewModel.isLoading
+                    )
+                }
+            )
         }
     }
 }

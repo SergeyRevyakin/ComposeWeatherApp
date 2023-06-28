@@ -60,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.5"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
 
     packaging {
@@ -81,24 +81,24 @@ android {
 
 dependencies {
 
-    api(platform("androidx.compose:compose-bom:2023.04.01"))
-    androidTestApi(platform("androidx.compose:compose-bom:2023.04.01"))
+    api(platform("androidx.compose:compose-bom:2023.06.00"))
+    androidTestApi(platform("androidx.compose:compose-bom:2023.06.00"))
 
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0-beta01")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.activity:activity-compose:1.7.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.2")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.2")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 
     //Compose
-    implementation("androidx.compose.ui:ui:1.5.0-alpha03")
-    implementation("androidx.compose.material:material:1.5.0-alpha03")
+    implementation("androidx.compose.ui:ui:1.5.0-beta02")
+    implementation("androidx.compose.material:material:1.5.0-beta02")
     implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.compose.foundation:foundation")
 
     // Lifecycle
@@ -133,24 +133,24 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     //Room
-    implementation("androidx.room:room-runtime:2.5.1")
-    ksp("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
+    implementation("androidx.room:room-runtime:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
 
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     //Widgets
-    implementation("androidx.glance:glance-appwidget:1.0.0-alpha05")
+    implementation("androidx.glance:glance-appwidget:1.0.0-beta01")
 
     //Data Store
     implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
 
     //Permission as Flow
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-android:1.1.0")
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.1.0")
+    implementation("dev.shreyaspatil.permission-flow:permission-flow-android:1.2.0")
+    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.2.0")
 
-    testImplementation("androidx.room:room-testing:2.5.1")
+    testImplementation("androidx.room:room-testing:2.5.2")
 
 }
 class RoomSchemaArgProvider(

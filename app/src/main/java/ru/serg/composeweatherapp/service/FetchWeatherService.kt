@@ -22,6 +22,7 @@ import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import ru.serg.composeweatherapp.utils.showDailyForecastNotification
+import ru.serg.composeweatherapp.utils.showDailyServiceForecastNotification
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -84,10 +85,11 @@ class FetchWeatherService : Service() {
 
     private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem) {
         stop()
-        showDailyForecastNotification(applicationContext, weatherItem)
+        showDailyServiceForecastNotification(applicationContext, weatherItem)
     }
 
     private fun stop() {
+        Log.e(this::class.simpleName, "Stop command")
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf(SERVICE_ID)
     }

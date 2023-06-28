@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class WeatherWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
+    @Assisted val appContext: Context,
     @Assisted params: WorkerParameters,
     private val workerUseCase: WorkerUseCase,
 ) : CoroutineWorker(appContext, params) {
@@ -65,12 +65,12 @@ class WeatherWorker @AssistedInject constructor(
 
         fun isWeatherWorkerSet(context: Context) =
             WorkManager.getInstance(context).getWorkInfosByTag(workerTag).get()?.let {
-                it.isNotEmpty() && it.first().state != WorkInfo.State.CANCELLED
+                it.isNotEmpty() && !listOf(WorkInfo.State.CANCELLED, WorkInfo.State.BLOCKED, WorkInfo.State.FAILED).contains(it.first().state)
             } ?: false
 
         fun cancelPeriodicWork(context: Context) {
             Log.e(this::class.simpleName, "Worker cancelled")
-            WorkManager.getInstance(context).cancelAllWork()
+            WorkManager.getInstance(context).cancelAllWorkByTag(workerTag)
         }
     }
 

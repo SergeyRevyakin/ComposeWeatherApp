@@ -67,9 +67,10 @@ class LocationDataSource(
 
             val request = LocationRequest.Builder(
                 Priority.PRIORITY_HIGH_ACCURACY,
-                TimeUnit.MINUTES.toMillis(updateFrequency)
+                1L
             )
                 .setWaitForAccurateLocation(true)
+                .setMaxUpdateAgeMillis(1L)
                 .build()
 
             Log.e(this::class.simpleName, "Passed to location callback")
@@ -77,6 +78,7 @@ class LocationDataSource(
                 override fun onLocationResult(result: LocationResult) {
                     Log.e(this::class.simpleName, "Entered callback")
                     super.onLocationResult(result)
+                    result.locations
                     result.lastLocation?.let { location ->
                         Log.e(this::class.simpleName, "Got location $location")
                         launch {

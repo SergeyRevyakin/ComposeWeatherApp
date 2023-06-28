@@ -11,8 +11,7 @@ class WorkerManager @Inject constructor(
         WeatherWorker.setupPeriodicWork(context, interval = int.toLong())
     }
 
-    fun isWorkerSet() =
-        WeatherWorker.isWeatherWorkerSet(context)
+    fun isWorkerSet() = WeatherWorker.isWeatherWorkerSet(context)
 
     fun disableWeatherWorker() = WeatherWorker.cancelPeriodicWork(context)
 

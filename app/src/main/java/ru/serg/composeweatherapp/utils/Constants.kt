@@ -29,6 +29,7 @@ object Constants {
         const val NOTIFICATION_CHANNEL = "weather_channel"
         const val NOTIFICATION_CHANNEL_DESCRIPTION = "Weather notifications"
         const val NOTIFICATION_CHANNEL_ID = "WEATHER_CHANNEL_ID"
+        const val NOTIFICATION_CHANNEL_SERVICE_ID = "NOTIFICATION_CHANNEL_SERVICE_ID"
     }
 
     object DataStore {

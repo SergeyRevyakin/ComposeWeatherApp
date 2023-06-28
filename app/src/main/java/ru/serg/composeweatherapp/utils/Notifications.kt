@@ -65,6 +65,42 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
         notify(Random().nextInt(), builder.build())
     }
 }
+@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
+
+    val weatherXml = weatherItem.weatherIcon ?: R.drawable.ic_sun
+    val img = getBitmapFromVectorDrawable(context, weatherXml)
+
+    val notificationIntent = Intent(context, MainActivity::class.java)
+        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+    val pendingIntent = PendingIntent.getActivity(
+        context, 0, notificationIntent,
+        PendingIntent.FLAG_MUTABLE
+    )
+
+    val builder =
+        NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_SERVICE_ID)
+            .setSmallIcon(weatherXml)
+            .setContentTitle("Weather Service for ${DateUtils.getDate(weatherItem.lastUpdatedTime)}")
+            .setContentText("In ${weatherItem.cityItem?.name}")
+            .setLargeIcon(img)
+            .setStyle(
+                NotificationCompat.InboxStyle()
+                    .addLine("Right now: ${weatherItem.feelsLike}")
+                    .addLine("Morning: ${weatherItem.dailyWeatherList.first().temp.morningTemp}")
+                    .addLine("Day: ${weatherItem.dailyWeatherList.first().temp.dayTemp}")
+                    .addLine("Evening: ${weatherItem.dailyWeatherList.first().temp.eveningTemp}")
+                    .addLine("Night: ${weatherItem.dailyWeatherList.first().temp.nightTemp}")
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+    with(NotificationManagerCompat.from(context)) {
+        notify(Random().nextInt(), builder.build())
+    }
+}
 
 @SuppressLint("MissingPermission") //TODO add notification check for Android 13
 fun showFetchErrorNotification(context: Context, errorText: String?) {

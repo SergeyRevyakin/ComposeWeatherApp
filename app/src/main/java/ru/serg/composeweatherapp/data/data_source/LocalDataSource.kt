@@ -2,6 +2,7 @@ package ru.serg.composeweatherapp.data.data_source
 
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
@@ -35,7 +36,7 @@ class LocalDataSource @Inject constructor(
             }.find {
                 it.isFavorite
             } ?: list.first().toCityItem()
-        }
+        }.distinctUntilChanged()
     }
 
     suspend fun insertCityItemToHistorySearch(cityItem: CityItem) {

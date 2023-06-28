@@ -11,6 +11,7 @@ import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import ru.serg.composeweatherapp.utils.WorkerManager
+import ru.serg.composeweatherapp.worker.WeatherWorker
 import javax.inject.Singleton
 
 @Module
