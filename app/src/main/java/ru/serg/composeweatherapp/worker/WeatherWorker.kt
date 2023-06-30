@@ -102,6 +102,9 @@ class WeatherWorker @AssistedInject constructor(
                 when (it) {
                     is NetworkResult.Success -> {
                         onWeatherFetchedSuccessful(it.data)
+                        it.data?.alertMessage?.let {
+                            showNotification(applicationContext, "ALERT", it)
+                        }
                     }
 
                     is NetworkResult.Error -> {

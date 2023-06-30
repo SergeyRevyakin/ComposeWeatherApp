@@ -33,7 +33,8 @@ fun CityItem.toCityEntity() = CityEntity(
     country,
     latitude,
     longitude,
-    isFavorite
+    isFavorite,
+    if (isFavorite) -1 else 0
 )
 
 fun CityEntity.toCityItem() = CityItem(

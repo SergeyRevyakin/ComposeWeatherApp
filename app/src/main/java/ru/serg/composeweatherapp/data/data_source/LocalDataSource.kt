@@ -1,9 +1,11 @@
 package ru.serg.composeweatherapp.data.data_source
 
 import android.util.Log
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
@@ -14,6 +16,7 @@ import ru.serg.composeweatherapp.utils.toWeatherEntity
 import ru.serg.composeweatherapp.utils.toWeatherItem
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class LocalDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
     private val cityHistorySearchDao: CityHistorySearchDao
@@ -39,18 +42,16 @@ class LocalDataSource @Inject constructor(
         }.distinctUntilChanged()
     }
 
+    fun getFavouriteCityWithWeather(): Flow<WeatherItem?> {
+        return weatherDao.getWeatherWithCity().mapLatest { list ->
+            list.firstOrNull {
+                it.cityEntity?.isFavorite == true
+            }?.toWeatherItem() ?: list.firstOrNull()?.toWeatherItem()
+        }.distinctUntilChanged()
+    }
+
     suspend fun insertCityItemToHistorySearch(cityItem: CityItem) {
         Log.e(this::class.simpleName, "Entering insert fun\n $cityItem")
-        if (cityItem.isFavorite) {
-            Log.e(this::class.simpleName, "Entering if")
-            cityHistorySearchDao.citySearchHistory().forEach {
-                if (it.isFavorite && it.cityName != cityItem.name) {
-                    Log.e(this::class.simpleName, "Deleting $it")
-                    deleteCityItemToHistorySearch(it.toCityItem())
-                }
-            }
-        }
-        Log.e(this::class.simpleName, "Continue")
         cityHistorySearchDao.addCityToHistory(
             cityItem.toCityEntity()
         )
@@ -61,11 +62,11 @@ class LocalDataSource @Inject constructor(
     }
 
     fun getCurrentWeatherItem(): Flow<List<WeatherItem>> =
-        weatherDao.getWeatherWithCity().map { list ->
-            list.map {
+        weatherDao.getWeatherWithCity().mapLatest { list ->
+            list.filter { it.cityEntity?.isFavorite != true }.map {
                 it.toWeatherItem()
             }
-        }
+        }.distinctUntilChanged()
 
     suspend fun saveWeather(weatherItem: WeatherItem) {
         weatherDao.saveWeatherEntity(

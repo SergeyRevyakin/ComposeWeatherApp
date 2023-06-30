@@ -8,10 +8,11 @@ import ru.serg.composeweatherapp.utils.Constants
     tableName = Constants.SEARCH_HISTORY
 )
 data class CityEntity(
-    @PrimaryKey
     val cityName: String,
     val country: String?,
     val latitude: Double?,
     val longitude: Double?,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
 )

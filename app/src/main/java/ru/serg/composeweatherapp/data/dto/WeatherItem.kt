@@ -16,7 +16,8 @@ data class WeatherItem(
     val cityItem: CityItem?,
     val lastUpdatedTime: Long,
     val hourlyWeatherList: List<HourWeatherItem>,
-    val dailyWeatherList: List<DayWeatherItem>
+    val dailyWeatherList: List<DayWeatherItem>,
+    val alertMessage: String? = null
 ) {
     companion object {
         fun defaultItem() = WeatherItem(

@@ -15,6 +15,7 @@ data class OneCallResponse(
     @SerialName("timezone_offset")
     val timezoneOffset: Int?,
     val message: String?,
+    val alert: WeatherAlert? = null
 ) {
     @Serializable
     data class Current(

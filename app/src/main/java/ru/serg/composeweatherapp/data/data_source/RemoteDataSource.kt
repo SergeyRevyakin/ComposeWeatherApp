@@ -81,7 +81,7 @@ class RemoteDataSource @Inject constructor(
                     if (it.status.value == 200) {
                         emit(NetworkResult.Success(it.body()))
                     } else {
-                        emit(NetworkResult.Error(data = it.body(), message = ""))
+                        emit(NetworkResult.Error(data = it.body(), message = it.status.description))
                     }
                 }
             } catch (e: Exception) {

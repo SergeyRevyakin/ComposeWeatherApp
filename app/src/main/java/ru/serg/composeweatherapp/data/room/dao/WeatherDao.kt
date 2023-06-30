@@ -1,6 +1,11 @@
 package ru.serg.composeweatherapp.data.room.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
 import ru.serg.composeweatherapp.data.room.entity.WeatherWithCity

@@ -44,7 +44,8 @@ object DataMapper {
         cityItem: CityItem,
         dailyList: List<DayWeatherItem>,
         hourlyList: List<HourWeatherItem>,
-        weatherResponse: WeatherResponse
+        weatherResponse: WeatherResponse,
+        alert: String? = null
     ) = WeatherItem(
         feelsLike = weatherResponse.main?.feelsLike,
         currentTemp = weatherResponse.main?.temp,
@@ -58,7 +59,8 @@ object DataMapper {
         cityItem = cityItem,
         lastUpdatedTime = getTimeMillis(),
         dailyWeatherList = dailyList,
-        hourlyWeatherList = hourlyList
+        hourlyWeatherList = hourlyList,
+        alertMessage = alert
     )
 
     fun getWeatherItem(
@@ -88,6 +90,6 @@ object DataMapper {
             mapDayWeatherItem(feelsLikeIntraDay, tempIntraDay, daily)
         } ?: emptyList()
 
-        return mapWeatherItem(cityItem, dailyList, hourlyList, weatherResponse)
+        return mapWeatherItem(cityItem, dailyList, hourlyList, weatherResponse, oneCallResponse.alert?.description)
     }
 }

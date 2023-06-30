@@ -1,6 +1,7 @@
 package ru.serg.composeweatherapp.ui.screens.choose_city
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -82,7 +83,7 @@ fun ChooseCityScreen(
 
         AnimatedVisibility(visible = favouriteCities.isNotEmpty()) {
 
-            Column() {
+            Column {
                 Text(
                     text = "Favourite cities",
                     style = headerStyle,
@@ -95,7 +96,8 @@ fun ChooseCityScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     state = rememberLazyListState()
                 ) {
-                    items(favouriteCities) {
+                    items(favouriteCities,
+                        key = { it.name.hashCode() }) {
                         CitySearchItem(
                             cityItem = it,
                             onDelete = viewModel::onDeleteClick,
@@ -107,7 +109,13 @@ fun ChooseCityScreen(
                                         )
                                     }"
                                 )
-                            }
+                            },
+                            modifier = Modifier.animateItemPlacement(
+                                animationSpec = tween(
+                                    durationMillis = 500,
+                                    easing = LinearOutSlowInEasing,
+                                )
+                            )
                         )
                     }
                 }

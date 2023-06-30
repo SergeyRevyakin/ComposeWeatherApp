@@ -33,11 +33,13 @@ class ChooseCityViewModel @Inject constructor(
 
     var favouriteCitiesList: StateFlow<List<CityItem>> = MutableStateFlow(emptyList())
 
-    var inputSharedFlow = MutableSharedFlow<String>(
+    private var _inputSharedFlow = MutableSharedFlow<String>(
         replay = 0,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
+
+    val inputSharedFlow = _inputSharedFlow.asSharedFlow()
 
     init {
         initFavouriteCities()
@@ -46,7 +48,7 @@ class ChooseCityViewModel @Inject constructor(
 
     private fun initDebounceSearcher() {
         viewModelScope.launch {
-            inputSharedFlow.debounce(3000).collectLatest {
+            _inputSharedFlow.debounce(3000).collectLatest {
                 if (it.isNotBlank()) fetchCities(it)
             }
         }
@@ -102,7 +104,7 @@ class ChooseCityViewModel @Inject constructor(
             setErrorState("")
         }
         viewModelScope.launch {
-            inputSharedFlow.emit(input)
+            _inputSharedFlow.emit(input)
         }
     }
 

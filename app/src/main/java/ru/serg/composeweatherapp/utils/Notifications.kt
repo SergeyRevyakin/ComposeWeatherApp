@@ -15,13 +15,13 @@ import ru.serg.composeweatherapp.data.dto.WeatherItem
 import java.util.Random
 
 
-@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+@SuppressLint("MissingPermission")
 fun showNotification(context: Context, header: String?, text: String?) {
-    val builder = NotificationCompat.Builder(context, "123")
+    val builder = NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_sun)
         .setContentTitle(header)
         .setContentText(text)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setPriority(NotificationCompat.PRIORITY_MAX)
         .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(context)) {
@@ -29,7 +29,7 @@ fun showNotification(context: Context, header: String?, text: String?) {
     }
 }
 
-@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+@SuppressLint("MissingPermission")
 fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
 
     val weatherXml = weatherItem.weatherIcon ?: R.drawable.ic_sun
@@ -65,7 +65,7 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
         notify(Random().nextInt(), builder.build())
     }
 }
-@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+@SuppressLint("MissingPermission")
 fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
 
     val weatherXml = weatherItem.weatherIcon ?: R.drawable.ic_sun
@@ -102,7 +102,7 @@ fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherI
     }
 }
 
-@SuppressLint("MissingPermission") //TODO add notification check for Android 13
+@SuppressLint("MissingPermission")
 fun showFetchErrorNotification(context: Context, errorText: String?) {
 
     val notificationIntent = Intent(context, MainActivity::class.java)

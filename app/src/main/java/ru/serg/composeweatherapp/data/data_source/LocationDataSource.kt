@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 import ru.serg.composeweatherapp.utils.hasLocationPermission
-import java.util.concurrent.TimeUnit
 
 class LocationDataSource(
     private val appContext: Context
@@ -37,10 +36,7 @@ class LocationDataSource(
         val isNetworkEnabled =
             locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-        if (!isGpsEnabled && !isNetworkEnabled) {
-            return false
-        }
-        return true
+        return (isGpsEnabled || isNetworkEnabled)
     }
 
     @SuppressLint("MissingPermission")
