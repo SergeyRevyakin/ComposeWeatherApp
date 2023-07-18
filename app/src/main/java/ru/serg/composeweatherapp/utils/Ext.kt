@@ -14,8 +14,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.DailyWeather
+import ru.serg.composeweatherapp.data.dto.HourlyWeather
+import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.room.entity.CityEntity
+import ru.serg.composeweatherapp.data.room.entity.UpdatedCityWeather
+import ru.serg.composeweatherapp.data.room.entity.UpdatedDailyWeatherEntity
+import ru.serg.composeweatherapp.data.room.entity.UpdatedHourlyWeatherEntity
 import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
 import ru.serg.composeweatherapp.data.room.entity.WeatherWithCity
 import java.util.Locale
@@ -34,7 +40,8 @@ fun CityItem.toCityEntity() = CityEntity(
     latitude,
     longitude,
     isFavorite,
-    if (isFavorite) -1 else 0
+    if (isFavorite) -1 else id,
+    lastTimeUpdated = getTimeMillis()
 )
 
 fun CityEntity.toCityItem() = CityItem(
@@ -42,7 +49,9 @@ fun CityEntity.toCityItem() = CityItem(
     country.orEmpty(),
     latitude ?: 0.0,
     longitude ?: 0.0,
-    isFavorite
+    isFavorite,
+    id,
+    lastTimeUpdated.orZero()
 )
 
 infix fun Double?.isNearTo(other: Double?): Boolean {
@@ -123,3 +132,51 @@ fun WeatherItem.toWeatherEntity() = WeatherItemEntity(
     hourlyWeatherList = WeatherItemEntity.HourItemList(hourlyWeatherList),
     dailyWeatherList = WeatherItemEntity.DailyItemList(dailyWeatherList)
 )
+
+fun UpdatedHourlyWeatherEntity.toHourlyWeather() = HourlyWeather(
+    windSpeed = windSpeed.orZero(),
+    windDirection = windDirection.orZero(),
+    weatherIcon = weatherIcon.orZero(),
+    weatherDescription = weatherDescription.orEmpty(),
+    feelsLike = feelsLike.orZero(),
+    currentTemp = currentTemp.orZero(),
+    humidity = humidity.orZero(),
+    pressure = pressure.orZero(),
+    dateTime = dateTime.orZero(),
+)
+
+fun UpdatedDailyWeatherEntity.toDailyWeather() = DailyWeather(
+    windSpeed = windSpeed.orZero(),
+    windDirection = windDirection.orZero(),
+    weatherIcon = weatherIcon.orZero(),
+    weatherDescription = weatherDescription.orEmpty(),
+    humidity = humidity.orZero(),
+    pressure = pressure.orZero(),
+    dateTime = dateTime.orZero(),
+    feelsLike = feelsLike,
+    dailyWeatherItem = dailyWeatherItem,
+    sunrise = sunrise.orZero(),
+    sunset = sunset.orZero()
+)
+
+fun UpdatedCityWeather.toWeatherItem() = UpdatedWeatherItem(
+    cityItem = cityEntity.toCityItem(),
+    hourlyWeatherList = hourlyWeatherEntity.map {
+        it.toHourlyWeather()
+    },
+    dailyWeatherList = updatedDailyWeatherEntity.map {
+        it.toDailyWeather()
+    }
+)
+
+fun Double?.orZero() = this ?: 0.0
+
+fun Int?.orZero() = this ?: 0
+
+fun Long?.orZero() = this ?: 0
+
+fun String?.orEmpty() = this ?: ""
+
+fun Int?.toTimeStamp() = this?.let { it * 1000L } ?: 0L
+
+fun Long?.toTimeStamp() = this?.let { it * 1000L } ?: 0L

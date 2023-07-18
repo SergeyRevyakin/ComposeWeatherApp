@@ -10,10 +10,13 @@ object Constants {
 
     const val WEATHER_DATABASE = "weather_database"
 
-    const val LAST_LOCATION = "LASTLOCATIONENTITY"
-
     const val SEARCH_HISTORY = "city_search_history"
     const val WEATHER_ITEMS = "weather_items"
+    const val UPDATED_WEATHER_TABLE = "updated_weather_table"
+    const val HOUR_WEATHER_TABLE = "hour_weather_table"
+
+    const val CITY_ID = "city_id"
+    const val DATETIME = "datetime"
 
     const val EMPTY_STRING = ""
 
@@ -22,7 +25,7 @@ object Constants {
     const val CITY_ITEM = "city_item"
 
     object Time {
-        const val millisecondsToHour:Long = 60L * 60L * 1000L
+        const val millisecondsToHour: Long = 60L * 60L * 1000L
     }
 
     object Notifications {
@@ -37,10 +40,34 @@ object Constants {
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
         const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
 
-        enum class Units(val parameterCode: String, val title: String, val description: String, val tempUnits: String, val windUnits: String){
-            METRIC("metric", "Metric", "Temperature in Celsius, wind speed in meter/sec", "℃", "m/s"),
-            IMPERIAL( "imperial", "Imperial", "Temperature in Fahrenheit and wind speed in miles/hour", "℉", "mph"),
-            KELVIN("standard", "Kelvin", "Temperature in Kelvin and wind speed in meter/sec", "K", "m/s")
+        enum class Units(
+            val parameterCode: String,
+            val title: String,
+            val description: String,
+            val tempUnits: String,
+            val windUnits: String
+        ) {
+            METRIC(
+                "metric",
+                "Metric",
+                "Temperature in Celsius, wind speed in meter/sec",
+                "℃",
+                "m/s"
+            ),
+            IMPERIAL(
+                "imperial",
+                "Imperial",
+                "Temperature in Fahrenheit and wind speed in miles/hour",
+                "℉",
+                "mph"
+            ),
+            KELVIN(
+                "standard",
+                "Kelvin",
+                "Temperature in Kelvin and wind speed in meter/sec",
+                "K",
+                "m/s"
+            )
         }
     }
 

@@ -30,7 +30,7 @@ class CityWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             savedStateHandle.get<String>(Constants.CITY_ITEM)?.let { city ->
                 uiState =
-                    weatherRepository.fetchWeather(Json.decodeFromString(city))
+                    weatherRepository.getCityWeatherNoSavingFlow(Json.decodeFromString(city))
                         .map { networkResult ->
                             when (networkResult) {
                                 is NetworkResult.Loading -> ScreenState.Loading

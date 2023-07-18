@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItem
 import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
+import ru.serg.composeweatherapp.ui.elements.weather_screen.UpdatedCityWeatherContentItem
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 
 @Composable
@@ -59,7 +59,7 @@ fun CityWeatherScreen(
             val weatherItem = (screenState as? ScreenState.Success)?.weatherItem
 
             weatherItem?.let {
-                CityWeatherContentItem(
+                UpdatedCityWeatherContentItem(
                     weatherItem = weatherItem,
                     modifier = modifier
                 )

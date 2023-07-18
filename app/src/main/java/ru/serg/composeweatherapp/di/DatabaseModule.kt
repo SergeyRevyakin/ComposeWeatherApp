@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.composeweatherapp.data.room.AppDatabase
 import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
-import ru.serg.composeweatherapp.data.room.dao.LastLocationDao
+import ru.serg.composeweatherapp.data.room.dao.UpdatedWeatherDao
 import ru.serg.composeweatherapp.data.room.dao.WeatherDao
 import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Singleton
@@ -27,7 +27,7 @@ class DatabaseModule {
             AppDatabase::class.java,
             Constants.WEATHER_DATABASE
         )
-            .fallbackToDestructiveMigration()//TODO Migration rules
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -39,13 +39,14 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideLastLocationDao(appDatabase: AppDatabase): LastLocationDao {
-        return appDatabase.lastLocationDao()
+    fun provideCityHistorySearchDao(appDatabase: AppDatabase): CityHistorySearchDao {
+        return appDatabase.cityHistorySearchDao()
     }
 
     @Provides
     @Singleton
-    fun provideCityHistorySearchDao(appDatabase: AppDatabase): CityHistorySearchDao {
-        return appDatabase.cityHistorySearchDao()
+    fun provideUpdatedWeatherDao(appDatabase: AppDatabase): UpdatedWeatherDao {
+        return appDatabase.updatedWeatherDao()
     }
+
 }

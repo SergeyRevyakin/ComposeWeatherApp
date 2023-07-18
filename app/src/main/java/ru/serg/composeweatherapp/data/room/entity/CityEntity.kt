@@ -1,5 +1,6 @@
 package ru.serg.composeweatherapp.data.room.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.serg.composeweatherapp.utils.Constants
@@ -14,5 +15,7 @@ data class CityEntity(
     val longitude: Double?,
     val isFavorite: Boolean = false,
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    @ColumnInfo(name = Constants.CITY_ID)
+    val id: Int = 0,
+    var lastTimeUpdated: Long?
 )

@@ -21,7 +21,6 @@ val Typography = Typography(
     ),
 )
 
-@OptIn(ExperimentalTextApi::class)
 val headerStyle: TextStyle
     @Composable
     get() {
@@ -29,18 +28,16 @@ val headerStyle: TextStyle
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    MaterialTheme.colors.onBackground,
-                    MaterialTheme.colors.primary,
-                    MaterialTheme.colors.primary,
-                ),
-                tileMode = TileMode.Mirror,
-                start = Offset(30f, 50f),
-                end = Offset(250f, 350f)
-            ),
-
-
+//            brush = Brush.linearGradient(
+//                colors = listOf(
+//                    MaterialTheme.colors.onBackground,
+//                    MaterialTheme.colors.primary,
+//                    MaterialTheme.colors.primary,
+//                ),
+//                tileMode = TileMode.Mirror,
+//                start = Offset(30f, 50f),
+//                end = Offset(250f, 350f)
+//            ),
             )
     }
 

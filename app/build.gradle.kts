@@ -60,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
 
     packaging {
@@ -81,8 +81,8 @@ android {
 
 dependencies {
 
-    api(platform("androidx.compose:compose-bom:2023.06.00"))
-    androidTestApi(platform("androidx.compose:compose-bom:2023.06.00"))
+    api(platform("androidx.compose:compose-bom:2023.06.01"))
+    androidTestApi(platform("androidx.compose:compose-bom:2023.06.01"))
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -95,8 +95,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 
     //Compose
-    implementation("androidx.compose.ui:ui:1.5.0-beta02")
-    implementation("androidx.compose.material:material:1.5.0-beta02")
+    implementation("androidx.compose.ui:ui:1.5.0-beta03")
+    implementation("androidx.compose.material:material:1.5.0-beta03")
+    implementation("androidx.compose.material3:material3:1.1.1")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.compose.foundation:foundation")

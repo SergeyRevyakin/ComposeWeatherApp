@@ -2,12 +2,17 @@ package ru.serg.composeweatherapp.utils
 
 import android.os.Build
 import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
+import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
 
 fun isSavedDataExpired(lastUpdateTime: Long, delayBeforeExpireHours: Int) =
     lastUpdateTime < (System.currentTimeMillis() - delayBeforeExpireHours.hoursToMilliseconds())
 
 fun getMinMaxTemp(temp: IntraDayTempItem?, units: String): String {
     return "${temp?.nightTemp?.toInt()}-${temp?.dayTemp?.toInt()}$units"
+}
+
+fun getMinMaxTemp(temp: UpdatedDailyTempItem, units: String): String {
+    return "${temp.minTemp?.toInt()}-${temp.maxTemp?.toInt()}$units"
 }
 
 fun getTemp(temp: Double?, units: String): String {

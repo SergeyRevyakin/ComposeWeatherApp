@@ -1,10 +1,18 @@
 package ru.serg.composeweatherapp.data.mapper
 
-import io.ktor.util.date.*
-import ru.serg.composeweatherapp.data.dto.*
+import io.ktor.util.date.getTimeMillis
+import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.DayWeatherItem
+import ru.serg.composeweatherapp.data.dto.HourWeatherItem
+import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
+import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
+import ru.serg.composeweatherapp.data.dto.UpdatedDailyWeatherItem
+import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.utils.IconMapper
+import ru.serg.composeweatherapp.utils.orZero
+import ru.serg.composeweatherapp.utils.toTimeStamp
 
 object DataMapper {
     fun mapCityItem(weatherResponse: WeatherResponse, isFavourite: Boolean) =
@@ -13,7 +21,9 @@ object DataMapper {
             country = weatherResponse.sys?.country.orEmpty(),
             latitude = weatherResponse.coord?.lat ?: 0.0,
             longitude = weatherResponse.coord?.lon ?: 0.0,
-            isFavourite
+            isFavourite,
+            id = if (isFavourite) -1 else 0,
+            getTimeMillis()
         )
 
     private fun mapDayWeatherItem(
@@ -90,6 +100,69 @@ object DataMapper {
             mapDayWeatherItem(feelsLikeIntraDay, tempIntraDay, daily)
         } ?: emptyList()
 
-        return mapWeatherItem(cityItem, dailyList, hourlyList, weatherResponse, oneCallResponse.alert?.description)
+        return mapWeatherItem(
+            cityItem,
+            dailyList,
+            hourlyList,
+            weatherResponse,
+            oneCallResponse.alert?.description
+        )
     }
+
+    fun getUpdatedDailyWeather(
+        cityItem: CityItem?,
+        daily: OneCallResponse.Daily
+    ): UpdatedDailyWeatherItem {
+        val feelsLike = UpdatedDailyTempItem(
+            morningTemp = daily.feelsLike?.morn.orZero(),
+            dayTemp = daily.feelsLike?.day.orZero(),
+            eveningTemp = daily.feelsLike?.eve.orZero(),
+            nightTemp = daily.feelsLike?.night.orZero(),
+            maxTemp = null,
+            minTemp = null
+        )
+
+        val temp = UpdatedDailyTempItem(
+            morningTemp = daily.temp?.morn.orZero(),
+            dayTemp = daily.temp?.day.orZero(),
+            eveningTemp = daily.temp?.eve.orZero(),
+            nightTemp = daily.temp?.night.orZero(),
+            maxTemp = daily.temp?.max.orZero(),
+            minTemp = daily.temp?.min.orZero()
+        )
+
+        return UpdatedDailyWeatherItem(
+            feelsLikeTemp = feelsLike,
+            dailyTempItem = temp,
+            windDirection = daily.windDeg,
+            windSpeed = daily.windSpeed,
+            humidity = daily.humidity,
+            pressure = daily.pressure,
+            sunrise = daily.sunrise.toTimeStamp(),
+            sunset = daily.sunset.toTimeStamp(),
+            dateTime = daily.dt.toTimeStamp(),
+            weatherDescription = daily.weather?.first()?.description,
+            weatherIcon = IconMapper.map(daily.weather?.first()?.id),
+            cityItem = cityItem
+        )
+    }
+
+    fun getUpdatedDailyTempItem(daily: OneCallResponse.Daily) = UpdatedDailyTempItem(
+        morningTemp = daily.temp?.morn.orZero(),
+        dayTemp = daily.temp?.day.orZero(),
+        eveningTemp = daily.temp?.eve.orZero(),
+        nightTemp = daily.temp?.night.orZero(),
+        maxTemp = daily.temp?.max.orZero(),
+        minTemp = daily.temp?.min.orZero()
+    )
+
+    fun getFeelsLikeDailyTempItem(daily: OneCallResponse.Daily) = UpdatedDailyTempItem(
+        morningTemp = daily.feelsLike?.morn.orZero(),
+        dayTemp = daily.feelsLike?.day.orZero(),
+        eveningTemp = daily.feelsLike?.eve.orZero(),
+        nightTemp = daily.feelsLike?.night.orZero(),
+        maxTemp = null,
+        minTemp = null
+    )
+
 }

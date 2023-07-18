@@ -12,25 +12,35 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapLatest
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
+import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
+import ru.serg.composeweatherapp.data.dto.DailyWeather
+import ru.serg.composeweatherapp.data.dto.HourlyWeather
+import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.IconMapper
 import ru.serg.composeweatherapp.utils.NetworkResult
 import ru.serg.composeweatherapp.utils.NetworkStatus
 import ru.serg.composeweatherapp.utils.isNearTo
 import ru.serg.composeweatherapp.utils.isSavedDataExpired
+import ru.serg.composeweatherapp.utils.orEmpty
+import ru.serg.composeweatherapp.utils.orZero
+import ru.serg.composeweatherapp.utils.toTimeStamp
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val dataStoreDataSource: DataStoreDataSource,
-    private val networkStatus: NetworkStatus
+    private val networkStatus: NetworkStatus,
+    private val updatedLocalDataSource: UpdatedLocalDataSource
 ) {
 
     private lateinit var localCoordinatesWrapper: CoordinatesWrapper
@@ -139,6 +149,8 @@ class WeatherRepository @Inject constructor(
                         cityItem
                     )
 
+                    updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
+
                     localDataSource.insertCityItemToHistorySearch(cityItem)
                     localDataSource.saveWeather(weatherItem)
                     NetworkResult.Success(weatherItem)
@@ -177,9 +189,106 @@ class WeatherRepository @Inject constructor(
                             oneCallResponse.data,
                             cityItem
                         )
-
+                        updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
                         localDataSource.saveWeather(weatherItem)
                         NetworkResult.Success(weatherItem)
+
+                    } else NetworkResult.Error(message = "No data!")
+                }
+
+                else -> NetworkResult.Loading()
+            }
+        }
+
+    fun getCityWeatherFlow(
+        cityItem: CityItem
+    ) = remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
+        .mapLatest { oneCallResponse ->
+            when {
+                (oneCallResponse is NetworkResult.Loading) -> {
+                    NetworkResult.Loading()
+                }
+
+                (oneCallResponse is NetworkResult.Error) -> {
+                    NetworkResult.Error(
+                        oneCallResponse.data?.message ?: "Unknown error"
+                    )
+                }
+
+                (oneCallResponse is NetworkResult.Success) -> {
+
+                    if (oneCallResponse.data != null) {
+
+                        updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
+
+                        NetworkResult.Success(Any())
+
+                    } else NetworkResult.Error(message = "No data!")
+                }
+
+                else -> NetworkResult.Loading()
+            }
+        }
+
+    fun getCityWeatherNoSavingFlow(
+        cityItem: CityItem
+    ) = remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
+        .mapLatest { oneCallResponse ->
+            when {
+                (oneCallResponse is NetworkResult.Loading) -> {
+                    NetworkResult.Loading()
+                }
+
+                (oneCallResponse is NetworkResult.Error) -> {
+                    NetworkResult.Error(
+                        oneCallResponse.data?.message ?: "Unknown error"
+                    )
+                }
+
+                (oneCallResponse is NetworkResult.Success) -> {
+
+                    if (oneCallResponse.data != null) {
+
+                        updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
+
+                        val dailyWeather = oneCallResponse.data.daily?.map {
+
+                            DailyWeather(
+                                windDirection = it.windDeg.orZero(),
+                                windSpeed = it.windSpeed.orZero(),
+                                weatherDescription = it.weather?.first()?.description.orEmpty(),
+                                weatherIcon = IconMapper.map(it.weather?.first()?.id),
+                                dateTime = it.dt.toTimeStamp(),
+                                humidity = it.humidity.orZero(),
+                                pressure = it.pressure.orZero(),
+                                feelsLike = DataMapper.getFeelsLikeDailyTempItem(it),
+                                dailyWeatherItem = DataMapper.getUpdatedDailyTempItem(it),
+                                sunset = it.sunset.toTimeStamp(),
+                                sunrise = it.sunrise.toTimeStamp()
+                            )
+                        } ?: listOf()
+
+                        val hourlyWeather = oneCallResponse.data.hourly?.map {
+                            HourlyWeather(
+                                windDirection = it.windDeg.orZero(),
+                                windSpeed = it.windSpeed.orZero(),
+                                weatherDescription = it.weather?.first()?.description.orEmpty(),
+                                weatherIcon = IconMapper.map(it.weather?.first()?.id),
+                                dateTime = it.dt.toTimeStamp(),
+                                humidity = it.humidity.orZero(),
+                                pressure = it.pressure.orZero(),
+                                currentTemp = it.temp.orZero(),
+                                feelsLike = it.feelsLike.orZero()
+                            )
+                        } ?: listOf()
+
+                        NetworkResult.Success(
+                            UpdatedWeatherItem(
+                                cityItem,
+                                dailyWeather,
+                                hourlyWeather
+                            )
+                        )
 
                     } else NetworkResult.Error(message = "No data!")
                 }
