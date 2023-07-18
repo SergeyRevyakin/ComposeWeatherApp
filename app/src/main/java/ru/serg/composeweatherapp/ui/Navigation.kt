@@ -1,7 +1,13 @@
 package ru.serg.composeweatherapp.ui
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -9,6 +15,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
 import ru.serg.composeweatherapp.ui.screens.city_weather_screen.CityWeatherScreen
@@ -19,7 +26,10 @@ import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ScreenNames
 
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class)
+@OptIn(
+    ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 fun Navigation(
     viewModule: MainViewModel
@@ -31,17 +41,28 @@ fun Navigation(
     ) {
 
         // Main Screen
-        composable(ScreenNames.MAIN_SCREEN,
+        composable(
+            ScreenNames.MAIN_SCREEN,
             enterTransition = {
                 fadeIn(
-                    animationSpec = tween(1000)
+                    animationSpec = tween(300)
                 )
             },
             exitTransition = {
                 fadeOut(
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
-            }
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(300)
+                )
+            },
         ) {
             MainScreen(
                 viewModule,
@@ -53,16 +74,26 @@ fun Navigation(
         // Choose City screen
         composable(ScreenNames.CHOOSE_CITY_SCREEN,
             enterTransition = {
-                slideInVertically(
-                    initialOffsetY = { 1500 },
-                    animationSpec = tween(1000)
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(500)
                 )
             },
             exitTransition = {
-                slideOutVertically(
-                    targetOffsetY = { -1400 },
-                    animationSpec = tween(1000)
-                ) + fadeOut(animationSpec = tween(800))
+                fadeOut(
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(500)
+                )
             }
         ) {
             ChooseCityScreen(
@@ -74,15 +105,15 @@ fun Navigation(
             ScreenNames.SETTINGS_SCREEN,
             enterTransition = {
                 slideInHorizontally(
-                    initialOffsetX = { 1000 },
-                    animationSpec = tween(1000)
+                    initialOffsetX = { it },
+                    animationSpec = tween(500)
                 )
             },
-            exitTransition = {
+            popExitTransition = {
                 slideOutHorizontally(
-                    targetOffsetX = { 1000 },
-                    animationSpec = tween(800)
-                ) + fadeOut(animationSpec = tween(600))
+                    targetOffsetX = { it },
+                    animationSpec = tween(500)
+                )
             }
         ) {
             SettingsScreen(
@@ -91,10 +122,32 @@ fun Navigation(
         }
 
         composable(
-            "${ScreenNames.CITY_WEATHER_SCREEN}/{${Constants.CITY_ITEM}}",
+            route = "${ScreenNames.CITY_WEATHER_SCREEN}/{${Constants.CITY_ITEM}}",
             arguments = listOf(navArgument(Constants.CITY_ITEM) {
                 type = NavType.StringType
-            })
+            }),
+            enterTransition = {
+                slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(500)
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                slideOutVertically(
+                    targetOffsetY = { it },
+                    animationSpec = tween(500)
+                )
+            }
         ) {
             CityWeatherScreen(navController = navController)
         }

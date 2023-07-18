@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
@@ -42,7 +41,8 @@ class MainViewModel @Inject constructor(
 
     val observableItemNumber = MutableStateFlow(0)
 
-    private var _citiesWeather:MutableStateFlow<CommonScreenState> = MutableStateFlow(CommonScreenState.Loading)
+    private var _citiesWeather: MutableStateFlow<CommonScreenState> =
+        MutableStateFlow(CommonScreenState.Loading)
 
     var citiesWeather = _citiesWeather.asStateFlow()
 
@@ -73,7 +73,7 @@ class MainViewModel @Inject constructor(
 
     }
 
-    fun initCitiesWeatherFlow() {
+    private fun initCitiesWeatherFlow() {
         viewModelScope.launch {
             updatedLocalDataSource.getWeatherFlow().collectLatest {
                 when {
@@ -93,15 +93,7 @@ class MainViewModel @Inject constructor(
                 when (state) {
                     is CommonScreenState.Empty -> {
                         if (isLocationAvailable) {
-                            viewModelScope.launch {
-                                locationService.getLocationUpdate()
-                                    .flatMapLatest { coordinatesWrapper ->
-                                        weatherRepository.fetchCurrentLocationWeather(
-                                            coordinatesWrapper,
-                                            true
-                                        )
-                                    }.launchIn(this)
-                            }
+                            checkLocationAndFetchWeather()
                             _citiesWeather.emit(CommonScreenState.Loading)
                         }
                     }
@@ -147,7 +139,9 @@ class MainViewModel @Inject constructor(
                     )
 
                 item?.let { updatedWeatherItem ->
-                    weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
+                    if (updatedWeatherItem.cityItem.isFavorite) {
+                        checkLocationAndFetchWeather()
+                    } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
                         .collectLatest {
                             when (it) {
                                 is NetworkResult.Loading -> isLoading.value = true
@@ -157,6 +151,18 @@ class MainViewModel @Inject constructor(
                         }
                 }
             }
+        }
+    }
+
+    private fun checkLocationAndFetchWeather() {
+        viewModelScope.launch {
+            locationService.getLocationUpdate()
+                .flatMapLatest { coordinatesWrapper ->
+                    weatherRepository.fetchCurrentLocationWeather(
+                        coordinatesWrapper,
+                        true
+                    )
+                }.launchIn(this)
         }
     }
 }

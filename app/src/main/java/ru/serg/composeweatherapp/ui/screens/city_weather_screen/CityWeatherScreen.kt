@@ -2,8 +2,8 @@ package ru.serg.composeweatherapp.ui.screens.city_weather_screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -47,12 +47,11 @@ fun CityWeatherScreen(
 
         AnimatedVisibility(
             visible = screenState is ScreenState.Success,
-            enter = slideInVertically(
-                initialOffsetY = { 1500 },
-                animationSpec = tween(500)
+            enter = fadeIn(
+                animationSpec = tween(300)
             ),
             exit = fadeOut(
-                animationSpec = tween(0)
+                animationSpec = tween(300)
             )
 
         ) {

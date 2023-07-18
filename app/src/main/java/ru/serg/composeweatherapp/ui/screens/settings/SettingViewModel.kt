@@ -3,7 +3,7 @@ package ru.serg.composeweatherapp.ui.screens.settings
 import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ class SettingViewModel @Inject constructor(
     private var _isLocationEnabled = MutableStateFlow(false)
     var isLocationEnabled = _isLocationEnabled.asStateFlow()
 
-    var measurementUnits = mutableStateOf(0)
+    var measurementUnits = mutableIntStateOf(0)
 
     private var _alarmState = MutableStateFlow(false)
     var alarmState = _alarmState.asStateFlow()
@@ -95,7 +95,7 @@ class SettingViewModel @Inject constructor(
     private fun initUnits() {
         viewModelScope.launch {
             dataStoreDataSource.measurementUnits.collectLatest {
-                measurementUnits.value = it
+                measurementUnits.intValue = it
             }
         }
     }
@@ -134,8 +134,10 @@ class SettingViewModel @Inject constructor(
                 }
             }
         } else {
-            workerManager.disableWeatherWorker()
-            initBackgroundFetchWeatherChange()
+            viewModelScope.launch {
+                workerManager.disableWeatherWorker()
+                initBackgroundFetchWeatherChange()
+            }
         }
     }
 

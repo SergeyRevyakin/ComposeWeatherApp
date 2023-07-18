@@ -11,6 +11,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.await
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.ktor.util.date.getTimeMillis
@@ -68,9 +69,9 @@ class WeatherWorker @AssistedInject constructor(
                 it.isNotEmpty() && !listOf(WorkInfo.State.CANCELLED, WorkInfo.State.BLOCKED, WorkInfo.State.FAILED).contains(it.first().state)
             } ?: false
 
-        fun cancelPeriodicWork(context: Context) {
+        suspend fun cancelPeriodicWork(context: Context) {
             Log.e(this::class.simpleName, "Worker cancelled")
-            WorkManager.getInstance(context).cancelAllWorkByTag(workerTag)
+            WorkManager.getInstance(context).cancelAllWorkByTag(workerTag).await()
         }
     }
 

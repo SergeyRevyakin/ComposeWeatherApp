@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class CityWeatherViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    var uiState: StateFlow<ScreenState> = MutableStateFlow(ScreenState.Empty)
+    lateinit var uiState: StateFlow<ScreenState>
 
     init {
         viewModelScope.launch {
@@ -41,7 +42,7 @@ class CityWeatherViewModel @Inject constructor(
                                     )
                                 } ?: ScreenState.Error("Can't recognise data")
                             }
-                        }.stateIn(
+                        }.debounce(300).stateIn(
                         scope = viewModelScope,
                         initialValue = ScreenState.Empty,
                         started = SharingStarted.WhileSubscribed(5_000)

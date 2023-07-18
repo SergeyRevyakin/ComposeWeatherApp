@@ -71,6 +71,7 @@ class UpdatedLocalDataSource @Inject constructor(
             } ?: listOf()
 
             dailyWeatherDao.saveWeather(hourlyWeather, dailyWeather, cityItem.toCityEntity())
+            dailyWeatherDao.cleanupOutdatedWeather(System.currentTimeMillis())
         }
     }
 
