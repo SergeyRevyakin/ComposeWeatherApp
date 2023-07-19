@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -48,6 +50,16 @@ android {
             )
         }
     }
+
+    applicationVariants.all {
+        outputs.forEach { output ->
+            if (output is BaseVariantOutputImpl) {
+                output.outputFileName =
+                    "serg_weather_${this.versionCode}_${name}.${output.outputFile.extension}"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18
         targetCompatibility = JavaVersion.VERSION_18
@@ -107,19 +119,19 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.46.1")
+    implementation("com.google.dagger:hilt-android:2.47")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
     implementation("androidx.hilt:hilt-work:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.3.0")
-    implementation("io.ktor:ktor-client-android:2.3.0")
-    implementation("io.ktor:ktor-client-serialization:2.3.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
-    implementation("io.ktor:ktor-client-logging:2.3.0")
+    implementation("io.ktor:ktor-client-core:2.3.2")
+    implementation("io.ktor:ktor-client-android:2.3.2")
+    implementation("io.ktor:ktor-client-serialization:2.3.2")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.2")
+    implementation("io.ktor:ktor-client-logging:2.3.2")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha")
     implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha")
