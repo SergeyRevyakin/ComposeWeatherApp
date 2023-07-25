@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
 import ru.serg.composeweatherapp.ui.theme.headerModifier
@@ -51,7 +52,7 @@ fun UviBottomSheet(
             .padding(horizontal = 12.dp)
     ) {
         Text(
-            text = "Ultraviolet index",
+            text = stringResource(id = R.string.ultraviolet_index),
             style = headerStyle,
             modifier = Modifier
                 .headerModifier(),

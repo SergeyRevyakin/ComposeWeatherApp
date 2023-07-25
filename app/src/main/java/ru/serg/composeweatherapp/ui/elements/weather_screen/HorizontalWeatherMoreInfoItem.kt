@@ -14,9 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.HourlyWeather
+import ru.serg.composeweatherapp.ui.elements.simple_items.WeatherParamItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 import ru.serg.composeweatherapp.utils.enums.Units
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 
 @Composable
 fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
@@ -29,7 +30,7 @@ fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
     ) {
         WeatherParamItem(
             paramName = stringResource(id = R.string.wind),
-            param = "${item.windSpeed} ${units.windUnits}",
+            param = "${item.windSpeed} ${stringResource(id = units.windUnits)}",
             paramIcon = R.drawable.ic_wind_dir_north
         )
 

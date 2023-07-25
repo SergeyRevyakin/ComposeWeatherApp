@@ -1,6 +1,7 @@
 package ru.serg.composeweatherapp.ui.elements.city_search
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -11,17 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.Constants
 
 @Composable
 fun SearchTextField(
     modifier: Modifier = Modifier,
-    value: String = "Moscow",
+    value: String = "",
     onValueChange: ((String) -> Unit) = {},
 ) {
     OutlinedTextField(
@@ -30,21 +34,24 @@ fun SearchTextField(
             onValueChange(it)
         },
         label = {
-            Text(text = "Enter city name")
+            Text(text = stringResource(id = R.string.enter_city_name))
         },
         placeholder = {
             Text(
-                text = "Moscow",
+                text = stringResource(id = R.string.eg_city_name),
                 fontSize = 18.sp
             )
         },
         trailingIcon = {
             Icon(
                 Icons.Filled.Close,
-                contentDescription = "Close",
-                modifier = Modifier.clickable {
-                    onValueChange(Constants.EMPTY_STRING)
-                })
+                contentDescription = stringResource(id = R.string.accessibility_desc_clear_field_icon),
+                modifier = Modifier
+                    .clickable {
+                        onValueChange(Constants.EMPTY_STRING)
+                    }
+                    .clip(CircleShape)
+            )
         },
         modifier = modifier,
         singleLine = true,
@@ -60,6 +67,8 @@ fun PreviewSearchTextField() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        SearchTextField()
+        SearchTextField(
+            value = "Moscow"
+        )
     }
 }

@@ -28,15 +28,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItemViewModel
 import ru.serg.composeweatherapp.ui.elements.SunriseSunsetItem
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.BottomSheetMainScreenState
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.MainScreenBottomSheet
+import ru.serg.composeweatherapp.ui.elements.simple_items.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
@@ -127,7 +130,7 @@ fun UpdatedCityWeatherContentItem(
             SunriseSunsetItem(sunriseTime = todayWeather.sunrise, sunsetTime = todayWeather.sunset)
 
             Text(
-                text = "Hourly",
+                text = stringResource(id = R.string.hourly),
                 style = headerStyle,
                 modifier = Modifier
                     .headerModifier()
@@ -146,7 +149,7 @@ fun UpdatedCityWeatherContentItem(
             }
 
             Text(
-                text = "Daily",
+                text = stringResource(id = R.string.daily),
                 style = headerStyle,
                 modifier = Modifier
                     .headerModifier()
@@ -162,7 +165,6 @@ fun UpdatedCityWeatherContentItem(
                 val list =
                     weatherItem.dailyWeatherList
                 list.forEach { daily ->
-
 
                     DailyWeatherItem(item = daily, viewModel.units.value) {
                         openBottomSheet(

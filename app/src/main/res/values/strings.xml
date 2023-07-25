@@ -1,11 +1,52 @@
 <resources>
+    <!--    Common-->
     <string name="app_name">Serg Weather</string>
-
     <string name="no_connection">No Internet Connection</string>
+    <string name="now">now</string>
 
+    <string name="connection_restored">Connection Restored!</string>
+    <string name="no_network_connection">No Network Connection!</string>
 
+    <string name="last_updated_value">Last updated: %1$s</string>
+
+    <string name="today_value">Today %1$s</string>
+    <string name="yesterday_value">Yesterday %1$s</string>
+
+    <string name="enter_city_name">Enter city or place name</string>
+    <string name="eg_city_name">e.g. London</string>
+
+    <string name="no_weather_data_available">No weather data available</string>
+    <string name="please_allow_us_to_get_location_access">Please allow us to get location access</string>
+    <string name="click_here_to_change_it_in_settings">Click here to change it in settings</string>
+    <string name="or_find_city_manually">Or find city manually</string>
+
+    <string name="how_often_update_weather_data">How often update weather data?</string>
+    <string name="weather_will_be_updated_every_value">Weather will be updated every %1$d hours</string>
+
+    <!--    Measurement units-->
+    <string name="measurement_units">Measurement units</string>
+
+    <string name="units_metric_title">Metric</string>
+    <string name="units_imperial_title">Imperial</string>
+    <string name="units_kelvin_title">Kelvin</string>
+
+    <string name="units_metric_description">Temperature in Celsius, wind speed in meter/sec</string>
+    <string name="units_imperial_description">Temperature in Fahrenheit and wind speed in miles/hour</string>
+    <string name="units_kelvin_description">Temperature in Kelvin and wind speed in meter/sec</string>
+
+    <string name="units_metric_degrees">℃</string>
+    <string name="units_imperial_degrees">℉</string>
+    <string name="units_kelvin_degrees">K</string>
+
+    <string name="units_metric_wind_speed">m/s</string>
+    <string name="units_imperial_wind_speed">mph</string>
+    <string name="units_kelvin_wind_speed">m/s</string>
+
+    <!--    Uvi strings-->
+    <string name="uv_index_value">UV Index: %1$s</string>
+    <string name="ultraviolet_index">Ultraviolet index</string>
     <string name="uvi_low">Low</string>
-    <string name="uvi_modetate">Moderate</string>
+    <string name="uvi_moderate">Moderate</string>
     <string name="uvi_high">High</string>
     <string name="uvi_very_high">Very high</string>
     <string name="uvi_extreme">Extreme</string>
@@ -19,4 +60,28 @@
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
+    <string name="wind_value">Wind speed: %1$.1f %2$s</string>
+    <string name="humidity_value">Humidity: %1$d%%</string>
+    <string name="pressure_value">Pressure: %1$d</string>
+
+    <string name="morning_value">Morning: %1$.0f%2$s</string>
+    <string name="day_value">Day: %1$.0f%2$s</string>
+    <string name="evening_value">Evening: %1$.0f%2$s</string>
+    <string name="night_value">Night: %1$.0f%2$s</string>
+
+    <string name="sunrise_value">Sunrise: %1$s</string>
+    <string name="sunset_value">Sunset: %1$s</string>
+
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
+
+    <!--    Icons description-->
+    <string name="accessibility_desc_weather_icon">Weather icon</string>
+    <string name="accessibility_desc_search_icon">Search</string>
+    <string name="accessibility_desc_settings_icon">Settings</string>
+    <string name="accessibility_desc_thermometer_icon">Settings</string>
+    <string name="accessibility_desc_add_to_favourite_icon">Add to favourite</string>
+    <string name="accessibility_desc_delete_favourite_icon">Delete favourite</string>
+    <string name="accessibility_desc_clear_field_icon">Clear field</string>
+    <string name="accessibility_desc_position_icon">Position</string>
 </resources>

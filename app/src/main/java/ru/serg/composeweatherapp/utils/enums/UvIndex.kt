@@ -8,7 +8,7 @@ enum class UvIndex(
     val detailsId: Int
 ) {
     LOW(R.string.uvi_low, R.string.uiv_low_description),
-    MODERATE(R.string.uvi_modetate, R.string.uiv_moderate_description),
+    MODERATE(R.string.uvi_moderate, R.string.uiv_moderate_description),
     HIGH(R.string.uvi_high, R.string.uiv_high_description),
     VERY_HIGH(R.string.uvi_very_high, R.string.uiv_very_high_description),
     EXTREME(R.string.uvi_extreme, R.string.uiv_extreme_description),

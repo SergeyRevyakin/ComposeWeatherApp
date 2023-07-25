@@ -28,14 +28,14 @@ import androidx.compose.ui.unit.sp
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.HourlyWeather
-import ru.serg.composeweatherapp.ui.elements.common.ParamRowWithInfoItem
+import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowWithInfoItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
+import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.firstLetterToUpperCase
 import ru.serg.composeweatherapp.utils.getTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
-import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
 
 @Composable
@@ -73,7 +73,7 @@ fun UpdatedTodayWeatherCardItem(
             painter = painterResource(
                 id = weatherItem.weatherIcon
             ),
-            contentDescription = "Weather icon",
+            contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -82,7 +82,7 @@ fun UpdatedTodayWeatherCardItem(
         Text(
             text = getTemp(
                 temp = weatherItem.currentTemp,
-                units.tempUnits
+                stringResource(id = units.tempUnits)
             ) + " " + weatherItem.weatherDescription.firstLetterToUpperCase(),
             fontSize = 32.sp,
             textAlign = TextAlign.Center,
@@ -109,7 +109,7 @@ fun UpdatedTodayWeatherCardItem(
                 paramValue = "Feels like: ${
                     getTemp(
                         temp = weatherItem.feelsLike,
-                        units.tempUnits
+                        stringResource(id = units.tempUnits)
                     )
                 }",
             )
@@ -120,7 +120,10 @@ fun UpdatedTodayWeatherCardItem(
                     .padding(top = 8.dp)
                     .padding(horizontal = 12.dp),
                 paramIcon = R.drawable.ic_day_sunny,
-                paramValue = "UV Index: ${stringResource(id = UviMapper.map(weatherItem.uvi).descriptionId)}",
+                paramValue = stringResource(
+                    id = R.string.uv_index_value,
+                    stringResource(id = UviMapper.map(weatherItem.uvi).descriptionId)
+                ),
                 hasInfoButton = true,
                 onInfoClick = showUviInfo
             )
@@ -129,7 +132,10 @@ fun UpdatedTodayWeatherCardItem(
 
 
             Text(
-                text = "Last updated: ${getFormattedLastUpdateDate(lastUpdatedTime)}",
+                text = stringResource(
+                    id = R.string.last_updated_value,
+                    getFormattedLastUpdateDate(lastUpdatedTime)
+                ),
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .fillMaxWidth()

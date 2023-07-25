@@ -24,21 +24,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.DailyWeather
-import ru.serg.composeweatherapp.ui.elements.common.ParamRowItem
+import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.getTemp
-import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 import ru.serg.composeweatherapp.utils.enums.Units
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 
 @Composable
 fun UpdatedDailyWeatherBottomSheet(
@@ -93,7 +93,7 @@ fun UpdatedDailyWeatherBottomSheet(
 
             Icon(
                 painter = painterResource(id = daily.weatherIcon),
-                contentDescription = "weather icon",
+                contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
                 modifier = Modifier.size(72.dp)
             )
 
@@ -104,11 +104,11 @@ fun UpdatedDailyWeatherBottomSheet(
                     .padding(start = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = "Sunrise: ${getHour(daily.sunrise)}",
+                    text = stringResource(id = R.string.sunrise_value, getHour(daily.sunrise)),
                 )
 
                 Text(
-                    text = "Sunrise: ${getHour(daily.sunset)}",
+                    text = stringResource(id = R.string.sunset_value, getHour(daily.sunset)),
                 )
             }
 
@@ -122,11 +122,10 @@ fun UpdatedDailyWeatherBottomSheet(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_thermometer),
-                contentDescription = "weather icon",
+                contentDescription = stringResource(id = R.string.accessibility_desc_thermometer_icon),
                 modifier = Modifier
                     .size(72.dp)
             )
-
 
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -135,14 +134,19 @@ fun UpdatedDailyWeatherBottomSheet(
                     .fillMaxHeight()
             ) {
                 Text(
-                    text = "Morning: ${
-                        getTemp(
-                            daily.dailyWeatherItem.morningTemp,
-                            units.tempUnits
-                        )
-                    }"
+                    text = stringResource(
+                        id = R.string.morning_value,
+                        daily.dailyWeatherItem.morningTemp,
+                        stringResource(id = units.tempUnits)
+                    )
                 )
-                Text(text = "Day: ${getTemp(daily.dailyWeatherItem.dayTemp, units.tempUnits)}")
+                Text(
+                    text = stringResource(
+                        id = R.string.day_value,
+                        daily.dailyWeatherItem.dayTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
             }
 
             Column(
@@ -152,14 +156,20 @@ fun UpdatedDailyWeatherBottomSheet(
                     .fillMaxHeight()
             ) {
                 Text(
-                    text = "Evening: ${
-                        getTemp(
-                            daily.dailyWeatherItem.eveningTemp,
-                            units.tempUnits
-                        )
-                    }"
+                    text = stringResource(
+                        id = R.string.evening_value,
+                        daily.dailyWeatherItem.eveningTemp,
+                        stringResource(id = units.tempUnits)
+                    )
                 )
-                Text(text = "Night ${getTemp(daily.dailyWeatherItem.nightTemp, units.tempUnits)}")
+
+                Text(
+                    text = stringResource(
+                        id = R.string.night_value,
+                        daily.dailyWeatherItem.nightTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
             }
         }
         Divider(
@@ -174,7 +184,11 @@ fun UpdatedDailyWeatherBottomSheet(
                 .fillMaxWidth()
                 .padding(8.dp),
             paramIcon = R.drawable.ic_wind_dir_north,
-            paramValue = "Wind speed: ${daily.windSpeed} ${units.windUnits}",
+            paramValue = stringResource(
+                id = R.string.wind_value,
+                daily.windSpeed,
+                stringResource(id = units.windUnits)
+            ),
             rotation = daily.windDirection
         )
 
@@ -183,14 +197,14 @@ fun UpdatedDailyWeatherBottomSheet(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             paramIcon = R.drawable.ic_humidity,
-            paramValue = "Humidity: ${daily.humidity}%",
+            paramValue = stringResource(id = R.string.humidity_value, daily.humidity),
         )
 
         ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth(),
             paramIcon = R.drawable.ic_barometer,
-            paramValue = "Pressure: ${daily.pressure}",
+            paramValue = stringResource(id = R.string.pressure_value, daily.pressure),
         )
 
         Spacer(modifier = Modifier.height(12.dp))

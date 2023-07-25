@@ -31,7 +31,7 @@ import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.DayWeatherItem
 import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
-import ru.serg.composeweatherapp.ui.elements.common.ParamRowItem
+import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
 import ru.serg.composeweatherapp.ui.theme.headerModifier

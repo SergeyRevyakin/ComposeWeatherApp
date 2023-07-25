@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,9 +29,9 @@ import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.data.dto.HourlyWeather
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAccent
+import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.getTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
-import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun UpdatedHourlyWeatherItem(item: HourlyWeather, units: Units) {
@@ -75,7 +76,7 @@ fun UpdatedHourlyWeatherItem(item: HourlyWeather, units: Units) {
                     .padding(bottom = 12.dp)
             ) {
                 Text(
-                    text = getTemp(item.currentTemp, units.tempUnits),
+                    text = getTemp(item.currentTemp, stringResource(id = units.tempUnits)),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

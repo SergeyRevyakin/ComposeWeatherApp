@@ -16,20 +16,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.settings.HourSliderItem
-import ru.serg.composeweatherapp.ui.elements.settings.MenuRowWithRadioButton
-import ru.serg.composeweatherapp.ui.elements.settings.MenuSettingsRowWithIcon
 import ru.serg.composeweatherapp.ui.elements.settings.RadioButtonGroup
+import ru.serg.composeweatherapp.ui.elements.simple_items.MenuRowWithRadioButton
+import ru.serg.composeweatherapp.ui.elements.simple_items.MenuSettingsRowWithIcon
 import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
-import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun SettingsScreen(
@@ -108,9 +110,9 @@ fun SettingsScreen(
         )
 
         RadioButtonGroup(
-            header = "Measurement units",
-            nameList = Units.values().map { it.title },
-            descriptionList = Units.values().map { it.description },
+            header = stringResource(id = R.string.measurement_units),
+            nameList = Units.values().map { stringResource(id = it.title) },
+            descriptionList = Units.values().map { stringResource(id = it.description) },
             selectedPosition = viewModel.measurementUnits
         ) {
             viewModel.onUnitsChanged(it)

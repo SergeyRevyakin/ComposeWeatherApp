@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.settings
+package ru.serg.composeweatherapp.ui.elements.simple_items
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

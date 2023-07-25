@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.common
+package ru.serg.composeweatherapp.ui.elements.simple_items
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

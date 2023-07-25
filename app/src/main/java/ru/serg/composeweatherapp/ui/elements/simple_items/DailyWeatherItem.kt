@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.weather_screen
+package ru.serg.composeweatherapp.ui.elements.simple_items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,17 +25,19 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.DailyWeather
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getDate
+import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.getMinMaxTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
-import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun DailyWeatherItem(
@@ -81,7 +83,7 @@ fun DailyWeatherItem(
         )
 
         Text(
-            text = getMinMaxTemp(item.dailyWeatherItem, units.tempUnits),
+            text = getMinMaxTemp(item.dailyWeatherItem, stringResource(id = units.tempUnits)),
             textAlign = TextAlign.Center,
             fontSize = 18.sp,
             modifier = Modifier.weight(1f)
@@ -89,7 +91,7 @@ fun DailyWeatherItem(
 
         Image(
             painter = painterResource(id = item.weatherIcon),
-            contentDescription = "Weather icon",
+            contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
             colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
             contentScale = ContentScale.Fit,
             modifier = Modifier

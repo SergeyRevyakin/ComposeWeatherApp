@@ -29,7 +29,7 @@ object Constants {
     }
 
     object Notifications {
-        const val NOTIFICATION_CHANNEL = "weather_channel"
+        const val NOTIFICATION_CHANNEL = "Weather"
         const val NOTIFICATION_CHANNEL_DESCRIPTION = "Weather notifications"
         const val NOTIFICATION_CHANNEL_ID = "WEATHER_CHANNEL_ID"
         const val NOTIFICATION_CHANNEL_SERVICE_ID = "NOTIFICATION_CHANNEL_SERVICE_ID"
@@ -40,6 +40,10 @@ object Constants {
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
         const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
     }
+
+    const val METRIC = "metric"
+    const val IMPERIAL = "imperial"
+    const val STANDARD = "standard"
 
     const val ALARM_REQUEST_CODE = 1122
 }

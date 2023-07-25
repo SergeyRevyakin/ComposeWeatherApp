@@ -15,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 
 @Composable
@@ -36,12 +39,11 @@ fun CitySearchItem(
             .clickable {
                 onItemClick.invoke(cityItem)
             },
-//                .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = cityItem.name,
-            modifier = modifier
+            modifier = Modifier
                 .padding(vertical = 12.dp)
                 .padding(start = 12.dp, end = 6.dp),
             fontSize = 16.sp
@@ -49,8 +51,8 @@ fun CitySearchItem(
 
         Icon(
             Icons.Rounded.Close,
-            contentDescription = null,
-            modifier = modifier
+            contentDescription = stringResource(id = R.string.accessibility_desc_delete_favourite_icon),
+            modifier = Modifier
                 .padding(vertical = 6.dp)
                 .padding(end = 6.dp)
                 .size(32.dp)
@@ -66,5 +68,7 @@ fun CitySearchItem(
 @Preview
 @Composable
 fun PreviewCitySearchItem() {
-    CitySearchItem(cityItem = CityItem(name = "Moscow", ""), onDelete = {}, onItemClick = {})
+    ComposeWeatherAppTheme {
+        CitySearchItem(cityItem = CityItem(name = "Moscow", ""), onDelete = {}, onItemClick = {})
+    }
 }

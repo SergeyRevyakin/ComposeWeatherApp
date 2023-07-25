@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.weather_screen
+package ru.serg.composeweatherapp.ui.elements.simple_items
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,7 @@ fun WeatherParamItem(
         Row {
             Image(
                 painter = painterResource(id = paramIcon),
-                contentDescription = "Weather icon",
+                contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier

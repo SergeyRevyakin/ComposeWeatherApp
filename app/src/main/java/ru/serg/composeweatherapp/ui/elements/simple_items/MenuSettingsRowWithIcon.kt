@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.settings
+package ru.serg.composeweatherapp.ui.elements.simple_items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

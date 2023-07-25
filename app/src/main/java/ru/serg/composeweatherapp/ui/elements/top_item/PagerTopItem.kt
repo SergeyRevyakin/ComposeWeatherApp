@@ -24,8 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -61,7 +63,7 @@ fun PagerTopItem(
                 leftIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = "Search",
+                        contentDescription = stringResource(id = R.string.accessibility_desc_search_icon),
                         modifier = Modifier
                     )
                 }
@@ -98,7 +100,7 @@ fun PagerTopItem(
                 rightIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = "Search",
+                        contentDescription = stringResource(id = R.string.accessibility_desc_settings_icon),
                     )
                 }
             }

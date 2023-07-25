@@ -28,9 +28,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.customColors
 import ru.serg.composeweatherapp.utils.common.ConnectionState
 import ru.serg.composeweatherapp.utils.common.currentConnectionsState
@@ -78,7 +80,7 @@ fun ConnectivityStatus() {
                 modifier = Modifier.size(24.dp)
             )
             Text(
-                text = if (isConnected) "Connection Restored!" else "No Network Connection!",
+                text = stringResource(id = if (isConnected) R.string.connection_restored else R.string.no_connection),
                 modifier = Modifier
                     .padding(8.dp),
                 color = Color.White
