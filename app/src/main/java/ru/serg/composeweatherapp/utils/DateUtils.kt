@@ -37,25 +37,6 @@ class DateUtils @Inject constructor(
         fun getHour(l: Long?): String =
             SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
 
-        fun getTimeWithSeconds(l: Long?): String =
-            SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format((l ?: 0L))
-
-        fun getHourWithNow(l: Long?): String {
-            val time = Instant.fromEpochMilliseconds(l ?: 0)
-            val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
-            val now = LocalDateTime.now()
-            return when {
-                ((l ?: 0) - getTimeMillis() < 60L * 1000L) -> "NOW"
-                date.dayOfYear > now.dayOfYear -> {
-                    SimpleDateFormat("HH:mm", Locale.getDefault())
-                        .format((l ?: 0L)) + " +${date.dayOfYear - now.dayOfYear}"
-                }
-
-                else -> SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
-            }
-
-        }
-
         @Composable
         fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             return if (timestamp == null) buildAnnotatedString { append("") }

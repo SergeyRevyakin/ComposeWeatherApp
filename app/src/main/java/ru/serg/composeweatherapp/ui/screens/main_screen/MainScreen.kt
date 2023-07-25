@@ -29,7 +29,7 @@ import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
 import ru.serg.composeweatherapp.ui.elements.common.SunLoadingScreen
 import ru.serg.composeweatherapp.ui.elements.top_item.PagerTopItem
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
-import ru.serg.composeweatherapp.ui.screens.updated_pager.UpdatedPagerScreen
+import ru.serg.composeweatherapp.ui.screens.updated_pager.PagerScreen
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
@@ -115,7 +115,7 @@ fun MainScreen(
                     reverseLayout = false,
                     beyondBoundsPageCount = 1,
                     pageContent = {
-                        UpdatedPagerScreen(
+                        PagerScreen(
                             weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
                         )
                     }

@@ -39,7 +39,7 @@ import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
 
 @Composable
-fun UpdatedTodayWeatherCardItem(
+fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
     units: Units,
     lastUpdatedTime: Long = getTimeMillis(),
@@ -153,7 +153,7 @@ fun TodayWeatherCardItemPreview() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        UpdatedTodayWeatherCardItem(
+        TodayWeatherCardItem(
             MockItems.getHourlyWeatherMockItem(),
             Units.METRIC
         )
@@ -167,7 +167,7 @@ fun TodayWeatherCardItemPreviewDark() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        UpdatedTodayWeatherCardItem(
+        TodayWeatherCardItem(
             MockItems.getHourlyWeatherMockItem(),
             Units.METRIC
         )

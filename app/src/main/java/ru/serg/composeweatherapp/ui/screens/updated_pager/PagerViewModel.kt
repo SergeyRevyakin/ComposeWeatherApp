@@ -21,7 +21,7 @@ import ru.serg.composeweatherapp.utils.DateUtils
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdatedPagerViewModel @Inject constructor(
+class PagerViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationService: LocationDataSource,
     private val dateUtils: DateUtils

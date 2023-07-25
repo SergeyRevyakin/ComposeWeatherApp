@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.bottom_sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,13 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.DayWeatherItem
-import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
+import ru.serg.composeweatherapp.data.dto.DailyWeather
 import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
@@ -38,12 +37,13 @@ import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.getTemp
+import ru.serg.composeweatherapp.utils.enums.Units
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 
 @Composable
 fun DailyWeatherBottomSheet(
-    daily: DayWeatherItem,
-    units: String,
+    daily: DailyWeather,
+    units: Units,
     onDismiss: () -> Unit
 ) {
 
@@ -93,7 +93,7 @@ fun DailyWeatherBottomSheet(
 
             Icon(
                 painter = painterResource(id = daily.weatherIcon),
-                contentDescription = "weather icon",
+                contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
                 modifier = Modifier.size(72.dp)
             )
 
@@ -104,11 +104,11 @@ fun DailyWeatherBottomSheet(
                     .padding(start = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = "Sunrise: ${getHour(daily.sunrise)}",
+                    text = stringResource(id = R.string.sunrise_value, getHour(daily.sunrise)),
                 )
 
                 Text(
-                    text = "Sunrise: ${getHour(daily.sunset)}",
+                    text = stringResource(id = R.string.sunset_value, getHour(daily.sunset)),
                 )
             }
 
@@ -122,11 +122,10 @@ fun DailyWeatherBottomSheet(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_thermometer),
-                contentDescription = "weather icon",
+                contentDescription = stringResource(id = R.string.accessibility_desc_thermometer_icon),
                 modifier = Modifier
                     .size(72.dp)
             )
-
 
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -134,8 +133,20 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(text = "Morning: ${getTemp(daily.temp.morningTemp, units)}")
-                Text(text = "Day: ${getTemp(daily.temp.dayTemp, units)}")
+                Text(
+                    text = stringResource(
+                        id = R.string.morning_value,
+                        daily.dailyWeatherItem.morningTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
+                Text(
+                    text = stringResource(
+                        id = R.string.day_value,
+                        daily.dailyWeatherItem.dayTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
             }
 
             Column(
@@ -144,8 +155,21 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(text = "Evening: ${getTemp(daily.temp.eveningTemp, units)}")
-                Text(text = "Night ${getTemp(daily.temp.nightTemp, units)}")
+                Text(
+                    text = stringResource(
+                        id = R.string.evening_value,
+                        daily.dailyWeatherItem.eveningTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
+
+                Text(
+                    text = stringResource(
+                        id = R.string.night_value,
+                        daily.dailyWeatherItem.nightTemp,
+                        stringResource(id = units.tempUnits)
+                    )
+                )
             }
         }
         Divider(
@@ -160,7 +184,11 @@ fun DailyWeatherBottomSheet(
                 .fillMaxWidth()
                 .padding(8.dp),
             paramIcon = R.drawable.ic_wind_dir_north,
-            paramValue = "Wind speed: ${daily.windSpeed}m/s",
+            paramValue = stringResource(
+                id = R.string.wind_value,
+                daily.windSpeed,
+                stringResource(id = units.windUnits)
+            ),
             rotation = daily.windDirection
         )
 
@@ -169,14 +197,14 @@ fun DailyWeatherBottomSheet(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             paramIcon = R.drawable.ic_humidity,
-            paramValue = "Humidity: ${daily.humidity}%",
+            paramValue = stringResource(id = R.string.humidity_value, daily.humidity),
         )
 
         ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth(),
             paramIcon = R.drawable.ic_barometer,
-            paramValue = "Pressure: ${daily.pressure}",
+            paramValue = stringResource(id = R.string.pressure_value, daily.pressure),
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -192,24 +220,10 @@ fun PreviewDailyWeatherDetailsScreen() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        val intra = IntraDayTempItem(
-            12.5, 12.5, 12.5, 12.5
-        )
+
         DailyWeatherBottomSheet(
-            daily = DayWeatherItem(
-                weatherIcon = R.drawable.ic_cloudy,
-                feelsLike = intra,
-                temp = intra,
-                windDirection = 90,
-                windSpeed = 5.6,
-                humidity = 55,
-                pressure = 980,
-                weatherDescription = "Cloudy",
-                dateTime = getTimeMillis(),
-                sunrise = getTimeMillis() + (60L * 60L * 6L * 1000),
-                sunset = getTimeMillis() + (60L * 60L * 16L * 1000),
-            ),
-            units = "℃",
+            daily = MockItems.getDailyWeatherMockItem(),
+            units = Units.METRIC,
             onDismiss = {},
         )
     }
@@ -222,24 +236,10 @@ fun PreviewLightDailyWeatherDetailsScreen() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        val intra = IntraDayTempItem(
-            12.5, 12.5, 12.5, 12.5
-        )
+
         DailyWeatherBottomSheet(
-            daily = DayWeatherItem(
-                weatherIcon = R.drawable.ic_cloudy,
-                feelsLike = intra,
-                temp = intra,
-                windDirection = 90,
-                windSpeed = 5.6,
-                humidity = 55,
-                pressure = 980,
-                weatherDescription = "Cloudy",
-                dateTime = getTimeMillis(),
-                sunrise = getTimeMillis() + (60L * 60L * 6L * 1000),
-                sunset = getTimeMillis() + (60L * 60L * 16L * 1000),
-            ),
-            units = "℃",
+            daily = MockItems.getDailyWeatherMockItem(),
+            units = Units.METRIC,
             onDismiss = {},
         )
     }

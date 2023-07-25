@@ -46,7 +46,7 @@ import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun UpdatedCityWeatherContentItem(
+fun CityWeatherContentItem(
     weatherItem: UpdatedWeatherItem,
     modifier: Modifier = Modifier,
     viewModel: CityWeatherContentItemViewModel = hiltViewModel()
@@ -112,7 +112,7 @@ fun UpdatedCityWeatherContentItem(
                 textAlign = TextAlign.Center
             )
 
-            UpdatedTodayWeatherCardItem(
+            TodayWeatherCardItem(
                 weatherItem = weatherItem.hourlyWeatherList.first(),
                 units = units.value,
                 lastUpdatedTime = weatherItem.cityItem.lastTimeUpdated,
@@ -144,7 +144,7 @@ fun UpdatedCityWeatherContentItem(
                 val list =
                     weatherItem.hourlyWeatherList
                 items(list.size) {
-                    UpdatedHourlyWeatherItem(item = list[it], units = units.value)
+                    HourlyWeatherItem(item = list[it], units = units.value)
                 }
             }
 

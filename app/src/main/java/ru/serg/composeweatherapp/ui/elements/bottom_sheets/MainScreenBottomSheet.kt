@@ -13,7 +13,7 @@ fun MainScreenBottomSheet(
             onDismiss = onDismiss
         )
 
-        is BottomSheetMainScreenState.DailyWeatherScreen -> UpdatedDailyWeatherBottomSheet(
+        is BottomSheetMainScreenState.DailyWeatherScreen -> DailyWeatherBottomSheet(
             daily = screenState.dailyWeather,
             units = screenState.units,
             onDismiss = onDismiss
