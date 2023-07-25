@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.common
 
 sealed class NetworkResult<T>(
     val data: T? = null,

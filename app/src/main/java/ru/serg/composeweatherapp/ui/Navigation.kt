@@ -23,8 +23,7 @@ import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.screens.settings.SettingsScreen
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.ScreenNames
-
+import ru.serg.composeweatherapp.utils.common.ScreenNames
 
 @OptIn(
     ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class,
@@ -72,7 +71,8 @@ fun Navigation(
         }
 
         // Choose City screen
-        composable(ScreenNames.CHOOSE_CITY_SCREEN,
+        composable(
+            ScreenNames.CHOOSE_CITY_SCREEN,
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },

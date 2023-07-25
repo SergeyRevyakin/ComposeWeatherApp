@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.common
 
 object ScreenNames {
     const val MAIN_SCREEN = "main"

@@ -17,7 +17,8 @@ data class DailyWeather(
     val sunrise: Long,
     val sunset: Long,
     val dailyWeatherItem: UpdatedDailyTempItem,
-    val feelsLike: UpdatedDailyTempItem
+    val feelsLike: UpdatedDailyTempItem,
+    val uvi: Double
 )
 
 data class HourlyWeather(
@@ -29,5 +30,6 @@ data class HourlyWeather(
     val pressure: Int,
     val weatherDescription: String,
     val weatherIcon: Int,
-    val dateTime: Long
+    val dateTime: Long,
+    val uvi: Double
 )

@@ -1,22 +1,9 @@
 package ru.serg.composeweatherapp.ui.screens.pager
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItem
-import ru.serg.composeweatherapp.ui.elements.PullRefreshBox
-import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
-import ru.serg.composeweatherapp.ui.elements.common.SunLoadingScreen
-import ru.serg.composeweatherapp.ui.screens.ScreenState
 
 @Composable
 fun PagerScreen(

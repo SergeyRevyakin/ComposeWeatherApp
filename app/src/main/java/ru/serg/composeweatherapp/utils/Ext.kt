@@ -143,6 +143,7 @@ fun UpdatedHourlyWeatherEntity.toHourlyWeather() = HourlyWeather(
     humidity = humidity.orZero(),
     pressure = pressure.orZero(),
     dateTime = dateTime.orZero(),
+    uvi = uvi.orZero()
 )
 
 fun UpdatedDailyWeatherEntity.toDailyWeather() = DailyWeather(
@@ -156,7 +157,8 @@ fun UpdatedDailyWeatherEntity.toDailyWeather() = DailyWeather(
     feelsLike = feelsLike,
     dailyWeatherItem = dailyWeatherItem,
     sunrise = sunrise.orZero(),
-    sunset = sunset.orZero()
+    sunset = sunset.orZero(),
+    uvi = uvi.orZero()
 )
 
 fun UpdatedCityWeather.toWeatherItem() = UpdatedWeatherItem(

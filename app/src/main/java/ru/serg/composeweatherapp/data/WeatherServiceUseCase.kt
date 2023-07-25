@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
-import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import javax.inject.Inject
 

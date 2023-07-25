@@ -8,19 +8,24 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.CitySearchUseCase
 import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.data.data_source.LocalDataSource
-import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.utils.common.NetworkResult
 import javax.inject.Inject
 
 @FlowPreview
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
     private val citySearchUseCase: CitySearchUseCase,
-    val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     var screenState by mutableStateOf(
@@ -69,9 +74,11 @@ class ChooseCityViewModel @Inject constructor(
                 is NetworkResult.Loading -> {
                     setLoadingState()
                 }
+
                 is NetworkResult.Error -> {
                     setErrorState(networkResult.message)
                 }
+
                 is NetworkResult.Success -> {
                     val cityList = networkResult.data
                     if (cityList.isNullOrEmpty()) {

@@ -2,15 +2,17 @@ package ru.serg.composeweatherapp.data.mapper
 
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.data.dto.DailyWeather
 import ru.serg.composeweatherapp.data.dto.DayWeatherItem
 import ru.serg.composeweatherapp.data.dto.HourWeatherItem
+import ru.serg.composeweatherapp.data.dto.HourlyWeather
 import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
 import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
-import ru.serg.composeweatherapp.data.dto.UpdatedDailyWeatherItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.utils.IconMapper
+import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
+import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
 
@@ -109,44 +111,6 @@ object DataMapper {
         )
     }
 
-    fun getUpdatedDailyWeather(
-        cityItem: CityItem?,
-        daily: OneCallResponse.Daily
-    ): UpdatedDailyWeatherItem {
-        val feelsLike = UpdatedDailyTempItem(
-            morningTemp = daily.feelsLike?.morn.orZero(),
-            dayTemp = daily.feelsLike?.day.orZero(),
-            eveningTemp = daily.feelsLike?.eve.orZero(),
-            nightTemp = daily.feelsLike?.night.orZero(),
-            maxTemp = null,
-            minTemp = null
-        )
-
-        val temp = UpdatedDailyTempItem(
-            morningTemp = daily.temp?.morn.orZero(),
-            dayTemp = daily.temp?.day.orZero(),
-            eveningTemp = daily.temp?.eve.orZero(),
-            nightTemp = daily.temp?.night.orZero(),
-            maxTemp = daily.temp?.max.orZero(),
-            minTemp = daily.temp?.min.orZero()
-        )
-
-        return UpdatedDailyWeatherItem(
-            feelsLikeTemp = feelsLike,
-            dailyTempItem = temp,
-            windDirection = daily.windDeg,
-            windSpeed = daily.windSpeed,
-            humidity = daily.humidity,
-            pressure = daily.pressure,
-            sunrise = daily.sunrise.toTimeStamp(),
-            sunset = daily.sunset.toTimeStamp(),
-            dateTime = daily.dt.toTimeStamp(),
-            weatherDescription = daily.weather?.first()?.description,
-            weatherIcon = IconMapper.map(daily.weather?.first()?.id),
-            cityItem = cityItem
-        )
-    }
-
     fun getUpdatedDailyTempItem(daily: OneCallResponse.Daily) = UpdatedDailyTempItem(
         morningTemp = daily.temp?.morn.orZero(),
         dayTemp = daily.temp?.day.orZero(),
@@ -163,6 +127,34 @@ object DataMapper {
         nightTemp = daily.feelsLike?.night.orZero(),
         maxTemp = null,
         minTemp = null
+    )
+
+    fun mapHourlyWeather(hourly: OneCallResponse.Hourly) = HourlyWeather(
+        windDirection = hourly.windDeg.orZero(),
+        windSpeed = hourly.windSpeed.orZero(),
+        weatherDescription = hourly.weather?.first()?.description.orEmpty(),
+        weatherIcon = IconMapper.map(hourly.weather?.first()?.id),
+        dateTime = hourly.dt.toTimeStamp(),
+        humidity = hourly.humidity.orZero(),
+        pressure = hourly.pressure.orZero(),
+        currentTemp = hourly.temp.orZero(),
+        feelsLike = hourly.feelsLike.orZero(),
+        uvi = hourly.uvi.orZero()
+    )
+
+    fun mapDailyWeather(daily: OneCallResponse.Daily) = DailyWeather(
+        windDirection = daily.windDeg.orZero(),
+        windSpeed = daily.windSpeed.orZero(),
+        weatherDescription = daily.weather?.first()?.description.orEmpty(),
+        weatherIcon = IconMapper.map(daily.weather?.first()?.id),
+        dateTime = daily.dt.toTimeStamp(),
+        humidity = daily.humidity.orZero(),
+        pressure = daily.pressure.orZero(),
+        feelsLike = getFeelsLikeDailyTempItem(daily),
+        dailyWeatherItem = getUpdatedDailyTempItem(daily),
+        sunset = daily.sunset.toTimeStamp(),
+        sunrise = daily.sunrise.toTimeStamp(),
+        uvi = daily.uvi.orZero()
     )
 
 }

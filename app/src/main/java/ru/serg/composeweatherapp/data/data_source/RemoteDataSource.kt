@@ -9,7 +9,8 @@ import ru.serg.composeweatherapp.data.remote.responses.CityNameGeocodingResponse
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.composeweatherapp.utils.enums.Units
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -25,7 +26,7 @@ class RemoteDataSource @Inject constructor(
             try {
                 emit(NetworkResult.Loading())
                 dataStoreDataSource.measurementUnits.collect { value ->
-                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    val units = Units.values()[value].parameterCode
                     httpClientOneCall.get {
                         parameter("units", units)
                         parameter("exclude", "minutely")
@@ -50,7 +51,7 @@ class RemoteDataSource @Inject constructor(
             try {
                 emit(NetworkResult.Loading())
                 dataStoreDataSource.measurementUnits.collect { value ->
-                    val units = Constants.DataStore.Units.values()[value].parameterCode
+                    val units = Units.values()[value].parameterCode
                     httpClientWeather.get {
                         parameter("units", units)
                         parameter("exclude", "minutely")

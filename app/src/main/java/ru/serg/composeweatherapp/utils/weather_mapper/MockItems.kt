@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.weather_mapper
 
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
@@ -19,7 +19,8 @@ object MockItems {
         sunset = getTimeMillis() + 100000L,
         dailyWeatherItem = getUpdatedDailyTempMockItem(),
         feelsLike = getUpdatedDailyTempMockItem(),
-        dateTime = getTimeMillis()
+        dateTime = getTimeMillis(),
+        uvi = 3.2
     )
     fun getHourlyWeatherMockItem() =
     HourlyWeather(
@@ -31,10 +32,11 @@ object MockItems {
         weatherIcon = R.drawable.ic_windy,
         currentTemp = 20.1,
         feelsLike = 23.3,
-        dateTime = getTimeMillis()
+        dateTime = getTimeMillis(),
+        uvi = 2.2
     )
 
-    fun getUpdatedDailyTempMockItem() =
+    private fun getUpdatedDailyTempMockItem() =
         UpdatedDailyTempItem(
             morningTemp = 14.5,
             dayTemp = 21.2,

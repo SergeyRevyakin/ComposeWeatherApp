@@ -29,5 +29,6 @@ data class UpdatedDailyWeatherEntity(
     @Embedded(prefix = "daily")
     val dailyWeatherItem: UpdatedDailyTempItem,
     @Embedded(prefix = "feels")
-    val feelsLike: UpdatedDailyTempItem
+    val feelsLike: UpdatedDailyTempItem,
+    val uvi: Double?
 )

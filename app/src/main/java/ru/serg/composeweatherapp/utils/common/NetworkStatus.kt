@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.common
 
 import android.content.Context
 import android.net.ConnectivityManager

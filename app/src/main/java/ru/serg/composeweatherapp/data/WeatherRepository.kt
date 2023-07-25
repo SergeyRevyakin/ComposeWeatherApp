@@ -19,20 +19,14 @@ import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
 import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
-import ru.serg.composeweatherapp.data.dto.DailyWeather
-import ru.serg.composeweatherapp.data.dto.HourlyWeather
 import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.IconMapper
-import ru.serg.composeweatherapp.utils.NetworkResult
-import ru.serg.composeweatherapp.utils.NetworkStatus
+import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.composeweatherapp.utils.common.NetworkStatus
 import ru.serg.composeweatherapp.utils.isNearTo
 import ru.serg.composeweatherapp.utils.isSavedDataExpired
-import ru.serg.composeweatherapp.utils.orEmpty
-import ru.serg.composeweatherapp.utils.orZero
-import ru.serg.composeweatherapp.utils.toTimeStamp
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
@@ -252,34 +246,11 @@ class WeatherRepository @Inject constructor(
                         updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
 
                         val dailyWeather = oneCallResponse.data.daily?.map {
-
-                            DailyWeather(
-                                windDirection = it.windDeg.orZero(),
-                                windSpeed = it.windSpeed.orZero(),
-                                weatherDescription = it.weather?.first()?.description.orEmpty(),
-                                weatherIcon = IconMapper.map(it.weather?.first()?.id),
-                                dateTime = it.dt.toTimeStamp(),
-                                humidity = it.humidity.orZero(),
-                                pressure = it.pressure.orZero(),
-                                feelsLike = DataMapper.getFeelsLikeDailyTempItem(it),
-                                dailyWeatherItem = DataMapper.getUpdatedDailyTempItem(it),
-                                sunset = it.sunset.toTimeStamp(),
-                                sunrise = it.sunrise.toTimeStamp()
-                            )
+                            DataMapper.mapDailyWeather(it)
                         } ?: listOf()
 
                         val hourlyWeather = oneCallResponse.data.hourly?.map {
-                            HourlyWeather(
-                                windDirection = it.windDeg.orZero(),
-                                windSpeed = it.windSpeed.orZero(),
-                                weatherDescription = it.weather?.first()?.description.orEmpty(),
-                                weatherIcon = IconMapper.map(it.weather?.first()?.id),
-                                dateTime = it.dt.toTimeStamp(),
-                                humidity = it.humidity.orZero(),
-                                pressure = it.pressure.orZero(),
-                                currentTemp = it.temp.orZero(),
-                                feelsLike = it.feelsLike.orZero()
-                            )
+                            DataMapper.mapHourlyWeather(it)
                         } ?: listOf()
 
                         NetworkResult.Success(

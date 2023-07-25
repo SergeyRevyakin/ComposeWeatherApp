@@ -12,7 +12,7 @@ import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.room.dao.UpdatedWeatherDao
 import ru.serg.composeweatherapp.data.room.entity.UpdatedDailyWeatherEntity
 import ru.serg.composeweatherapp.data.room.entity.UpdatedHourlyWeatherEntity
-import ru.serg.composeweatherapp.utils.IconMapper
+import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
 import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.toWeatherItem
@@ -51,7 +51,8 @@ class UpdatedLocalDataSource @Inject constructor(
                     dailyWeatherItem = DataMapper.getUpdatedDailyTempItem(it),
                     cityId = cityItem.id,
                     sunset = it.sunset.toTimeStamp(),
-                    sunrise = it.sunrise.toTimeStamp()
+                    sunrise = it.sunrise.toTimeStamp(),
+                    uvi = it.uvi
                 )
             } ?: listOf()
 
@@ -66,7 +67,8 @@ class UpdatedLocalDataSource @Inject constructor(
                     pressure = it.pressure,
                     cityId = cityItem.id,
                     currentTemp = it.temp,
-                    feelsLike = it.feelsLike
+                    feelsLike = it.feelsLike,
+                    uvi = it.uvi
                 )
             } ?: listOf()
 

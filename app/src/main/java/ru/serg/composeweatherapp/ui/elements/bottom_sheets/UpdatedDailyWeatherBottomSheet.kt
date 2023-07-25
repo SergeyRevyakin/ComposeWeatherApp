@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.weather_screen
+package ru.serg.composeweatherapp.ui.elements.bottom_sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,20 +29,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.DailyWeather
-import ru.serg.composeweatherapp.ui.elements.WeatherParamRowItem
+import ru.serg.composeweatherapp.ui.elements.common.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.MockItems
 import ru.serg.composeweatherapp.utils.getTemp
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
+import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun UpdatedDailyWeatherBottomSheet(
     daily: DailyWeather,
-    units: String,
+    units: Units,
     onDismiss: () -> Unit
 ) {
 
@@ -133,8 +134,15 @@ fun UpdatedDailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(text = "Morning: ${getTemp(daily.dailyWeatherItem.morningTemp, units)}")
-                Text(text = "Day: ${getTemp(daily.dailyWeatherItem.dayTemp, units)}")
+                Text(
+                    text = "Morning: ${
+                        getTemp(
+                            daily.dailyWeatherItem.morningTemp,
+                            units.tempUnits
+                        )
+                    }"
+                )
+                Text(text = "Day: ${getTemp(daily.dailyWeatherItem.dayTemp, units.tempUnits)}")
             }
 
             Column(
@@ -143,8 +151,15 @@ fun UpdatedDailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(text = "Evening: ${getTemp(daily.dailyWeatherItem.eveningTemp, units)}")
-                Text(text = "Night ${getTemp(daily.dailyWeatherItem.nightTemp, units)}")
+                Text(
+                    text = "Evening: ${
+                        getTemp(
+                            daily.dailyWeatherItem.eveningTemp,
+                            units.tempUnits
+                        )
+                    }"
+                )
+                Text(text = "Night ${getTemp(daily.dailyWeatherItem.nightTemp, units.tempUnits)}")
             }
         }
         Divider(
@@ -154,16 +169,16 @@ fun UpdatedDailyWeatherBottomSheet(
         )
 
 
-        WeatherParamRowItem(
+        ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
             paramIcon = R.drawable.ic_wind_dir_north,
-            paramValue = "Wind speed: ${daily.windSpeed}m/s",
+            paramValue = "Wind speed: ${daily.windSpeed} ${units.windUnits}",
             rotation = daily.windDirection
         )
 
-        WeatherParamRowItem(
+        ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -171,7 +186,7 @@ fun UpdatedDailyWeatherBottomSheet(
             paramValue = "Humidity: ${daily.humidity}%",
         )
 
-        WeatherParamRowItem(
+        ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth(),
             paramIcon = R.drawable.ic_barometer,
@@ -194,7 +209,7 @@ fun PreviewDailyWeatherDetailsScreen() {
 
         UpdatedDailyWeatherBottomSheet(
             daily = MockItems.getDailyWeatherMockItem(),
-            units = "℃",
+            units = Units.METRIC,
             onDismiss = {},
         )
     }
@@ -210,7 +225,7 @@ fun PreviewLightDailyWeatherDetailsScreen() {
 
         UpdatedDailyWeatherBottomSheet(
             daily = MockItems.getDailyWeatherMockItem(),
-            units = "℃",
+            units = Units.METRIC,
             onDismiss = {},
         )
     }

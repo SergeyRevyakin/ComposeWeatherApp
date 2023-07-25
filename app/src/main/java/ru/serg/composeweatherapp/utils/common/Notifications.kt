@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.common
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -12,12 +12,17 @@ import androidx.core.content.ContextCompat
 import ru.serg.composeweatherapp.MainActivity
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.WeatherItem
+import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.DateUtils
 import java.util.Random
 
 
 @SuppressLint("MissingPermission")
 fun showNotification(context: Context, header: String?, text: String?) {
-    val builder = NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
+    val builder = NotificationCompat.Builder(
+        context,
+        Constants.Notifications.NOTIFICATION_CHANNEL_ID
+    )
         .setSmallIcon(R.drawable.ic_sun)
         .setContentTitle(header)
         .setContentText(text)
@@ -65,6 +70,7 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
         notify(Random().nextInt(), builder.build())
     }
 }
+
 @SuppressLint("MissingPermission")
 fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
 

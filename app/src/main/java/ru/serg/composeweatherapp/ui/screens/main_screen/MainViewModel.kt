@@ -23,8 +23,8 @@ import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
 import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
-import ru.serg.composeweatherapp.utils.NetworkResult
-import ru.serg.composeweatherapp.utils.NetworkStatus
+import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.composeweatherapp.utils.common.NetworkStatus
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -52,8 +52,6 @@ class MainViewModel @Inject constructor(
             Manifest.permission.ACCESS_FINE_LOCATION,
         )
 
-
-
         viewModelScope.launch {
             locationPermissionFlow.collect {
                 setInitialState(it.grantedPermissions.isNotEmpty())
@@ -61,15 +59,7 @@ class MainViewModel @Inject constructor(
 
         }
 
-        viewModelScope.launch {
-            citiesWeather.collect {
-                it
-            }
-        }
-
         initCitiesWeatherFlow()
-//        getWeatherData()
-
 
     }
 

@@ -27,4 +27,5 @@ data class UpdatedHourlyWeatherEntity(
         index = true
     )
     val cityId: Int,
+    val uvi: Double?
 )

@@ -113,7 +113,7 @@ fun MainScreen(
                     state = pagerState,
                     userScrollEnabled = true,
                     reverseLayout = false,
-                    beyondBoundsPageCount = 0,
+                    beyondBoundsPageCount = 1,
                     pageContent = {
                         UpdatedPagerScreen(
                             weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],

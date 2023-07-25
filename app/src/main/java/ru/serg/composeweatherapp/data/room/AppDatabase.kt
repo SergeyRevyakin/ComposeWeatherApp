@@ -14,7 +14,7 @@ import ru.serg.composeweatherapp.data.room.entity.WeatherItemEntity
 @TypeConverters(value = [WeatherTypeConverters::class])
 @Database(
     entities = [CityEntity::class, WeatherItemEntity::class, UpdatedDailyWeatherEntity::class, UpdatedHourlyWeatherEntity::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

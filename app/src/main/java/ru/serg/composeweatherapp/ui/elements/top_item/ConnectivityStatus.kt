@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.serg.composeweatherapp.ui.theme.customColors
-import ru.serg.composeweatherapp.utils.ConnectionState
-import ru.serg.composeweatherapp.utils.currentConnectionsState
-import ru.serg.composeweatherapp.utils.observeConnectivityAsFlow
+import ru.serg.composeweatherapp.utils.common.ConnectionState
+import ru.serg.composeweatherapp.utils.common.currentConnectionsState
+import ru.serg.composeweatherapp.utils.common.observeConnectivityAsFlow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable

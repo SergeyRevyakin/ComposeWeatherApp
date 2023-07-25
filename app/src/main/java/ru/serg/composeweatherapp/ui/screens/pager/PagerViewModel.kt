@@ -2,21 +2,12 @@
 
 package ru.serg.composeweatherapp.ui.screens.pager
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.ktor.util.date.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
-import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
-import ru.serg.composeweatherapp.utils.NetworkResult
 import javax.inject.Inject
 
 @HiltViewModel

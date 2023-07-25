@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -18,10 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,26 +33,25 @@ import ru.serg.composeweatherapp.data.dto.DailyWeather
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getDate
-import ru.serg.composeweatherapp.utils.MockItems
 import ru.serg.composeweatherapp.utils.getMinMaxTemp
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
+import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun DailyWeatherItem(
     item: DailyWeather,
-    units: String,
+    units: Units,
     onClick: () -> Unit
 ) {
 
     Row(
         Modifier
             .fillMaxWidth()
-
-//            .shadow(
-//                elevation = 10.dp,
-//                spotColor = MaterialTheme.colors.primary,
-//                shape = RoundedCornerShape(24.dp)
-//            )
-
+            .shadow(
+                elevation = 10.dp,
+                spotColor = MaterialTheme.colors.primary,
+                shape = RoundedCornerShape(24.dp)
+            )
             .gradientBorder(
                 borderWidth = 2,
                 cornerRadius = 24
@@ -75,11 +75,13 @@ fun DailyWeatherItem(
         Text(
             text = getDate(item.dateTime),
             fontSize = 18.sp,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1.3f)
+                .padding(start = 12.dp)
         )
 
         Text(
-            text = getMinMaxTemp(item.dailyWeatherItem, units),
+            text = getMinMaxTemp(item.dailyWeatherItem, units.tempUnits),
             textAlign = TextAlign.Center,
             fontSize = 18.sp,
             modifier = Modifier.weight(1f)
@@ -91,11 +93,9 @@ fun DailyWeatherItem(
             colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
             contentScale = ContentScale.Fit,
             modifier = Modifier
-                .weight(1f)
-                .graphicsLayer {
-                    scaleX = 1.4f
-                    scaleY = 1.4f
-                }
+                .weight(1.3f)
+                .size(48.dp)
+
         )
     }
 }
@@ -109,7 +109,7 @@ fun PreviewDailyWeatherItem() {
     ComposeWeatherAppTheme(isDarkTheme) {
         DailyWeatherItem(
             MockItems.getDailyWeatherMockItem(),
-            "℃"
+            Units.METRIC
         ) {}
     }
 }
@@ -124,7 +124,7 @@ fun PreviewDailyWeatherItemDark() {
     ComposeWeatherAppTheme(isDarkTheme) {
         DailyWeatherItem(
             MockItems.getDailyWeatherMockItem(),
-            "℃"
+            Units.METRIC
         ) {}
     }
 }

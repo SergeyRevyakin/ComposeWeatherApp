@@ -21,8 +21,7 @@ import ru.serg.composeweatherapp.data.WeatherServiceUseCase
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
-import ru.serg.composeweatherapp.utils.showDailyForecastNotification
-import ru.serg.composeweatherapp.utils.showDailyServiceForecastNotification
+import ru.serg.composeweatherapp.utils.common.showDailyServiceForecastNotification
 import javax.inject.Inject
 
 @AndroidEntryPoint

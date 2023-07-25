@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.onEach
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.NetworkResult
-import ru.serg.composeweatherapp.utils.showDailyForecastNotification
-import ru.serg.composeweatherapp.utils.showFetchErrorNotification
-import ru.serg.composeweatherapp.utils.showNotification
+import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.composeweatherapp.utils.common.showDailyForecastNotification
+import ru.serg.composeweatherapp.utils.common.showFetchErrorNotification
+import ru.serg.composeweatherapp.utils.common.showNotification
 import java.util.concurrent.TimeUnit
 
 @HiltWorker
@@ -66,7 +66,11 @@ class WeatherWorker @AssistedInject constructor(
 
         fun isWeatherWorkerSet(context: Context) =
             WorkManager.getInstance(context).getWorkInfosByTag(workerTag).get()?.let {
-                it.isNotEmpty() && !listOf(WorkInfo.State.CANCELLED, WorkInfo.State.BLOCKED, WorkInfo.State.FAILED).contains(it.first().state)
+                it.isNotEmpty() && !listOf(
+                    WorkInfo.State.CANCELLED,
+                    WorkInfo.State.BLOCKED,
+                    WorkInfo.State.FAILED
+                ).contains(it.first().state)
             } ?: false
 
         suspend fun cancelPeriodicWork(context: Context) {
@@ -98,18 +102,18 @@ class WeatherWorker @AssistedInject constructor(
 
     private fun fetchWeatherForNotification() {
         workerUseCase.fetchFavouriteCity()
-            .onEach {
-                Log.e(this::class.simpleName, "Fetch service $it")
-                when (it) {
+            .onEach { networkResult ->
+                Log.e(this::class.simpleName, "Fetch service $networkResult")
+                when (networkResult) {
                     is NetworkResult.Success -> {
-                        onWeatherFetchedSuccessful(it.data)
-                        it.data?.alertMessage?.let {
+                        onWeatherFetchedSuccessful(networkResult.data)
+                        networkResult.data?.alertMessage?.let {
                             showNotification(applicationContext, "ALERT", it)
                         }
                     }
 
                     is NetworkResult.Error -> {
-                        onError(it.message)
+                        onError(networkResult.message)
                     }
 
                     is NetworkResult.Loading -> {}

@@ -2,4 +2,21 @@
     <string name="app_name">Serg Weather</string>
 
     <string name="no_connection">No Internet Connection</string>
+
+
+    <string name="uvi_low">Low</string>
+    <string name="uvi_modetate">Moderate</string>
+    <string name="uvi_high">High</string>
+    <string name="uvi_very_high">Very high</string>
+    <string name="uvi_extreme">Extreme</string>
+
+    <string name="uiv_low_description">Low danger from the Suns UV rays for the average person</string>
+    <string name="uiv_moderate_description">Moderate risk of harm from unprotected sun exposure</string>
+    <string name="uiv_high_description">High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed</string>
+    <string name="uiv_very_high_description">Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly</string>
+    <string name="uiv_extreme_description">Extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes</string>
+
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
 </resources>

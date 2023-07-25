@@ -29,6 +29,7 @@ import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
+import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun SettingsScreen(
@@ -108,8 +109,8 @@ fun SettingsScreen(
 
         RadioButtonGroup(
             header = "Measurement units",
-            nameList = Constants.DataStore.Units.values().map { it.title },
-            descriptionList = Constants.DataStore.Units.values().map { it.description },
+            nameList = Units.values().map { it.title },
+            descriptionList = Units.values().map { it.description },
             selectedPosition = viewModel.measurementUnits
         ) {
             viewModel.onUnitsChanged(it)

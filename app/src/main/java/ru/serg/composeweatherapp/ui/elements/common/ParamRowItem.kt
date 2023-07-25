@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements
+package ru.serg.composeweatherapp.ui.elements.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
 
 @Composable
-fun WeatherParamRowItem(
+fun ParamRowItem(
     modifier: Modifier = Modifier,
     paramIcon: Int,
     paramValue: String,
@@ -45,7 +45,7 @@ fun WeatherParamRowItem(
 @Preview
 @Composable
 fun PreviewWeatherParamRowItem() {
-    WeatherParamRowItem(
+    ParamRowItem(
         paramIcon = R.drawable.ic_wind_dir_north,
         paramValue = "Wind speed: 12m/s",
         rotation = 0

@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.ui.theme.settingsSubText
-import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
 fun RadioButtonGroup(
@@ -88,8 +88,8 @@ fun PreviewRadioButtonGroup() {
 
     RadioButtonGroup(
         header = "Units of measurement",
-        nameList = Constants.DataStore.Units.values().map { it.title },
-        descriptionList = Constants.DataStore.Units.values().map { it.description },
+        nameList = Units.values().map { it.title },
+        descriptionList = Units.values().map { it.description },
         selectedPosition = position,
         onSelectListener = { }
     )

@@ -25,16 +25,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.ktor.util.date.getTimeMillis
-import ru.serg.composeweatherapp.data.dto.HourWeatherItem
 import ru.serg.composeweatherapp.data.dto.HourlyWeather
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAccent
-import ru.serg.composeweatherapp.utils.MockItems
 import ru.serg.composeweatherapp.utils.getTemp
+import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
+import ru.serg.composeweatherapp.utils.enums.Units
 
 @Composable
-fun UpdatedHourlyWeatherItem(item: HourlyWeather, units: String) {
+fun UpdatedHourlyWeatherItem(item: HourlyWeather, units: Units) {
     Card(
         elevation = 10.dp,
         shape = RoundedCornerShape(8.dp),
@@ -76,7 +75,7 @@ fun UpdatedHourlyWeatherItem(item: HourlyWeather, units: String) {
                     .padding(bottom = 12.dp)
             ) {
                 Text(
-                    text = getTemp(item.currentTemp, units),
+                    text = getTemp(item.currentTemp, units.tempUnits),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -96,7 +95,7 @@ fun PreviewDarkHourlyItem() {
     ComposeWeatherAppTheme(isDarkTheme) {
         UpdatedHourlyWeatherItem(
             item = MockItems.getHourlyWeatherMockItem(),
-            units = "℃"
+            units = Units.METRIC
         )
     }
 }
@@ -110,7 +109,7 @@ fun PreviewLightHourlyItem() {
     ComposeWeatherAppTheme(isDarkTheme) {
         UpdatedHourlyWeatherItem(
             item = MockItems.getHourlyWeatherMockItem(),
-            units = "℃"
+            units = Units.METRIC
         )
     }
 }

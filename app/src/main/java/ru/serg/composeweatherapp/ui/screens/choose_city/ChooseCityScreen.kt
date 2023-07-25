@@ -43,7 +43,7 @@ import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.ScreenNames
+import ru.serg.composeweatherapp.utils.common.ScreenNames
 
 @ExperimentalFoundationApi
 @FlowPreview

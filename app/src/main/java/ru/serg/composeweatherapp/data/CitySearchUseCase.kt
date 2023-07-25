@@ -1,14 +1,16 @@
 package ru.serg.composeweatherapp.data
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
-import ru.serg.composeweatherapp.utils.NetworkResult
+import ru.serg.composeweatherapp.data.dto.CityItem
+import ru.serg.composeweatherapp.utils.common.NetworkResult
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CitySearchUseCase @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource

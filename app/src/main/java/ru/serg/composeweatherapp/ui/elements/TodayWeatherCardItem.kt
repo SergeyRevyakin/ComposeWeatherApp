@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.data.dto.WeatherItem
+import ru.serg.composeweatherapp.ui.elements.common.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
@@ -101,7 +102,7 @@ fun TodayWeatherCardItem(
                     .weight(1f)
             ) {
 
-                WeatherParamRowItem(
+                ParamRowItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(24.dp),
@@ -114,7 +115,7 @@ fun TodayWeatherCardItem(
                     }",
                 )
 
-                WeatherParamRowItem(
+                ParamRowItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
@@ -130,7 +131,7 @@ fun TodayWeatherCardItem(
                     .weight(1f)
             ) {
 
-                WeatherParamRowItem(
+                ParamRowItem(
                     modifier = Modifier
                         .fillMaxWidth(),
                     rotation = weatherItem.windDirection ?: 0,
@@ -138,7 +139,7 @@ fun TodayWeatherCardItem(
                     paramIcon = R.drawable.ic_wind_dir_north
                 )
 
-                WeatherParamRowItem(
+                ParamRowItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
@@ -148,7 +149,7 @@ fun TodayWeatherCardItem(
             }
         }
 
-        WeatherParamRowItem(
+        ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)

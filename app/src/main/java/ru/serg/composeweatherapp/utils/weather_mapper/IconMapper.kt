@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.composeweatherapp.utils.weather_mapper
 
 import ru.serg.composeweatherapp.R
 
