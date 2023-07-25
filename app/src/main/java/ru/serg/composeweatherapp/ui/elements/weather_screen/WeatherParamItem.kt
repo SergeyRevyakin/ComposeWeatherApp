@@ -25,12 +25,17 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 
 @Composable
-fun WeatherParamItem(param: String, paramIcon: Int, paramName: String) {
+fun WeatherParamItem(
+    param: String,
+    paramIcon: Int,
+    paramName: String,
+    modifier: Modifier = Modifier
+) {
 
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier.padding(8.dp)
 
     ) {
         Row {
@@ -62,6 +67,7 @@ fun WeatherParamItem(param: String, paramIcon: Int, paramName: String) {
                 text = paramName,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
+                color = MaterialTheme.colors.primary
             )
         }
     }
