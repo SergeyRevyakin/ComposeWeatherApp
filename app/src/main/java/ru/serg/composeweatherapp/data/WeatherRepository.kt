@@ -243,8 +243,6 @@ class WeatherRepository @Inject constructor(
 
                     if (oneCallResponse.data != null) {
 
-                        updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
-
                         val dailyWeather = oneCallResponse.data.daily?.map {
                             DataMapper.mapDailyWeather(it)
                         } ?: listOf()

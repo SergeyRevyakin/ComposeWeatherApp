@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.city_search.CityRow
 import ru.serg.composeweatherapp.ui.elements.city_search.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.city_search.SearchTextField
@@ -64,7 +66,7 @@ fun ChooseCityScreen(
             .verticalScroll(rememberScrollState()),
     ) {
         TopItem(
-            header = "Choose the city",
+            header = stringResource(id = R.string.look_for_the_place),
             leftIconImageVector = Icons.Rounded.ArrowBack,
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
@@ -85,7 +87,7 @@ fun ChooseCityScreen(
 
             Column {
                 Text(
-                    text = "Favourite cities",
+                    text = stringResource(id = R.string.favourite_places),
                     style = headerStyle,
                     modifier = Modifier
                         .headerModifier()
@@ -154,7 +156,7 @@ fun ChooseCityScreen(
 
             (viewModel.screenState.data.isNotEmpty()) -> {
                 Text(
-                    text = "Are you looking for one of this?",
+                    text = stringResource(id = R.string.are_you_looking_for_one_of_this),
                     style = headerStyle,
                     modifier = Modifier
                         .headerModifier()

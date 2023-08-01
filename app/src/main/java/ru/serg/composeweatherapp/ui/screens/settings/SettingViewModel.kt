@@ -73,7 +73,7 @@ class SettingViewModel @Inject constructor(
 
     private fun initFetchFrequencyValue() {
         viewModelScope.launch {
-            dataStoreDataSource.fetchFrequency.collectLatest {
+            dataStoreDataSource.fetchFrequency.collect {
                 _fetchFrequencyValue.value = it.toFloat()
             }
         }

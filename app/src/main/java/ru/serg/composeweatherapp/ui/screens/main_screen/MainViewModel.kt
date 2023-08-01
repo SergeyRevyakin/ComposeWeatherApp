@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(
 
     private fun initCitiesWeatherFlow() {
         viewModelScope.launch {
-            updatedLocalDataSource.getWeatherFlow().collectLatest {
+            updatedLocalDataSource.getWeatherFlow().debounce(200L).collectLatest {
                 when {
                     it.isEmpty() -> _citiesWeather.emit(CommonScreenState.Empty)
                     else -> {
@@ -79,7 +79,7 @@ class MainViewModel @Inject constructor(
 
     private fun setInitialState(isLocationAvailable: Boolean) {
         viewModelScope.launch {
-            citiesWeather.debounce(500L).collectLatest { state ->
+            citiesWeather.debounce(200L).collectLatest { state ->
                 when (state) {
                     is CommonScreenState.Empty -> {
                         if (isLocationAvailable) {
@@ -121,6 +121,7 @@ class MainViewModel @Inject constructor(
 
     fun refresh() {
         if (networkStatus.isNetworkConnected()) {
+            isLoading.value = true
             viewModelScope.launch {
                 val number = observableItemNumber.value
                 val item =
@@ -132,6 +133,7 @@ class MainViewModel @Inject constructor(
                     if (updatedWeatherItem.cityItem.isFavorite) {
                         checkLocationAndFetchWeather()
                     } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
+                        .debounce(200L)
                         .collectLatest {
                             when (it) {
                                 is NetworkResult.Loading -> isLoading.value = true

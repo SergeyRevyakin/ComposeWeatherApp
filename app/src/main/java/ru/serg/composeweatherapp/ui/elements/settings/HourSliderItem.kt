@@ -19,10 +19,8 @@ import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -36,17 +34,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.theme.PreviewDarkTheme
+import kotlin.math.roundToInt
 
 @Composable
 fun HourSliderItem(
     isVisible: Boolean = false,
     hours: List<Int> = listOf(1, 2, 4, 6, 8, 12, 24),
-    value: Float = 2f,
+//    value: Float = 2f,
+    stateValue: MutableState<Float> = mutableFloatStateOf(2f),
     onValueChanged: ((Int) -> Unit) = {}
 ) {
-    var stateValue by remember {
-        mutableFloatStateOf(value)
-    }
     AnimatedVisibility(
         visible = isVisible,
         enter = expandVertically(
@@ -123,12 +120,12 @@ fun HourSliderItem(
                 }
 
                 Slider(
-                    value = stateValue,
+                    value = stateValue.value,
                     onValueChange = {
-                        stateValue = it
+                        stateValue.value = it
                     },
                     onValueChangeFinished = {
-                        onValueChanged.invoke(stateValue.toInt())
+                        onValueChanged.invoke(stateValue.value.toInt())
                     },
                     valueRange = 0f..hours.size.minus(1).toFloat(),
                     steps = hours.size.minus(2),
@@ -141,7 +138,10 @@ fun HourSliderItem(
             }
 
             Text(
-                text = stringResource(id = R.string.weather_will_be_updated_every_value),
+                text = stringResource(
+                    id = R.string.weather_will_be_updated_every_value,
+                    hours[stateValue.value.roundToInt()]
+                ),
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier
