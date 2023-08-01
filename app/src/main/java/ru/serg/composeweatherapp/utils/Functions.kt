@@ -1,6 +1,10 @@
 package ru.serg.composeweatherapp.utils
 
 import android.os.Build
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
 import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
 
@@ -22,3 +26,15 @@ fun getTemp(temp: Double?, units: String): String {
 fun emptyString() = Constants.EMPTY_STRING
 
 fun isTiramisuOrAbove() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+fun buildTitle(temp: String?, description: String?) = buildAnnotatedString {
+
+    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+        append(
+            temp
+        )
+        append(", ")
+    }
+
+    append(description)
+}

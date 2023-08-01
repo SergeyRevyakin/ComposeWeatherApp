@@ -32,6 +32,7 @@ import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowWithInfoItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
+import ru.serg.composeweatherapp.utils.buildTitle
 import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.firstLetterToUpperCase
 import ru.serg.composeweatherapp.utils.getTemp
@@ -80,10 +81,12 @@ fun TodayWeatherCardItem(
         )
 
         Text(
-            text = getTemp(
-                temp = weatherItem.currentTemp,
-                stringResource(id = units.tempUnits)
-            ) + " " + weatherItem.weatherDescription.firstLetterToUpperCase(),
+            text = buildTitle(
+                getTemp(
+                    temp = weatherItem.currentTemp,
+                    stringResource(id = units.tempUnits)
+                ), weatherItem.weatherDescription.firstLetterToUpperCase()
+            ),
             fontSize = 32.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -92,7 +95,7 @@ fun TodayWeatherCardItem(
                 .padding(bottom = 12.dp)
                 .padding(horizontal = 24.dp),
             style = TextStyle(
-                letterSpacing = 1.5.sp
+                letterSpacing = 2.sp
             )
         )
 
