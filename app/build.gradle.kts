@@ -12,14 +12,14 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = 27
-        targetSdk = 33
-        versionCode = 21
-        versionName = "0.21"
+        targetSdk = 34
+        versionCode = 22
+        versionName = "0.22"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -107,8 +107,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 
     //Compose
-    implementation("androidx.compose.ui:ui:1.5.0-beta03")
-    implementation("androidx.compose.material:material:1.5.0-beta03")
+    implementation("androidx.compose.ui:ui:1.5.0-rc01")
+    implementation("androidx.compose.material:material:1.5.0-rc01")
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.navigation:navigation-compose:2.6.0")
@@ -126,12 +126,12 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     //Ktor
-    implementation("io.ktor:ktor-client-core:2.3.2")
-    implementation("io.ktor:ktor-client-android:2.3.2")
-    implementation("io.ktor:ktor-client-serialization:2.3.2")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.2")
-    implementation("io.ktor:ktor-client-logging:2.3.2")
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-android:2.3.3")
+    implementation("io.ktor:ktor-client-serialization:2.3.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
+    implementation("io.ktor:ktor-client-logging:2.3.3")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha")
     implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha")
@@ -154,7 +154,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     //Widgets
-    implementation("androidx.glance:glance-appwidget:1.0.0-beta01")
+    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")
 
     //Data Store
     implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
