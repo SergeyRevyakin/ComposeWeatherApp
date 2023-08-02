@@ -34,6 +34,6 @@ interface WeatherDao {
     @Query("DELETE FROM ${Constants.WEATHER_ITEMS} WHERE cityName=:cityName")
     suspend fun deleteFromWeather(cityName: String)
 
-    @Query("DELETE FROM ${Constants.SEARCH_HISTORY} WHERE cityName=:cityName")
+    @Query("DELETE FROM ${Constants.CITY_TABLE} WHERE cityName=:cityName")
     suspend fun deleteFromCity(cityName: String)
 }

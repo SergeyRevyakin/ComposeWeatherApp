@@ -51,7 +51,7 @@ interface UpdatedWeatherDao {
     suspend fun deleteWeatherItemEntities(cityId: Int)
 
     @Transaction
-    @Query("SELECT * FROM ${Constants.SEARCH_HISTORY}")
+    @Query("SELECT * FROM ${Constants.CITY_TABLE}")
     fun getWeatherWithCity(): Flow<List<UpdatedCityWeather>>
 
     @Query("SELECT * FROM ${Constants.HOUR_WEATHER_TABLE} WHERE ${Constants.CITY_ID} =:cityId")

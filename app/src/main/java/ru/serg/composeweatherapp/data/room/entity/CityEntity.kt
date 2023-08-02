@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import ru.serg.composeweatherapp.utils.Constants
 
 @Entity(
-    tableName = Constants.SEARCH_HISTORY
+    tableName = Constants.CITY_TABLE
 )
 data class CityEntity(
     val cityName: String,
