@@ -1,6 +1,6 @@
 package ru.serg.composeweatherapp.ui.screens.choose_city
 
-import com.serg.model.CityItem
+import ru.serg.model.CityItem
 
 data class ChoseCityScreenStates(
     val isLoading: Boolean,

@@ -7,5 +7,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ComposeWeatherApp"
 include(":app")
-include(":database")
-include(":model")
+include(":core:database")
+include(":core:model")
+include(":core:testing")

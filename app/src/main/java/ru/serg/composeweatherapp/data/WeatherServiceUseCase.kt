@@ -3,7 +3,6 @@
 package ru.serg.composeweatherapp.data
 
 import android.util.Log
-import com.serg.model.WeatherItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -12,6 +11,7 @@ import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 class WeatherServiceUseCase @Inject constructor(

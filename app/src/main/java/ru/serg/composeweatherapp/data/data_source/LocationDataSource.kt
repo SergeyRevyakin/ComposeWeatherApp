@@ -10,12 +10,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.serg.model.Coordinates
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.utils.hasLocationPermission
+import ru.serg.model.Coordinates
 
 class LocationDataSource(
     private val appContext: Context

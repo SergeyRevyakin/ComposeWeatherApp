@@ -1,13 +1,5 @@
 package ru.serg.composeweatherapp.data.mapper
 
-import com.serg.model.CityItem
-import com.serg.model.DailyWeather
-import com.serg.model.DayWeatherItem
-import com.serg.model.HourWeatherItem
-import com.serg.model.HourlyWeather
-import com.serg.model.IntraDayTempItem
-import com.serg.model.UpdatedDailyTempItem
-import com.serg.model.WeatherItem
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
@@ -15,6 +7,14 @@ import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
+import ru.serg.model.CityItem
+import ru.serg.model.DailyWeather
+import ru.serg.model.DayWeatherItem
+import ru.serg.model.HourWeatherItem
+import ru.serg.model.HourlyWeather
+import ru.serg.model.IntraDayTempItem
+import ru.serg.model.UpdatedDailyTempItem
+import ru.serg.model.WeatherItem
 
 object DataMapper {
     fun mapCityItem(weatherResponse: WeatherResponse, isFavourite: Boolean) =

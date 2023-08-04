@@ -1,7 +1,5 @@
 package ru.serg.composeweatherapp.data.data_source
 
-import com.serg.model.CityItem
-import com.serg.model.UpdatedWeatherItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -13,10 +11,15 @@ import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.toWeatherItem
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
+import ru.serg.database.room.dao.UpdatedWeatherDao
+import ru.serg.database.room.entity.UpdatedDailyWeatherEntity
+import ru.serg.database.room.entity.UpdatedHourlyWeatherEntity
+import ru.serg.model.CityItem
+import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject
 
 class UpdatedLocalDataSource @Inject constructor(
-    private val dailyWeatherDao: com.serg.database.room.dao.UpdatedWeatherDao,
+    private val dailyWeatherDao: UpdatedWeatherDao,
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -36,7 +39,7 @@ class UpdatedLocalDataSource @Inject constructor(
         scope.launch {
             val dailyWeather = oneCallResponse.daily?.map {
 
-                com.serg.database.room.entity.UpdatedDailyWeatherEntity(
+                UpdatedDailyWeatherEntity(
                     windDirection = it.windDeg,
                     windSpeed = it.windSpeed,
                     weatherDescription = it.weather?.first()?.description,
@@ -54,7 +57,7 @@ class UpdatedLocalDataSource @Inject constructor(
             } ?: listOf()
 
             val hourlyWeather = oneCallResponse.hourly?.map {
-                com.serg.database.room.entity.UpdatedHourlyWeatherEntity(
+                UpdatedHourlyWeatherEntity(
                     windDirection = it.windDeg,
                     windSpeed = it.windSpeed,
                     weatherDescription = it.weather?.first()?.description,

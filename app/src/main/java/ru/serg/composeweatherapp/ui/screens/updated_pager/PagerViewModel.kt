@@ -4,8 +4,6 @@ package ru.serg.composeweatherapp.ui.screens.updated_pager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serg.model.CityItem
-import com.serg.model.UpdatedWeatherItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,6 +16,8 @@ import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.ui.screens.WeatherState
 import ru.serg.composeweatherapp.utils.DateUtils
+import ru.serg.model.CityItem
+import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject
 
 @HiltViewModel

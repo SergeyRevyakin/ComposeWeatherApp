@@ -26,8 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.serg.model.DayWeatherItem
-import com.serg.model.IntraDayTempItem
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
@@ -39,6 +37,8 @@ import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.getTemp
+import ru.serg.model.DayWeatherItem
+import ru.serg.model.IntraDayTempItem
 
 @Composable
 fun DailyWeatherDetailsScreen(

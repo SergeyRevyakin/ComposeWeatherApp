@@ -92,8 +92,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":database"))
-    implementation(project(":model"))
+    implementation(project(":core:database"))
+    implementation(project(":core:model"))
 
     api(platform("androidx.compose:compose-bom:2023.06.01"))
     androidTestApi(platform("androidx.compose:compose-bom:2023.06.01"))

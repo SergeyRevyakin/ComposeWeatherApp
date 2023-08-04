@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.serg.model.WeatherItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +21,7 @@ import ru.serg.composeweatherapp.data.WeatherServiceUseCase
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import ru.serg.composeweatherapp.utils.common.showDailyServiceForecastNotification
+import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 @AndroidEntryPoint

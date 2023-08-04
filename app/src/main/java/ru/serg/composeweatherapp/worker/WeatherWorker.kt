@@ -12,7 +12,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
-import com.serg.model.WeatherItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.ktor.util.date.getTimeMillis
@@ -27,6 +26,7 @@ import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.composeweatherapp.utils.common.showDailyForecastNotification
 import ru.serg.composeweatherapp.utils.common.showFetchErrorNotification
 import ru.serg.composeweatherapp.utils.common.showNotification
+import ru.serg.model.WeatherItem
 import java.util.concurrent.TimeUnit
 
 @HiltWorker

@@ -3,10 +3,6 @@
 package ru.serg.composeweatherapp.data
 
 import android.util.Log
-import com.serg.model.CityItem
-import com.serg.model.Coordinates
-import com.serg.model.UpdatedWeatherItem
-import com.serg.model.WeatherItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +23,10 @@ import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.composeweatherapp.utils.common.NetworkStatus
 import ru.serg.composeweatherapp.utils.isNearTo
 import ru.serg.composeweatherapp.utils.isSavedDataExpired
+import ru.serg.model.CityItem
+import ru.serg.model.Coordinates
+import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
@@ -146,7 +146,6 @@ class WeatherRepository @Inject constructor(
                     updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
 
                     localDataSource.insertCityItemToHistorySearch(cityItem)
-                    localDataSource.saveWeather(weatherItem)
                     NetworkResult.Success(weatherItem)
                 } else NetworkResult.Error(message = "No data!")
 
@@ -184,7 +183,6 @@ class WeatherRepository @Inject constructor(
                             cityItem
                         )
                         updatedLocalDataSource.saveWeather(oneCallResponse.data, cityItem)
-                        localDataSource.saveWeather(weatherItem)
                         NetworkResult.Success(weatherItem)
 
                     } else NetworkResult.Error(message = "No data!")

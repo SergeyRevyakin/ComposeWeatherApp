@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.serg.model.UpdatedWeatherItem
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItemViewModel
@@ -43,6 +42,7 @@ import ru.serg.composeweatherapp.ui.elements.simple_items.DailyWeatherItem
 import ru.serg.composeweatherapp.ui.theme.headerModifier
 import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
+import ru.serg.model.UpdatedWeatherItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

@@ -5,8 +5,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import com.serg.model.IntraDayTempItem
-import com.serg.model.UpdatedDailyTempItem
+import ru.serg.model.IntraDayTempItem
+import ru.serg.model.UpdatedDailyTempItem
 
 fun isSavedDataExpired(lastUpdateTime: Long, delayBeforeExpireHours: Int) =
     lastUpdateTime < (System.currentTimeMillis() - delayBeforeExpireHours.hoursToMilliseconds())

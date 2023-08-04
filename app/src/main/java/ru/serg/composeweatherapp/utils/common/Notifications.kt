@@ -9,11 +9,11 @@ import android.graphics.Canvas
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.serg.model.WeatherItem
 import ru.serg.composeweatherapp.MainActivity
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.DateUtils
+import ru.serg.model.WeatherItem
 import java.util.Random
 
 

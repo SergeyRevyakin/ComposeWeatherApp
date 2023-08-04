@@ -28,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.serg.model.DailyWeather
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
@@ -39,6 +38,7 @@ import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
+import ru.serg.model.DailyWeather
 
 @Composable
 fun DailyWeatherBottomSheet(

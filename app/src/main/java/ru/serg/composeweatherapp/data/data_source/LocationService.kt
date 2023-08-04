@@ -1,7 +1,7 @@
 package ru.serg.composeweatherapp.data.data_source
 
-import com.serg.model.Coordinates
 import kotlinx.coroutines.flow.Flow
+import ru.serg.model.Coordinates
 
 interface LocationService {
     fun isLocationAvailable(): Boolean

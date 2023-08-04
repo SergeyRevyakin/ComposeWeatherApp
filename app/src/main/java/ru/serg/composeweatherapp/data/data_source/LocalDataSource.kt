@@ -1,8 +1,6 @@
 package ru.serg.composeweatherapp.data.data_source
 
 import android.util.Log
-import com.serg.model.CityItem
-import com.serg.model.WeatherItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -10,14 +8,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toCityItem
-import ru.serg.composeweatherapp.utils.toWeatherEntity
 import ru.serg.composeweatherapp.utils.toWeatherItem
+import ru.serg.database.room.dao.CityHistorySearchDao
+import ru.serg.database.room.dao.WeatherDao
+import ru.serg.model.CityItem
+import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class LocalDataSource @Inject constructor(
-    private val weatherDao: com.serg.database.room.dao.WeatherDao,
-    private val cityHistorySearchDao: com.serg.database.room.dao.CityHistorySearchDao
+    private val weatherDao: WeatherDao,
+    private val cityHistorySearchDao: CityHistorySearchDao
 ) {
 
     fun getCityHistorySearch(): Flow<List<CityItem>> {
@@ -66,9 +67,4 @@ class LocalDataSource @Inject constructor(
             }
         }.distinctUntilChanged()
 
-    suspend fun saveWeather(weatherItem: WeatherItem) {
-        weatherDao.saveWeatherEntity(
-            weatherItem.toWeatherEntity()
-        )
-    }
 }
