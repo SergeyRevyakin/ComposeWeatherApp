@@ -1,12 +1,12 @@
 package ru.serg.composeweatherapp.data
 
+import com.serg.model.CityItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
-import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.utils.common.NetworkResult
 import javax.inject.Inject
 

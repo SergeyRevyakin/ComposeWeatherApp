@@ -1,6 +1,6 @@
 package ru.serg.composeweatherapp.ui.screens
 
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
+import com.serg.model.UpdatedWeatherItem
 
 sealed class CommonScreenState {
     object Empty : CommonScreenState()

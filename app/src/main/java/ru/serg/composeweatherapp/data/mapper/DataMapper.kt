@@ -1,20 +1,20 @@
 package ru.serg.composeweatherapp.data.mapper
 
+import com.serg.model.CityItem
+import com.serg.model.DailyWeather
+import com.serg.model.DayWeatherItem
+import com.serg.model.HourWeatherItem
+import com.serg.model.HourlyWeather
+import com.serg.model.IntraDayTempItem
+import com.serg.model.UpdatedDailyTempItem
+import com.serg.model.WeatherItem
 import io.ktor.util.date.getTimeMillis
-import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.data.dto.DailyWeather
-import ru.serg.composeweatherapp.data.dto.DayWeatherItem
-import ru.serg.composeweatherapp.data.dto.HourWeatherItem
-import ru.serg.composeweatherapp.data.dto.HourlyWeather
-import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
-import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
-import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
 import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
+import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
 
 object DataMapper {
     fun mapCityItem(weatherResponse: WeatherResponse, isFavourite: Boolean) =
@@ -120,14 +120,15 @@ object DataMapper {
         minTemp = daily.temp?.min.orZero()
     )
 
-    fun getFeelsLikeDailyTempItem(daily: OneCallResponse.Daily) = UpdatedDailyTempItem(
-        morningTemp = daily.feelsLike?.morn.orZero(),
-        dayTemp = daily.feelsLike?.day.orZero(),
-        eveningTemp = daily.feelsLike?.eve.orZero(),
-        nightTemp = daily.feelsLike?.night.orZero(),
-        maxTemp = null,
-        minTemp = null
-    )
+    fun getFeelsLikeDailyTempItem(daily: OneCallResponse.Daily) =
+        UpdatedDailyTempItem(
+            morningTemp = daily.feelsLike?.morn.orZero(),
+            dayTemp = daily.feelsLike?.day.orZero(),
+            eveningTemp = daily.feelsLike?.eve.orZero(),
+            nightTemp = daily.feelsLike?.night.orZero(),
+            maxTemp = null,
+            minTemp = null
+        )
 
     fun mapHourlyWeather(hourly: OneCallResponse.Hourly) = HourlyWeather(
         windDirection = hourly.windDeg.orZero(),

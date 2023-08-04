@@ -1,25 +1,22 @@
 package ru.serg.composeweatherapp.data.data_source
 
+import com.serg.model.CityItem
+import com.serg.model.UpdatedWeatherItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
-import ru.serg.composeweatherapp.data.room.dao.UpdatedWeatherDao
-import ru.serg.composeweatherapp.data.room.entity.UpdatedDailyWeatherEntity
-import ru.serg.composeweatherapp.data.room.entity.UpdatedHourlyWeatherEntity
-import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
 import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.toWeatherItem
+import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
 import javax.inject.Inject
 
 class UpdatedLocalDataSource @Inject constructor(
-    private val dailyWeatherDao: UpdatedWeatherDao,
+    private val dailyWeatherDao: com.serg.database.room.dao.UpdatedWeatherDao,
 ) {
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -39,7 +36,7 @@ class UpdatedLocalDataSource @Inject constructor(
         scope.launch {
             val dailyWeather = oneCallResponse.daily?.map {
 
-                UpdatedDailyWeatherEntity(
+                com.serg.database.room.entity.UpdatedDailyWeatherEntity(
                     windDirection = it.windDeg,
                     windSpeed = it.windSpeed,
                     weatherDescription = it.weather?.first()?.description,
@@ -57,7 +54,7 @@ class UpdatedLocalDataSource @Inject constructor(
             } ?: listOf()
 
             val hourlyWeather = oneCallResponse.hourly?.map {
-                UpdatedHourlyWeatherEntity(
+                com.serg.database.room.entity.UpdatedHourlyWeatherEntity(
                     windDirection = it.windDeg,
                     windSpeed = it.windSpeed,
                     weatherDescription = it.weather?.first()?.description,

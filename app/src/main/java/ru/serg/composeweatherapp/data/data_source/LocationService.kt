@@ -1,7 +1,7 @@
 package ru.serg.composeweatherapp.data.data_source
 
+import com.serg.model.Coordinates
 import kotlinx.coroutines.flow.Flow
-import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 
 interface LocationService {
     fun isLocationAvailable(): Boolean
@@ -9,7 +9,7 @@ interface LocationService {
     fun getLocationUpdate(
         isOneTimeRequest: Boolean = true,
         updateFrequency: Long = 15
-    ): Flow<CoordinatesWrapper>
+    ): Flow<Coordinates>
 
     class LocationException(message: String) : Exception()
 }

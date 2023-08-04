@@ -7,7 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
+import com.serg.model.UpdatedWeatherItem
 import ru.serg.composeweatherapp.ui.elements.common.ErrorItem
 import ru.serg.composeweatherapp.ui.elements.common.SunLoadingScreen
 import ru.serg.composeweatherapp.ui.elements.weather_screen.CityWeatherContentItem

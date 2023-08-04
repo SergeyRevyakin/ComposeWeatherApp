@@ -26,10 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.serg.model.DayWeatherItem
+import com.serg.model.IntraDayTempItem
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.DayWeatherItem
-import ru.serg.composeweatherapp.data.dto.IntraDayTempItem
 import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader

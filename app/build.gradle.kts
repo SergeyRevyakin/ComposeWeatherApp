@@ -4,11 +4,11 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("dagger.hilt.android.plugin")
+    id("kotlinx-serialization")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.devtools.ksp")
     id("kotlin-kapt")
-    id("kotlinx-serialization")
 }
 
 android {
@@ -26,11 +26,11 @@ android {
             useSupportLibrary = true
         }
 
-        ksp {
-            arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
-            arg("room.incremental", "true")
-            arg("room.expandProjection", "true")
-        }
+//        ksp {
+//            arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
+//            arg("room.incremental", "true")
+//            arg("room.expandProjection", "true")
+//        }
     }
 
     sourceSets {
@@ -92,6 +92,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":database"))
+    implementation(project(":model"))
 
     api(platform("androidx.compose:compose-bom:2023.06.01"))
     androidTestApi(platform("androidx.compose:compose-bom:2023.06.01"))
@@ -145,10 +147,10 @@ dependencies {
     //Kotlin datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
-    //Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
+//    //Room
+//    implementation("androidx.room:room-runtime:2.5.2")
+//    ksp("androidx.room:room-compiler:2.5.2")
+//    implementation("androidx.room:room-ktx:2.5.2")
 
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.8.1")
@@ -165,14 +167,4 @@ dependencies {
 
     testImplementation("androidx.room:room-testing:2.5.2")
 
-}
-class RoomSchemaArgProvider(
-    @get:InputDirectory
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    val schemaDir: File
-) : CommandLineArgumentProvider {
-
-    override fun asArguments(): Iterable<String> {
-        return listOf("room.schemaLocation=${schemaDir.path}")
-    }
 }

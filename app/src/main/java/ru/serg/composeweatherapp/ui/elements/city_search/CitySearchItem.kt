@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.serg.model.CityItem
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 

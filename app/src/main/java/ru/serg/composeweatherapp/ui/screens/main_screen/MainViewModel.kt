@@ -6,6 +6,7 @@ import android.Manifest
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.serg.model.UpdatedWeatherItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +21,6 @@ import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.common.NetworkResult

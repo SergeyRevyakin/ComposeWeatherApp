@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.serg.model.HourlyWeather
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.HourlyWeather
 import ru.serg.composeweatherapp.ui.elements.simple_items.WeatherParamItem
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.enums.Units

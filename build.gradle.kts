@@ -15,6 +15,9 @@ buildscript {
 
 plugins {
     id("com.google.devtools.ksp") version "1.8.22-1.0.11" apply false
+//    id("com.android.library") version "8.2.0-alpha15" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+//    kotlin("plugin.serialization") version "1.9.0"
 }
 
 tasks.register("clean", Delete::class) {

@@ -1,7 +1,6 @@
 package ru.serg.composeweatherapp.ui.screens
 
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
-import ru.serg.composeweatherapp.data.dto.WeatherItem
+import com.serg.model.UpdatedWeatherItem
 
 sealed interface ScreenState {
     object Empty : ScreenState

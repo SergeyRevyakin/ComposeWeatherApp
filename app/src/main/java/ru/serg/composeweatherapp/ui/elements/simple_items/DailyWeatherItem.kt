@@ -30,8 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.serg.model.DailyWeather
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.DailyWeather
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getDate

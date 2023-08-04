@@ -12,6 +12,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
+import com.serg.model.WeatherItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import io.ktor.util.date.getTimeMillis
@@ -21,7 +22,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.composeweatherapp.data.WorkerUseCase
-import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.composeweatherapp.utils.common.showDailyForecastNotification

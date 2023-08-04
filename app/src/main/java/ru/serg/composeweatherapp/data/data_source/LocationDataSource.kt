@@ -10,11 +10,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.serg.model.Coordinates
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
 import ru.serg.composeweatherapp.utils.hasLocationPermission
 
 class LocationDataSource(
@@ -43,7 +43,7 @@ class LocationDataSource(
     override fun getLocationUpdate(
         isOneTimeRequest: Boolean,
         updateFrequency: Long
-    ): Flow<CoordinatesWrapper> {
+    ): Flow<Coordinates> {
         return callbackFlow {
             if (!appContext.hasLocationPermission()) {
                 throw LocationService.LocationException(message = "No location permission")
@@ -78,7 +78,7 @@ class LocationDataSource(
                     result.lastLocation?.let { location ->
                         Log.e(this::class.simpleName, "Got location $location")
                         launch {
-                            send(CoordinatesWrapper(location.latitude, location.longitude))
+                            send(Coordinates(location.latitude, location.longitude))
                         }
                         if (isOneTimeRequest) client.removeLocationUpdates(this)
                     } ?: throw LocationService.LocationException(message = "No location data")

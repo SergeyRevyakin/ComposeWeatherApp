@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.serg.model.CityItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.CitySearchUseCase
-import ru.serg.composeweatherapp.data.dto.CityItem
 import ru.serg.composeweatherapp.utils.common.NetworkResult
 import javax.inject.Inject
 

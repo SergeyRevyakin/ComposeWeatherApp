@@ -3,6 +3,10 @@
 package ru.serg.composeweatherapp.data
 
 import android.util.Log
+import com.serg.model.CityItem
+import com.serg.model.Coordinates
+import com.serg.model.UpdatedWeatherItem
+import com.serg.model.WeatherItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -17,10 +21,6 @@ import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
 import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
-import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.data.dto.CoordinatesWrapper
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
-import ru.serg.composeweatherapp.data.dto.WeatherItem
 import ru.serg.composeweatherapp.data.mapper.DataMapper
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.common.NetworkResult
@@ -37,16 +37,16 @@ class WeatherRepository @Inject constructor(
     private val updatedLocalDataSource: UpdatedLocalDataSource
 ) {
 
-    private lateinit var localCoordinatesWrapper: CoordinatesWrapper
+    private lateinit var localCoordinates: Coordinates
     fun fetchCurrentLocationWeather(
-        coordinatesWrapper: CoordinatesWrapper,
+        coordinates: Coordinates,
         forced: Boolean = false
     ): Flow<NetworkResult<WeatherItem>> =
         if (forced) {
-            localCoordinatesWrapper = coordinatesWrapper
-            fetchCoordinatesWeather(localCoordinatesWrapper).flowOn(Dispatchers.IO)
+            localCoordinates = coordinates
+            fetchCoordinatesWeather(localCoordinates).flowOn(Dispatchers.IO)
         } else {
-            localCoordinatesWrapper = coordinatesWrapper
+            localCoordinates = coordinates
             fetchWeather().flowOn(Dispatchers.IO)
         }
 
@@ -90,15 +90,15 @@ class WeatherRepository @Inject constructor(
 
     private fun fetchWeather() =
         localDataSource.getFavouriteCityWithWeather().flatMapLatest { item ->
-            if (item != null && item.cityItem?.latitude isNearTo localCoordinatesWrapper.latitude &&
-                item.cityItem?.longitude isNearTo localCoordinatesWrapper.longitude
+            if (item != null && item.cityItem?.latitude isNearTo localCoordinates.latitude &&
+                item.cityItem?.longitude isNearTo localCoordinates.longitude
             ) {
                 dataStoreDataSource.fetchFrequency.flatMapMerge {
                     Log.d("fetchWeather", "DataStore")
                     val delayInHours = Constants.HOUR_FREQUENCY_LIST[it]
                     if (isSavedDataExpired(item.lastUpdatedTime, delayInHours)) {
                         if (networkStatus.isNetworkConnected()) {
-                            fetchCoordinatesWeather(localCoordinatesWrapper)
+                            fetchCoordinatesWeather(localCoordinates)
                         } else {
                             flowOf(NetworkResult.Success(item))
                         }
@@ -108,18 +108,18 @@ class WeatherRepository @Inject constructor(
                 }
             } else {
                 if (networkStatus.isNetworkConnected()) {
-                    fetchCoordinatesWeather(localCoordinatesWrapper)
+                    fetchCoordinatesWeather(localCoordinates)
                 } else {
                     noConnectionErrorFlow()
                 }
             }
         }
 
-    private fun fetchCoordinatesWeather(coordinatesWrapper: CoordinatesWrapper) = combine(
-        remoteDataSource.getWeather(coordinatesWrapper.latitude, coordinatesWrapper.longitude),
+    private fun fetchCoordinatesWeather(coordinates: Coordinates) = combine(
+        remoteDataSource.getWeather(coordinates.latitude, coordinates.longitude),
         remoteDataSource.getOneCallWeather(
-            coordinatesWrapper.latitude,
-            coordinatesWrapper.longitude
+            coordinates.latitude,
+            coordinates.longitude
         )
     ) { weatherResponse, oneCallResponse ->
         when {

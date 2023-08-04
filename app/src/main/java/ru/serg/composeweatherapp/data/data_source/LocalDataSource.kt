@@ -1,15 +1,13 @@
 package ru.serg.composeweatherapp.data.data_source
 
 import android.util.Log
+import com.serg.model.CityItem
+import com.serg.model.WeatherItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
-import ru.serg.composeweatherapp.data.dto.CityItem
-import ru.serg.composeweatherapp.data.dto.WeatherItem
-import ru.serg.composeweatherapp.data.room.dao.CityHistorySearchDao
-import ru.serg.composeweatherapp.data.room.dao.WeatherDao
 import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toCityItem
 import ru.serg.composeweatherapp.utils.toWeatherEntity
@@ -18,8 +16,8 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class LocalDataSource @Inject constructor(
-    private val weatherDao: WeatherDao,
-    private val cityHistorySearchDao: CityHistorySearchDao
+    private val weatherDao: com.serg.database.room.dao.WeatherDao,
+    private val cityHistorySearchDao: com.serg.database.room.dao.CityHistorySearchDao
 ) {
 
     fun getCityHistorySearch(): Flow<List<CityItem>> {

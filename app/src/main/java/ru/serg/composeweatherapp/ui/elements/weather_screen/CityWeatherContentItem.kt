@@ -32,9 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.serg.model.UpdatedWeatherItem
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.UpdatedWeatherItem
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItemViewModel
 import ru.serg.composeweatherapp.ui.elements.SunriseSunsetItem
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.BottomSheetMainScreenState

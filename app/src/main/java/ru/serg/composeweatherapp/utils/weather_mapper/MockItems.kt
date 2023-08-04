@@ -1,10 +1,9 @@
 package ru.serg.composeweatherapp.utils.weather_mapper
 
+import com.serg.model.DailyWeather
+import com.serg.model.HourlyWeather
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.dto.DailyWeather
-import ru.serg.composeweatherapp.data.dto.HourlyWeather
-import ru.serg.composeweatherapp.data.dto.UpdatedDailyTempItem
 
 object MockItems {
     fun getDailyWeatherMockItem() =
@@ -37,7 +36,7 @@ object MockItems {
     )
 
     private fun getUpdatedDailyTempMockItem() =
-        UpdatedDailyTempItem(
+        com.serg.model.UpdatedDailyTempItem(
             morningTemp = 14.5,
             dayTemp = 21.2,
             eveningTemp = 18.1,
