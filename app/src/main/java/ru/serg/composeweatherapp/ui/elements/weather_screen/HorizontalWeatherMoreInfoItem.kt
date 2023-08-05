@@ -31,7 +31,8 @@ fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
         WeatherParamItem(
             paramName = stringResource(id = R.string.wind),
             param = "${item.windSpeed} ${stringResource(id = units.windUnits)}",
-            paramIcon = R.drawable.ic_wind_dir_north
+            paramIcon = R.drawable.ic_wind_dir_north,
+            rotation = item.windDirection
         )
 
         WeatherParamItem(

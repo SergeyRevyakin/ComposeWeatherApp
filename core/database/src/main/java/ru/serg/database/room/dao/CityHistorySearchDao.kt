@@ -14,9 +14,6 @@ interface CityHistorySearchDao {
     @Query("SELECT * FROM ${Constants.CITY_TABLE}")
     fun citySearchHistoryFlow(): Flow<List<CityEntity>>
 
-    @Query("SELECT * FROM ${Constants.CITY_TABLE}")
-    suspend fun citySearchHistory(): List<CityEntity>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCityToHistory(cityEntity: CityEntity)
 
