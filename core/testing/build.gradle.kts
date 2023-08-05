@@ -22,10 +22,18 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    api(libs.androidx.compose.ui.test)
+    api(libs.androidx.test.core)
+    api(libs.androidx.test.espresso.core)
+    api(libs.androidx.test.rules)
+    api(libs.androidx.test.runner)
+    api(libs.hilt.android.testing)
+    api(libs.junit4)
+    api(libs.kotlinx.coroutines.test)
+    api(libs.compose.ui.test.junit4)
+
+    api(kotlin("test"))
+    testImplementation(kotlin("test"))
+    androidTestImplementation(kotlin("test"))
+//    api(libs.turbine)
 }

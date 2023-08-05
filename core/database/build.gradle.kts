@@ -35,21 +35,19 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:testing"))
 
     //Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
+    implementation(libs.bundles.room)
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(libs.kotlinx.serialization.json)
 
 
-    //Hilt
-    implementation("com.google.dagger:hilt-android:2.47")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.47")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    androidTestImplementation(project(":core:testing"))
 
 }
 

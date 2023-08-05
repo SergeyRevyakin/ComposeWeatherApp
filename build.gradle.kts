@@ -5,20 +5,24 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.2.0-alpha15")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.47")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.8.22")
-        classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
+        classpath(libs.gradle.build)
+//        classpath(libs.kotlin.gradle.plugin)
+//        classpath(libs.hilt.android.gradle.plugin)
+//        classpath(libs.kotlin.serialization)
+        classpath(libs.secrets.gradle.plugin)
     }
 }
 
 plugins {
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11" apply false
-//    id("com.android.library") version "8.2.0-alpha15" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+//    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ksp) apply false
+//    alias(libs.plugins.secrets) apply false
 }
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+

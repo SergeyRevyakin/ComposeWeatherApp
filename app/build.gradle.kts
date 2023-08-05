@@ -25,12 +25,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-//        ksp {
-//            arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
-//            arg("room.incremental", "true")
-//            arg("room.expandProjection", "true")
-//        }
     }
 
     sourceSets {
@@ -95,76 +89,71 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:model"))
 
-    api(platform("androidx.compose:compose-bom:2023.06.01"))
-    androidTestApi(platform("androidx.compose:compose-bom:2023.06.01"))
+    implementation(platform(libs.compose.bom))
+    androidTestImplementation(platform(libs.compose.bom))
 
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
+    implementation(libs.bundles.compose)
+
+    implementation(libs.bundles.permission.flow)
+
+    implementation(libs.bundles.ktor)
+
+    implementation(libs.bundles.hilt)
+    kapt(libs.bundles.hilt.kapt)
+
+    implementation(libs.bundles.accompanist)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity.compose)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+//    androidTestImplementation(libs.compose.ui.test.junit4)
+//    implementation(libs.androidx.ui.tooling.preview)
+//    debugImplementation(libs.androidx.ui.tooling)
 
     //Compose
-    implementation("androidx.compose.ui:ui:1.5.0-rc01")
-    implementation("androidx.compose.material:material:1.5.0-rc01")
-    implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.navigation:navigation-compose:2.6.0")
-    implementation("androidx.compose.foundation:foundation")
+//    implementation(libs.compose.ui)
+//    implementation(libs.androidx.material)
+//    implementation(libs.androidx.material3)
+//    implementation(libs.androidx.material.icons.extended)
+//    implementation(libs.androidx.navigation.compose)
+    implementation(libs.foundation)
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.47")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.47")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+//    implementation(libs.hilt.android)
+//    implementation(libs.androidx.hilt.navigation.compose)
+//    kapt(libs.hilt.android.compiler)
 
-    //Ktor
-    implementation("io.ktor:ktor-client-core:2.3.3")
-    implementation("io.ktor:ktor-client-android:2.3.3")
-    implementation("io.ktor:ktor-client-serialization:2.3.3")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
-    implementation("io.ktor:ktor-client-logging:2.3.3")
+//
+//    implementation(libs.accompanist.systemuicontroller)
+//    implementation(libs.accompanist.permissions)
+//    implementation(libs.accompanist.swiperefresh)
+//    implementation(libs.accompanist.navigation.animation)
+//    implementation(libs.accompanist.pager)
+//    implementation(libs.accompanist.pager.indicators)
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha")
-    implementation("com.google.accompanist:accompanist-permissions:0.31.0-alpha")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.31.0-alpha")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.0-alpha")
-    implementation("com.google.accompanist:accompanist-pager:0.31.0-alpha")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.31.0-alpha")
-
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.play.services.location)
 
     //Kotlin datetime
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation(libs.kotlinx.datetime)
 
 //    //Room
-//    implementation("androidx.room:room-runtime:2.5.2")
-//    ksp("androidx.room:room-compiler:2.5.2")
-//    implementation("androidx.room:room-ktx:2.5.2")
+
 
     //WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation(libs.androidx.work.runtime.ktx)
 
     //Widgets
-    implementation("androidx.glance:glance-appwidget:1.0.0-rc01")
+    implementation(libs.androidx.glance.appwidget)
 
     //Data Store
-    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+    implementation(libs.androidx.datastore.preferences)
 
-    //Permission as Flow
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-android:1.2.0")
-    implementation("dev.shreyaspatil.permission-flow:permission-flow-compose:1.2.0")
-
-    testImplementation("androidx.room:room-testing:2.5.2")
 
 }
