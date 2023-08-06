@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.serg.model"
+    namespace = "ru.serg.model"
     compileSdk = 34
 
     defaultConfig {

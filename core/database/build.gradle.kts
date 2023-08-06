@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.serg.database"
+    namespace = "ru.serg.database"
     compileSdk = 34
 
     defaultConfig {
