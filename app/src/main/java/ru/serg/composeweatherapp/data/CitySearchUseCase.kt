@@ -2,7 +2,6 @@ package ru.serg.composeweatherapp.data
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.RemoteDataSource
@@ -37,10 +36,10 @@ class CitySearchUseCase @Inject constructor(
         }
 
     fun getFavouriteCitiesFlow() =
-        localDataSource.getCityHistorySearch().distinctUntilChanged()
+        localDataSource.getCitySearchHistory()
 
     suspend fun saveCityItem(cityItem: CityItem) =
-        localDataSource.insertCityItemToHistorySearch(cityItem)
+        localDataSource.insertCityItemToSearchHistory(cityItem)
 
     suspend fun deleteCityItem(cityItem: CityItem) =
         localDataSource.deleteCityItemToHistorySearch(cityItem)

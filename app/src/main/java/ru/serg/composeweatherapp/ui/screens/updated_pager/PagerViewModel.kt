@@ -66,10 +66,9 @@ class PagerViewModel @Inject constructor(
                 locationService.getLocationUpdate().flatMapLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper,
-                        true
                     )
                 }.launchIn(this)
-            } else weatherRepository.fetchCityWeather(city, true).launchIn(this)
+            } else weatherRepository.fetchCityWeather(city).launchIn(this)
         }
     }
 
@@ -81,10 +80,9 @@ class PagerViewModel @Inject constructor(
                     locationService.getLocationUpdate().flatMapLatest { coordinatesWrapper ->
                         weatherRepository.fetchCurrentLocationWeather(
                             coordinatesWrapper,
-                            true
                         )
                     }.launchIn(this)
-                } else weatherRepository.fetchCityWeather(city, true).launchIn(this)
+                } else weatherRepository.fetchCityWeather(city).launchIn(this)
             }
         }
     }

@@ -2,7 +2,6 @@
 
 package ru.serg.composeweatherapp.data
 
-import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flattenConcat
 import kotlinx.coroutines.flow.mapLatest
@@ -16,7 +15,6 @@ class WorkerUseCase @Inject constructor(
 
     fun fetchFavouriteCity() =
         localDataSource.getFavouriteCity().mapLatest {
-            Log.d("WorkerUseCase", "fetchFavouriteCity: $it")
-            weatherRepository.fetchCityWeather(it, true)
+            weatherRepository.fetchCityWeather(it)
         }.flattenConcat()
 }

@@ -4,19 +4,19 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import ru.serg.database.Constants
 
-data class UpdatedCityWeather(
+data class CityWeather(
 
     @Relation(
         parentColumn = Constants.CITY_ID,
         entityColumn = Constants.CITY_ID,
     )
-    val hourlyWeatherEntity: List<UpdatedHourlyWeatherEntity>,
+    val hourlyWeatherEntity: List<HourlyWeatherEntity>,
     @Embedded
     val cityEntity: CityEntity,
     @Relation(
         parentColumn = Constants.CITY_ID,
         entityColumn = Constants.CITY_ID,
     )
-    val updatedDailyWeatherEntity: List<UpdatedDailyWeatherEntity>,
+    val dailyWeatherEntity: List<DailyWeatherEntity>,
 
     )

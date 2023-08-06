@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import ru.serg.database.room.AppDatabase
-import ru.serg.database.room.dao.CityHistorySearchDao
+import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.entity.CityEntity
 import kotlin.test.assertEquals
 
@@ -18,7 +18,7 @@ class CityDaoTest {
 
     private lateinit var database: AppDatabase
 
-    private lateinit var cityHistorySearchDao: CityHistorySearchDao
+    private lateinit var cityDao: CityDao
 
 
     @Before
@@ -26,13 +26,13 @@ class CityDaoTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
 
-        cityHistorySearchDao = database.cityHistorySearchDao()
+        cityDao = database.cityDao()
     }
 
     @Test
     fun add_one_city() = runTest {
-        cityHistorySearchDao.addCityToHistory(getFixedIdTestCityEntity())
-        val result = cityHistorySearchDao.citySearchHistoryFlow().first()
+        cityDao.addCityToHistory(getFixedIdTestCityEntity())
+        val result = cityDao.citySearchHistoryFlow().first()
         assertEquals(
             listOf(getFixedIdTestCityEntity()),
             result
@@ -46,10 +46,10 @@ class CityDaoTest {
         for (i in 1..5) {
             val city = getTestCityEntity(i)
             cityList.add(city)
-            cityHistorySearchDao.addCityToHistory(city)
+            cityDao.addCityToHistory(city)
         }
 
-        val result = cityHistorySearchDao.citySearchHistoryFlow().first()
+        val result = cityDao.citySearchHistoryFlow().first()
 
         assertEquals(
             cityList,
@@ -60,11 +60,11 @@ class CityDaoTest {
     @Test
     fun update_city_quantity() = runTest {
         val cityEntity = getTestCityEntity(1)
-        cityHistorySearchDao.addCityToHistory(cityEntity)
+        cityDao.addCityToHistory(cityEntity)
         cityEntity.lastTimeUpdated = 199L
-        cityHistorySearchDao.addCityToHistory(cityEntity)
+        cityDao.addCityToHistory(cityEntity)
 
-        val result = cityHistorySearchDao.citySearchHistoryFlow().first()
+        val result = cityDao.citySearchHistoryFlow().first()
 
         assertEquals(1, result.size)
     }
@@ -72,11 +72,11 @@ class CityDaoTest {
     @Test
     fun update_city_element() = runTest {
         val cityEntity = getTestCityEntity(1)
-        cityHistorySearchDao.addCityToHistory(cityEntity)
+        cityDao.addCityToHistory(cityEntity)
         cityEntity.lastTimeUpdated = 199L
-        cityHistorySearchDao.addCityToHistory(cityEntity)
+        cityDao.addCityToHistory(cityEntity)
 
-        val result = cityHistorySearchDao.citySearchHistoryFlow().first()
+        val result = cityDao.citySearchHistoryFlow().first()
 
         assertEquals(cityEntity, result.first())
     }
@@ -84,13 +84,13 @@ class CityDaoTest {
     @Test
     fun delete_city() = runTest {
         val city = getFixedIdTestCityEntity()
-        cityHistorySearchDao.addCityToHistory(city)
+        cityDao.addCityToHistory(city)
         val city1 = getTestCityEntity(6)
-        cityHistorySearchDao.addCityToHistory(city1)
+        cityDao.addCityToHistory(city1)
 
-        cityHistorySearchDao.deleteCityFromHistory(city1)
+        cityDao.deleteCityFromHistory(city1)
 
-        val result = cityHistorySearchDao.citySearchHistoryFlow().first()
+        val result = cityDao.citySearchHistoryFlow().first()
 
         assertEquals(
             listOf(city),

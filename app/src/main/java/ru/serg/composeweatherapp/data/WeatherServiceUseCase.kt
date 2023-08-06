@@ -29,7 +29,7 @@ class WeatherServiceUseCase @Inject constructor(
             ).flatMapLatest { coordinatesWrapper ->
                 Log.e(this::class.simpleName, "Coordinates are $coordinatesWrapper")
                 weatherRepository.fetchCurrentLocationWeather(
-                    coordinatesWrapper, true
+                    coordinatesWrapper
                 ).map { networkResult ->
                     when (networkResult) {
                         is NetworkResult.Success -> ServiceFetchingResult.Success(networkResult.data!!)

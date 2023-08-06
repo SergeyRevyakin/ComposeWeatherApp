@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
+import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
-import ru.serg.composeweatherapp.data.data_source.UpdatedLocalDataSource
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.common.NetworkResult
@@ -30,7 +30,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val updatedLocalDataSource: UpdatedLocalDataSource,
+    private val localDataSource: LocalDataSource,
     private val weatherRepository: WeatherRepository,
     private val locationService: LocationDataSource,
     private val dateUtils: DateUtils,
@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(
 
     private fun initCitiesWeatherFlow() {
         viewModelScope.launch {
-            updatedLocalDataSource.getWeatherFlow().debounce(200L).collectLatest {
+            localDataSource.getWeatherFlow().debounce(200L).collectLatest {
                 when {
                     it.isEmpty() -> _citiesWeather.emit(CommonScreenState.Empty)
                     else -> {
@@ -152,7 +152,6 @@ class MainViewModel @Inject constructor(
                 .flatMapLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper,
-                        true
                     )
                 }.launchIn(this)
         }

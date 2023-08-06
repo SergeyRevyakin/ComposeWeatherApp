@@ -10,7 +10,7 @@ import ru.serg.database.Constants
 import ru.serg.database.room.entity.CityEntity
 
 @Dao
-interface CityHistorySearchDao {
+interface CityDao {
     @Query("SELECT * FROM ${Constants.CITY_TABLE}")
     fun citySearchHistoryFlow(): Flow<List<CityEntity>>
 

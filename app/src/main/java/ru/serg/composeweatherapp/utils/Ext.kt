@@ -14,16 +14,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import io.ktor.util.date.getTimeMillis
 import ru.serg.database.room.entity.CityEntity
-import ru.serg.database.room.entity.UpdatedCityWeather
-import ru.serg.database.room.entity.UpdatedDailyWeatherEntity
-import ru.serg.database.room.entity.UpdatedHourlyWeatherEntity
-import ru.serg.database.room.entity.WeatherItemEntity
-import ru.serg.database.room.entity.WeatherWithCity
 import ru.serg.model.CityItem
-import ru.serg.model.DailyWeather
-import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedWeatherItem
-import ru.serg.model.WeatherItem
 import java.util.Locale
 import kotlin.math.absoluteValue
 
@@ -42,16 +33,6 @@ fun CityItem.toCityEntity() = CityEntity(
     isFavorite,
     if (isFavorite) -1 else id,
     lastTimeUpdated = getTimeMillis()
-)
-
-fun CityEntity.toCityItem() = CityItem(
-    cityName,
-    country.orEmpty(),
-    latitude ?: 0.0,
-    longitude ?: 0.0,
-    isFavorite,
-    id,
-    lastTimeUpdated.orZero()
 )
 
 infix fun Double?.isNearTo(other: Double?): Boolean {
@@ -90,90 +71,6 @@ fun Context.hasLocationPermission(): Boolean {
 }
 
 fun Int.hoursToMilliseconds() = this * Constants.Time.millisecondsToHour
-
-fun WeatherWithCity.toWeatherItem() = WeatherItem(
-    feelsLike = weatherItemEntity.feelsLike,
-    currentTemp = weatherItemEntity.currentTemp,
-    windDirection = weatherItemEntity.windDirection,
-    windSpeed = weatherItemEntity.windSpeed,
-    humidity = weatherItemEntity.humidity,
-    pressure = weatherItemEntity.pressure,
-    weatherDescription = weatherItemEntity.weatherDescription,
-    weatherIcon = weatherItemEntity.weatherIcon,
-    dateTime = weatherItemEntity.dateTime,
-    cityItem = CityItem(
-        cityEntity?.cityName.orEmpty(),
-        cityEntity?.country.orEmpty(),
-        cityEntity?.latitude ?: 0.0,
-        cityEntity?.longitude ?: 0.0,
-        cityEntity?.isFavorite ?: false
-    ),
-    lastUpdatedTime = weatherItemEntity.lastUpdatedTime,
-    hourlyWeatherList = weatherItemEntity.hourlyWeatherList.list.filter { hourWeatherItem ->
-        hourWeatherItem.timestamp > getTimeMillis()
-    },
-    dailyWeatherList = weatherItemEntity.dailyWeatherList.list.filter { dayWeatherItem ->
-        dayWeatherItem.dateTime > getTimeMillis()
-    }
-)
-
-fun WeatherItem.toWeatherEntity() = WeatherItemEntity(
-    feelsLike = feelsLike,
-    currentTemp = currentTemp,
-    windDirection = windDirection,
-    windSpeed = windSpeed,
-    humidity = humidity,
-    pressure = pressure,
-    weatherDescription = weatherDescription,
-    weatherIcon = weatherIcon,
-    dateTime = dateTime,
-    cityName = cityItem?.name.orEmpty(),
-    lastUpdatedTime = lastUpdatedTime,
-    hourlyWeatherList = WeatherItemEntity.HourItemList(
-        hourlyWeatherList
-    ),
-    dailyWeatherList = WeatherItemEntity.DailyItemList(
-        dailyWeatherList
-    )
-)
-
-fun UpdatedHourlyWeatherEntity.toHourlyWeather() = HourlyWeather(
-    windSpeed = windSpeed.orZero(),
-    windDirection = windDirection.orZero(),
-    weatherIcon = weatherIcon.orZero(),
-    weatherDescription = weatherDescription.orEmpty(),
-    feelsLike = feelsLike.orZero(),
-    currentTemp = currentTemp.orZero(),
-    humidity = humidity.orZero(),
-    pressure = pressure.orZero(),
-    dateTime = dateTime.orZero(),
-    uvi = uvi.orZero()
-)
-
-fun UpdatedDailyWeatherEntity.toDailyWeather() = DailyWeather(
-    windSpeed = windSpeed.orZero(),
-    windDirection = windDirection.orZero(),
-    weatherIcon = weatherIcon.orZero(),
-    weatherDescription = weatherDescription.orEmpty(),
-    humidity = humidity.orZero(),
-    pressure = pressure.orZero(),
-    dateTime = dateTime.orZero(),
-    feelsLike = feelsLike,
-    dailyWeatherItem = dailyWeatherItem,
-    sunrise = sunrise.orZero(),
-    sunset = sunset.orZero(),
-    uvi = uvi.orZero()
-)
-
-fun UpdatedCityWeather.toWeatherItem() = UpdatedWeatherItem(
-    cityItem = cityEntity.toCityItem(),
-    hourlyWeatherList = hourlyWeatherEntity.map {
-        it.toHourlyWeather()
-    },
-    dailyWeatherList = updatedDailyWeatherEntity.map {
-        it.toDailyWeather()
-    }
-)
 
 fun Double?.orZero() = this ?: 0.0
 

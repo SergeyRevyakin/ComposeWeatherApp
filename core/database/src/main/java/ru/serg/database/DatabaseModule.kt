@@ -8,8 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.database.room.AppDatabase
-import ru.serg.database.room.dao.CityHistorySearchDao
-import ru.serg.database.room.dao.UpdatedWeatherDao
+import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.dao.WeatherDao
 import javax.inject.Singleton
 
@@ -32,20 +31,14 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
+    fun provideCityHistorySearchDao(appDatabase: AppDatabase): CityDao {
+        return appDatabase.cityDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdatedWeatherDao(appDatabase: AppDatabase): WeatherDao {
         return appDatabase.weatherDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideCityHistorySearchDao(appDatabase: AppDatabase): CityHistorySearchDao {
-        return appDatabase.cityHistorySearchDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUpdatedWeatherDao(appDatabase: AppDatabase): UpdatedWeatherDao {
-        return appDatabase.updatedWeatherDao()
     }
 
 }
