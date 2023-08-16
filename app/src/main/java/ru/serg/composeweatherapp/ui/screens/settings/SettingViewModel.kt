@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
 import ru.serg.composeweatherapp.utils.WorkerManager
 import ru.serg.composeweatherapp.utils.isTiramisuOrAbove
+import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
 
 @HiltViewModel

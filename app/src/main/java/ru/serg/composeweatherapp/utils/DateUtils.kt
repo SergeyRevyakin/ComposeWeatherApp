@@ -15,7 +15,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
+import ru.serg.datastore.DataStoreDataSource
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle

@@ -7,10 +7,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
-import ru.serg.composeweatherapp.utils.common.NetworkResult
+import ru.serg.datastore.DataStoreDataSource
 import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
@@ -32,9 +31,15 @@ class WeatherServiceUseCase @Inject constructor(
                     coordinatesWrapper
                 ).map { networkResult ->
                     when (networkResult) {
-                        is NetworkResult.Success -> ServiceFetchingResult.Success(networkResult.data!!)
-                        is NetworkResult.Error -> ServiceFetchingResult.Error(networkResult.message.orEmpty())
-                        is NetworkResult.Loading -> ServiceFetchingResult.Loading("Fetching result from server")
+                        is ru.serg.common.NetworkResult.Success -> ServiceFetchingResult.Success(
+                            networkResult.data!!
+                        )
+
+                        is ru.serg.common.NetworkResult.Error -> ServiceFetchingResult.Error(
+                            networkResult.message.orEmpty()
+                        )
+
+                        is ru.serg.common.NetworkResult.Loading -> ServiceFetchingResult.Loading("Fetching result from server")
                     }
                 }
             }

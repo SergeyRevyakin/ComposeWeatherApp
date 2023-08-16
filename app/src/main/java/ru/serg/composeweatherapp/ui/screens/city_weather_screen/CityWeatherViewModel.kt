@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import ru.serg.common.NetworkResult
 import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.common.NetworkResult
 import javax.inject.Inject
 
 @HiltViewModel

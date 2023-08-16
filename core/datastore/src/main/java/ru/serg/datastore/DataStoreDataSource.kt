@@ -1,16 +1,17 @@
-package ru.serg.composeweatherapp.data.data_source
+package ru.serg.datastore
 
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.dataStore
 
 class DataStoreDataSource(context: Context) {
     companion object {
@@ -18,6 +19,8 @@ class DataStoreDataSource(context: Context) {
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
     }
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     private val dataStore = context.dataStore
 

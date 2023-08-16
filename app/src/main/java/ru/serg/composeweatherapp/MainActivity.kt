@@ -14,10 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
 import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
 import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
+import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)

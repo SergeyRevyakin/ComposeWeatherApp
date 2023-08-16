@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.di
+package ru.serg.network
 
 import dagger.Module
 import dagger.Provides
@@ -14,8 +14,6 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import ru.serg.composeweatherapp.BuildConfig
-import ru.serg.composeweatherapp.utils.Constants
 import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
@@ -25,9 +23,20 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
+    companion object {
+        const val BASE_URL_ONECALL = "api.openweathermap.org/data/2.5/onecall"
+        const val BASE_URL_WEATHER = "api.openweathermap.org/data/2.5/weather"
+        const val BASE_URL_GEOCODING = "api.openweathermap.org/geo/1.0/direct"
+        const val WEATHER = "weather"
+        const val ONECALL = "onecall"
+        const val GEOCODING = "geo"
+        const val APP_ID = "appid"
+        const val LANG = "lang"
+    }
+
     @Singleton
     @Provides
-    @Named(Constants.ONECALL)
+    @Named(ONECALL)
     fun provideHttpClient(): HttpClient {
 
         return HttpClient(Android) {
@@ -58,11 +67,11 @@ class NetworkModule {
                 socketTimeoutMillis = 15000L
             }
             defaultRequest {
-                host = Constants.BASE_URL_ONECALL
+                host = BASE_URL_ONECALL
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameters.append("appid", BuildConfig.OWM_API_KEY)
-                    parameters.append("lang", Locale.getDefault().country)
+                    parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
+                    parameters.append(LANG, Locale.getDefault().country)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
@@ -71,7 +80,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    @Named(Constants.WEATHER)
+    @Named(WEATHER)
     fun provideWeatherHttpClient(): HttpClient {
 
         return HttpClient(Android) {
@@ -104,11 +113,11 @@ class NetworkModule {
             }
 
             defaultRequest {
-                host = Constants.BASE_URL_WEATHER
+                host = BASE_URL_WEATHER
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameters.append("appid", BuildConfig.OWM_API_KEY)
-                    parameters.append("lang", Locale.getDefault().country)
+                    parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
+                    parameters.append(LANG, Locale.getDefault().country)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
@@ -117,7 +126,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    @Named(Constants.GEOCODING)
+    @Named(GEOCODING)
     fun provideGeocodingHttpClient(): HttpClient {
 
         return HttpClient(Android) {
@@ -150,10 +159,11 @@ class NetworkModule {
             }
 
             defaultRequest {
-                host = Constants.BASE_URL_GEOCODING
+                host = BASE_URL_GEOCODING
                 url {
                     protocol = URLProtocol.HTTPS
-                    parameters.append("appid", BuildConfig.OWM_API_KEY)
+                    parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
+                    parameters.append(LANG, Locale.getDefault().country)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }

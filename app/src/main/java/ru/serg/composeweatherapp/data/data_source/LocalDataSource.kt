@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.mapper.DataMapper
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
 import ru.serg.composeweatherapp.utils.toCityEntity
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
@@ -17,6 +16,7 @@ import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
 import ru.serg.database.room.entity.toCityItem
 import ru.serg.database.toWeatherItem
+import ru.serg.dto.OneCallResponse
 import ru.serg.model.CityItem
 import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject

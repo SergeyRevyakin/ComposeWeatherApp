@@ -88,6 +88,10 @@ android {
 dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:model"))
+    implementation(project(":core:dto"))
+    implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:common"))
 
     implementation(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))

@@ -42,6 +42,8 @@ androidxEspresso = "3.5.1"
 junit4 = "4.13.2"
 ksp = "1.8.22-1.0.11"
 secrets = "2.0.1"
+kotlin1822 = "1.8.22"
+annotationJvm = "1.6.0"
 
 
 [libraries]
@@ -108,6 +110,7 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
@@ -118,6 +121,7 @@ android-library = { id = "com.android.library", version.ref = "gradle" }
 android-test = { id = "com.android.test", version.ref = "gradle" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin1822" }
 
 [bundles]
 compose = [

@@ -1,30 +1,30 @@
-package ru.serg.composeweatherapp.data.data_source
+package ru.serg.network
 
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.serg.composeweatherapp.data.remote.responses.CityNameGeocodingResponseItem
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
-import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
-import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.common.NetworkResult
-import ru.serg.composeweatherapp.utils.enums.Units
+import ru.serg.common.NetworkResult
+import ru.serg.common.Units
+import ru.serg.datastore.DataStoreDataSource
+import ru.serg.dto.CityNameGeocodingResponseItem
+import ru.serg.dto.OneCallResponse
+import ru.serg.dto.WeatherResponse
 import javax.inject.Inject
 import javax.inject.Named
 
 class RemoteDataSource @Inject constructor(
-    @Named(Constants.WEATHER) private val httpClientWeather: HttpClient,
-    @Named(Constants.ONECALL) private val httpClientOneCall: HttpClient,
-    @Named(Constants.GEOCODING) private val httpClientGeocoding: HttpClient,
+    @Named(NetworkModule.WEATHER) private val httpClientWeather: HttpClient,
+    @Named(NetworkModule.ONECALL) private val httpClientOneCall: HttpClient,
+    @Named(NetworkModule.GEOCODING) private val httpClientGeocoding: HttpClient,
     private val dataStoreDataSource: DataStoreDataSource
 ) {
 
     fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
         return flow {
             try {
-                emit(NetworkResult.Loading())
+                emit(NetworkResult.Loading)
                 dataStoreDataSource.measurementUnits.collect { value ->
                     val units = Units.values()[value].parameterCode
                     httpClientOneCall.get {
@@ -36,7 +36,7 @@ class RemoteDataSource @Inject constructor(
                         if (it.status.value == 200) {
                             emit(NetworkResult.Success(it.body()))
                         } else {
-                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                            emit(NetworkResult.Error(message = it.status.description))
                         }
                     }
                 }
@@ -49,7 +49,7 @@ class RemoteDataSource @Inject constructor(
     fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
         return flow {
             try {
-                emit(NetworkResult.Loading())
+                emit(NetworkResult.Loading)
                 dataStoreDataSource.measurementUnits.collect { value ->
                     val units = Units.values()[value].parameterCode
                     httpClientWeather.get {
@@ -61,7 +61,7 @@ class RemoteDataSource @Inject constructor(
                         if (it.status.value == 200) {
                             emit(NetworkResult.Success(it.body()))
                         } else {
-                            emit(NetworkResult.Error(data = it.body(), message = ""))
+                            emit(NetworkResult.Error(message = it.status.description))
                         }
                     }
                 }
@@ -74,7 +74,7 @@ class RemoteDataSource @Inject constructor(
     fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
         return flow {
             try {
-                emit(NetworkResult.Loading())
+                emit(NetworkResult.Loading)
                 httpClientGeocoding.get {
                     parameter("q", input)
                     parameter("limit", 15)
@@ -82,7 +82,7 @@ class RemoteDataSource @Inject constructor(
                     if (it.status.value == 200) {
                         emit(NetworkResult.Success(it.body()))
                     } else {
-                        emit(NetworkResult.Error(data = it.body(), message = it.status.description))
+                        emit(NetworkResult.Error(message = it.status.description))
                     }
                 }
             } catch (e: Exception) {

@@ -1,12 +1,12 @@
 package ru.serg.composeweatherapp.data.mapper
 
 import io.ktor.util.date.getTimeMillis
-import ru.serg.composeweatherapp.data.remote.responses.OneCallResponse
-import ru.serg.composeweatherapp.data.remote.responses.WeatherResponse
 import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
+import ru.serg.dto.OneCallResponse
+import ru.serg.dto.WeatherResponse
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.DayWeatherItem

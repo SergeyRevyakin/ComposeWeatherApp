@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.composeweatherapp.data.WorkerUseCase
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
-import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.composeweatherapp.utils.common.showDailyForecastNotification
 import ru.serg.composeweatherapp.utils.common.showFetchErrorNotification
 import ru.serg.composeweatherapp.utils.common.showNotification
@@ -105,18 +104,18 @@ class WeatherWorker @AssistedInject constructor(
             .onEach { networkResult ->
                 Log.e(this::class.simpleName, "Fetch service $networkResult")
                 when (networkResult) {
-                    is NetworkResult.Success -> {
+                    is ru.serg.common.NetworkResult.Success -> {
                         onWeatherFetchedSuccessful(networkResult.data)
                         networkResult.data?.alertMessage?.let {
                             showNotification(applicationContext, "ALERT", it)
                         }
                     }
 
-                    is NetworkResult.Error -> {
+                    is ru.serg.common.NetworkResult.Error -> {
                         onError(networkResult.message)
                     }
 
-                    is NetworkResult.Loading -> {}
+                    is ru.serg.common.NetworkResult.Loading -> {}
                 }
             }.launchIn(serviceScope)
     }

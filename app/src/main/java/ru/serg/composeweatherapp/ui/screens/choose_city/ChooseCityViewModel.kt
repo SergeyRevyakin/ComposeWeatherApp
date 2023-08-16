@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.serg.common.NetworkResult
 import ru.serg.composeweatherapp.data.CitySearchUseCase
-import ru.serg.composeweatherapp.utils.common.NetworkResult
 import ru.serg.model.CityItem
 import javax.inject.Inject
 
