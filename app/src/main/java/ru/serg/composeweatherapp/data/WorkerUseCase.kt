@@ -5,16 +5,16 @@ package ru.serg.composeweatherapp.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flattenConcat
 import kotlinx.coroutines.flow.mapLatest
-import ru.serg.composeweatherapp.data.data_source.LocalDataSource
+import ru.serg.local.LocalRepository
 import javax.inject.Inject
 
 class WorkerUseCase @Inject constructor(
-    private val localDataSource: LocalDataSource,
+    private val localRepository: LocalRepository,
     private val weatherRepository: WeatherRepository
 ) {
 
     fun fetchFavouriteCity() =
-        localDataSource.getFavouriteCity().mapLatest {
+        localRepository.getFavouriteCity().mapLatest {
             weatherRepository.fetchCityWeather(it)
         }.flattenConcat()
 }

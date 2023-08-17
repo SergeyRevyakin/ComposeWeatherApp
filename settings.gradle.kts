@@ -5,7 +5,7 @@ pluginManagement {
         // There's no need to apply the Android plugin to buildSrc/build.gradle.kts,
         // so don't add the google() repo
         // (it won't hurt, but it's just not necessary)
-        //google()
+        google()
     }
 }
 dependencyResolutionManagement {
@@ -25,3 +25,5 @@ include(":core:dto")
 include(":core:network")
 include(":core:datastore")
 include(":core:common")
+include(":core:location")
+include(":core:local")

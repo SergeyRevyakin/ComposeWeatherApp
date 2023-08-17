@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.onStart
 
 sealed class NetworkResult<out T> {
 
-    class Success<T>(val data: T) : NetworkResult<T>()
+    data class Success<T>(val data: T) : NetworkResult<T>()
 
-    class Error<Nothing>(val message: String?) :
+    data class Error<Nothing>(val message: String?) :
         NetworkResult<Nothing>()
 
     object Loading : NetworkResult<Nothing>()

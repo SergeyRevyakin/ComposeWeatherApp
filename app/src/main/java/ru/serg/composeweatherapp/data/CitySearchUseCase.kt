@@ -1,20 +1,18 @@
 package ru.serg.composeweatherapp.data
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.serg.common.NetworkResult
-import ru.serg.composeweatherapp.data.data_source.LocalDataSource
+import ru.serg.local.LocalRepository
 import ru.serg.model.CityItem
 import ru.serg.network.RemoteDataSource
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class CitySearchUseCase @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localRepository: LocalRepository
 ) {
-    fun fetchCityListFlow(input: String?): Flow<ru.serg.common.NetworkResult<List<CityItem>>> =
+    fun fetchCityListFlow(input: String?): Flow<NetworkResult<List<CityItem>>> =
         remoteDataSource.getCityForAutocomplete(input).map { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> NetworkResult.Loading
@@ -36,11 +34,11 @@ class CitySearchUseCase @Inject constructor(
         }
 
     fun getFavouriteCitiesFlow() =
-        localDataSource.getCitySearchHistory()
+        localRepository.getCitySearchHistory()
 
     suspend fun saveCityItem(cityItem: CityItem) =
-        localDataSource.insertCityItemToSearchHistory(cityItem)
+        localRepository.insertCityItemToSearchHistory(cityItem)
 
     suspend fun deleteCityItem(cityItem: CityItem) =
-        localDataSource.deleteCityItemToHistorySearch(cityItem)
+        localRepository.deleteCityItemToHistorySearch(cityItem)
 }

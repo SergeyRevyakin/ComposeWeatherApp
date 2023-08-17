@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data.data_source
+package ru.serg.location
 
 import kotlinx.coroutines.flow.Flow
 import ru.serg.model.Coordinates

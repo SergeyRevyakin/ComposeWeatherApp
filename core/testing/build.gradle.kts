@@ -35,5 +35,5 @@ dependencies {
     api(kotlin("test"))
     testImplementation(kotlin("test"))
     androidTestImplementation(kotlin("test"))
-//    api(libs.turbine)
+    api(libs.turbine)
 }

@@ -4,10 +4,10 @@ accompanist-swiperefresh = "0.31.0-alpha"
 accompanist-permissions = "0.31.0-alpha"
 accompanist-systemuicontroller = "0.31.0-alpha"
 activity-compose = "1.7.2"
-androidx-foundation = "1.5.0-rc01"
-androidx-material = "1.5.0-rc01"
+androidx-foundation = "1.5.0"
+androidx-material = "1.5.0"
 appcompat = "1.6.1"
-compose-bom = "2023.06.01"
+compose-bom = "2023.08.00"
 core-ktx = "1.10.1"
 datastore-preferences = "1.1.0-alpha04"
 espresso-core = "3.5.1"
@@ -25,13 +25,13 @@ ktor-client-core = "2.3.3"
 lifecycle-runtime-ktx = "2.6.1"
 material = "1.9.0"
 material3 = "1.1.1"
-navigation-compose = "2.6.0"
+navigation-compose = "2.7.0"
 permission-flow-android = "1.2.0"
 play-services-location = "21.0.1"
 room-testing = "2.5.2"
 secretsGradlePlugin = "2.0.1"
-ui = "1.5.0-rc01"
-ui-test-junit4 = "1.4.3"
+ui = "1.5.0"
+ui-test-junit4 = "1.5.0"
 work-runtime-ktx = "2.8.1"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
@@ -44,7 +44,7 @@ ksp = "1.8.22-1.0.11"
 secrets = "2.0.1"
 kotlin1822 = "1.8.22"
 annotationJvm = "1.6.0"
-
+turbine = "0.12.1"
 
 [libraries]
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist-swiperefresh" }
@@ -111,6 +111,7 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }

@@ -1,10 +1,13 @@
-package ru.serg.composeweatherapp.data.data_source
+package ru.serg.location
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -14,7 +17,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.utils.hasLocationPermission
 import ru.serg.model.Coordinates
 
 class LocationDataSource(
@@ -105,4 +107,16 @@ class LocationDataSource(
             }
         }
     }
+}
+
+fun Context.hasLocationPermission(): Boolean {
+    return (ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED ||
+            (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED)
+            )
 }

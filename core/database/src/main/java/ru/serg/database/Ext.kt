@@ -47,6 +47,36 @@ fun DailyWeatherEntity.toDailyWeather() = DailyWeather(
     uvi = uvi.orZero()
 )
 
+fun HourlyWeather.toHourlyWeatherEntity(cityId: Int) = HourlyWeatherEntity(
+    windSpeed = windSpeed.orZero(),
+    windDirection = windDirection.orZero(),
+    weatherIcon = weatherIcon.orZero(),
+    weatherDescription = weatherDescription,
+    feelsLike = feelsLike.orZero(),
+    currentTemp = currentTemp.orZero(),
+    humidity = humidity.orZero(),
+    pressure = pressure.orZero(),
+    dateTime = dateTime.orZero(),
+    uvi = uvi.orZero(),
+    cityId = cityId
+)
+
+fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
+    windSpeed = windSpeed.orZero(),
+    windDirection = windDirection.orZero(),
+    weatherIcon = weatherIcon.orZero(),
+    weatherDescription = weatherDescription.orEmpty(),
+    humidity = humidity.orZero(),
+    pressure = pressure.orZero(),
+    dateTime = dateTime.orZero(),
+    feelsLike = feelsLike,
+    dailyWeatherItem = dailyWeatherItem,
+    sunrise = sunrise.orZero(),
+    sunset = sunset.orZero(),
+    uvi = uvi.orZero(),
+    cityId = cityId
+)
+
 
 fun Double?.orZero() = this ?: 0.0
 

@@ -1,14 +1,18 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "ru.serg.common"
+    namespace = "ru.serg.location"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 27
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -21,9 +25,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:model"))
 
-    testImplementation(project(":core:testing"))
-
+    implementation(libs.play.services.location)
     implementation(libs.androidx.annotation.jvm)
     implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

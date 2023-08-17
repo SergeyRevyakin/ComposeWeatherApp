@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.data.WeatherRepository
-import ru.serg.composeweatherapp.data.data_source.LocationDataSource
 import ru.serg.composeweatherapp.ui.screens.WeatherState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.model.CityItem
@@ -23,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PagerViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    private val locationService: LocationDataSource,
+    private val locationService: ru.serg.location.LocationDataSource,
     private val dateUtils: DateUtils
 ) : ViewModel() {
 

@@ -92,6 +92,8 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
+    implementation(project(":core:location"))
+    implementation(project(":core:local"))
 
     implementation(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))

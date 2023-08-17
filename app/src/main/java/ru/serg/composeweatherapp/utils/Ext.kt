@@ -1,14 +1,11 @@
 package ru.serg.composeweatherapp.utils
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -58,17 +55,6 @@ fun Context.setExactAlarm() {
     })
 }
 
-fun Context.hasLocationPermission(): Boolean {
-    return (ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED ||
-            (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED)
-            )
-}
 
 fun Int.hoursToMilliseconds() = this * Constants.Time.millisecondsToHour
 

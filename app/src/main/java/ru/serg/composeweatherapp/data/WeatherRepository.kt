@@ -9,10 +9,16 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import ru.serg.common.NetworkResult
-import ru.serg.composeweatherapp.data.data_source.LocalDataSource
 import ru.serg.composeweatherapp.data.mapper.DataMapper
+import ru.serg.composeweatherapp.utils.orEmpty
+import ru.serg.composeweatherapp.utils.orZero
+import ru.serg.composeweatherapp.utils.toTimeStamp
+import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
+import ru.serg.local.LocalRepository
 import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
+import ru.serg.model.DailyWeather
+import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedWeatherItem
 import ru.serg.model.WeatherItem
 import ru.serg.network.RemoteDataSource
@@ -20,7 +26,7 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localRepository: LocalRepository
 ) {
 
     fun fetchCurrentLocationWeather(
@@ -61,9 +67,42 @@ class WeatherRepository @Inject constructor(
                     cityItem
                 )
 
-                localDataSource.saveWeather(oneCallResponse.data, cityItem)
+                val dailyWeather = oneCallResponse.data.daily?.map {
 
-                localDataSource.insertCityItemToSearchHistory(cityItem)
+                    DailyWeather(
+                        windDirection = it.windDeg.orZero(),
+                        windSpeed = it.windSpeed.orZero(),
+                        weatherDescription = it.weather?.first()?.description.orEmpty(),
+                        weatherIcon = IconMapper.map(it.weather?.first()?.id),
+                        dateTime = it.dt.toTimeStamp(),
+                        humidity = it.humidity.orZero(),
+                        pressure = it.pressure.orZero(),
+                        feelsLike = DataMapper.getFeelsLikeDailyTempItem(it),
+                        dailyWeatherItem = DataMapper.getUpdatedDailyTempItem(it),
+                        sunset = it.sunset.toTimeStamp(),
+                        sunrise = it.sunrise.toTimeStamp(),
+                        uvi = it.uvi.orZero()
+                    )
+                } ?: listOf()
+
+                val hourlyWeather = oneCallResponse.data.hourly?.map {
+                    HourlyWeather(
+                        windDirection = it.windDeg.orZero(),
+                        windSpeed = it.windSpeed.orZero(),
+                        weatherDescription = it.weather?.first()?.description.orEmpty(),
+                        weatherIcon = IconMapper.map(it.weather?.first()?.id),
+                        dateTime = it.dt.toTimeStamp(),
+                        humidity = it.humidity.orZero(),
+                        pressure = it.pressure.orZero(),
+                        currentTemp = it.temp.orZero(),
+                        feelsLike = it.feelsLike.orZero(),
+                        uvi = it.uvi.orZero()
+                    )
+                } ?: listOf()
+
+                localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
+
+                localRepository.insertCityItemToSearchHistory(cityItem)
                 NetworkResult.Success(weatherItem)
 
             }
@@ -97,7 +136,17 @@ class WeatherRepository @Inject constructor(
                         oneCallResponse.data,
                         cityItem
                     )
-                    localDataSource.saveWeather(oneCallResponse.data, cityItem)
+
+                    val dailyWeather = oneCallResponse.data.daily?.map {
+                        DataMapper.mapDailyWeather(it)
+                    } ?: listOf()
+
+                    val hourlyWeather = oneCallResponse.data.hourly?.map {
+                        DataMapper.mapHourlyWeather(it)
+                    } ?: listOf()
+
+
+                    localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
                     NetworkResult.Success(weatherItem)
 
                 }
@@ -123,7 +172,16 @@ class WeatherRepository @Inject constructor(
 
                 (oneCallResponse is NetworkResult.Success) -> {
 
-                    localDataSource.saveWeather(oneCallResponse.data, cityItem)
+                    val dailyWeather = oneCallResponse.data.daily?.map {
+                        DataMapper.mapDailyWeather(it)
+                    } ?: listOf()
+
+                    val hourlyWeather = oneCallResponse.data.hourly?.map {
+                        DataMapper.mapHourlyWeather(it)
+                    } ?: listOf()
+
+
+                    localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
 
                     NetworkResult.Success(Any())
 
