@@ -22,14 +22,14 @@ import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
 import ru.serg.composeweatherapp.utils.common.NetworkStatus
-import ru.serg.local.LocalRepository
+import ru.serg.local.LocalDataSource
 import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val localRepository: LocalRepository,
+    private val localDataSource: LocalDataSource,
     private val weatherRepository: WeatherRepository,
     private val locationService: ru.serg.location.LocationDataSource,
     private val dateUtils: DateUtils,
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
 
     private fun initCitiesWeatherFlow() {
         viewModelScope.launch {
-            localRepository.getWeatherFlow().debounce(200L).collectLatest {
+            localDataSource.getWeatherFlow().debounce(200L).collectLatest {
                 when {
                     it.isEmpty() -> _citiesWeather.emit(CommonScreenState.Empty)
                     else -> {

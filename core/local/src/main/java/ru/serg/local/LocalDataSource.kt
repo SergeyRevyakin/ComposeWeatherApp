@@ -6,7 +6,7 @@ import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedWeatherItem
 
-interface LocalRepository {
+interface LocalDataSource {
     fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>>
 
     fun saveWeather(

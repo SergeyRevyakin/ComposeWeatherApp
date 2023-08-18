@@ -1,6 +1,5 @@
 package ru.serg.network
 
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -170,15 +169,4 @@ class NetworkModule {
             }
         }
     }
-
-
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-interface NM {
-    @Binds
-    fun bindsRemoteDataSource(
-        remoteDataSource: RemoteDataSourceImpl
-    ): RemoteDataSource
 }

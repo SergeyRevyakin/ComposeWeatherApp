@@ -18,10 +18,10 @@ import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject
 
-class LocalDataRepository @Inject constructor(
+class LocalDataSourceImpl @Inject constructor(
     private val weatherDao: WeatherDao,
     private val cityDao: CityDao
-) : LocalRepository {
+) : LocalDataSource {
     private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>> {

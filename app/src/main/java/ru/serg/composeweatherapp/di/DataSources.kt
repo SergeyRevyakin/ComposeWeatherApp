@@ -1,0 +1,25 @@
+package ru.serg.composeweatherapp.di
+
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import ru.serg.local.LocalDataSource
+import ru.serg.local.LocalDataSourceImpl
+import ru.serg.network.RemoteDataSource
+import ru.serg.network.RemoteDataSourceImpl
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface DataSources {
+    @Binds
+    fun bindLocalDataSource(
+        localDataRepository: LocalDataSourceImpl
+    ): LocalDataSource
+
+    @Binds
+    fun bindRemoteDataSource(
+        remoteDataSource: RemoteDataSourceImpl
+    ): RemoteDataSource
+
+}

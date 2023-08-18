@@ -3,14 +3,14 @@ package ru.serg.composeweatherapp.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.serg.common.NetworkResult
-import ru.serg.local.LocalRepository
+import ru.serg.local.LocalDataSource
 import ru.serg.model.CityItem
 import ru.serg.network.RemoteDataSource
 import javax.inject.Inject
 
 class CitySearchUseCase @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localRepository: LocalRepository
+    private val localDataSource: LocalDataSource
 ) {
     fun fetchCityListFlow(input: String?): Flow<NetworkResult<List<CityItem>>> =
         remoteDataSource.getCityForAutocomplete(input).map { networkResult ->
@@ -34,11 +34,11 @@ class CitySearchUseCase @Inject constructor(
         }
 
     fun getFavouriteCitiesFlow() =
-        localRepository.getCitySearchHistory()
+        localDataSource.getCitySearchHistory()
 
     suspend fun saveCityItem(cityItem: CityItem) =
-        localRepository.insertCityItemToSearchHistory(cityItem)
+        localDataSource.insertCityItemToSearchHistory(cityItem)
 
     suspend fun deleteCityItem(cityItem: CityItem) =
-        localRepository.deleteCityItemToHistorySearch(cityItem)
+        localDataSource.deleteCityItemToHistorySearch(cityItem)
 }

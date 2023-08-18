@@ -14,7 +14,7 @@ import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
-import ru.serg.local.LocalRepository
+import ru.serg.local.LocalDataSource
 import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
 import ru.serg.model.DailyWeather
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localRepository: LocalRepository
+    private val localDataSource: LocalDataSource
 ) {
 
     fun fetchCurrentLocationWeather(
@@ -100,9 +100,9 @@ class WeatherRepository @Inject constructor(
                     )
                 } ?: listOf()
 
-                localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
+                localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
 
-                localRepository.insertCityItemToSearchHistory(cityItem)
+                localDataSource.insertCityItemToSearchHistory(cityItem)
                 NetworkResult.Success(weatherItem)
 
             }
@@ -146,7 +146,7 @@ class WeatherRepository @Inject constructor(
                     } ?: listOf()
 
 
-                    localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
+                    localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
                     NetworkResult.Success(weatherItem)
 
                 }
@@ -181,7 +181,7 @@ class WeatherRepository @Inject constructor(
                     } ?: listOf()
 
 
-                    localRepository.saveWeather(hourlyWeather, dailyWeather, cityItem)
+                    localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
 
                     NetworkResult.Success(Any())
 
