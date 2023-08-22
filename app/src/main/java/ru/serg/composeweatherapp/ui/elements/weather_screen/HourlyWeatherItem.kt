@@ -26,12 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHourWithNowAndAccent
-import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.getTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.model.HourlyWeather
+import ru.serg.model.enums.Units
 
 @Composable
 fun HourlyWeatherItem(item: HourlyWeather, units: Units) {

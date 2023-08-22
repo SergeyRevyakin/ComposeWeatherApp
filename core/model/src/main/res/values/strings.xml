@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="units_metric_title">Metric</string>
+    <string name="units_imperial_title">Imperial</string>
+    <string name="units_kelvin_title">Kelvin</string>
+
+    <string name="units_metric_description">Temperature in Celsius, wind speed in meter/sec</string>
+    <string name="units_imperial_description">Temperature in Fahrenheit and wind speed in miles/hour</string>
+    <string name="units_kelvin_description">Temperature in Kelvin and wind speed in meter/sec</string>
+
+    <string name="units_metric_degrees">℃</string>
+    <string name="units_imperial_degrees">℉</string>
+    <string name="units_kelvin_degrees">K</string>
+
+    <string name="units_metric_wind_speed">m/s</string>
+    <string name="units_imperial_wind_speed">mph</string>
+    <string name="units_kelvin_wind_speed">m/s</string>
+</resources>

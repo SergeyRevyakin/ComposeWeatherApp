@@ -25,12 +25,12 @@ import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.serg.composeweatherapp.ui.elements.PullRefreshBox
-import ru.serg.composeweatherapp.ui.elements.common.NoCitiesMainScreenItem
-import ru.serg.composeweatherapp.ui.elements.common.SunLoadingScreen
-import ru.serg.composeweatherapp.ui.elements.top_item.PagerTopItem
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.ui.screens.updated_pager.PagerScreen
 import ru.serg.composeweatherapp.utils.openAppSystemSettings
+import ru.serg.designsystem.common.NoCitiesMainScreenItem
+import ru.serg.designsystem.common.SunLoadingScreen
+import ru.serg.designsystem.top_item.PagerTopItem
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable

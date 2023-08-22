@@ -15,14 +15,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import ru.serg.common.NetworkResult
-import ru.serg.composeweatherapp.data.WeatherRepository
 import ru.serg.composeweatherapp.ui.screens.ScreenState
 import ru.serg.composeweatherapp.utils.Constants
 import javax.inject.Inject
 
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
-    private val weatherRepository: WeatherRepository,
+    private val weatherRepository: com.serg.weather.WeatherRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

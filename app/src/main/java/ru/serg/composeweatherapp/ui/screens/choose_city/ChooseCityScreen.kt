@@ -41,11 +41,11 @@ import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.city_search.CityRow
 import ru.serg.composeweatherapp.ui.elements.city_search.CitySearchItem
 import ru.serg.composeweatherapp.ui.elements.city_search.SearchTextField
-import ru.serg.composeweatherapp.ui.elements.top_item.TopItem
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.common.ScreenNames
+import ru.serg.designsystem.theme.headerModifier
+import ru.serg.designsystem.theme.headerStyle
+import ru.serg.designsystem.top_item.TopItem
 
 @ExperimentalFoundationApi
 @FlowPreview

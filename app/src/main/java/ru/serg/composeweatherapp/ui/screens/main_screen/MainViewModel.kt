@@ -18,10 +18,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
-import ru.serg.composeweatherapp.data.WeatherRepository
+import ru.serg.common.NetworkStatus
 import ru.serg.composeweatherapp.ui.screens.CommonScreenState
 import ru.serg.composeweatherapp.utils.DateUtils
-import ru.serg.composeweatherapp.utils.common.NetworkStatus
 import ru.serg.local.LocalDataSource
 import ru.serg.model.UpdatedWeatherItem
 import javax.inject.Inject
@@ -30,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val localDataSource: LocalDataSource,
-    private val weatherRepository: WeatherRepository,
+    private val weatherRepository: com.serg.weather.WeatherRepository,
     private val locationService: ru.serg.location.LocationDataSource,
     private val dateUtils: DateUtils,
     private val networkStatus: NetworkStatus

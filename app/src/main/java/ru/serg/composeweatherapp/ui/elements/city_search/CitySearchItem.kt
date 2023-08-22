@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.ui.theme.gradientBorder
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.model.CityItem
 
 @Composable

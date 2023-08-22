@@ -21,9 +21,9 @@ import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
 import ru.serg.composeweatherapp.ui.screens.city_weather_screen.CityWeatherScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
-import ru.serg.composeweatherapp.ui.screens.settings.SettingsScreen
 import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.composeweatherapp.utils.common.ScreenNames
+import ru.serg.settings_feature.screen.SettingsScreen
 
 @OptIn(
     ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class,

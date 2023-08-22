@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.theme.headerModifier
+import ru.serg.designsystem.theme.headerStyle
 
 @Composable
 fun SunriseSunsetItem(

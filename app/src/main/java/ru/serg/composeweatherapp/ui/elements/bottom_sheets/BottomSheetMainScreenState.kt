@@ -1,8 +1,8 @@
 package ru.serg.composeweatherapp.ui.elements.bottom_sheets
 
-import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.enums.UvIndex
 import ru.serg.model.DailyWeather
+import ru.serg.model.enums.Units
 
 sealed class BottomSheetMainScreenState {
     data class DailyWeatherScreen(

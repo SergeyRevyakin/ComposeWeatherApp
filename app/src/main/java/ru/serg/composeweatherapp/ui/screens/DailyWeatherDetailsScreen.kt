@@ -28,15 +28,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowItem
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
-import ru.serg.composeweatherapp.ui.theme.gradientBorder
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFullDate
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getHour
 import ru.serg.composeweatherapp.utils.getTemp
+import ru.serg.designsystem.simple_items.ParamRowItem
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.theme.descriptionSubHeader
+import ru.serg.designsystem.theme.gradientBorder
+import ru.serg.designsystem.theme.headerModifier
+import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.DayWeatherItem
 import ru.serg.model.IntraDayTempItem
 

@@ -3,18 +3,20 @@
 package ru.serg.composeweatherapp.data
 
 import android.util.Log
+import com.serg.weather.WeatherRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import ru.serg.composeweatherapp.utils.ServiceFetchingResult
 import ru.serg.datastore.DataStoreDataSource
+import ru.serg.location.LocationDataSource
 import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 class WeatherServiceUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    private val locationService: ru.serg.location.LocationDataSource,
+    private val locationService: LocationDataSource,
     private val dataStoreDataSource: DataStoreDataSource
 ) {
     fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<WeatherItem>> =

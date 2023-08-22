@@ -24,4 +24,5 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.annotation.jvm)
 }

@@ -27,17 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ktor.util.date.getTimeMillis
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.elements.simple_items.ParamRowWithInfoItem
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.ui.theme.gradientBorder
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
 import ru.serg.composeweatherapp.utils.buildTitle
-import ru.serg.composeweatherapp.utils.enums.Units
 import ru.serg.composeweatherapp.utils.firstLetterToUpperCase
 import ru.serg.composeweatherapp.utils.getTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
+import ru.serg.designsystem.simple_items.ParamRowWithInfoItem
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.model.HourlyWeather
+import ru.serg.model.enums.Units
 
 @Composable
 fun TodayWeatherCardItem(

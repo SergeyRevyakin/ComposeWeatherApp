@@ -38,10 +38,10 @@ import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItemViewModel
 import ru.serg.composeweatherapp.ui.elements.SunriseSunsetItem
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.BottomSheetMainScreenState
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.MainScreenBottomSheet
-import ru.serg.composeweatherapp.ui.elements.simple_items.DailyWeatherItem
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
 import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
+import ru.serg.designsystem.simple_items.DailyWeatherItem
+import ru.serg.designsystem.theme.headerModifier
+import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.UpdatedWeatherItem
 
 @OptIn(ExperimentalMaterialApi::class)

@@ -66,7 +66,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
 
     packaging {
@@ -93,8 +93,14 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:location"))
     implementation(project(":core:local"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":feature:settings_feature"))
+
 
     implementation(platform(libs.compose.bom))
+    implementation(project(":core:weather"))
+    implementation(project(":core:weather"))
+    implementation(project(":work"))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)

@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
 import ru.serg.datastore.DataStoreDataSource
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)

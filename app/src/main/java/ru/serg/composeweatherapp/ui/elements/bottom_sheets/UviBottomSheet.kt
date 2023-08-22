@@ -22,12 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.theme.ComposeWeatherAppTheme
-import ru.serg.composeweatherapp.ui.theme.descriptionSubHeader
-import ru.serg.composeweatherapp.ui.theme.headerModifier
-import ru.serg.composeweatherapp.ui.theme.headerStyle
-import ru.serg.composeweatherapp.ui.theme.settingsSubText
 import ru.serg.composeweatherapp.utils.enums.UvIndex
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.theme.descriptionSubHeader
+import ru.serg.designsystem.theme.headerModifier
+import ru.serg.designsystem.theme.headerStyle
+import ru.serg.designsystem.theme.settingsSubText
 
 @Composable
 fun UviBottomSheet(

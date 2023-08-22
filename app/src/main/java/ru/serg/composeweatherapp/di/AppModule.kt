@@ -6,11 +6,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.serg.common.NetworkStatus
 import ru.serg.composeweatherapp.utils.WeatherAlarmManager
-import ru.serg.composeweatherapp.utils.WorkerManager
-import ru.serg.composeweatherapp.utils.common.NetworkStatus
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.location.LocationDataSource
+import ru.serg.work.WorkerManager
 import javax.inject.Singleton
 
 @Module
