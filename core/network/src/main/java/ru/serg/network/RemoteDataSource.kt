@@ -2,9 +2,9 @@ package ru.serg.network
 
 import kotlinx.coroutines.flow.Flow
 import ru.serg.common.NetworkResult
-import ru.serg.dto.CityNameGeocodingResponseItem
-import ru.serg.dto.OneCallResponse
-import ru.serg.dto.WeatherResponse
+import ru.serg.network.dto.CityNameGeocodingResponseItem
+import ru.serg.network.dto.OneCallResponse
+import ru.serg.network.dto.WeatherResponse
 
 interface RemoteDataSource {
     fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>>

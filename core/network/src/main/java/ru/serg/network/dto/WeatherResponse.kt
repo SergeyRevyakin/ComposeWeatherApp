@@ -1,4 +1,4 @@
-package ru.serg.dto
+package ru.serg.network.dto
 
 
 import kotlinx.serialization.SerialName

@@ -5,8 +5,6 @@ import ru.serg.composeweatherapp.utils.orEmpty
 import ru.serg.composeweatherapp.utils.orZero
 import ru.serg.composeweatherapp.utils.toTimeStamp
 import ru.serg.composeweatherapp.utils.weather_mapper.IconMapper
-import ru.serg.dto.OneCallResponse
-import ru.serg.dto.WeatherResponse
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.DayWeatherItem
@@ -15,6 +13,8 @@ import ru.serg.model.HourlyWeather
 import ru.serg.model.IntraDayTempItem
 import ru.serg.model.UpdatedDailyTempItem
 import ru.serg.model.WeatherItem
+import ru.serg.network.dto.OneCallResponse
+import ru.serg.network.dto.WeatherResponse
 
 object DataMapper {
     fun mapCityItem(weatherResponse: WeatherResponse, isFavourite: Boolean) =

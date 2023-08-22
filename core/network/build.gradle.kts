@@ -27,7 +27,6 @@ android {
 
 dependencies {
     implementation(project(":core:datastore"))
-    implementation(project(":core:dto"))
     implementation(project(":core:common"))
 
     implementation(libs.bundles.ktor)

@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.flow
 import ru.serg.common.NetworkResult
 import ru.serg.common.Units
 import ru.serg.datastore.DataStoreDataSource
-import ru.serg.dto.CityNameGeocodingResponseItem
-import ru.serg.dto.OneCallResponse
-import ru.serg.dto.WeatherResponse
+import ru.serg.network.dto.CityNameGeocodingResponseItem
+import ru.serg.network.dto.OneCallResponse
+import ru.serg.network.dto.WeatherResponse
 import javax.inject.Inject
 import javax.inject.Named
 
