@@ -124,7 +124,9 @@ android-library = { id = "com.android.library", version.ref = "gradle" }
 android-test = { id = "com.android.test", version.ref = "gradle" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+gradle-build = { id = "com.android.tools.build.gradle", version.ref = "gradle" }
+
 
 [bundles]
 compose = [

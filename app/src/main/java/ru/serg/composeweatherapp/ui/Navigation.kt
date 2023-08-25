@@ -1,3 +1,8 @@
+@file:OptIn(
+    FlowPreview::class, ExperimentalAnimationApi::class,
+    ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class
+)
+
 package ru.serg.composeweatherapp.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -16,18 +21,15 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import ru.serg.choose_city_feature.screen.ChooseCityScreen
-import ru.serg.composeweatherapp.ui.screens.city_weather_screen.CityWeatherScreen
-import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
-import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
+import ru.serg.city_weather.screen.CityWeatherScreen
+import ru.serg.common.ScreenNames
 import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.common.ScreenNames
+import ru.serg.main_pager.main_screen.MainScreen
+import ru.serg.main_pager.main_screen.MainViewModel
 import ru.serg.settings_feature.screen.SettingsScreen
 
-@OptIn(
-    ExperimentalAnimationApi::class,
-    ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class
-)
 @Composable
 fun Navigation(
     viewModule: MainViewModel

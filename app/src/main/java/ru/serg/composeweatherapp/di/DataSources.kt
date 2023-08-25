@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.serg.local.LocalDataSource
 import ru.serg.local.LocalDataSourceImpl
+import ru.serg.location.LocationDataSource
+import ru.serg.location.LocationService
 import ru.serg.network.RemoteDataSource
 import ru.serg.network.RemoteDataSourceImpl
 
@@ -21,5 +23,10 @@ interface DataSources {
     fun bindRemoteDataSource(
         remoteDataSource: RemoteDataSourceImpl
     ): RemoteDataSource
+
+    @Binds
+    fun bindLocationDataSource(
+        remoteDataSource: LocationDataSource
+    ): LocationService
 
 }

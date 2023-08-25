@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
@@ -38,15 +38,15 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(project(":core:local"))
     implementation(project(":work"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
 
     implementation(libs.bundles.hilt)
-    implementation(project(":core:common"))
-    implementation(project(":core:network"))
-    implementation(project(":core:local"))
     kapt(libs.bundles.hilt.kapt)
     implementation(libs.kotlinx.serialization.json)
 

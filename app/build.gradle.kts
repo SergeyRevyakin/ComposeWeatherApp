@@ -102,6 +102,8 @@ dependencies {
     implementation(project(":core:weather"))
     implementation(project(":work"))
     implementation(project(":feature:choose_city_feature"))
+    implementation(project(":feature:city_weather"))
+    implementation(project(":feature:main_pager"))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)
