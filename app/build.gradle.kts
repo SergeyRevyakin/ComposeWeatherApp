@@ -12,11 +12,11 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "ru.serg.composeweatherapp"
-        minSdk = 27
+        minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = 34
         versionCode = 22
         versionName = "0.22"
@@ -66,7 +66,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     packaging {
@@ -101,6 +101,7 @@ dependencies {
     implementation(project(":core:weather"))
     implementation(project(":core:weather"))
     implementation(project(":work"))
+    implementation(project(":feature:choose_city_feature"))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)

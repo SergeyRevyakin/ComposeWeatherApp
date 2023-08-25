@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.city_search
+package ru.serg.choose_city_feature.elements
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.CircleShape
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.utils.Constants
+import ru.serg.choose_city_feature.Constants
+import ru.serg.choose_city_feature.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 
 @Composable

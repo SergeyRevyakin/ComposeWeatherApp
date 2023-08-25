@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.data
+package ru.serg.choose_city_feature
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

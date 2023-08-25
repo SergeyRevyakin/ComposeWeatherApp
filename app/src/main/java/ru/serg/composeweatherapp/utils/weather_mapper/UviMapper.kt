@@ -1,6 +1,6 @@
 package ru.serg.composeweatherapp.utils.weather_mapper
 
-import ru.serg.composeweatherapp.utils.enums.UvIndex
+import ru.serg.common.UvIndex
 
 object UviMapper {
     fun map(value: Double): UvIndex =

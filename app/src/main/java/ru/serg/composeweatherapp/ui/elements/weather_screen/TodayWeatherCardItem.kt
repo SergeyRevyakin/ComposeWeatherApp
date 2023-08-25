@@ -26,13 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ktor.util.date.getTimeMillis
+import ru.serg.common.mapUvIndex
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.utils.DateUtils.Companion.getFormattedLastUpdateDate
 import ru.serg.composeweatherapp.utils.buildTitle
 import ru.serg.composeweatherapp.utils.firstLetterToUpperCase
 import ru.serg.composeweatherapp.utils.getTemp
 import ru.serg.composeweatherapp.utils.weather_mapper.MockItems
-import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
 import ru.serg.designsystem.simple_items.ParamRowWithInfoItem
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.gradientBorder
@@ -125,7 +125,7 @@ fun TodayWeatherCardItem(
                 paramIcon = R.drawable.ic_day_sunny,
                 paramValue = stringResource(
                     id = R.string.uv_index_value,
-                    stringResource(id = UviMapper.map(weatherItem.uvi).descriptionId)
+                    stringResource(id = mapUvIndex(weatherItem.uvi).descriptionId)
                 ),
                 hasInfoButton = true,
                 onInfoClick = showUviInfo

@@ -16,8 +16,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import ru.serg.composeweatherapp.ui.screens.choose_city.ChooseCityScreen
+import ru.serg.choose_city_feature.screen.ChooseCityScreen
 import ru.serg.composeweatherapp.ui.screens.city_weather_screen.CityWeatherScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainScreen
 import ru.serg.composeweatherapp.ui.screens.main_screen.MainViewModel
@@ -26,8 +25,8 @@ import ru.serg.composeweatherapp.utils.common.ScreenNames
 import ru.serg.settings_feature.screen.SettingsScreen
 
 @OptIn(
-    ExperimentalAnimationApi::class, ExperimentalFoundationApi::class, FlowPreview::class,
-    ExperimentalCoroutinesApi::class
+    ExperimentalAnimationApi::class,
+    ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class
 )
 @Composable
 fun Navigation(

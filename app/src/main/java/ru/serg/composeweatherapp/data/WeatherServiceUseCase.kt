@@ -33,7 +33,7 @@ class WeatherServiceUseCase @Inject constructor(
                 ).map { networkResult ->
                     when (networkResult) {
                         is ru.serg.common.NetworkResult.Success -> ServiceFetchingResult.Success(
-                            networkResult.data!!
+                            networkResult.data
                         )
 
                         is ru.serg.common.NetworkResult.Error -> ServiceFetchingResult.Error(

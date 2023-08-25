@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "ru.serg.core.testing"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 27
+        minSdk = libs.versions.minSdk.get().toInt()
 
     }
     compileOptions {

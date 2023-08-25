@@ -1,6 +1,6 @@
 package ru.serg.composeweatherapp.ui.elements.bottom_sheets
 
-import ru.serg.composeweatherapp.utils.enums.UvIndex
+import ru.serg.common.UvIndex
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
 

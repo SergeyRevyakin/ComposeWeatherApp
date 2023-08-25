@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.serg.common.UvIndex
 import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.utils.enums.UvIndex
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.descriptionSubHeader
 import ru.serg.designsystem.theme.headerModifier

@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.screens.choose_city
+package ru.serg.choose_city_feature.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -37,12 +37,12 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.ui.elements.city_search.CityRow
-import ru.serg.composeweatherapp.ui.elements.city_search.CitySearchItem
-import ru.serg.composeweatherapp.ui.elements.city_search.SearchTextField
-import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.common.ScreenNames
+import ru.serg.choose_city_feature.Constants
+import ru.serg.choose_city_feature.R
+import ru.serg.choose_city_feature.elements.CityRow
+import ru.serg.choose_city_feature.elements.CitySearchItem
+import ru.serg.choose_city_feature.elements.SearchTextField
+import ru.serg.common.ScreenNames
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.top_item.TopItem

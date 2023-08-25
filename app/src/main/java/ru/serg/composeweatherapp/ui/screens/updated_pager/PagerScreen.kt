@@ -8,7 +8,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.serg.composeweatherapp.ui.elements.weather_screen.CityWeatherContentItem
-import ru.serg.designsystem.common.ErrorItem
 import ru.serg.designsystem.common.SunLoadingScreen
 import ru.serg.model.UpdatedWeatherItem
 
@@ -28,11 +27,6 @@ fun PagerScreen(
         )
     ) {
         SunLoadingScreen()
-    }
-
-    AnimatedVisibility(visible = weatherItem == null) {
-        val errorText = "Error"
-        ErrorItem(errorText = errorText)
     }
 
     AnimatedVisibility(

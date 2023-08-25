@@ -5,6 +5,7 @@ package ru.serg.composeweatherapp.ui.screens.city_weather_screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.serg.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
-    private val weatherRepository: com.serg.weather.WeatherRepository,
+    private val weatherRepository: WeatherRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -36,11 +37,11 @@ class CityWeatherViewModel @Inject constructor(
                             when (networkResult) {
                                 is NetworkResult.Loading -> ScreenState.Loading
                                 is NetworkResult.Error -> ScreenState.Error(networkResult.message)
-                                is NetworkResult.Success -> networkResult.data?.let { weatherItem ->
+                                is NetworkResult.Success -> networkResult.data.let { weatherItem ->
                                     ScreenState.Success(
                                         weatherItem
                                     )
-                                } ?: ScreenState.Error("Can't recognise data")
+                                }
                             }
                         }.debounce(300).stateIn(
                         scope = viewModelScope,

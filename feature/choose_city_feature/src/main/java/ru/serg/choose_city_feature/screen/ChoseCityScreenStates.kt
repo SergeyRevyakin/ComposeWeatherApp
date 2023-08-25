@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.screens.choose_city
+package ru.serg.choose_city_feature.screen
 
 import ru.serg.model.CityItem
 

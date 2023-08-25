@@ -1,10 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "ru.serg.designsystem"
+    namespace = "ru.serg.choose_city_feature"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -12,6 +15,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18
@@ -30,11 +34,20 @@ android {
 }
 
 dependencies {
+
     implementation(project(":core:model"))
-    implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:datastore"))
+    implementation(project(":work"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    implementation(libs.kotlinx.datetime)
+
+    implementation(libs.bundles.hilt)
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(project(":core:local"))
+    kapt(libs.bundles.hilt.kapt)
+    implementation(libs.kotlinx.serialization.json)
 
 }

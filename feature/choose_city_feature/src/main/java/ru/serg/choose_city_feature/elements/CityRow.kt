@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.elements.city_search
+package ru.serg.choose_city_feature.elements
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.composeweatherapp.R
+import ru.serg.choose_city_feature.R
 import ru.serg.model.CityItem
 
 @Composable

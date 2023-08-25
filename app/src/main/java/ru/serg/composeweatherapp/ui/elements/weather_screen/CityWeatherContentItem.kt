@@ -33,12 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import ru.serg.common.mapUvIndex
 import ru.serg.composeweatherapp.R
 import ru.serg.composeweatherapp.ui.elements.CityWeatherContentItemViewModel
 import ru.serg.composeweatherapp.ui.elements.SunriseSunsetItem
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.BottomSheetMainScreenState
 import ru.serg.composeweatherapp.ui.elements.bottom_sheets.MainScreenBottomSheet
-import ru.serg.composeweatherapp.utils.weather_mapper.UviMapper
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -119,7 +119,7 @@ fun CityWeatherContentItem(
                 showUviInfo = {
                     openBottomSheet(
                         BottomSheetMainScreenState.UviDetailsScreen(
-                            UviMapper.map(weatherItem.hourlyWeatherList.first().uvi)
+                            mapUvIndex(weatherItem.hourlyWeatherList.first().uvi)
                         )
                     )
                 }

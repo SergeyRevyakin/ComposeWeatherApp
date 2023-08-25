@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.ui.screens.choose_city
+package ru.serg.choose_city_feature.screen
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import ru.serg.choose_city_feature.CitySearchUseCase
 import ru.serg.common.NetworkResult
-import ru.serg.composeweatherapp.data.CitySearchUseCase
 import ru.serg.model.CityItem
 import javax.inject.Inject
 
@@ -81,7 +81,7 @@ class ChooseCityViewModel @Inject constructor(
 
                 is NetworkResult.Success -> {
                     val cityList = networkResult.data
-                    if (cityList.isNullOrEmpty()) {
+                    if (cityList.isEmpty()) {
                         setErrorState(input, "No results found")
                     } else {
                         screenState =

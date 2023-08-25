@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "ru.serg.work"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 27
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,4 @@ dependencies {
     kapt(libs.bundles.hilt.kapt)
     implementation(libs.kotlinx.datetime)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
