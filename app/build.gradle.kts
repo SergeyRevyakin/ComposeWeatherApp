@@ -3,11 +3,11 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("dagger.hilt.android.plugin")
-    id("kotlinx-serialization")
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+//    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
     id("kotlin-kapt")
 }
 
@@ -17,9 +17,9 @@ android {
     defaultConfig {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = 34
-        versionCode = 22
-        versionName = "0.22"
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = 23
+        versionName = "0.23"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -95,15 +95,15 @@ dependencies {
     implementation(project(":core:local"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:settings_feature"))
-
-
-    implementation(platform(libs.compose.bom))
     implementation(project(":core:weather"))
     implementation(project(":core:weather"))
     implementation(project(":work"))
     implementation(project(":feature:choose_city_feature"))
     implementation(project(":feature:city_weather"))
     implementation(project(":feature:main_pager"))
+
+
+    implementation(platform(libs.compose.bom))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)
@@ -123,34 +123,13 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-//    androidTestImplementation(libs.compose.ui.test.junit4)
-//    implementation(libs.androidx.ui.tooling.preview)
-//    debugImplementation(libs.androidx.ui.tooling)
 
-    //Compose
-//    implementation(libs.compose.ui)
-//    implementation(libs.androidx.material)
-//    implementation(libs.androidx.material3)
-//    implementation(libs.androidx.material.icons.extended)
-//    implementation(libs.androidx.navigation.compose)
     implementation(libs.foundation)
 
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    //Hilt
-//    implementation(libs.hilt.android)
-//    implementation(libs.androidx.hilt.navigation.compose)
-//    kapt(libs.hilt.android.compiler)
-
-//
-//    implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.permissions)
-//    implementation(libs.accompanist.swiperefresh)
-//    implementation(libs.accompanist.navigation.animation)
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicators)
 
     implementation(libs.play.services.location)
 

@@ -1,7 +1,10 @@
-package ru.serg.work
+package ru.serg.notifications
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.compose.ui.text.AnnotatedString
@@ -15,8 +18,12 @@ import androidx.core.content.ContextCompat
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import ru.serg.common.R.*
+import ru.serg.common.R.color
+import ru.serg.common.R.drawable
 import ru.serg.model.WeatherItem
+import ru.serg.notifications.Constants.Notifications.NOTIFICATION_ERROR_REQUEST_CODE
+import ru.serg.notifications.Constants.Notifications.NOTIFICATION_REQUEST_CODE
+import ru.serg.notifications.Constants.Notifications.TARGET_ACTIVITY_NAME
 import java.time.format.TextStyle
 import java.util.Locale
 import java.util.Random
@@ -45,12 +52,19 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
     val weatherXml = weatherItem.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
-//    val notificationIntent = Intent(context, MainActivity::class.java)
-//        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//    val pendingIntent = PendingIntent.getActivity(
-//        context, 0, notificationIntent,
-//        PendingIntent.FLAG_MUTABLE
-//    )
+
+    val pendingIntent = PendingIntent.getActivity(
+        context,
+        NOTIFICATION_REQUEST_CODE,
+        Intent().apply {
+            action = Intent.ACTION_VIEW
+            component = ComponentName(
+                context.packageName,
+                TARGET_ACTIVITY_NAME,
+            )
+        },
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+    )
 
     val builder =
         NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
@@ -69,7 +83,7 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(context, color.primary))
             .setAutoCancel(true)
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
 
     with(NotificationManagerCompat.from(context)) {
         notify(Random().nextInt(), builder.build())
@@ -116,12 +130,19 @@ fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherI
 @SuppressLint("MissingPermission")
 fun showFetchErrorNotification(context: Context, errorText: String?) {
 
-//    val notificationIntent = Intent(context, MainActivity::class.java)
-//        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//    val pendingIntent = PendingIntent.getActivity(
-//        context, 0, notificationIntent,
-//        PendingIntent.FLAG_IMMUTABLE
-//    )
+    val pendingIntent = PendingIntent.getActivity(
+        context,
+        NOTIFICATION_ERROR_REQUEST_CODE,
+        Intent().apply {
+            action = Intent.ACTION_VIEW
+            component = ComponentName(
+                context.packageName,
+                TARGET_ACTIVITY_NAME,
+            )
+        },
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+    )
+
 
     val builder =
         NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
@@ -131,7 +152,7 @@ fun showFetchErrorNotification(context: Context, errorText: String?) {
             .setSmallIcon(drawable.ic_sunny_day)
             .setColor(ContextCompat.getColor(context, color.primary))
             .setAutoCancel(true)
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
 
     with(NotificationManagerCompat.from(context)) {
         notify(Random().nextInt(), builder.build())

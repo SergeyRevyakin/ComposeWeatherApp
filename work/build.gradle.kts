@@ -28,10 +28,11 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:local"))
+    implementation(project(":core:weather"))
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.bundles.hilt)
-    implementation(project(":core:weather"))
+    implementation(project(":core:notifications"))
     kapt(libs.bundles.hilt.kapt)
     implementation(libs.kotlinx.datetime)
 

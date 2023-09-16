@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
 import ru.serg.model.WeatherItem
+import ru.serg.notifications.showDailyForecastNotification
+import ru.serg.notifications.showFetchErrorNotification
+import ru.serg.notifications.showNotification
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit

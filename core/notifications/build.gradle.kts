@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
-    id("kotlin-kapt")
     alias(libs.plugins.hilt)
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "ru.serg.location"
+    namespace = "ru.serg.notifications"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -26,11 +26,13 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:common"))
+    implementation(project(":core:local"))
+    implementation(project(":core:weather"))
 
-    implementation(libs.play.services.location)
-    implementation(libs.androidx.annotation.jvm)
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.bundles.hilt)
+    kapt(libs.bundles.hilt.kapt)
+    implementation(libs.kotlinx.datetime)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
 }
