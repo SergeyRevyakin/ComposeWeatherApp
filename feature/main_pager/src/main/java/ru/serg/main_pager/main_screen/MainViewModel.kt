@@ -90,9 +90,14 @@ class MainViewModel @Inject constructor(
 
                     is CommonScreenState.Success -> {
                         observableItemNumber.collectLatest {
-                            val item =
-                                (citiesWeather.value as CommonScreenState.Success).updatedWeatherList[it]
-                            checkWeatherItem(item)
+                            try {
+                                val item =
+                                    (citiesWeather.value as CommonScreenState.Success).updatedWeatherList[it]
+                                checkWeatherItem(item)
+                            } catch (_: Exception) {
+                                setInitialState(isLocationAvailable)
+                            }
+
                         }
                     }
 

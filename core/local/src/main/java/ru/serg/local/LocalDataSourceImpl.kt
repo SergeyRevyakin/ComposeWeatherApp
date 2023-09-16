@@ -77,10 +77,11 @@ class LocalDataSourceImpl @Inject constructor(
         }.distinctUntilChanged()
     }
 
-    override fun getCitySearchHistory() = cityDao.citySearchHistoryFlow().map {
-        it.map { cityEntity ->
-            cityEntity.toCityItem()
-        }
+    override fun getCitySearchHistory() = cityDao.citySearchHistoryFlow().map { entities ->
+        entities.filter { !it.isFavorite }
+            .map { cityEntity ->
+                cityEntity.toCityItem()
+            }
     }.distinctUntilChanged()
 
 }
