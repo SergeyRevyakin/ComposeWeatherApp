@@ -104,6 +104,7 @@ dependencies {
 
 
     implementation(platform(libs.compose.bom))
+    implementation(project(":service"))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)

@@ -6,7 +6,9 @@ plugins {
 }
 
 android {
-    namespace = "ru.serg.work"
+    namespace = "ru.serg.service"
+    compileSdk = 34
+
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -14,6 +16,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18
@@ -27,13 +30,16 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(project(":core:local"))
     implementation(project(":core:weather"))
+    implementation(project(":core:location"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:notifications"))
 
-    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+
     implementation(libs.bundles.hilt)
     kapt(libs.bundles.hilt.kapt)
-    implementation(libs.kotlinx.datetime)
 
 }

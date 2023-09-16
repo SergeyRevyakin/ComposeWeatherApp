@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.service
 
 sealed class ServiceFetchingResult<out T>{
     data class Loading(val message:String): ServiceFetchingResult<Nothing>()

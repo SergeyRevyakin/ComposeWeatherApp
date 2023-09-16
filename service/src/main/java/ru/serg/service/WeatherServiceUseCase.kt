@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
-package ru.serg.composeweatherapp.data
+package ru.serg.service
 
 import android.util.Log
 import com.serg.weather.WeatherRepository
@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import ru.serg.composeweatherapp.utils.ServiceFetchingResult
+import ru.serg.common.NetworkResult
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.location.LocationDataSource
 import ru.serg.model.WeatherItem
@@ -32,15 +32,15 @@ class WeatherServiceUseCase @Inject constructor(
                     coordinatesWrapper
                 ).map { networkResult ->
                     when (networkResult) {
-                        is ru.serg.common.NetworkResult.Success -> ServiceFetchingResult.Success(
+                        is NetworkResult.Success -> ServiceFetchingResult.Success(
                             networkResult.data
                         )
 
-                        is ru.serg.common.NetworkResult.Error -> ServiceFetchingResult.Error(
+                        is NetworkResult.Error -> ServiceFetchingResult.Error(
                             networkResult.message.orEmpty()
                         )
 
-                        is ru.serg.common.NetworkResult.Loading -> ServiceFetchingResult.Loading("Fetching result from server")
+                        is NetworkResult.Loading -> ServiceFetchingResult.Loading("Fetching result from server")
                     }
                 }
             }

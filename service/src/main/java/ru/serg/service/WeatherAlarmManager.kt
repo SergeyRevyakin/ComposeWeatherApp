@@ -1,20 +1,22 @@
-package ru.serg.composeweatherapp.utils
+package ru.serg.service
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import io.ktor.util.date.getTimeMillis
-import ru.serg.composeweatherapp.service.FetchWeatherService
 
 class WeatherAlarmManager(private val context: Context) {
+
+    companion object {
+        const val ALARM_REQUEST_CODE = 1122
+    }
 
     fun isAlarmSet(): Boolean {
         val intent = Intent(context, FetchWeatherService::class.java)
 
         val alarm = PendingIntent.getForegroundService(
             context,
-            Constants.ALARM_REQUEST_CODE,
+            ALARM_REQUEST_CODE,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
         )
@@ -35,12 +37,12 @@ class WeatherAlarmManager(private val context: Context) {
 
         val intent = Intent(context, FetchWeatherService::class.java)
         val pendingIntent = PendingIntent.getForegroundService(
-            context, Constants.ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
+            context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
         )
 
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
-            getTimeMillis() + 2*60*1000L,
+            System.currentTimeMillis() + 2 * 60 * 1000L,
             AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //            2*60*1000,
             pendingIntent
@@ -53,7 +55,7 @@ class WeatherAlarmManager(private val context: Context) {
 
         val intent = Intent(context, FetchWeatherService::class.java)
         val pendingIntent = PendingIntent.getForegroundService(
-            context, Constants.ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
+            context, ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_IMMUTABLE
         )
 
         alarmManager.cancel(pendingIntent)

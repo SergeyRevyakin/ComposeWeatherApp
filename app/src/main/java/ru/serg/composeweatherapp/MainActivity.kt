@@ -14,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.composeweatherapp.ui.Navigation
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package ru.serg.composeweatherapp.service
+package ru.serg.service
 
 import android.app.NotificationManager
 import android.app.Service
@@ -16,12 +16,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.serg.composeweatherapp.R
-import ru.serg.composeweatherapp.data.WeatherServiceUseCase
-import ru.serg.composeweatherapp.utils.Constants
-import ru.serg.composeweatherapp.utils.ServiceFetchingResult
-import ru.serg.composeweatherapp.utils.common.showDailyServiceForecastNotification
+import ru.serg.common.R.drawable
 import ru.serg.model.WeatherItem
+import ru.serg.notifications.Constants
+import ru.serg.notifications.showDailyServiceForecastNotification
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,12 +49,16 @@ class FetchWeatherService : Service() {
             NotificationCompat.Builder(this, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
                 .setContentTitle("Fetching weather data...")
                 .setContentText("Starting...")
-                .setSmallIcon(R.drawable.ic_day_sunny)
+                .setSmallIcon(drawable.ic_day_sunny)
                 .setOngoing(true)
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(SERVICE_ID, serviceNotification.build(), FOREGROUND_SERVICE_TYPE_LOCATION)
+            startForeground(
+                SERVICE_ID,
+                serviceNotification.build(),
+                FOREGROUND_SERVICE_TYPE_LOCATION
+            )
         } else {
             startForeground(SERVICE_ID, serviceNotification.build())
         }

@@ -3,7 +3,7 @@
     ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class
 )
 
-package ru.serg.composeweatherapp.ui
+package ru.serg.composeweatherapp
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween

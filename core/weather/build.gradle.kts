@@ -30,6 +30,8 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:local"))
     implementation(project(":core:common"))
+
+
     implementation(libs.androidx.annotation.jvm)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.bundles.hilt)

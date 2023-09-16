@@ -39,14 +39,14 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:local"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:location"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
 
     implementation(libs.bundles.hilt)
-    implementation(project(":core:local"))
-    implementation(project(":core:datastore"))
-    implementation(project(":core:location"))
     kapt(libs.bundles.hilt.kapt)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.bundles.permission.flow)
