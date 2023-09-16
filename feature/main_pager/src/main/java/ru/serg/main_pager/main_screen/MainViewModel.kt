@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
@@ -79,7 +80,7 @@ class MainViewModel @Inject constructor(
 
     private fun setInitialState(isLocationAvailable: Boolean) {
         viewModelScope.launch {
-            citiesWeather.debounce(200L).collectLatest { state ->
+            citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when (state) {
                     is CommonScreenState.Empty -> {
                         if (isLocationAvailable) {
@@ -95,6 +96,7 @@ class MainViewModel @Inject constructor(
                                     (citiesWeather.value as CommonScreenState.Success).updatedWeatherList[it]
                                 checkWeatherItem(item)
                             } catch (_: Exception) {
+                                observableItemNumber.value -= 1
                                 setInitialState(isLocationAvailable)
                             }
 
