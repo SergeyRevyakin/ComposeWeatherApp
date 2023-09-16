@@ -4,10 +4,6 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
     }
-
-    dependencies {
-//        classpath(libs.gradle.build)
-    }
 }
 
 plugins {

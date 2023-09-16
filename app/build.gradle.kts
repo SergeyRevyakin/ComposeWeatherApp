@@ -1,12 +1,10 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
-//    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     alias(libs.plugins.ksp)
     id("kotlin-kapt")
 }
@@ -101,10 +99,10 @@ dependencies {
     implementation(project(":feature:choose_city_feature"))
     implementation(project(":feature:city_weather"))
     implementation(project(":feature:main_pager"))
+    implementation(project(":service"))
 
 
     implementation(platform(libs.compose.bom))
-    implementation(project(":service"))
     androidTestImplementation(platform(libs.compose.bom))
 
     implementation(libs.bundles.compose)
