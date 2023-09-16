@@ -1,8 +1,9 @@
 package ru.serg.network
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.serg.common.NetworkResult
@@ -71,23 +72,12 @@ class RemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>> {
-        return flow {
-            try {
-                emit(NetworkResult.Loading)
-                httpClientGeocoding.get {
-                    parameter("q", input)
-                    parameter("limit", 15)
-                }.let {
-                    if (it.status.value == 200) {
-                        emit(NetworkResult.Success(it.body()))
-                    } else {
-                        emit(NetworkResult.Error(message = it.status.description))
-                    }
-                }
-            } catch (e: Exception) {
-                emit(NetworkResult.Error(e.localizedMessage))
-            }
+    override fun getCityForAutocomplete(input: String?): Flow<List<CityNameGeocodingResponseItem>> =
+        flow {
+
+            emit(httpClientGeocoding.get {
+                parameter("q", input)
+                parameter("limit", 15)
+            }.body())
         }
-    }
 }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.serg.choose_city_feature.CitySearchUseCase
 import ru.serg.common.NetworkResult
+import ru.serg.common.asResult
 import ru.serg.model.CityItem
 import javax.inject.Inject
 
@@ -69,7 +70,7 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     private suspend fun fetchCities(input: String?) {
-        citySearchUseCase.fetchCityListFlow(input).collectLatest { networkResult ->
+        citySearchUseCase.fetchCityListFlow(input).asResult().collectLatest { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> {
                     setLoadingState()

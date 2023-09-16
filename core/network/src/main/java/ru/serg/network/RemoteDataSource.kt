@@ -11,5 +11,5 @@ interface RemoteDataSource {
 
     fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>>
 
-    fun getCityForAutocomplete(input: String?): Flow<NetworkResult<List<CityNameGeocodingResponseItem>>>
+    fun getCityForAutocomplete(input: String?): Flow<List<CityNameGeocodingResponseItem>>
 }
