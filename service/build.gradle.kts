@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -40,6 +40,6 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.bundles.hilt)
-    kapt(libs.bundles.hilt.kapt)
+    ksp(libs.bundles.hilt.ksp)
 
 }

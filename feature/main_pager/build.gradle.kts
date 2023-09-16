@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -47,7 +47,7 @@ dependencies {
     implementation(libs.bundles.compose)
 
     implementation(libs.bundles.hilt)
-    kapt(libs.bundles.hilt.kapt)
+    ksp(libs.bundles.hilt.ksp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.bundles.permission.flow)
 }

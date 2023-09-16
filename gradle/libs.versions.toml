@@ -14,7 +14,7 @@ espresso-core = "3.5.1"
 glance-appwidget = "1.0.0"
 gradle = "8.1.1"
 hilt-android = "2.48"
-hilt-navigation-compose = "1.0.0"
+hilt-navigation-compose = "1.1.0-alpha01"
 junit = "1.1.5"
 kotlin = "1.9.10"
 kotlinx-datetime = "0.4.1"
@@ -170,7 +170,7 @@ hilt = [
     "androidx-hilt-work"
 ]
 
-hilt-kapt = [
+hilt-ksp = [
     "hilt-android-compiler",
     "androidx-hilt-compiler",
 ]
