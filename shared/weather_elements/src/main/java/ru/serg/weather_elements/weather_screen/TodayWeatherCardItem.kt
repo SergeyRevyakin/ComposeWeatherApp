@@ -1,5 +1,11 @@
 package ru.serg.weather_elements.weather_screen
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +44,7 @@ import ru.serg.weather_elements.buildTitle
 import ru.serg.weather_elements.firstLetterToUpperCase
 import ru.serg.weather_elements.getFormattedLastUpdateDate
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
@@ -52,6 +59,10 @@ fun TodayWeatherCardItem(
             MaterialTheme.colors.background
         ),
     )
+
+
+
+
 
     Column(
         modifier = Modifier
@@ -68,6 +79,16 @@ fun TodayWeatherCardItem(
             .wrapContentHeight()
 
     ) {
+        AnimatedContent(targetState = weatherItem, label = "12",
+            transitionSpec = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = 350,
+                        delayMillis = 300
+                    )
+                ) togetherWith fadeOut(animationSpec = tween(durationMillis = 300))
+            }) { weatherItem ->
+            Column {
 
         Icon(
             painter = painterResource(
@@ -133,6 +154,17 @@ fun TodayWeatherCardItem(
             HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
 
+//            AnimatedContent(targetState = getFormattedLastUpdateDate(lastUpdatedTime),
+//                label = "test",
+//                transitionSpec = {
+//                    fadeIn(
+//                        animationSpec = tween(
+//                            durationMillis = 350,
+//                            delayMillis = 300
+//                        )
+//                    ) togetherWith fadeOut(animationSpec = tween(durationMillis = 300))
+//                }) {
+
             Text(
                 text = stringResource(
                     id = R.string.last_updated_value,
@@ -143,6 +175,8 @@ fun TodayWeatherCardItem(
                     .fillMaxWidth()
                     .padding(16.dp)
             )
+        }
+            }
         }
     }
 }

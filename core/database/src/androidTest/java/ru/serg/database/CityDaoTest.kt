@@ -3,7 +3,6 @@ package ru.serg.database
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -13,7 +12,6 @@ import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.entity.CityEntity
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class CityDaoTest {
 
     private lateinit var database: AppDatabase

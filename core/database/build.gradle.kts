@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 
     //Room
     implementation(libs.bundles.room)
@@ -45,7 +46,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
 
-    androidTestImplementation(project(":core:testing"))
 
 }
 
