@@ -20,7 +20,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.common.R.color
 import ru.serg.common.R.drawable
-import ru.serg.model.WeatherItem
+import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_ERROR_REQUEST_CODE
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_REQUEST_CODE
 import ru.serg.notifications.Constants.Notifications.TARGET_ACTIVITY_NAME
@@ -47,9 +47,9 @@ fun showNotification(context: Context, header: String?, text: String?) {
 }
 
 @SuppressLint("MissingPermission")
-fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
+fun showDailyForecastNotification(context: Context, weatherItem: UpdatedWeatherItem) {
 
-    val weatherXml = weatherItem.weatherIcon ?: drawable.ic_sun
+    val weatherXml = weatherItem.hourlyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
 
@@ -69,16 +69,16 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
     val builder =
         NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(weatherXml)
-            .setContentTitle("Weather for ${getDate(weatherItem.lastUpdatedTime)}")
-            .setContentText("In ${weatherItem.cityItem?.name}")
+            .setContentTitle("Weather for ${getDate(weatherItem.cityItem.lastTimeUpdated)}")
+            .setContentText("In ${weatherItem.cityItem.name}")
             .setLargeIcon(img)
             .setStyle(
                 NotificationCompat.InboxStyle()
-                    .addLine("Right now: ${weatherItem.feelsLike}")
-                    .addLine("Morning: ${weatherItem.dailyWeatherList.first().temp.morningTemp}")
-                    .addLine("Day: ${weatherItem.dailyWeatherList.first().temp.dayTemp}")
-                    .addLine("Evening: ${weatherItem.dailyWeatherList.first().temp.eveningTemp}")
-                    .addLine("Night: ${weatherItem.dailyWeatherList.first().temp.nightTemp}")
+                    .addLine("Right now: ${weatherItem.hourlyWeatherList.first().feelsLike}")
+                    .addLine("Morning: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.morningTemp}")
+                    .addLine("Day: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.dayTemp}")
+                    .addLine("Evening: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.eveningTemp}")
+                    .addLine("Night: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.nightTemp}")
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(context, color.primary))
@@ -91,9 +91,9 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
 }
 
 @SuppressLint("MissingPermission")
-fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
+fun showDailyServiceForecastNotification(context: Context, weatherItem: UpdatedWeatherItem) {
 
-    val weatherXml = weatherItem.weatherIcon ?: drawable.ic_sun
+    val weatherXml = weatherItem.dailyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
 //    val notificationIntent = Intent(context, MainActivity::class.java)
@@ -106,16 +106,16 @@ fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherI
     val builder =
         NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_SERVICE_ID)
             .setSmallIcon(weatherXml)
-            .setContentTitle("Weather Service for ${getDate(weatherItem.lastUpdatedTime)}")
-            .setContentText("In ${weatherItem.cityItem?.name}")
+            .setContentTitle("Weather Service for ${getDate(weatherItem.cityItem.lastTimeUpdated)}")
+            .setContentText("In ${weatherItem.cityItem.name}")
             .setLargeIcon(img)
             .setStyle(
                 NotificationCompat.InboxStyle()
-                    .addLine("Right now: ${weatherItem.feelsLike}")
-                    .addLine("Morning: ${weatherItem.dailyWeatherList.first().temp.morningTemp}")
-                    .addLine("Day: ${weatherItem.dailyWeatherList.first().temp.dayTemp}")
-                    .addLine("Evening: ${weatherItem.dailyWeatherList.first().temp.eveningTemp}")
-                    .addLine("Night: ${weatherItem.dailyWeatherList.first().temp.nightTemp}")
+                    .addLine("Right now: ${weatherItem.hourlyWeatherList.first().feelsLike}")
+                    .addLine("Morning: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.morningTemp}")
+                    .addLine("Day: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.dayTemp}")
+                    .addLine("Evening: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.eveningTemp}")
+                    .addLine("Night: ${weatherItem.dailyWeatherList.first().dailyWeatherItem.nightTemp}")
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(context, color.primary))

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.NetworkStatus
+import ru.serg.common.asResult
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
 import ru.serg.main_pager.CommonScreenState
@@ -140,11 +141,13 @@ class MainViewModel @Inject constructor(
                     if (updatedWeatherItem.cityItem.isFavorite) {
                         checkLocationAndFetchWeather()
                     } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
-                        .debounce(200L)
+                        .asResult()
                         .collectLatest {
                             when (it) {
                                 is NetworkResult.Loading -> isLoading.value = true
-                                is NetworkResult.Error -> isLoading.value = false
+                                is NetworkResult.Error -> {
+                                    isLoading.value = false
+                                }
                                 is NetworkResult.Success -> isLoading.value = false
                             }
                         }

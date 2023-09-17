@@ -6,9 +6,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.serg.common.NetworkResult
-import ru.serg.common.Units
 import ru.serg.datastore.DataStoreDataSource
+import ru.serg.model.enums.Units
 import ru.serg.network.dto.CityNameGeocodingResponseItem
 import ru.serg.network.dto.OneCallResponse
 import ru.serg.network.dto.WeatherResponse
@@ -22,59 +21,40 @@ class RemoteDataSourceImpl @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource
 ) : RemoteDataSource {
 
-    override fun getOneCallWeather(lat: Double, lon: Double): Flow<NetworkResult<OneCallResponse>> {
-        return flow {
-            try {
-                emit(NetworkResult.Loading)
-                dataStoreDataSource.measurementUnits.collect { value ->
-                    val units = Units.values()[value].parameterCode
+    override fun getOneCallWeather(lat: Double, lon: Double): Flow<OneCallResponse> =
+        flow {
+            dataStoreDataSource.measurementUnits.collect { value ->
+                val units = Units.entries[value].parameterCode
+                emit(
                     httpClientOneCall.get {
                         parameter("units", units)
                         parameter("exclude", "minutely")
                         parameter("lon", lon)
                         parameter("lat", lat)
-                    }.let {
-                        if (it.status.value == 200) {
-                            emit(NetworkResult.Success(it.body()))
-                        } else {
-                            emit(NetworkResult.Error(message = it.status.description))
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                emit(NetworkResult.Error(e.localizedMessage))
+                    }.body()
+                )
             }
         }
-    }
 
-    override fun getWeather(lat: Double, lon: Double): Flow<NetworkResult<WeatherResponse>> {
-        return flow {
-            try {
-                emit(NetworkResult.Loading)
-                dataStoreDataSource.measurementUnits.collect { value ->
-                    val units = Units.values()[value].parameterCode
+    override fun getWeather(lat: Double, lon: Double): Flow<WeatherResponse> =
+        flow {
+
+            dataStoreDataSource.measurementUnits.collect { value ->
+                val units = Units.entries[value].parameterCode
+                emit(
                     httpClientWeather.get {
                         parameter("units", units)
                         parameter("exclude", "minutely")
                         parameter("lon", lon)
                         parameter("lat", lat)
-                    }.let {
-                        if (it.status.value == 200) {
-                            emit(NetworkResult.Success(it.body()))
-                        } else {
-                            emit(NetworkResult.Error(message = it.status.description))
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                emit(NetworkResult.Error(e.localizedMessage))
+                    }.body()
+                )
             }
+
         }
-    }
 
     override fun getCityForAutocomplete(input: String?): Flow<List<CityNameGeocodingResponseItem>> =
         flow {
-
             emit(httpClientGeocoding.get {
                 parameter("q", input)
                 parameter("limit", 15)

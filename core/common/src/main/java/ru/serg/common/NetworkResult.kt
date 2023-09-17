@@ -12,7 +12,7 @@ sealed class NetworkResult<out T> {
     data class Error<Nothing>(val message: String?) :
         NetworkResult<Nothing>()
 
-    object Loading : NetworkResult<Nothing>()
+    data object Loading : NetworkResult<Nothing>()
 }
 
 fun <T> Flow<T>.asResult(): Flow<NetworkResult<T>> {

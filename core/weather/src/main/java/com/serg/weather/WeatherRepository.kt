@@ -1,21 +1,14 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package com.serg.weather
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.mapLatest
-import ru.serg.common.NetworkResult
+import kotlinx.coroutines.flow.map
 import ru.serg.local.LocalDataSource
 import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
-import ru.serg.model.DailyWeather
-import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedWeatherItem
-import ru.serg.model.WeatherItem
 import ru.serg.network.RemoteDataSource
 import javax.inject.Inject
 
@@ -26,201 +19,64 @@ class WeatherRepository @Inject constructor(
 
     fun fetchCurrentLocationWeather(
         coordinates: Coordinates,
-    ): Flow<NetworkResult<WeatherItem>> =
-        fetchCoordinatesWeather(coordinates).flowOn(Dispatchers.IO)
-
-    fun fetchCityWeather(
-        cityItem: CityItem,
-    ): Flow<NetworkResult<WeatherItem>> =
-        fetchWeather(cityItem).flowOn(Dispatchers.IO)
-
-    private fun fetchCoordinatesWeather(coordinates: Coordinates) = combine(
+    ): Flow<UpdatedWeatherItem> = combine(
         remoteDataSource.getWeather(coordinates.latitude, coordinates.longitude),
         remoteDataSource.getOneCallWeather(
             coordinates.latitude,
             coordinates.longitude
         )
     ) { weatherResponse, oneCallResponse ->
-        when {
-            (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
-                NetworkResult.Loading
-            }
 
-            (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
-                NetworkResult.Error(
-                    "Error"
-                )
-            }
+        val cityItem = DataMapper.mapCityItem(weatherResponse, true)
 
-            (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
+        val dailyWeather = oneCallResponse.daily?.map {
+            DataMapper.mapDailyWeather(it)
+        } ?: listOf()
 
-                val cityItem = DataMapper.mapCityItem(weatherResponse.data, true)
+        val hourlyWeather = oneCallResponse.hourly?.map {
+            DataMapper.mapHourlyWeather(it)
+        } ?: listOf()
 
-                val weatherItem = DataMapper.getWeatherItem(
-                    weatherResponse.data,
-                    oneCallResponse.data,
-                    cityItem
-                )
-
-                val dailyWeather = oneCallResponse.data.daily?.map {
-
-                    DailyWeather(
-                        windDirection = it.windDeg.orZero(),
-                        windSpeed = it.windSpeed.orZero(),
-                        weatherDescription = it.weather?.first()?.description.orEmpty(),
-                        weatherIcon = IconMapper.map(it.weather?.first()?.id),
-                        dateTime = it.dt.toTimeStamp(),
-                        humidity = it.humidity.orZero(),
-                        pressure = it.pressure.orZero(),
-                        feelsLike = DataMapper.getFeelsLikeDailyTempItem(it),
-                        dailyWeatherItem = DataMapper.getUpdatedDailyTempItem(it),
-                        sunset = it.sunset.toTimeStamp(),
-                        sunrise = it.sunrise.toTimeStamp(),
-                        uvi = it.uvi.orZero()
-                    )
-                } ?: listOf()
-
-                val hourlyWeather = oneCallResponse.data.hourly?.map {
-                    HourlyWeather(
-                        windDirection = it.windDeg.orZero(),
-                        windSpeed = it.windSpeed.orZero(),
-                        weatherDescription = it.weather?.first()?.description.orEmpty(),
-                        weatherIcon = IconMapper.map(it.weather?.first()?.id),
-                        dateTime = it.dt.toTimeStamp(),
-                        humidity = it.humidity.orZero(),
-                        pressure = it.pressure.orZero(),
-                        currentTemp = it.temp.orZero(),
-                        feelsLike = it.feelsLike.orZero(),
-                        uvi = it.uvi.orZero()
-                    )
-                } ?: listOf()
-
-                localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-
-                localDataSource.insertCityItemToSearchHistory(cityItem)
-                NetworkResult.Success(weatherItem)
-
-            }
-
-            else -> NetworkResult.Loading
+        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
+            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
+            localDataSource.insertCityItemToSearchHistory(cityItem)
         }
-    }
 
-    fun fetchWeather(
-        cityItem: CityItem
-    ): Flow<NetworkResult<WeatherItem>> =
-        combine(
-            remoteDataSource.getWeather(cityItem.latitude, cityItem.longitude),
-            remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
-        ) { weatherResponse, oneCallResponse ->
-            when {
-                (weatherResponse is NetworkResult.Loading || oneCallResponse is NetworkResult.Loading) -> {
-                    NetworkResult.Loading
-                }
+        UpdatedWeatherItem(
+            cityItem,
+            dailyWeather,
+            hourlyWeather,
+            oneCallResponse.alert?.description
+        )
 
-                (weatherResponse is NetworkResult.Error || oneCallResponse is NetworkResult.Error) -> {
-                    NetworkResult.Error(
-                        "Error"
-                    )
-                }
+    }.flowOn(Dispatchers.IO)
 
-                (weatherResponse is NetworkResult.Success && oneCallResponse is NetworkResult.Success) -> {
-
-                    val weatherItem = DataMapper.getWeatherItem(
-                        weatherResponse.data,
-                        oneCallResponse.data,
-                        cityItem
-                    )
-
-                    val dailyWeather = oneCallResponse.data.daily?.map {
-                        DataMapper.mapDailyWeather(it)
-                    } ?: listOf()
-
-                    val hourlyWeather = oneCallResponse.data.hourly?.map {
-                        DataMapper.mapHourlyWeather(it)
-                    } ?: listOf()
-
-
-                    localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-                    NetworkResult.Success(weatherItem)
-
-                }
-
-                else -> NetworkResult.Loading
-            }
-        }
 
     fun getCityWeatherFlow(
-        cityItem: CityItem
+        cityItem: CityItem,
+        isResultSavingRequired: Boolean = true
     ) = remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
-        .mapLatest { oneCallResponse ->
-            when {
-                (oneCallResponse is NetworkResult.Loading) -> {
-                    NetworkResult.Loading
-                }
+        .map { oneCallResponse ->
 
-                (oneCallResponse is NetworkResult.Error) -> {
-                    NetworkResult.Error(
-                        oneCallResponse.message ?: "Unknown error"
-                    )
-                }
+            val dailyWeather = oneCallResponse.daily?.map {
+                DataMapper.mapDailyWeather(it)
+            } ?: listOf()
 
-                (oneCallResponse is NetworkResult.Success) -> {
+            val hourlyWeather = oneCallResponse.hourly?.map {
+                DataMapper.mapHourlyWeather(it)
+            } ?: listOf()
 
-                    val dailyWeather = oneCallResponse.data.daily?.map {
-                        DataMapper.mapDailyWeather(it)
-                    } ?: listOf()
-
-                    val hourlyWeather = oneCallResponse.data.hourly?.map {
-                        DataMapper.mapHourlyWeather(it)
-                    } ?: listOf()
-
-
-                    localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-
-                    NetworkResult.Success(Any())
-
-                }
-
-                else -> NetworkResult.Loading
+            if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
+                localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
             }
-        }
 
-    fun getCityWeatherNoSavingFlow(
-        cityItem: CityItem
-    ) = remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude)
-        .mapLatest { oneCallResponse ->
-            when {
-                (oneCallResponse is NetworkResult.Loading) -> {
-                    NetworkResult.Loading
-                }
+            UpdatedWeatherItem(
+                cityItem,
+                dailyWeather,
+                hourlyWeather,
+                oneCallResponse.alert?.description
+            )
 
-                (oneCallResponse is NetworkResult.Error) -> {
-                    NetworkResult.Error(
-                        oneCallResponse.message ?: "Unknown error"
-                    )
-                }
+        }.flowOn(Dispatchers.IO)
 
-                (oneCallResponse is NetworkResult.Success) -> {
-
-                    val dailyWeather = oneCallResponse.data.daily?.map {
-                        DataMapper.mapDailyWeather(it)
-                    } ?: listOf()
-
-                    val hourlyWeather = oneCallResponse.data.hourly?.map {
-                        DataMapper.mapHourlyWeather(it)
-                    } ?: listOf()
-
-                    NetworkResult.Success(
-                        UpdatedWeatherItem(
-                            cityItem,
-                            dailyWeather,
-                            hourlyWeather
-                        )
-                    )
-                }
-
-                else -> NetworkResult.Loading
-            }
-        }
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import ru.serg.city_weather.Constants
 import ru.serg.common.NetworkResult
+import ru.serg.common.asResult
 import ru.serg.weather_elements.ScreenState
 import javax.inject.Inject
 
@@ -32,7 +33,8 @@ class CityWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             savedStateHandle.get<String>(Constants.CITY_ITEM)?.let { city ->
                 uiState =
-                    weatherRepository.getCityWeatherNoSavingFlow(Json.decodeFromString(city))
+                    weatherRepository.getCityWeatherFlow(Json.decodeFromString(city), false)
+                        .asResult()
                         .map { networkResult ->
                             when (networkResult) {
                                 is NetworkResult.Loading -> ScreenState.Loading

@@ -3,7 +3,8 @@ package ru.serg.model
 data class UpdatedWeatherItem(
     val cityItem: CityItem,
     val dailyWeatherList: List<DailyWeather>,
-    val hourlyWeatherList: List<HourlyWeather>
+    val hourlyWeatherList: List<HourlyWeather>,
+    val alertMessage: String? = null
 )
 
 data class DailyWeather(

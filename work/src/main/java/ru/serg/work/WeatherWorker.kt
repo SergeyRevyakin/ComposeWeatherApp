@@ -20,7 +20,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
-import ru.serg.model.WeatherItem
+import ru.serg.common.asResult
+import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.showDailyForecastNotification
 import ru.serg.notifications.showFetchErrorNotification
 import ru.serg.notifications.showNotification
@@ -38,7 +39,7 @@ class WeatherWorker @AssistedInject constructor(
     companion object {
 
         private val uniqueWorkName = WeatherWorker::class.java.simpleName
-        private const val workerTag = "weather_worker_tag"
+        private const val WORKER_TAG = "weather_worker_tag"
 
         fun setupPeriodicWork(context: Context, interval: Long) {
             Log.e(this::class.simpleName, "Worker interval $interval")
@@ -49,7 +50,7 @@ class WeatherWorker @AssistedInject constructor(
 
             val repeatingWork =
                 PeriodicWorkRequestBuilder<WeatherWorker>(interval, TimeUnit.HOURS)
-                    .addTag(workerTag)
+                    .addTag(WORKER_TAG)
                     .setInitialDelay(interval, TimeUnit.MINUTES)
                     .setConstraints(constraints)
                     .build()
@@ -64,7 +65,7 @@ class WeatherWorker @AssistedInject constructor(
         }
 
         fun isWeatherWorkerSet(context: Context) =
-            WorkManager.getInstance(context).getWorkInfosByTag(workerTag).get()?.let {
+            WorkManager.getInstance(context).getWorkInfosByTag(WORKER_TAG).get()?.let {
                 it.isNotEmpty() && !listOf(
                     WorkInfo.State.CANCELLED,
                     WorkInfo.State.BLOCKED,
@@ -74,7 +75,7 @@ class WeatherWorker @AssistedInject constructor(
 
         suspend fun cancelPeriodicWork(context: Context) {
             Log.e(this::class.simpleName, "Worker cancelled")
-            WorkManager.getInstance(context).cancelAllWorkByTag(workerTag).await()
+            WorkManager.getInstance(context).cancelAllWorkByTag(WORKER_TAG).await()
         }
     }
 
@@ -101,6 +102,7 @@ class WeatherWorker @AssistedInject constructor(
 
     private fun fetchWeatherForNotification() {
         workerUseCase.fetchFavouriteCity()
+            .asResult()
             .onEach { networkResult ->
                 Log.e(this::class.simpleName, "Fetch service $networkResult")
                 when (networkResult) {
@@ -120,7 +122,7 @@ class WeatherWorker @AssistedInject constructor(
             }.launchIn(serviceScope)
     }
 
-    private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem?) {
+    private fun onWeatherFetchedSuccessful(weatherItem: UpdatedWeatherItem?) {
         weatherItem?.let {
             showDailyForecastNotification(applicationContext, weatherItem)
         }
@@ -130,6 +132,6 @@ class WeatherWorker @AssistedInject constructor(
         showFetchErrorNotification(applicationContext, errorText)
     }
 
-    fun getHour(l: Long?): String =
+    private fun getHour(l: Long?): String =
         SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
 }

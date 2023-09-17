@@ -16,6 +16,6 @@ class WorkerUseCase @Inject constructor(
 
     fun fetchFavouriteCity() =
         localDataSource.getFavouriteCity().mapLatest {
-            weatherRepository.fetchCityWeather(it)
+            weatherRepository.getCityWeatherFlow(it)
         }.flattenConcat()
 }

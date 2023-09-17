@@ -17,7 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.R.drawable
-import ru.serg.model.WeatherItem
+import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.Constants
 import ru.serg.notifications.showDailyServiceForecastNotification
 import javax.inject.Inject
@@ -84,7 +84,7 @@ class FetchWeatherService : Service() {
 
     }
 
-    private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem) {
+    private fun onWeatherFetchedSuccessful(weatherItem: UpdatedWeatherItem) {
         stop()
         showDailyServiceForecastNotification(applicationContext, weatherItem)
     }
