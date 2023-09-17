@@ -8,21 +8,21 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class DataStoreDataSource(context: Context) {
+class DataStoreDataSource @Inject constructor(
+    private val dataStore: DataStore<Preferences>,
+    context: Context
+) {
     companion object {
         val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
     }
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
-    private val dataStore = context.dataStore
 
     //DarkMode flag
     val isDarkThemeEnabled: Flow<Boolean> = dataStore.data.map {

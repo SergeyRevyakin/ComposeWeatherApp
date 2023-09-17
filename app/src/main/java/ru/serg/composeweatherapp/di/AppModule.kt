@@ -1,6 +1,8 @@
 package ru.serg.composeweatherapp.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -8,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.serg.common.NetworkStatus
 import ru.serg.datastore.DataStoreDataSource
+import ru.serg.datastore.dataStore
 import ru.serg.location.LocationDataSource
 import ru.serg.service.WeatherAlarmManager
 import ru.serg.work.WorkerManager
@@ -21,7 +24,7 @@ class AppModule {
     @Provides
     fun provideDataStore(
         @ApplicationContext context: Context
-    ): DataStoreDataSource = DataStoreDataSource(context)
+    ): DataStoreDataSource = DataStoreDataSource(context.dataStore, context)
 
     @Singleton
     @Provides
@@ -46,5 +49,12 @@ class AppModule {
     fun provideWorkerManager(
         @ApplicationContext context: Context,
     ): WorkerManager = WorkerManager(context)
+
+    @Singleton
+    @Provides
+    fun provideDataSource(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> = context.dataStore
+
 
 }

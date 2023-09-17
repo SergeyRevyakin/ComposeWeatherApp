@@ -14,8 +14,8 @@ class NetworkStatus(val context: Context) {
 }
 
 sealed class ConnectionState {
-    object Available : ConnectionState()
-    object Unavailable : ConnectionState()
+    data object Available : ConnectionState()
+    data object Unavailable : ConnectionState()
 }
 
 val Context.currentConnectionsState: ConnectionState
