@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    androidTestImplementation(project(":core:testing"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)

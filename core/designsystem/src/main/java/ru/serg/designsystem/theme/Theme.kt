@@ -21,7 +21,7 @@ data class CustomColors(
 
 val LocalCustomColorsPalette = staticCompositionLocalOf { CustomColors() }
 
-private val DarkColorPalette = darkColors(
+val DarkColorPalette = darkColors(
     primary = primaryDark,
     primaryVariant = primaryDark,
     secondary = primaryDark,

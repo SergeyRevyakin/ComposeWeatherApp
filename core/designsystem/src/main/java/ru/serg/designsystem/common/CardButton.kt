@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.gradientBorder
+import ru.serg.designsystem.utils.Constants.CARD_BUTTON_TEST_TAG
 
 @Composable
 fun CardButton(
@@ -50,8 +52,10 @@ fun CardButton(
             Icon(
                 imageVector = image,
                 contentDescription = stringResource(id = R.string.accessibility_desc_search_icon),
-                Modifier.size(48.dp),
-                tint = MaterialTheme.colors.primary
+                Modifier
+                    .size(48.dp)
+                    .testTag(CARD_BUTTON_TEST_TAG),
+                tint = MaterialTheme.colors.primary,
             )
 
             Text(

@@ -43,8 +43,6 @@ fun WeatherParamItem(
             Icon(
                 painter = painterResource(id = paramIcon),
                 contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
-//                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-//                contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .size(42.dp)
                     .rotate(rotation.toFloat())
