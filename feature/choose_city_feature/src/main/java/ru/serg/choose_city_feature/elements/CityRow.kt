@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.choose_city_feature.R
 import ru.serg.model.CityItem
+import ru.serg.strings.R.string
 
 @Composable
 fun CityRow(
@@ -50,7 +50,7 @@ fun CityRow(
                 }) {
             Icon(
                 imageVector = Icons.Rounded.Add,
-                contentDescription = stringResource(id = R.string.accessibility_desc_add_to_favourite_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_add_to_favourite_icon),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)

@@ -39,6 +39,7 @@ import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.Units
+import ru.serg.strings.R.string
 import ru.serg.weather_elements.R
 import ru.serg.weather_elements.buildTitle
 import ru.serg.weather_elements.firstLetterToUpperCase
@@ -94,7 +95,7 @@ fun TodayWeatherCardItem(
             painter = painterResource(
                 id = weatherItem.weatherIcon
             ),
-            contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
+            contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -144,7 +145,7 @@ fun TodayWeatherCardItem(
                     .padding(horizontal = 12.dp),
                 paramIcon = R.drawable.ic_day_sunny,
                 paramValue = stringResource(
-                    id = R.string.uv_index_value,
+                    id = string.uv_index_value,
                     stringResource(id = mapUvIndex(weatherItem.uvi).descriptionId)
                 ),
                 hasInfoButton = true,
@@ -167,7 +168,7 @@ fun TodayWeatherCardItem(
 
             Text(
                 text = stringResource(
-                    id = R.string.last_updated_value,
+                    id = string.last_updated_value,
                     getFormattedLastUpdateDate(lastUpdatedTime)
                 ),
                 textAlign = TextAlign.End,

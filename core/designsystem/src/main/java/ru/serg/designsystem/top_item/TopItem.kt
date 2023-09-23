@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.designsystem.R
+import ru.serg.strings.R.string
 
 @Composable
 fun TopItem(
@@ -57,7 +57,7 @@ fun TopItem(
                 leftIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = stringResource(id = R.string.accessibility_desc_search_icon),
+                        contentDescription = stringResource(id = string.accessibility_desc_search_icon),
                         modifier = Modifier
                     )
                 }
@@ -86,7 +86,7 @@ fun TopItem(
                 rightIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = stringResource(id = R.string.accessibility_desc_settings_icon),
+                        contentDescription = stringResource(id = string.accessibility_desc_settings_icon),
                     )
                 }
             }

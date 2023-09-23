@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.designsystem.utils.Constants
@@ -40,6 +39,7 @@ import ru.serg.designsystem.utils.getDate
 import ru.serg.designsystem.utils.getMinMaxTemp
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
+import ru.serg.strings.R.string
 
 @Composable
 fun DailyWeatherItem(
@@ -93,7 +93,7 @@ fun DailyWeatherItem(
 
         Image(
             painter = painterResource(id = item.weatherIcon),
-            contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
+            contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
             colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
             contentScale = ContentScale.Fit,
             modifier = Modifier

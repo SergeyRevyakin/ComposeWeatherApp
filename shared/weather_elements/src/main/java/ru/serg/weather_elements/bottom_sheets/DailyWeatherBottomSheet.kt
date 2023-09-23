@@ -36,6 +36,7 @@ import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
+import ru.serg.strings.R.string
 import ru.serg.weather_elements.R
 import ru.serg.weather_elements.getFullDate
 import ru.serg.weather_elements.getHour
@@ -93,7 +94,7 @@ fun DailyWeatherBottomSheet(
 
             Icon(
                 painter = painterResource(id = daily.weatherIcon),
-                contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
                 modifier = Modifier.size(72.dp)
             )
 
@@ -104,11 +105,11 @@ fun DailyWeatherBottomSheet(
                     .padding(start = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.sunrise_value, getHour(daily.sunrise)),
+                    text = stringResource(id = string.sunrise_value, getHour(daily.sunrise)),
                 )
 
                 Text(
-                    text = stringResource(id = R.string.sunset_value, getHour(daily.sunset)),
+                    text = stringResource(id = string.sunset_value, getHour(daily.sunset)),
                 )
             }
 
@@ -122,7 +123,7 @@ fun DailyWeatherBottomSheet(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_thermometer),
-                contentDescription = stringResource(id = R.string.accessibility_desc_thermometer_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_thermometer_icon),
                 modifier = Modifier
                     .size(72.dp)
             )
@@ -135,14 +136,14 @@ fun DailyWeatherBottomSheet(
             ) {
                 Text(
                     text = stringResource(
-                        id = R.string.morning_value,
+                        id = string.morning_value,
                         daily.dailyWeatherItem.morningTemp,
                         stringResource(id = units.tempUnits)
                     )
                 )
                 Text(
                     text = stringResource(
-                        id = R.string.day_value,
+                        id = string.day_value,
                         daily.dailyWeatherItem.dayTemp,
                         stringResource(id = units.tempUnits)
                     )
@@ -157,7 +158,7 @@ fun DailyWeatherBottomSheet(
             ) {
                 Text(
                     text = stringResource(
-                        id = R.string.evening_value,
+                        id = string.evening_value,
                         daily.dailyWeatherItem.eveningTemp,
                         stringResource(id = units.tempUnits)
                     )
@@ -165,7 +166,7 @@ fun DailyWeatherBottomSheet(
 
                 Text(
                     text = stringResource(
-                        id = R.string.night_value,
+                        id = string.night_value,
                         daily.dailyWeatherItem.nightTemp,
                         stringResource(id = units.tempUnits)
                     )
@@ -185,7 +186,7 @@ fun DailyWeatherBottomSheet(
                 .padding(8.dp),
             paramIcon = R.drawable.ic_wind_dir_north,
             paramValue = stringResource(
-                id = R.string.wind_value,
+                id = string.wind_value,
                 daily.windSpeed,
                 stringResource(id = units.windUnits)
             ),
@@ -197,14 +198,14 @@ fun DailyWeatherBottomSheet(
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             paramIcon = R.drawable.ic_humidity,
-            paramValue = stringResource(id = R.string.humidity_value, daily.humidity),
+            paramValue = stringResource(id = string.humidity_value, daily.humidity),
         )
 
         ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth(),
             paramIcon = R.drawable.ic_barometer,
-            paramValue = stringResource(id = R.string.pressure_value, daily.pressure),
+            paramValue = stringResource(id = string.pressure_value, daily.pressure),
         )
 
         Spacer(modifier = Modifier.height(12.dp))

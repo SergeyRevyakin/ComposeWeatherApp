@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.model.enums.Units
-import ru.serg.settings_feature.R
+import ru.serg.strings.R.string
 
 @Composable
 fun RadioButtonGroup(
@@ -91,7 +91,7 @@ fun PreviewRadioButtonGroup() {
     ComposeWeatherAppTheme {
 
         RadioButtonGroup(
-            header = stringResource(id = R.string.measurement_units),
+            header = stringResource(id = string.measurement_units),
             nameList = Units.values().map { stringResource(id = it.title) },
             descriptionList = Units.values().map { stringResource(id = it.description) },
             selectedPosition = position,

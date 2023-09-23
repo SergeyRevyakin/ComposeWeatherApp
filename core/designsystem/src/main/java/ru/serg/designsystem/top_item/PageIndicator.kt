@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.strings.R.string
 
 @Composable
 fun PageIndicator(
@@ -61,7 +61,7 @@ fun PageIndicator(
             Icon(
                 imageVector = if (iteration == 0 && hasFavourite) Icons.Rounded.MyLocation
                 else Icons.Rounded.Circle,
-                contentDescription = stringResource(id = R.string.accessibility_desc_position_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_position_icon),
                 tint = color.value,
                 modifier = Modifier
                     .padding(2.dp)

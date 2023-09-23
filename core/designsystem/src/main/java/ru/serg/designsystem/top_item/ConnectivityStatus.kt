@@ -35,8 +35,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.serg.common.ConnectionState
 import ru.serg.common.currentConnectionsState
 import ru.serg.common.observeConnectivityAsFlow
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.customColors
+import ru.serg.strings.R.string
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -80,7 +80,7 @@ fun ConnectivityStatus() {
                 modifier = Modifier.size(24.dp)
             )
             Text(
-                text = stringResource(id = if (isConnected) R.string.connection_restored else R.string.no_connection),
+                text = stringResource(id = if (isConnected) string.connection_restored else string.no_connection),
                 modifier = Modifier
                     .padding(8.dp),
                 color = Color.White

@@ -38,7 +38,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.serg.choose_city_feature.Constants
-import ru.serg.choose_city_feature.R
 import ru.serg.choose_city_feature.elements.CityRow
 import ru.serg.choose_city_feature.elements.CitySearchItem
 import ru.serg.choose_city_feature.elements.SearchTextField
@@ -46,6 +45,7 @@ import ru.serg.common.ScreenNames
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.top_item.TopItem
+import ru.serg.strings.R.string
 
 @ExperimentalFoundationApi
 @FlowPreview
@@ -66,7 +66,7 @@ fun ChooseCityScreen(
             .verticalScroll(rememberScrollState()),
     ) {
         TopItem(
-            header = stringResource(id = R.string.look_for_the_place),
+            header = stringResource(id = string.look_for_the_place),
             leftIconImageVector = Icons.Rounded.ArrowBack,
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
@@ -87,7 +87,7 @@ fun ChooseCityScreen(
 
             Column {
                 Text(
-                    text = stringResource(id = R.string.favourite_places),
+                    text = stringResource(id = string.favourite_places),
                     style = headerStyle,
                     modifier = Modifier
                         .headerModifier()
@@ -156,7 +156,7 @@ fun ChooseCityScreen(
 
             (viewModel.screenState.data.isNotEmpty()) -> {
                 Text(
-                    text = stringResource(id = R.string.are_you_looking_for_one_of_this),
+                    text = stringResource(id = string.are_you_looking_for_one_of_this),
                     style = headerStyle,
                     modifier = Modifier
                         .headerModifier()

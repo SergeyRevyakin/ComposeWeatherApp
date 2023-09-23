@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:local"))
     implementation(project(":work"))
+    implementation(project(":res:strings"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)

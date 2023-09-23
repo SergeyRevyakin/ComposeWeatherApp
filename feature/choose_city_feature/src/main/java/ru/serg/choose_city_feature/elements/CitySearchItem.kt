@@ -19,10 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.choose_city_feature.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.model.CityItem
+import ru.serg.strings.R.string
 
 @Composable
 fun CitySearchItem(
@@ -51,7 +51,7 @@ fun CitySearchItem(
 
         Icon(
             Icons.Rounded.Close,
-            contentDescription = stringResource(id = R.string.accessibility_desc_delete_favourite_icon),
+            contentDescription = stringResource(id = string.accessibility_desc_delete_favourite_icon),
             modifier = Modifier
                 .padding(vertical = 6.dp)
                 .padding(end = 6.dp)

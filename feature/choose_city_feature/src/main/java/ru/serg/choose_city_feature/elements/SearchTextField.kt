@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.choose_city_feature.Constants
-import ru.serg.choose_city_feature.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.strings.R.string
 
 @Composable
 fun SearchTextField(
@@ -34,18 +34,18 @@ fun SearchTextField(
             onValueChange(it)
         },
         label = {
-            Text(text = stringResource(id = R.string.enter_city_name))
+            Text(text = stringResource(id = string.enter_city_name))
         },
         placeholder = {
             Text(
-                text = stringResource(id = R.string.eg_city_name),
+                text = stringResource(id = string.eg_city_name),
                 fontSize = 18.sp
             )
         },
         trailingIcon = {
             Icon(
                 Icons.Filled.Close,
-                contentDescription = stringResource(id = R.string.accessibility_desc_clear_field_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_clear_field_icon),
                 modifier = Modifier
                     .clickable {
                         onValueChange(Constants.EMPTY_STRING)

@@ -1,7 +1,7 @@
 package ru.serg.model.enums
 
 import androidx.annotation.StringRes
-import ru.serg.model.R
+import ru.serg.strings.R.string
 
 
 enum class Units(
@@ -17,23 +17,23 @@ enum class Units(
 ) {
     METRIC(
         Constants.METRIC,
-        R.string.units_metric_title,
-        R.string.units_metric_description,
-        R.string.units_metric_degrees,
-        R.string.units_metric_wind_speed,
+        string.units_metric_title,
+        string.units_metric_description,
+        string.units_metric_degrees,
+        string.units_metric_wind_speed,
     ),
     IMPERIAL(
         Constants.IMPERIAL,
-        R.string.units_imperial_title,
-        R.string.units_imperial_description,
-        R.string.units_imperial_degrees,
-        R.string.units_imperial_wind_speed,
+        string.units_imperial_title,
+        string.units_imperial_description,
+        string.units_imperial_degrees,
+        string.units_imperial_wind_speed,
     ),
     KELVIN(
         Constants.STANDARD,
-        R.string.units_kelvin_title,
-        R.string.units_kelvin_description,
-        R.string.units_kelvin_degrees,
-        R.string.units_kelvin_wind_speed,
+        string.units_kelvin_title,
+        string.units_kelvin_description,
+        string.units_kelvin_degrees,
+        string.units_kelvin_wind_speed,
     )
 }

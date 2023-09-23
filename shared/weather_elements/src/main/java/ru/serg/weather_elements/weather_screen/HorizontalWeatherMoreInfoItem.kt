@@ -17,6 +17,7 @@ import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.Units
+import ru.serg.strings.R.string
 import ru.serg.weather_elements.R
 
 @Composable
@@ -29,20 +30,20 @@ fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
 
     ) {
         WeatherParamItem(
-            paramName = stringResource(id = R.string.wind),
+            paramName = stringResource(id = string.wind),
             param = "${item.windSpeed} ${stringResource(id = units.windUnits)}",
             paramIcon = R.drawable.ic_wind_dir_north,
             rotation = item.windDirection
         )
 
         WeatherParamItem(
-            paramName = stringResource(id = R.string.humidity),
+            paramName = stringResource(id = string.humidity),
             param = "${item.humidity} %",
             paramIcon = R.drawable.ic_humidity
         )
         
         WeatherParamItem(
-            paramName = stringResource(id = R.string.pressure),
+            paramName = stringResource(id = string.pressure),
             param = "${item.pressure}",
             paramIcon = R.drawable.ic_barometer
         )

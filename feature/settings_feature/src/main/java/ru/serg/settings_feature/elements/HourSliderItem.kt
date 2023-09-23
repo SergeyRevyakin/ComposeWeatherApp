@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.PreviewDarkTheme
-import ru.serg.settings_feature.R
+import ru.serg.strings.R.string
 import kotlin.math.roundToInt
 
 @Composable
@@ -75,7 +75,7 @@ fun HourSliderItem(
                 .fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.how_often_update_weather_data),
+                text = stringResource(id = string.how_often_update_weather_data),
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -139,7 +139,7 @@ fun HourSliderItem(
 
             Text(
                 text = stringResource(
-                    id = R.string.weather_will_be_updated_every_value,
+                    id = string.weather_will_be_updated_every_value,
                     hours[stateValue.value.roundToInt()]
                 ),
                 fontSize = 16.sp,

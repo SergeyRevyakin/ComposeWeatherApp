@@ -17,10 +17,12 @@ import androidx.compose.material.icons.rounded.SentimentDissatisfied
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.serg.strings.R.string
 
 @Composable
 fun ErrorItem(
@@ -38,7 +40,7 @@ fun ErrorItem(
             Column(modifier = Modifier.padding(24.dp)) {
 
                 Text(
-                    text = "We can't show you weather because:",
+                    text = stringResource(id = string.we_cant_show_you_a_weather),
                     fontSize = 22.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

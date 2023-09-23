@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.strings.R.string
 
 @Composable
 fun WeatherParamItem(
@@ -42,7 +43,7 @@ fun WeatherParamItem(
         Row {
             Icon(
                 painter = painterResource(id = paramIcon),
-                contentDescription = stringResource(id = R.string.accessibility_desc_weather_icon),
+                contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
                 modifier = Modifier
                     .size(42.dp)
                     .rotate(rotation.toFloat())

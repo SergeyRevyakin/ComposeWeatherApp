@@ -27,8 +27,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.strings.R.string
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,7 +63,7 @@ fun PagerTopItem(
                 leftIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = stringResource(id = R.string.accessibility_desc_search_icon),
+                        contentDescription = stringResource(id = string.accessibility_desc_search_icon),
                         modifier = Modifier
                     )
                 }
@@ -100,7 +100,7 @@ fun PagerTopItem(
                 rightIconImageVector?.let {
                     Icon(
                         imageVector = it,
-                        contentDescription = stringResource(id = R.string.accessibility_desc_settings_icon),
+                        contentDescription = stringResource(id = string.accessibility_desc_settings_icon),
                     )
                 }
             }

@@ -11,6 +11,7 @@ import androidx.compose.ui.text.withStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import ru.serg.strings.R.string
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle
@@ -27,7 +28,7 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             (timestamp - System.currentTimeMillis() < 60L * 1000L) -> buildAnnotatedString {
 
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = color)) {
-                    append(stringResource(id = R.string.now).uppercase())
+                    append(stringResource(id = string.now).uppercase())
                 }
             }
 
@@ -62,12 +63,12 @@ fun getFormattedLastUpdateDate(timestamp: Long): String {
     val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
     return when {
         (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> stringResource(
-            id = R.string.today_value,
+            id = string.today_value,
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
         )
 
         (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> stringResource(
-            id = R.string.yesterday_value,
+            id = string.yesterday_value,
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
         )
 

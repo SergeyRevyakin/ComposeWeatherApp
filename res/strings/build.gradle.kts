@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.serg.common"
+    namespace = "ru.serg.strings"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -18,12 +18,4 @@ android {
     kotlinOptions {
         jvmTarget = "18"
     }
-}
-
-dependencies {
-    implementation(project(":res:strings"))
-    testImplementation(project(":core:testing"))
-
-    implementation(libs.androidx.annotation.jvm)
-    implementation(libs.kotlinx.coroutines.android)
 }

@@ -35,10 +35,10 @@ android {
 dependencies {
 
     implementation(project(":core:model"))
-    implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
+    implementation(project(":res:strings"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)

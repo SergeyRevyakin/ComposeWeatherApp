@@ -27,7 +27,7 @@ import ru.serg.designsystem.theme.descriptionSubHeader
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.theme.settingsSubText
-import ru.serg.weather_elements.R
+import ru.serg.strings.R.string
 
 @Composable
 fun UviBottomSheet(
@@ -52,7 +52,7 @@ fun UviBottomSheet(
             .padding(horizontal = 12.dp)
     ) {
         Text(
-            text = stringResource(id = R.string.ultraviolet_index),
+            text = stringResource(id = string.ultraviolet_index),
             style = headerStyle,
             modifier = Modifier
                 .headerModifier(),

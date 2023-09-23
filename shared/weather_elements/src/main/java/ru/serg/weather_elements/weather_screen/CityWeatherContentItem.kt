@@ -38,7 +38,7 @@ import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.UpdatedWeatherItem
-import ru.serg.weather_elements.R
+import ru.serg.strings.R.string
 import ru.serg.weather_elements.bottom_sheets.BottomSheetMainScreenState
 import ru.serg.weather_elements.bottom_sheets.MainScreenBottomSheet
 import ru.serg.weather_elements.elements.CityWeatherContentItemViewModel
@@ -131,7 +131,7 @@ fun CityWeatherContentItem(
             SunriseSunsetItem(sunriseTime = todayWeather.sunrise, sunsetTime = todayWeather.sunset)
 
             Text(
-                text = stringResource(id = R.string.hourly),
+                text = stringResource(id = string.hourly),
                 style = headerStyle,
                 modifier = Modifier
                     .headerModifier()
@@ -150,7 +150,7 @@ fun CityWeatherContentItem(
             }
 
             Text(
-                text = stringResource(id = R.string.daily),
+                text = stringResource(id = string.daily),
                 style = headerStyle,
                 modifier = Modifier
                     .headerModifier()
