@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.drawables.R.drawable
 
 @Composable
 fun ParamRowWithInfoItem(
@@ -79,7 +79,7 @@ fun ParamRowWithInfoItem(
 fun PreviewParamRowWithInfoItem() {
     ComposeWeatherAppTheme {
         ParamRowWithInfoItem(
-            paramIcon = R.drawable.ic_wind_dir_north,
+            paramIcon = drawable.ic_wind_dir_north,
             paramValue = "Wind speed: 12m/s",
         )
     }
@@ -90,7 +90,7 @@ fun PreviewParamRowWithInfoItem() {
 fun PreviewParamRowInfoItem() {
     ComposeWeatherAppTheme {
         ParamRowWithInfoItem(
-            paramIcon = R.drawable.ic_wind_dir_north,
+            paramIcon = drawable.ic_wind_dir_north,
             paramValue = "UV Index: Low",
             hasInfoButton = true
         )

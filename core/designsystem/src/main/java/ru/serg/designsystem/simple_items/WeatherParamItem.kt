@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.designsystem.R
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.drawables.R.drawable
 import ru.serg.strings.R.string
 
 @Composable
@@ -85,7 +85,7 @@ fun PreviewDarkWeatherParamItem() {
         WeatherParamItem(
             paramName = "wind",
             param = "4.2 m/s",
-            paramIcon = R.drawable.ic_wind_dir_north
+            paramIcon = drawable.ic_wind_dir_north
         )
     }
 }
@@ -100,7 +100,7 @@ fun PreviewWeatherParamItem() {
         WeatherParamItem(
             paramName = "wind",
             param = "4.2 m/s",
-            paramIcon = R.drawable.ic_wind_dir_north
+            paramIcon = drawable.ic_wind_dir_north
         )
     }
 }

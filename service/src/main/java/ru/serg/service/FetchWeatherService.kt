@@ -16,7 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ru.serg.common.R.drawable
+import ru.serg.drawables.R.drawable
 import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.Constants
 import ru.serg.notifications.showDailyServiceForecastNotification

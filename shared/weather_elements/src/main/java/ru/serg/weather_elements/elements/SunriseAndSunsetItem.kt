@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
-import ru.serg.weather_elements.R
+import ru.serg.drawables.R.drawable
 import ru.serg.weather_elements.getHour
 
 @Composable
@@ -76,7 +76,7 @@ fun SunriseSunsetItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_sunrise),
+                        painter = painterResource(drawable.ic_sunrise),
                         contentDescription = "",
                         modifier = Modifier
                             .size(40.dp)
@@ -114,7 +114,7 @@ fun SunriseSunsetItem(
                             .padding(end = 12.dp),
                     )
                     Icon(
-                        painter = painterResource(R.drawable.ic_sunset),
+                        painter = painterResource(drawable.ic_sunset),
                         contentDescription = "",
                         modifier = Modifier
                             .size(40.dp)

@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:location"))
     implementation(project(":core:datastore"))
     implementation(project(":core:notifications"))
+    implementation(project(":res:drawables"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

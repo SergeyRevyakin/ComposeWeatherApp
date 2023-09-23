@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:local"))
     implementation(project(":core:weather"))
+    implementation(project(":res:drawables"))
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.bundles.hilt)

@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
-import ru.serg.designsystem.R
+import ru.serg.drawables.R.drawable
 
 @Composable
 fun SunLoadingScreen() {
@@ -44,7 +44,7 @@ fun SunLoadingScreen() {
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.ic_sun),
+            painter = painterResource(id = drawable.ic_sun),
             contentDescription = "Logo",
             modifier = Modifier
                 .fillMaxSize(0.4f)

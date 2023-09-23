@@ -34,10 +34,10 @@ import ru.serg.designsystem.theme.descriptionSubHeader
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.utils.MockItems
+import ru.serg.drawables.R.drawable
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
-import ru.serg.weather_elements.R
 import ru.serg.weather_elements.getFullDate
 import ru.serg.weather_elements.getHour
 
@@ -122,7 +122,7 @@ fun DailyWeatherBottomSheet(
                 .padding(horizontal = 16.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_thermometer),
+                painter = painterResource(id = drawable.ic_thermometer),
                 contentDescription = stringResource(id = string.accessibility_desc_thermometer_icon),
                 modifier = Modifier
                     .size(72.dp)
@@ -184,7 +184,7 @@ fun DailyWeatherBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            paramIcon = R.drawable.ic_wind_dir_north,
+            paramIcon = drawable.ic_wind_dir_north,
             paramValue = stringResource(
                 id = string.wind_value,
                 daily.windSpeed,
@@ -197,14 +197,14 @@ fun DailyWeatherBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            paramIcon = R.drawable.ic_humidity,
+            paramIcon = drawable.ic_humidity,
             paramValue = stringResource(id = string.humidity_value, daily.humidity),
         )
 
         ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth(),
-            paramIcon = R.drawable.ic_barometer,
+            paramIcon = drawable.ic_barometer,
             paramValue = stringResource(id = string.pressure_value, daily.pressure),
         )
 

@@ -1,7 +1,6 @@
 package ru.serg.weather_elements.weather_screen
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -37,15 +36,14 @@ import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
+import ru.serg.drawables.R.drawable
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
-import ru.serg.weather_elements.R
 import ru.serg.weather_elements.buildTitle
 import ru.serg.weather_elements.firstLetterToUpperCase
 import ru.serg.weather_elements.getFormattedLastUpdateDate
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
@@ -60,10 +58,6 @@ fun TodayWeatherCardItem(
             MaterialTheme.colors.background
         ),
     )
-
-
-
-
 
     Column(
         modifier = Modifier
@@ -91,68 +85,68 @@ fun TodayWeatherCardItem(
             }) { weatherItem ->
             Column {
 
-        Icon(
-            painter = painterResource(
-                id = weatherItem.weatherIcon
-            ),
-            contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-        )
+                Icon(
+                    painter = painterResource(
+                        id = weatherItem.weatherIcon
+                    ),
+                    contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                )
 
-        Text(
-            text = buildTitle(
-                getTemp(
-                    temp = weatherItem.currentTemp,
-                    stringResource(id = units.tempUnits)
-                ), weatherItem.weatherDescription.firstLetterToUpperCase()
-            ),
-            fontSize = 32.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp)
-                .padding(horizontal = 24.dp),
-            style = TextStyle(
-                letterSpacing = 2.sp
-            )
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-
-            ParamRowWithInfoItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
-                paramIcon = R.drawable.ic_thermometer,
-                paramValue = "Feels like: ${
-                    getTemp(
-                        temp = weatherItem.feelsLike,
-                        stringResource(id = units.tempUnits)
+                Text(
+                    text = buildTitle(
+                        getTemp(
+                            temp = weatherItem.currentTemp,
+                            stringResource(id = units.tempUnits)
+                        ), weatherItem.weatherDescription.firstLetterToUpperCase()
+                    ),
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp)
+                        .padding(horizontal = 24.dp),
+                    style = TextStyle(
+                        letterSpacing = 2.sp
                     )
-                }",
-            )
+                )
 
-            ParamRowWithInfoItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .padding(horizontal = 12.dp),
-                paramIcon = R.drawable.ic_day_sunny,
-                paramValue = stringResource(
-                    id = string.uv_index_value,
-                    stringResource(id = mapUvIndex(weatherItem.uvi).descriptionId)
-                ),
-                hasInfoButton = true,
-                onInfoClick = showUviInfo
-            )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
 
-            HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_thermometer,
+                        paramValue = "Feels like: ${
+                            getTemp(
+                                temp = weatherItem.feelsLike,
+                                stringResource(id = units.tempUnits)
+                            )
+                        }",
+                    )
+
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_day_sunny,
+                        paramValue = stringResource(
+                            id = string.uv_index_value,
+                            stringResource(id = mapUvIndex(weatherItem.uvi).descriptionId)
+                        ),
+                        hasInfoButton = true,
+                        onInfoClick = showUviInfo
+                    )
+
+                    HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
 
 //            AnimatedContent(targetState = getFormattedLastUpdateDate(lastUpdatedTime),
@@ -166,17 +160,17 @@ fun TodayWeatherCardItem(
 //                    ) togetherWith fadeOut(animationSpec = tween(durationMillis = 300))
 //                }) {
 
-            Text(
-                text = stringResource(
-                    id = string.last_updated_value,
-                    getFormattedLastUpdateDate(lastUpdatedTime)
-                ),
-                textAlign = TextAlign.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-        }
+                    Text(
+                        text = stringResource(
+                            id = string.last_updated_value,
+                            getFormattedLastUpdateDate(lastUpdatedTime)
+                        ),
+                        textAlign = TextAlign.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
             }
         }
     }

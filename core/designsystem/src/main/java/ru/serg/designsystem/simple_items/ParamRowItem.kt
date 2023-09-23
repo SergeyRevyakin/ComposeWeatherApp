@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.serg.designsystem.R
+import ru.serg.drawables.R.drawable
 
 @Composable
 fun ParamRowItem(
@@ -46,7 +46,7 @@ fun ParamRowItem(
 @Composable
 fun PreviewWeatherParamRowItem() {
     ParamRowItem(
-        paramIcon = R.drawable.ic_wind_dir_north,
+        paramIcon = drawable.ic_wind_dir_north,
         paramValue = "Wind speed: 12m/s",
         rotation = 0
     )

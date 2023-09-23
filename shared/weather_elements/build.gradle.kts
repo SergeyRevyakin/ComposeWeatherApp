@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
     implementation(project(":res:strings"))
+    implementation(project(":res:drawables"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)

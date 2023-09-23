@@ -1,6 +1,6 @@
 package com.serg.weather
 
-import ru.serg.common.R.drawable
+import ru.serg.drawables.R.drawable
 
 object IconMapper {
     fun map(iconId: Int?): Int {

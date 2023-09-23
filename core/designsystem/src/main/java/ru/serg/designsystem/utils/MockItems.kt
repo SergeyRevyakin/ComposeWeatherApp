@@ -1,6 +1,6 @@
 package ru.serg.designsystem.utils
 
-import ru.serg.designsystem.R
+import ru.serg.drawables.R.drawable
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedDailyTempItem
@@ -13,7 +13,7 @@ object MockItems {
             humidity = 60,
             pressure = 980,
             weatherDescription = "Windy",
-            weatherIcon = R.drawable.ic_windy,
+            weatherIcon = drawable.ic_windy,
             sunrise = System.currentTimeMillis() - 100000L,
             sunset = System.currentTimeMillis() + 100000L,
             dailyWeatherItem = getUpdatedDailyTempMockItem(),
@@ -29,7 +29,7 @@ object MockItems {
             humidity = 60,
             pressure = 980,
             weatherDescription = "Windy",
-            weatherIcon = R.drawable.ic_windy,
+            weatherIcon = drawable.ic_windy,
             currentTemp = 20.1,
             feelsLike = 23.3,
             dateTime = System.currentTimeMillis(),

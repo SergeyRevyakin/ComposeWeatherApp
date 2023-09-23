@@ -19,7 +19,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.common.R.color
-import ru.serg.common.R.drawable
+import ru.serg.drawables.R.drawable
 import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_ERROR_REQUEST_CODE
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_REQUEST_CODE
@@ -96,12 +96,18 @@ fun showDailyServiceForecastNotification(context: Context, weatherItem: UpdatedW
     val weatherXml = weatherItem.dailyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
-//    val notificationIntent = Intent(context, MainActivity::class.java)
-//        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//    val pendingIntent = PendingIntent.getActivity(
-//        context, 0, notificationIntent,
-//        PendingIntent.FLAG_MUTABLE
-//    )
+    val pendingIntent = PendingIntent.getActivity(
+        context,
+        NOTIFICATION_REQUEST_CODE,
+        Intent().apply {
+            action = Intent.ACTION_VIEW
+            component = ComponentName(
+                context.packageName,
+                TARGET_ACTIVITY_NAME,
+            )
+        },
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+    )
 
     val builder =
         NotificationCompat.Builder(context, Constants.Notifications.NOTIFICATION_CHANNEL_SERVICE_ID)
@@ -120,7 +126,7 @@ fun showDailyServiceForecastNotification(context: Context, weatherItem: UpdatedW
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(context, color.primary))
             .setAutoCancel(true)
-//            .setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
 
     with(NotificationManagerCompat.from(context)) {
         notify(Random().nextInt(), builder.build())

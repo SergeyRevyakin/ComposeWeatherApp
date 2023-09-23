@@ -30,6 +30,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:local"))
     implementation(project(":core:common"))
+    implementation(project(":res:drawables"))
 
 
     implementation(libs.androidx.annotation.jvm)
