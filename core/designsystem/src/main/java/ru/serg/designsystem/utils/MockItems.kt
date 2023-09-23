@@ -28,7 +28,7 @@ object MockItems {
             windSpeed = 2.4,
             humidity = 60,
             pressure = 980,
-            weatherDescription = "Windy",
+            weatherDescription = "Scattered Clouds",
             weatherIcon = drawable.ic_windy,
             currentTemp = 20.1,
             feelsLike = 23.3,

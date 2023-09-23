@@ -104,4 +104,6 @@
     <string name="accessibility_desc_delete_favourite_icon">Delete favourite</string>
     <string name="accessibility_desc_clear_field_icon">Clear field</string>
     <string name="accessibility_desc_position_icon">Position</string>
+    <string name="accessibility_desc_info_icon">Info</string>
+    <string name="accessibility_desc_description_icon">Description Icon</string>
 </resources>

@@ -19,12 +19,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.utils.AnimWeather
 import ru.serg.drawables.R.drawable
+import ru.serg.strings.R.string
 
 @Composable
 fun ParamRowWithInfoItem(
@@ -47,24 +50,29 @@ fun ParamRowWithInfoItem(
             .padding(6.dp)
             .fillMaxWidth()
     ) {
-        Icon(
-            painter = painterResource(id = paramIcon),
-            contentDescription = "Direction",
-            modifier = Modifier
-                .size(42.dp)
-                .rotate(rotation.toFloat())
-        )
 
-        Text(
-            text = paramValue,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 18.dp)
-        )
+        AnimWeather(targetState = paramIcon) {
+            Icon(
+                painter = painterResource(id = it),
+                contentDescription = stringResource(id = string.accessibility_desc_description_icon),
+                modifier = Modifier
+                    .size(42.dp)
+                    .rotate(rotation.toFloat())
+            )
+        }
+
+        AnimWeather(targetState = paramValue) {
+            Text(
+                text = it,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 18.dp)
+            )
+        }
 
         Icon(
             imageVector = Icons.Outlined.Info,
-            contentDescription = "Info",
+            contentDescription = stringResource(id = string.accessibility_desc_info_icon),
             tint = if (hasInfoButton) MaterialTheme.colors.primary else Color.Transparent,
             modifier = Modifier
                 .padding(end = 8.dp)

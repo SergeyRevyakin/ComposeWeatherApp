@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.designsystem.utils.AnimWeather
 import ru.serg.drawables.R.drawable
 import ru.serg.strings.R.string
 
@@ -41,35 +42,40 @@ fun WeatherParamItem(
 
     ) {
         Row {
-            Icon(
-                painter = painterResource(id = paramIcon),
-                contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
-                modifier = Modifier
-                    .size(42.dp)
-                    .rotate(rotation.toFloat())
-            )
+            AnimWeather(targetState = paramIcon) {
+                Icon(
+                    painter = painterResource(id = it),
+                    contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
+                    modifier = Modifier
+                        .size(42.dp)
+                        .rotate(rotation.toFloat())
+                )
+            }
         }
         Row(
             modifier = Modifier
                 .padding(vertical = 8.dp)
         ) {
-
-            Text(
-                text = param,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-            )
+            AnimWeather(targetState = param) {
+                Text(
+                    text = it,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                )
+            }
         }
         Row(
             modifier = Modifier
         ) {
-            Text(
-                text = paramName,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.primary
-            )
+            AnimWeather(targetState = paramName) {
+                Text(
+                    text = it,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary
+                )
+            }
         }
     }
 }
