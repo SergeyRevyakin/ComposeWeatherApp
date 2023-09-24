@@ -1,7 +1,6 @@
 package ru.serg.choose_city_feature.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -99,7 +98,7 @@ fun ChooseCityScreen(
                     state = rememberLazyListState()
                 ) {
                     items(favouriteCities,
-                        key = { it.name.hashCode() }) {
+                        key = { it }) {
                         CitySearchItem(
                             cityItem = it,
                             onDelete = viewModel::onDeleteClick,
@@ -112,12 +111,8 @@ fun ChooseCityScreen(
                                     }"
                                 )
                             },
-                            modifier = Modifier.animateItemPlacement(
-                                animationSpec = tween(
-                                    durationMillis = 500,
-                                    easing = LinearOutSlowInEasing,
-                                )
-                            )
+                            modifier = Modifier
+                                .animateItemPlacement()
                         )
                     }
                 }
@@ -178,4 +173,5 @@ fun ChooseCityScreen(
         }
     }
 }
+
 

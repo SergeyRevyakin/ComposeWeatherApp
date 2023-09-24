@@ -40,7 +40,7 @@ class ChooseCityViewModel @Inject constructor(
     var favouriteCitiesList: StateFlow<List<CityItem>> = MutableStateFlow(emptyList())
 
     private var _inputSharedFlow = MutableSharedFlow<String>(
-        replay = 0,
+        replay = 1,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )

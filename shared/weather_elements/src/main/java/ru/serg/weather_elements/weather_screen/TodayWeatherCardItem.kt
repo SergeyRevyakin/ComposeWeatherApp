@@ -122,17 +122,19 @@ fun TodayWeatherCardItem(
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
-                AnimWeather(targetState = lastUpdatedTime) {
-                    Text(
-                        text = stringResource(
-                            id = string.last_updated_value,
-                            getFormattedLastUpdateDate(it)
-                        ),
-                        textAlign = TextAlign.End,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
+                if (lastUpdatedTime > 0) {
+                    AnimWeather(targetState = lastUpdatedTime) {
+                        Text(
+                            text = stringResource(
+                                id = string.last_updated_value,
+                                getFormattedLastUpdateDate(it)
+                            ),
+                            textAlign = TextAlign.End,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                    }
                 }
             }
         }

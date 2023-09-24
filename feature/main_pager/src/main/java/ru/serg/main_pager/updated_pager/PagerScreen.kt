@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.serg.designsystem.common.SunLoadingScreen
 import ru.serg.model.UpdatedWeatherItem
+import ru.serg.weather_elements.weather_screen.CityWeatherContentItem
 
 @Composable
 fun PagerScreen(
@@ -40,7 +41,7 @@ fun PagerScreen(
 
     ) {
 
-        ru.serg.weather_elements.weather_screen.CityWeatherContentItem(
+        CityWeatherContentItem(
             weatherItem = weatherItem,
             modifier = modifier
         )
