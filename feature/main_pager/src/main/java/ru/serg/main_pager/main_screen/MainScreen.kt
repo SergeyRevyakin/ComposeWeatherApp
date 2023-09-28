@@ -30,6 +30,7 @@ import ru.serg.designsystem.top_item.PagerTopItem
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
+import ru.serg.weather_elements.elements.PullRefreshBox
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -51,9 +52,8 @@ fun MainScreen(
         (screenState as? CommonScreenState.Success)?.updatedWeatherList?.size ?: 0
     }
 
-
     LaunchedEffect(pagerState.currentPage) {
-        viewModel.observableItemNumber.emit(pagerState.currentPage)
+        viewModel.setPageNumber(pagerState.currentPage)
     }
 
 
@@ -103,7 +103,7 @@ fun MainScreen(
 
         AnimatedVisibility(visible = screenState is CommonScreenState.Success) {
 
-            ru.serg.weather_elements.elements.PullRefreshBox(
+            PullRefreshBox(
                 refreshing = viewModel.isLoading.value,
                 onRefresh = { viewModel.refresh() }
             ) {

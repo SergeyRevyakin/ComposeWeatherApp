@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.serg.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,7 @@ class MainViewModel @Inject constructor(
 
     var isLoading = mutableStateOf(false)
 
-    val observableItemNumber = MutableStateFlow(0)
+    private val observableItemNumber = MutableStateFlow(0)
 
     private var _citiesWeather: MutableStateFlow<CommonScreenState> =
         MutableStateFlow(CommonScreenState.Loading)
@@ -131,10 +132,9 @@ class MainViewModel @Inject constructor(
         if (networkStatus.isNetworkConnected()) {
             isLoading.value = true
             viewModelScope.launch {
-                val number = observableItemNumber.value
                 val item =
                     (citiesWeather.value as? CommonScreenState.Success)?.updatedWeatherList?.get(
-                        number
+                        observableItemNumber.value
                     )
 
                 item?.let { updatedWeatherItem ->
@@ -156,14 +156,29 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun checkLocationAndFetchWeather() {
+    fun setPageNumber(number: Int) {
         viewModelScope.launch {
+            observableItemNumber.emit(number)
+        }
+    }
+
+    private fun checkLocationAndFetchWeather() {
+        viewModelScope.launch(coroutineExceptionHandler) {
             locationService.getLocationUpdate()
                 .flatMapLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper,
                     )
-                }.launchIn(this)
+                }
+//                .catch {
+//                    it
+//                }
+                .launchIn(this)
         }
     }
+
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            //TODO handle exception
+        }
 }
