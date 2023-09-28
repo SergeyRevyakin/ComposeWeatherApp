@@ -156,7 +156,10 @@ fun ChooseCityScreen(
                     modifier = Modifier
                         .headerModifier()
                 )
-                Column(modifier = modifier.padding(horizontal = 16.dp)) {
+                Column(
+                    modifier = modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     viewModel.screenState.data.forEach { cityItem ->
                         CityRow(
                             cityItem = cityItem,
