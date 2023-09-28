@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.serg.choose_city_feature.Constants
@@ -161,6 +162,16 @@ fun ChooseCityScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     viewModel.screenState.data.forEach { cityItem ->
+
+                        val isFavourite = viewModel.favouriteCitiesList.map { cityItemList ->
+                            cityItemList.firstOrNull {
+                                (it.name == cityItem.name &&
+                                        it.country == cityItem.country &&
+                                        it.longitude == cityItem.longitude &&
+                                        it.latitude == cityItem.latitude)
+                            } != null
+                        }.collectAsState(initial = false)
+
                         CityRow(
                             cityItem = cityItem,
                             onItemClick = {
@@ -168,7 +179,8 @@ fun ChooseCityScreen(
                                     "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
                                 )
                             },
-                            onAddClick = viewModel::onCityClicked
+                            onAddClick = viewModel::onCityClicked,
+                            isAddedToFavorites = isFavourite
                         )
                     }
                 }
