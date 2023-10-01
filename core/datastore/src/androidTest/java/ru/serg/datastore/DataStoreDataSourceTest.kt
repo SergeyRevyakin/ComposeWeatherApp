@@ -40,7 +40,7 @@ class DataStoreRepositoryTest {
         )
     }
 
-    private val repository = DataStoreDataSource(dataStore, testContext)
+    private val repository = DataStoreDataSourceImpl(dataStore, testContext)
 
     @Before
     fun setup() {

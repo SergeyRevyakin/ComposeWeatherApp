@@ -14,18 +14,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.serg.datastore.DataStoreDataSource
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
-import javax.inject.Inject
+import ru.serg.main_pager.main_screen.MainViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: ru.serg.main_pager.main_screen.MainViewModel by viewModels()
-
-    @Inject
-    lateinit var dataStoreDataSource: DataStoreDataSource
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +32,7 @@ class MainActivity : ComponentActivity() {
     private fun startMainScreen() {
         val isDarkTheme = mutableStateOf(true)
         lifecycleScope.launch {
-            dataStoreDataSource.isDarkThemeEnabled.collectLatest {
+            viewModel.isDarkThemeEnabled.collectLatest {
                 isDarkTheme.value = it
             }
         }

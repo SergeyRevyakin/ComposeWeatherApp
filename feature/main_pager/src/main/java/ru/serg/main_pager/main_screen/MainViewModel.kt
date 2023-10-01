@@ -49,6 +49,8 @@ class MainViewModel @Inject constructor(
 
     var citiesWeather = _citiesWeather.asStateFlow()
 
+    val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
+
     init {
         val locationPermissionFlow = PermissionFlow.getInstance().getMultiplePermissionState(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -178,7 +180,7 @@ class MainViewModel @Inject constructor(
     }
 
     private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
+        CoroutineExceptionHandler { _, _ ->
             //TODO handle exception
         }
 }

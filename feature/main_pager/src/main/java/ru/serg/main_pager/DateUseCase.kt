@@ -13,7 +13,9 @@ class DateUseCase @Inject constructor(
         return dataStoreDataSource.fetchFrequency.map {
             (((Constants.HOUR_FREQUENCY_LIST[it]) * 60L * 60L * 1000L + timestamp) - System.currentTimeMillis()) < 0
         }.first()
-
     }
+
+    fun isDarkThemeEnabled() =
+        dataStoreDataSource.isDarkThemeEnabled
 
 }
