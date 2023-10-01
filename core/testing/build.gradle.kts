@@ -33,8 +33,8 @@ dependencies {
     api(libs.kotlinx.coroutines.test)
     api(libs.compose.ui.test.junit4)
 
-    api(kotlin("test"))
-    testImplementation(kotlin("test"))
-    androidTestImplementation(kotlin("test"))
+    api(libs.kotlin.test)
+    testImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.kotlin.test)
     api(libs.turbine)
 }
