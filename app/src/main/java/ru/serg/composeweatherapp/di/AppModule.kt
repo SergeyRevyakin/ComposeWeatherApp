@@ -1,27 +1,23 @@
 package ru.serg.composeweatherapp.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.serg.composeweatherapp.data.data_source.DataStoreDataSource
-import ru.serg.composeweatherapp.data.data_source.LocationDataSource
-import ru.serg.composeweatherapp.utils.NetworkStatus
-import ru.serg.composeweatherapp.utils.WeatherAlarmManager
-import ru.serg.composeweatherapp.utils.WorkerManager
+import ru.serg.common.NetworkStatus
+import ru.serg.datastore.dataStore
+import ru.serg.location.LocationDataSource
+import ru.serg.service.WeatherAlarmManager
+import ru.serg.work.WorkerManager
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-
-    @Singleton
-    @Provides
-    fun provideDataStore(
-        @ApplicationContext context: Context
-    ): DataStoreDataSource = DataStoreDataSource(context)
 
     @Singleton
     @Provides
@@ -47,4 +43,15 @@ class AppModule {
         @ApplicationContext context: Context,
     ): WorkerManager = WorkerManager(context)
 
+    @Singleton
+    @Provides
+    fun provideDataSource(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> = context.dataStore
+
+    @Singleton
+    @Provides
+    fun provideApplicationContext(
+        @ApplicationContext context: Context
+    ): Context = context
 }
