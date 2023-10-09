@@ -25,5 +25,5 @@ dependencies {
     implementation(project(":res:strings"))
 
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.annotation.jvm)
+//    implementation(libs.androidx.annotation.jvm)
 }
