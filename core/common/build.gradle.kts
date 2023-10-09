@@ -25,6 +25,5 @@ dependencies {
     implementation(project(":res:drawables"))
     testImplementation(project(":core:testing"))
 
-    implementation(libs.androidx.annotation.jvm)
     implementation(libs.kotlinx.coroutines.android)
 }

@@ -7,3 +7,12 @@ data class ChoseCityScreenStates(
     val data: List<CityItem> = emptyList(),
     val message: String? = null
 )
+
+sealed class ScreenState(
+    val isLoading: Boolean,
+    val favoriteCitiesList: List<CityItem>,
+    val foundCitiesList: List<CityItem>,
+    val searchText: String
+) {
+
+}

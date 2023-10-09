@@ -27,14 +27,15 @@ android {
 dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
+    implementation(project(":core:model"))
 
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
 
 
     implementation(libs.hilt.android)
-    implementation(project(":core:model"))
     ksp(libs.hilt.android.compiler)
 
-
+    testImplementation(libs.ktor.test)
+    testImplementation(project(":core:testing"))
 }

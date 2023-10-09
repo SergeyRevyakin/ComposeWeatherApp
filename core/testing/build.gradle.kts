@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
@@ -19,6 +21,20 @@ android {
         jvmTarget = "18"
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+
+            all {
+                it.testLogging {
+                    events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+                    showCauses = true
+                    showExceptions = true
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -36,5 +52,6 @@ dependencies {
     api(libs.kotlin.test)
     testImplementation(libs.kotlin.test)
     androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.androidx.test.runner)
     api(libs.turbine)
 }

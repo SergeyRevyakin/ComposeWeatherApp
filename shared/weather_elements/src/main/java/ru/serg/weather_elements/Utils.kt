@@ -106,23 +106,6 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
     }
 }
 
-fun buildTitle(temp: String?, description: String?) = buildAnnotatedString {
-
-    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-        append(
-            temp
-        )
-        append(", ")
-    }
-
-    append(description)
-}
-
-fun String?.firstLetterToUpperCase() =
-    this?.let {
-        replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-    } ?: ""
-
 fun getHour(l: Long?): String =
     SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
 

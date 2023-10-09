@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":res:strings"))
     implementation(project(":res:drawables"))
+    testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
 
     implementation(platform(libs.compose.bom))

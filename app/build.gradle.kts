@@ -19,6 +19,9 @@ android {
         versionName = "0.33"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled = true
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -74,10 +77,39 @@ android {
 
     namespace = "ru.serg.composeweatherapp"
 
+//    testOptions {
+//        unitTests {
+//            isIncludeAndroidResources = true
+//            isReturnDefaultValues = true
+//
+//            all {
+//                it.useJUnitPlatform()
+//                it.testLogging {
+//                    events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+//                    showCauses = true
+//                    showExceptions = true
+//                }
+//            }
+//        }
+//    }
+
 //    androidComponents {
 //        onVariants(selector().withBuildType("release")) {
 //            // Exclude AndroidX version files
 //            it.packaging.resources.excludes.add("META-INF/*.version")
+//        }
+//    }
+
+//    testOptions {
+//        unitTests {
+//
+//            testLogging {
+//
+////                outputs.upToDateWhen {false}
+//                events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+//                showCauses = true
+//                showExceptions = true
+//            }
 //        }
 //    }
 }
@@ -145,6 +177,8 @@ dependencies {
 
     //Data Store
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.multidex)
 
 
 }

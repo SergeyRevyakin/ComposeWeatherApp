@@ -11,8 +11,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
@@ -22,13 +20,19 @@ android {
     kotlinOptions {
         jvmTarget = "18"
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
     implementation(project(":core:model"))
 
     implementation(libs.play.services.location)
-    implementation(libs.androidx.annotation.jvm)
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.hilt.android)

@@ -32,12 +32,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":res:drawables"))
 
-
-    implementation(libs.androidx.annotation.jvm)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.ksp)
-
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.junit)

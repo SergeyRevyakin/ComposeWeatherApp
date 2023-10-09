@@ -1,18 +1,17 @@
 package ru.serg.model.enums
 
-import androidx.annotation.StringRes
 import ru.serg.strings.R.string
 
 
 enum class Units(
     val parameterCode: String,
-    @StringRes
+//    @StringRes
     val title: Int,
-    @StringRes
+//    @StringRes
     val description: Int,
-    @StringRes
+//    @StringRes
     val tempUnits: Int,
-    @StringRes
+//    @StringRes
     val windUnits: Int
 ) {
     METRIC(
