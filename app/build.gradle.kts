@@ -71,7 +71,7 @@ android {
 
     packaging {
         resources {
-            excludes.add("META-INF/*.version")
+            excludes.add("META-INF/*")
         }
     }
 
