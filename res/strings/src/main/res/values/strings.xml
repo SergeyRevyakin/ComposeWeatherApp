@@ -95,6 +95,16 @@
     <string name="hourly">Hourly</string>
     <string name="daily">Daily</string>
 
+    <!--    Welcome bottomsheet-->
+    <string name="welcome">Welcome</string>
+    <string name="search_city">Search place by its name</string>
+    <string name="turn_on_geolocation">Turn on gelocation</string>
+    <string name="welcome_desc">Welcome to Serg Weather App\n\nWe have two different options to get weather data
+        \n\nFirst one is enter name of the place that you are interested in.
+        \n\nSecond is let app check geoposition of your device. It could be more precise that previous
+    </string>
+
+
     <!--    Icons description-->
     <string name="accessibility_desc_weather_icon">Weather icon</string>
     <string name="accessibility_desc_search_icon">Search</string>

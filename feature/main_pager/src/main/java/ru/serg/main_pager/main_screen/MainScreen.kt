@@ -24,12 +24,12 @@ import androidx.compose.ui.platform.LocalContext
 import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import ru.serg.designsystem.common.NoCitiesMainScreenItem
 import ru.serg.designsystem.common.SunLoadingScreen
 import ru.serg.designsystem.top_item.PagerTopItem
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
+import ru.serg.weather_elements.elements.NoCitiesMainScreenItem
 import ru.serg.weather_elements.elements.PullRefreshBox
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)

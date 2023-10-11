@@ -31,31 +31,26 @@ import ru.serg.strings.R.string
 
 @Composable
 fun UviBottomSheet(
-    uvIndex: UvIndex,
-    onDismiss: () -> Unit
+    uvIndex: UvIndex, onDismiss: () -> Unit
 ) {
 
-    Column(
-        modifier = Modifier
-            .padding(12.dp)
-            .fillMaxWidth()
-            .background(
-                MaterialTheme.colors.surface
-                    .copy(alpha = 0.9f)
-                    .compositeOver(MaterialTheme.colors.onBackground),
-                RoundedCornerShape(24.dp)
-            )
-            .clip(RoundedCornerShape(24.dp))
-            .clickable {
-                onDismiss()
-            }
-            .padding(horizontal = 12.dp)
-    ) {
+    Column(modifier = Modifier
+        .padding(12.dp)
+        .fillMaxWidth()
+        .background(
+            MaterialTheme.colors.surface
+                .copy(alpha = 0.9f)
+                .compositeOver(MaterialTheme.colors.onBackground), RoundedCornerShape(24.dp)
+        )
+        .clip(RoundedCornerShape(24.dp))
+        .clickable {
+            onDismiss()
+        }
+        .padding(horizontal = 12.dp)) {
         Text(
             text = stringResource(id = string.ultraviolet_index),
             style = headerStyle,
-            modifier = Modifier
-                .headerModifier(),
+            modifier = Modifier.headerModifier(),
             textAlign = TextAlign.Center
         )
 
@@ -66,20 +61,19 @@ fun UviBottomSheet(
         )
 
 
-            Text(
-                text = stringResource(id = uvIndex.descriptionId),
-                style = descriptionSubHeader,
-                color = MaterialTheme.colors.primary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
         Text(
-                text = stringResource(id = uvIndex.detailsId),
-                style = settingsSubText,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
+            text = stringResource(id = uvIndex.descriptionId),
+            style = descriptionSubHeader,
+            color = MaterialTheme.colors.primary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(8.dp)
+        )
+
+        Text(
+            text = stringResource(id = uvIndex.detailsId),
+            style = settingsSubText,
+            modifier = Modifier.padding(8.dp)
+        )
 
 
         Spacer(modifier = Modifier.height(16.dp))
