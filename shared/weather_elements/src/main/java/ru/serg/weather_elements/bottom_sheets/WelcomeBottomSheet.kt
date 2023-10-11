@@ -31,6 +31,7 @@ import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.elements.IconRowButton
+import ru.serg.weather_elements.getWelcomeText
 
 @Composable
 fun WelcomeBottomSheet(
@@ -76,7 +77,7 @@ fun WelcomeBottomSheet(
         )
 
         Text(
-            text = stringResource(id = string.welcome_desc),
+            text = getWelcomeText(),
             fontSize = 18.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier

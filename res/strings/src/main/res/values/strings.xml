@@ -99,10 +99,17 @@
     <string name="welcome">Welcome</string>
     <string name="search_city">Search place by its name</string>
     <string name="turn_on_geolocation">Turn on gelocation</string>
+    <string name="welcome_desc_breaks">%2$s%3$s
+    </string>
     <string name="welcome_desc">Welcome to Serg Weather App\n\nWe have two different options to get weather data
         \n\nFirst one is enter name of the place that you are interested in.
         \n\nSecond is let app check geoposition of your device. It could be more precise that previous
     </string>
+    <string name="welc_app">Welcome to Serg Weather App\n\nWe have two different options to get weather data\n\n</string>
+    <string name="welc_f">one is enter name of the place that you are interested in.\n\n</string>
+    <string name="welc_s">is let app check geoposition of your device. It could be more precise that previous</string>
+    <string name="first">First </string>
+    <string name="second">Second </string>
 
 
     <!--    Icons description-->

@@ -21,7 +21,6 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +32,7 @@ import ru.serg.designsystem.common.CardButton
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.animatedBlur
 import ru.serg.weather_elements.bottom_sheets.WelcomeBottomSheet
 
 @Composable
@@ -74,7 +74,7 @@ fun NoCitiesMainScreenItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 120.dp, bottom = 24.dp)
-                .blur(if (sheetState.isVisible) 6.dp else 0.dp),
+                .animatedBlur(sheetState.targetValue == ModalBottomSheetValue.Expanded),
         ) {
             Text(
                 text = stringResource(id = string.no_weather_data_available),
