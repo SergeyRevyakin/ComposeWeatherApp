@@ -111,6 +111,7 @@
     <string name="first">First </string>
     <string name="second">Second </string>
 
+    <string name="degree_sign">°</string>
 
     <!--    Icons description-->
     <string name="accessibility_desc_weather_icon">Weather icon</string>
