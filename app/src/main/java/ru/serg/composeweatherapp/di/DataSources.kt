@@ -12,27 +12,32 @@ import ru.serg.location.LocationDataSource
 import ru.serg.location.LocationService
 import ru.serg.network.RemoteDataSource
 import ru.serg.network.RemoteDataSourceImpl
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataSources {
+abstract class DataSources {
     @Binds
-    fun bindLocalDataSource(
+    @Singleton
+    abstract fun bindLocalDataSource(
         localDataRepository: LocalDataSourceImpl
     ): LocalDataSource
 
     @Binds
-    fun bindRemoteDataSource(
+    @Singleton
+    abstract fun bindRemoteDataSource(
         remoteDataSource: RemoteDataSourceImpl
     ): RemoteDataSource
 
     @Binds
-    fun bindLocationDataSource(
+    @Singleton
+    abstract fun bindLocationDataSource(
         locationDataSource: LocationDataSource
     ): LocationService
 
     @Binds
-    fun bindDataStoreDataSource(
+    @Singleton
+    abstract fun bindDataStoreDataSource(
         dataStoreDataSourceImpl: DataStoreDataSourceImpl
     ): DataStoreDataSource
 }
