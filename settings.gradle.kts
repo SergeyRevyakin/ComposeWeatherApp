@@ -2,9 +2,6 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        // There's no need to apply the Android plugin to buildSrc/build.gradle.kts,
-        // so don't add the google() repo
-        // (it won't hurt, but it's just not necessary)
         google()
     }
 }
@@ -38,3 +35,4 @@ include(":core:notifications")
 include(":service")
 include(":res:strings")
 include(":res:drawables")
+include(":widgets")

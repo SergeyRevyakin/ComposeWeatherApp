@@ -4,17 +4,17 @@ accompanist-swiperefresh = "0.32.0"
 accompanist-permissions = "0.32.0"
 accompanist-systemuicontroller = "0.32.0"
 activity-compose = "1.8.0"
-androidx-foundation = "1.5.3"
-androidx-material = "1.5.3"
+androidx-foundation = "1.5.4"
+androidx-material = "1.5.4"
 appcompat = "1.6.1"
-compose-bom = "2023.10.00"
+compose-bom = "2023.10.01"
 core-ktx = "1.12.0"
 datastore-preferences = "1.1.0-alpha05"
 espresso-core = "3.5.1"
-glance-appwidget = "1.0.0"
+glance = "1.0.0"
 gradle = "8.1.2"
 hilt-android = "2.48.1"
-hilt-navigation-compose = "1.1.0-beta01"
+hilt-navigation-compose = "1.1.0-rc01"
 junit = "1.1.5"
 kotlin = "1.9.10"
 kotlinx-datetime = "0.4.1"
@@ -29,10 +29,10 @@ multidex = "2.0.1"
 navigation-compose = "2.7.4"
 permission-flow-android = "1.2.0"
 play-services-location = "21.0.1"
-room-testing = "2.5.2"
+room-testing = "2.6.0"
 secretsGradlePlugin = "2.0.1"
-ui = "1.5.3"
-ui-test-junit4 = "1.5.3"
+ui = "1.5.4"
+ui-test-junit4 = "1.5.4"
 work-runtime-ktx = "2.8.1"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
@@ -62,7 +62,10 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
-androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
+androidx-glance = { module = "androidx.glance:glance", version.ref = "glance" }
+androidx-glance-material = { module = "androidx.glance:glance-material3", version.ref = "glance" }
+androidx-glance-preview = { module = "androidx.glance:glance-appwidget-preview", version.ref = "glance" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-navigation-compose" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-navigation-compose" }
