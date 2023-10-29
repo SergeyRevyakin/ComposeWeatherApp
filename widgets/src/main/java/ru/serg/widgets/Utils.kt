@@ -4,6 +4,7 @@ import android.text.Layout
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
+import android.text.style.AbsoluteSizeSpan
 import android.text.style.AlignmentSpan
 import android.text.style.RelativeSizeSpan
 import java.text.SimpleDateFormat
@@ -15,10 +16,10 @@ object Utils {
         //  val span2 = SpannableString("ss")
         val span3 = SpannableString(" a\n")
         val span4 = SpannableString("E, dd MMM")
-        span1.setSpan(RelativeSizeSpan(1.00f), 0, 4, 0)
+        span1.setSpan(AbsoluteSizeSpan(32, true), 0, 4, 0)
         //  span2.setSpan(RelativeSizeSpan(0.60f), 0, 2, 0)
         span3.setSpan(RelativeSizeSpan(0.60f), 0, 2, 0)
-        span4.setSpan(RelativeSizeSpan(0.40f), 0, 9, 0)
+        span4.setSpan(AbsoluteSizeSpan(18, true), 0, 9, 0)
 
         return TextUtils.concat(span1, span3, span4)
     }
@@ -26,8 +27,8 @@ object Utils {
     fun get24HoursFormat(): CharSequence {
         val span1 = SpannableString("HH:mm\n")
         val span4 = SpannableString("E, dd MMM")
-        span1.setSpan(RelativeSizeSpan(1.00f), 0, 4, 0)
-        span4.setSpan(RelativeSizeSpan(0.40f), 0, 9, 0)
+        span1.setSpan(AbsoluteSizeSpan(32, true), 0, 4, 0)
+        span4.setSpan(AbsoluteSizeSpan(18, true), 0, 9, 0)
 
         return TextUtils.concat(span1, span4)
     }

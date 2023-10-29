@@ -3,7 +3,6 @@ package ru.serg.widgets.ui
 import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
@@ -46,7 +45,7 @@ fun MainWeatherWidget(
 ) {
     Log.e("ComposeWeatherWidget", "Composition started")
     val packageName = LocalContext.current.packageName
-    val remoteViews0 = RemoteViews(packageName, R.layout.text_clock_layout)
+    val clockView = RemoteViews(packageName, R.layout.text_clock_layout)
     val ctx = LocalContext.current
 
     Row(
@@ -76,15 +75,16 @@ fun MainWeatherWidget(
                 modifier = GlanceModifier.fillMaxWidth()
             ) {
                 AndroidRemoteViews(
-                    remoteViews = remoteViews0,
+                    remoteViews = clockView,
                     containerViewId = View.NO_ID,
                     content = {
-                        remoteViews0.apply {
+                        clockView.apply {
                             setCharSequence(
                                 R.id.c_clock,
                                 Constants.SET_FORMAT24HOUR,
                                 Utils.get24HoursFormat()
                             )
+
                             setCharSequence(
                                 R.id.c_clock,
                                 Constants.SET_FORMAT12HOUR,
@@ -94,11 +94,6 @@ fun MainWeatherWidget(
                             setTextColor(
                                 R.id.c_clock,
                                 GlanceTheme.colors.primary.getColor(LocalContext.current).toArgb()
-                            )
-                            setTextViewTextSize(
-                                R.id.c_clock,
-                                TypedValue.COMPLEX_UNIT_SP,
-                                32f
                             )
                         }
                     }
@@ -149,8 +144,7 @@ fun MainWeatherWidget(
             Row(
                 horizontalAlignment = Alignment.End,
                 verticalAlignment = Alignment.Vertical.CenterVertically,
-                modifier = GlanceModifier.clickable {
-                }.padding(vertical = 6.dp)
+                modifier = GlanceModifier.padding(vertical = 6.dp)
             ) {
                 Text(
                     text = hourWeather.weatherDescription,
