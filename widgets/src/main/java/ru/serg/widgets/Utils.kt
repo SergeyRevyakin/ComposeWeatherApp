@@ -16,10 +16,10 @@ object Utils {
         //  val span2 = SpannableString("ss")
         val span3 = SpannableString(" a\n")
         val span4 = SpannableString("E, dd MMM")
-        span1.setSpan(AbsoluteSizeSpan(32, true), 0, 4, 0)
+        span1.setSpan(AbsoluteSizeSpan(32, true), 0, span1.length, 0)
         //  span2.setSpan(RelativeSizeSpan(0.60f), 0, 2, 0)
-        span3.setSpan(RelativeSizeSpan(0.60f), 0, 2, 0)
-        span4.setSpan(AbsoluteSizeSpan(18, true), 0, 9, 0)
+        span3.setSpan(AbsoluteSizeSpan(18, true), 0, 2, 0)
+        span4.setSpan(AbsoluteSizeSpan(18, true), 0, span4.length, 0)
 
         return TextUtils.concat(span1, span3, span4)
     }
@@ -27,8 +27,8 @@ object Utils {
     fun get24HoursFormat(): CharSequence {
         val span1 = SpannableString("HH:mm\n")
         val span4 = SpannableString("E, dd MMM")
-        span1.setSpan(AbsoluteSizeSpan(32, true), 0, 4, 0)
-        span4.setSpan(AbsoluteSizeSpan(18, true), 0, 9, 0)
+        span1.setSpan(AbsoluteSizeSpan(32, true), 0, span1.length, 0)
+        span4.setSpan(AbsoluteSizeSpan(18, true), 0, span4.length, 0)
 
         return TextUtils.concat(span1, span4)
     }
