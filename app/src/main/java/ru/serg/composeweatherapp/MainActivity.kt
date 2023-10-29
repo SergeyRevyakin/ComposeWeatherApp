@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.main_pager.main_screen.MainViewModel
+import ru.serg.widgets.WeatherWidget
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
@@ -35,6 +37,10 @@ class MainActivity : ComponentActivity() {
             viewModel.isDarkThemeEnabled.collectLatest {
                 isDarkTheme.value = it
             }
+        }
+
+        lifecycleScope.launch {
+            WeatherWidget().updateAll(applicationContext)
         }
 
         setContent {

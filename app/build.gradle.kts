@@ -15,8 +15,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 35
-        versionName = "0.35"
+        versionCode = 43
+        versionName = "0.43"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -131,54 +131,36 @@ dependencies {
     implementation(project(":feature:city_weather"))
     implementation(project(":feature:main_pager"))
     implementation(project(":service"))
+    implementation(project(":widgets"))
 
 
     implementation(platform(libs.compose.bom))
-    androidTestImplementation(platform(libs.compose.bom))
-
     implementation(libs.bundles.compose)
 
     implementation(libs.bundles.permission.flow)
 
-    implementation(libs.bundles.ktor)
-
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.ksp)
-
-    implementation(libs.bundles.accompanist)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity.compose)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.foundation)
-
-    // Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-
-
-    implementation(libs.play.services.location)
-
-    //Kotlin datetime
-    implementation(libs.kotlinx.datetime)
-
-//    //Room
 
 
     //WorkManager
     implementation(libs.androidx.work.runtime.ktx)
 
-    //Widgets
-    implementation(libs.androidx.glance.appwidget)
-
     //Data Store
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.multidex)
+
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material)
 
 
 }

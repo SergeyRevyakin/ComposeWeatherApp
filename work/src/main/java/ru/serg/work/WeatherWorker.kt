@@ -2,6 +2,7 @@ package ru.serg.work
 
 import android.content.Context
 import android.util.Log
+import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -25,6 +26,7 @@ import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.showDailyForecastNotification
 import ru.serg.notifications.showFetchErrorNotification
 import ru.serg.notifications.showNotification
+import ru.serg.widgets.WeatherWidget
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -51,7 +53,6 @@ class WeatherWorker @AssistedInject constructor(
             val repeatingWork =
                 PeriodicWorkRequestBuilder<WeatherWorker>(interval, TimeUnit.HOURS)
                     .addTag(WORKER_TAG)
-                    .setInitialDelay(interval, TimeUnit.MINUTES)
                     .setConstraints(constraints)
                     .build()
 
@@ -119,6 +120,7 @@ class WeatherWorker @AssistedInject constructor(
 
                     is NetworkResult.Loading -> {}
                 }
+                WeatherWidget().updateAll(applicationContext)
             }.launchIn(serviceScope)
     }
 
