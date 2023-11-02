@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:local"))
     implementation(project(":core:weather"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:notifications"))
     implementation(project(":widgets"))
 

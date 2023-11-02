@@ -21,6 +21,8 @@ class DataStoreDataSourceImpl @Inject constructor(
         val IS_DARK_THEME = booleanPreferencesKey(Constants.DataStore.IS_DARK_THEME)
         val FETCH_FREQUENCY = intPreferencesKey(Constants.DataStore.FETCH_FREQUENCY)
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
+        val IS_USER_NOTIFICATIONS_ON =
+            booleanPreferencesKey(Constants.DataStore.IS_USER_NOTIFICATIONS_ON)
     }
 
 
@@ -63,4 +65,13 @@ class DataStoreDataSourceImpl @Inject constructor(
         }
     }
 
+    override val isUserNotificationOn: Flow<Boolean> = dataStore.data.map {
+        it[IS_USER_NOTIFICATIONS_ON] ?: false
+    }.distinctUntilChanged()
+
+    override suspend fun saveUserNotification(isNotificationOn: Boolean) {
+        dataStore.edit {
+            it[IS_USER_NOTIFICATIONS_ON] = isNotificationOn
+        }
+    }
 }

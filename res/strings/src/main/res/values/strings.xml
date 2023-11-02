@@ -41,6 +41,7 @@
     <string name="location_is_on">Right now application has access to your device location</string>
     <string name="location_is_off">Right now application don\'t have access to your device location</string>
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
+    <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>

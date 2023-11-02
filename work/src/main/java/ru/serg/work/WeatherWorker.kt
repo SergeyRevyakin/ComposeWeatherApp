@@ -18,6 +18,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
@@ -52,6 +53,7 @@ class WeatherWorker @AssistedInject constructor(
 
             val repeatingWork =
                 PeriodicWorkRequestBuilder<WeatherWorker>(interval, TimeUnit.HOURS)
+                    .setInitialDelay(interval, TimeUnit.HOURS)
                     .addTag(WORKER_TAG)
                     .setConstraints(constraints)
                     .build()
@@ -108,10 +110,16 @@ class WeatherWorker @AssistedInject constructor(
                 Log.e(this::class.simpleName, "Fetch service $networkResult")
                 when (networkResult) {
                     is NetworkResult.Success -> {
-                        onWeatherFetchedSuccessful(networkResult.data)
-                        networkResult.data.alertMessage?.let {
-                            showNotification(applicationContext, "ALERT", it)
+                        workerUseCase.isUserNotificationsOn().collectLatest { isNotificationOn ->
+                            if (isNotificationOn) {
+                                onWeatherFetchedSuccessful(networkResult.data)
+                                networkResult.data.alertMessage?.let {
+                                    showNotification(applicationContext, "ALERT", it)
+                                }
+                            }
                         }
+
+                        WeatherWidget().updateAll(applicationContext)
                     }
 
                     is NetworkResult.Error -> {
@@ -120,7 +128,6 @@ class WeatherWorker @AssistedInject constructor(
 
                     is NetworkResult.Loading -> {}
                 }
-                WeatherWidget().updateAll(applicationContext)
             }.launchIn(serviceScope)
     }
 
