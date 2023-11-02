@@ -38,14 +38,13 @@ class UpdateWorker @AssistedInject constructor(
             val repeatingWork =
                 PeriodicWorkRequestBuilder<UpdateWorker>(15, TimeUnit.MINUTES)
                     .addTag(UPDATER_WORKER_TAG)
-                    .setInitialDelay(1, TimeUnit.MINUTES)
                     .setConstraints(constraints)
                     .build()
 
 
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 uniqueWorkName,
-                ExistingPeriodicWorkPolicy.UPDATE,
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                 repeatingWork
             )
             Log.e(TAG, "Worker set")
