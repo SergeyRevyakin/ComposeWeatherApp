@@ -125,6 +125,7 @@ dependencies {
     implementation(project(":core:local"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:settings_feature"))
+    implementation(project(":feature:widget_settings_feature"))
     implementation(project(":core:weather"))
     implementation(project(":core:weather"))
     implementation(project(":work"))

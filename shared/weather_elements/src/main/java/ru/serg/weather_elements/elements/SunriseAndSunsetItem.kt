@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,7 +59,7 @@ fun SunriseSunsetItem(
                 .background(
                     MaterialTheme.colors.surface
                         .copy(alpha = 0.9f)
-                        .compositeOver(Color.White)
+                        .compositeOver(MaterialTheme.colors.onBackground)
                 )
                 .padding(16.dp)
 

@@ -16,7 +16,9 @@ import androidx.compose.ui.graphics.Color
 @Immutable
 data class CustomColors(
     val red: Color = goodRed,
-    val green: Color = goodGreen
+    val green: Color = goodGreen,
+    val yellowLight: Color = primaryLight,
+    val yellowDark: Color = primaryDark,
 )
 
 val LocalCustomColorsPalette = staticCompositionLocalOf { CustomColors() }
@@ -26,11 +28,6 @@ val DarkColorPalette = darkColors(
     primaryVariant = primaryDark,
     secondary = primaryDark,
     secondaryVariant = primaryDark,
-//    background = Color.Black,
-//    onBackground = Color.White,
-//    surface = Color.Black,
-//    onSurface = Color.White
-
 )
 
 private val LightColorPalette = lightColors(

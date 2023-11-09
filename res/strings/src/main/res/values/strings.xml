@@ -42,6 +42,12 @@
     <string name="location_is_off">Right now application don\'t have access to your device location</string>
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
     <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
+    <string name="show_widget_settings">Show widget settings</string>
+
+    <!--    Settings Screen-->
+    <string name="widget_settings">Widget settings</string>
+    <string name="widget_color">Widget color</string>
+    <string name="pick_color">Pick color</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>
