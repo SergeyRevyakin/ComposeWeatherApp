@@ -29,6 +29,7 @@ import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.main_pager.main_screen.MainScreen
 import ru.serg.main_pager.main_screen.MainViewModel
 import ru.serg.settings_feature.screen.SettingsScreen
+import ru.serg.widget_settings_feature.screen.WidgetSettingsScreen
 
 @Composable
 fun Navigation(
@@ -118,6 +119,26 @@ fun Navigation(
             }
         ) {
             SettingsScreen(
+                navController = navController
+            )
+        }
+
+        composable(
+            ScreenNames.WIDGET_SETTINGS_SCREEN,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(500)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(500)
+                )
+            }
+        ) {
+            WidgetSettingsScreen(
                 navController = navController
             )
         }

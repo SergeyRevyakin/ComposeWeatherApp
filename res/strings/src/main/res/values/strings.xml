@@ -44,10 +44,12 @@
     <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
     <string name="show_widget_settings">Show widget settings</string>
 
-    <!--    Settings Screen-->
+    <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
     <string name="widget_color">Widget color</string>
     <string name="pick_color">Pick color</string>
+    <string name="enter_color_code">Enter color code</string>
+    <string name="color_code_format">In XXXXX format</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>

@@ -44,7 +44,6 @@ fun PrimaryButton(
         Text(
             text = headerText,
             fontSize = 20.sp,
-//            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.onPrimary
         )

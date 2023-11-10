@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.serg.settings_feature"
+    namespace = "ru.serg.widget_settings_feature"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:datastore"))
     implementation(project(":work"))
@@ -46,6 +46,9 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.ksp)
 
-    implementation(libs.bundles.permission.flow)
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material)
 
+    implementation("com.github.skydoves:colorpicker-compose:1.0.5")
 }

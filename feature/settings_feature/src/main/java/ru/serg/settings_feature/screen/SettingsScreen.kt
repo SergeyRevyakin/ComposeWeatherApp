@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.serg.common.ScreenNames
+import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
 import ru.serg.designsystem.top_item.TopItem
@@ -108,6 +110,12 @@ fun SettingsScreen(
                 stateValue = viewModel.fetchFrequencyValue.collectAsState() as MutableState<Float>,
                 onValueChanged = viewModel::onFrequencyChanged
             )
+        }
+
+        MenuCommonButton(
+            headerText = stringResource(id = string.show_widget_settings)
+        ) {
+            navController.navigate(ScreenNames.WIDGET_SETTINGS_SCREEN)
         }
 
         MenuSettingsRowWithIcon(

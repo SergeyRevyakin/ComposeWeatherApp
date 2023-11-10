@@ -13,6 +13,7 @@ interface DataStoreDataSource {
 
     val isUserNotificationOn: Flow<Boolean>
 
+    val widgetColorCode: Flow<Long>
     suspend fun saveDarkMode(isDark: Boolean)
 
     suspend fun saveFetchFrequency(positionInList: Int)
@@ -20,5 +21,7 @@ interface DataStoreDataSource {
     suspend fun saveMeasurementUnits(enumPosition: Int)
 
     suspend fun saveUserNotification(isNotificationOn: Boolean)
+
+    suspend fun saveWidgetColorCode(colorCode: Long)
 
 }

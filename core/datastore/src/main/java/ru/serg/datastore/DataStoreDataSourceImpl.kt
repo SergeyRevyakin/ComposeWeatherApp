@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -23,6 +24,9 @@ class DataStoreDataSourceImpl @Inject constructor(
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.DataStore.MEASUREMENT_UNITS)
         val IS_USER_NOTIFICATIONS_ON =
             booleanPreferencesKey(Constants.DataStore.IS_USER_NOTIFICATIONS_ON)
+
+        //Widget settings
+        val WIDGET_COLOR = longPreferencesKey(Constants.DataStore.WIDGET_COLOR_CODE)
     }
 
 
@@ -65,6 +69,7 @@ class DataStoreDataSourceImpl @Inject constructor(
         }
     }
 
+    //Shows if user turned on notification
     override val isUserNotificationOn: Flow<Boolean> = dataStore.data.map {
         it[IS_USER_NOTIFICATIONS_ON] ?: false
     }.distinctUntilChanged()
@@ -72,6 +77,17 @@ class DataStoreDataSourceImpl @Inject constructor(
     override suspend fun saveUserNotification(isNotificationOn: Boolean) {
         dataStore.edit {
             it[IS_USER_NOTIFICATIONS_ON] = isNotificationOn
+        }
+    }
+
+    //Widget color
+    override val widgetColorCode: Flow<Long> = dataStore.data.map {
+        it[WIDGET_COLOR] ?: Constants.WHITE_COLOR_CODE
+    }.distinctUntilChanged()
+
+    override suspend fun saveWidgetColorCode(colorCode: Long) {
+        dataStore.edit {
+            it[WIDGET_COLOR] = colorCode
         }
     }
 }
