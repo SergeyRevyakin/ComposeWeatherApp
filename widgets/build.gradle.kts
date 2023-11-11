@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:local"))
     implementation(project(":core:weather"))
     implementation(project(":core:location"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
     implementation(project(":res:drawables"))
     implementation(project(":res:strings"))
@@ -56,8 +57,4 @@ dependencies {
     implementation(libs.androidx.glance)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
-    implementation("com.google.android.glance.tools:appwidget-host:0.2.2")
-    debugImplementation("com.google.android.glance.tools:appwidget-viewer:0.2.2")
-//    implementation(libs.androidx.glance.preview)
-
 }

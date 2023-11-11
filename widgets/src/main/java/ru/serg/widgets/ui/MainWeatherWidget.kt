@@ -6,12 +6,15 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceModifier
-import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
@@ -42,11 +45,16 @@ import kotlin.math.roundToInt
 fun MainWeatherWidget(
     hourWeather: HourlyWeather,
     cityItem: CityItem,
+    color: Color
 ) {
     Log.e("ComposeWeatherWidget", "Composition started")
     val packageName = LocalContext.current.packageName
     val clockView = RemoteViews(packageName, R.layout.text_clock_layout)
     val ctx = LocalContext.current
+
+    val currentColor by remember {
+        mutableStateOf(color)
+    }
 
     Row(
         modifier = GlanceModifier.fillMaxSize()
@@ -95,7 +103,7 @@ fun MainWeatherWidget(
 
                             setTextColor(
                                 R.id.c_clock,
-                                GlanceTheme.colors.primary.getColor(LocalContext.current).toArgb()
+                                currentColor.toArgb()
                             )
                         }
                     }
@@ -110,7 +118,7 @@ fun MainWeatherWidget(
                 Text(
                     text = cityItem.name,
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = ColorProvider(currentColor),
                         fontSize = 18.sp
                     ),
                 )
@@ -131,7 +139,7 @@ fun MainWeatherWidget(
                     text = hourWeather.currentTemp.roundToInt().toString() + "°",
                     style = TextStyle(
                         fontSize = 36.sp, fontWeight = FontWeight.Normal, color = ColorProvider(
-                            GlanceTheme.colors.primary.getColor(LocalContext.current)
+                            currentColor
                         )
                     )
                 )
@@ -139,7 +147,7 @@ fun MainWeatherWidget(
                 Image(
                     provider = ImageProvider(hourWeather.weatherIcon), contentDescription = "",
                     modifier = GlanceModifier.size(60.dp),
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary)
+                    colorFilter = ColorFilter.tint(ColorProvider(currentColor))
                 )
             }
 
@@ -151,7 +159,7 @@ fun MainWeatherWidget(
                 Text(
                     text = hourWeather.weatherDescription,
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = ColorProvider(currentColor),
                         fontSize = 18.sp
                     )
                 )
@@ -168,7 +176,7 @@ fun MainWeatherWidget(
                 Text(
                     text = "Last updated " + getHour(cityItem.lastTimeUpdated),
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = ColorProvider(currentColor),
                         fontSize = 12.sp
                     )
                 )
@@ -176,7 +184,7 @@ fun MainWeatherWidget(
                     provider = ImageProvider(ru.serg.drawables.R.drawable.ic_refresh),
                     contentDescription = "",
                     modifier = GlanceModifier.size(18.dp),
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.primary)
+                    colorFilter = ColorFilter.tint(ColorProvider(currentColor))
                 )
             }
 
@@ -188,7 +196,7 @@ fun MainWeatherWidget(
                 Text(
                     text = "Last recomposition " + getHour(System.currentTimeMillis()),
                     style = TextStyle(
-                        color = GlanceTheme.colors.primary,
+                        color = ColorProvider(currentColor),
                         fontSize = 12.sp
                     )
                 )
