@@ -1,6 +1,5 @@
 package ru.serg.widget_settings_feature.screen
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,7 @@ class WidgetSettingsViewModel @Inject constructor(
     private fun initWidgetColor() {
         viewModelScope.launch {
             dataSource.widgetColorCode.collectLatest {
-                Log.e(javaClass.simpleName, it.toString())
+                _widgetColorFlow.value = Color(it.toULong())
             }
         }
     }
