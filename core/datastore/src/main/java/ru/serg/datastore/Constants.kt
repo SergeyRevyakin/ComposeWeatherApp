@@ -15,5 +15,5 @@ object Constants {
         const val WIDGET_COLOR_CODE = "WIDGET_COLOR_CODE"
     }
 
-    val WHITE_COLOR_CODE = 4294967295
+    const val WHITE_COLOR_CODE = -4294967296
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -28,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import ru.serg.designsystem.simple_items.PrimaryButton
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
@@ -105,8 +103,6 @@ fun ColorPickerDialogScreen(
                 modifier = Modifier.padding(bottom = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-//                contentPadding = PaddingValues(horizontal = 12.dp)
-//                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 items(colorSet.size) {
                     ColorBoxItem(
@@ -119,13 +115,13 @@ fun ColorPickerDialogScreen(
                     }
                 }
             }
-
-            Text(
-                text = "Or add your own color",
-                color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 20.sp
-            )
+//
+//            Text(
+//                text = "Or add your own color",
+//                color = MaterialTheme.colors.onBackground,
+//                modifier = Modifier.fillMaxWidth(),
+//                fontSize = 20.sp
+//            )
 
 //            OutlinedTextField(
 //                value = textValue.value,

@@ -56,7 +56,6 @@ fun MainScreen(
         viewModel.setPageNumber(pagerState.currentPage)
     }
 
-
     Column(
         modifier = modifier
             .fillMaxSize()

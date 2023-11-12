@@ -2,13 +2,13 @@ package ru.serg.widgets
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.provideContent
+import androidx.glance.appwidget.updateAll
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -23,28 +23,27 @@ class WeatherWidget : GlanceAppWidget() {
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
-    interface ExampleContentProviderEntryPoint {
+    interface WidgetDependenciesProvider {
         fun localDataSource(): LocalDataSource
         fun dataStoreDataSource(): DataStoreDataSource
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-
         val appContext = context.applicationContext ?: throw IllegalStateException()
-        val hiltEntryPoint =
+        val widgetDependencies =
             EntryPointAccessors.fromApplication(
                 appContext,
-                ExampleContentProviderEntryPoint::class.java
+                WidgetDependenciesProvider::class.java
             )
 
-        val localDataSource = hiltEntryPoint.localDataSource()
-        val dataStoreDataSource = hiltEntryPoint.dataStoreDataSource()
+        val localDataSource = widgetDependencies.localDataSource()
+        val dataStoreDataSource = widgetDependencies.dataStoreDataSource()
 
         UpdateWorker.setupPeriodicWork(appContext)
 
         localDataSource.getFavouriteCityWeather().collectLatest { weatherItem ->
-            Log.e("WeatherWidget", "On collectedLatest")
             dataStoreDataSource.widgetColorCode.collectLatest {
+                WeatherWidget().updateAll(appContext)
                 val color = Color(it.toULong())
                 provideContent {
                     GlanceTheme(
