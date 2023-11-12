@@ -25,13 +25,24 @@ class LocalDataSourceImpl @Inject constructor(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>> {
-        scope.launch {
-            weatherDao.cleanupOutdatedWeather(System.currentTimeMillis())
-        }
+
 
         return weatherDao.getWeatherWithCity().map { list ->
             list.map {
                 it.toWeatherItem()
+            }.also { updatedWeatherItems ->
+                updatedWeatherItems.map {
+                    it.dailyWeatherList.filter { dailyWeather ->
+                        dailyWeather.dateTime > System.currentTimeMillis()
+                    }
+
+                    it.hourlyWeatherList.filter { hourlyWeather ->
+                        hourlyWeather.dateTime > System.currentTimeMillis()
+                    }
+                }
+                scope.launch {
+                    weatherDao.cleanupOutdatedWeather(System.currentTimeMillis())
+                }
             }
         }
     }
@@ -83,5 +94,13 @@ class LocalDataSourceImpl @Inject constructor(
                 cityEntity.toCityItem()
             }
     }.distinctUntilChanged()
+
+    override fun getFavouriteCityWeather(): Flow<UpdatedWeatherItem> {
+        return getWeatherFlow().map {
+            it.firstOrNull { updatedWeatherItem ->
+                updatedWeatherItem.cityItem.isFavorite
+            } ?: it.first()
+        }.distinctUntilChanged()
+    }
 
 }

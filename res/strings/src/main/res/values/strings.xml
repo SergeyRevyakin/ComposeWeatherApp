@@ -41,6 +41,15 @@
     <string name="location_is_on">Right now application has access to your device location</string>
     <string name="location_is_off">Right now application don\'t have access to your device location</string>
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
+    <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
+    <string name="show_widget_settings">Show widget settings</string>
+
+    <!--    Widget Settings Screen-->
+    <string name="widget_settings">Widget settings</string>
+    <string name="widget_color">Widget color</string>
+    <string name="pick_color">Pick color</string>
+    <string name="enter_color_code">Enter color code</string>
+    <string name="color_code_format">In XXXXX format</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>
@@ -94,6 +103,24 @@
 
     <string name="hourly">Hourly</string>
     <string name="daily">Daily</string>
+
+    <!--    Welcome bottomsheet-->
+    <string name="welcome">Welcome</string>
+    <string name="search_city">Search place by its name</string>
+    <string name="turn_on_geolocation">Turn on gelocation</string>
+    <string name="welcome_desc_breaks">%2$s%3$s
+    </string>
+    <string name="welcome_desc">Welcome to Serg Weather App\n\nWe have two different options to get weather data
+        \n\nFirst one is enter name of the place that you are interested in.
+        \n\nSecond is let app check geoposition of your device. It could be more precise that previous
+    </string>
+    <string name="welc_app">Welcome to Serg Weather App\n\nWe have two different options to get weather data\n\n</string>
+    <string name="welc_f">one is enter name of the place that you are interested in.\n\n</string>
+    <string name="welc_s">is let app check geoposition of your device. It could be more precise that previous</string>
+    <string name="first">First </string>
+    <string name="second">Second </string>
+
+    <string name="degree_sign">°</string>
 
     <!--    Icons description-->
     <string name="accessibility_desc_weather_icon">Weather icon</string>

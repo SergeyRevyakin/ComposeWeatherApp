@@ -39,6 +39,7 @@ import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.UpdatedWeatherItem
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.animatedBlur
 import ru.serg.weather_elements.bottom_sheets.BottomSheetMainScreenState
 import ru.serg.weather_elements.bottom_sheets.MainScreenBottomSheet
 import ru.serg.weather_elements.elements.CityWeatherContentItemViewModel
@@ -96,12 +97,14 @@ fun CityWeatherContentItem(
         sheetShape = RoundedCornerShape(24.dp),
         sheetElevation = 10.dp,
         sheetBackgroundColor = Color.Transparent,
+        scrimColor = Color.Transparent,
     ) {
 
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(columnState, true)
+                .animatedBlur(sheetState.targetValue == ModalBottomSheetValue.Expanded)
         ) {
 
             Text(

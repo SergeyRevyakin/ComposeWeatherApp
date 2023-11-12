@@ -29,11 +29,17 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:local"))
     implementation(project(":core:weather"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:notifications"))
+    implementation(project(":widgets"))
 
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.ksp)
     implementation(libs.kotlinx.datetime)
+
+
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.appwidget)
 
 }

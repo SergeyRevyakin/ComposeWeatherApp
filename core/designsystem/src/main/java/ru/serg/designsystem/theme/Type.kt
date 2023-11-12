@@ -23,17 +23,7 @@ val headerStyle: TextStyle
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
-//            brush = Brush.linearGradient(
-//                colors = listOf(
-//                    MaterialTheme.colors.onBackground,
-//                    MaterialTheme.colors.primary,
-//                    MaterialTheme.colors.primary,
-//                ),
-//                tileMode = TileMode.Mirror,
-//                start = Offset(30f, 50f),
-//                end = Offset(250f, 350f)
-//            ),
-            )
+        )
     }
 
 val descriptionSubHeader: TextStyle
@@ -42,6 +32,15 @@ val descriptionSubHeader: TextStyle
         return TextStyle(
             fontSize = 24.sp,
             letterSpacing = 2.sp
+        )
+    }
+
+val buttonText: TextStyle
+    @Composable
+    get() {
+        return TextStyle(
+            fontSize = 20.sp,
+            letterSpacing = 1.5.sp
         )
     }
 

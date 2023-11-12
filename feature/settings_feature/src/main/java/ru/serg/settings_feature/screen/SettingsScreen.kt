@@ -23,11 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.serg.common.ScreenNames
+import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
 import ru.serg.designsystem.top_item.TopItem
 import ru.serg.model.enums.Units
 import ru.serg.settings_feature.Constants
+import ru.serg.settings_feature.elements.CollapsingContainer
 import ru.serg.settings_feature.elements.HourSliderItem
 import ru.serg.settings_feature.elements.RadioButtonGroup
 import ru.serg.settings_feature.isTiramisuOrAbove
@@ -93,12 +96,27 @@ fun SettingsScreen(
             onSwitchClick = viewModel::onBackgroundFetchChanged
         )
 
-        HourSliderItem(
-            isVisible = viewModel.isBackgroundFetchWeatherEnabled.collectAsState().value,
-            hours = Constants.HOUR_FREQUENCY_LIST,
-            stateValue = viewModel.fetchFrequencyValue.collectAsState() as MutableState<Float>,
-            onValueChanged = viewModel::onFrequencyChanged
-        )
+        CollapsingContainer(isVisible = viewModel.isBackgroundFetchWeatherEnabled.collectAsState()) {
+
+            MenuRowWithRadioButton(
+                optionName = stringResource(id = string.show_notifications_when_updated),
+                modifier = Modifier,
+                buttonState = viewModel.isUserNotificationTurnOn.collectAsState(),
+                onSwitchClick = viewModel::saveUserNotifications
+            )
+
+            HourSliderItem(
+                hours = Constants.HOUR_FREQUENCY_LIST,
+                stateValue = viewModel.fetchFrequencyValue.collectAsState() as MutableState<Float>,
+                onValueChanged = viewModel::onFrequencyChanged
+            )
+        }
+
+        MenuCommonButton(
+            headerText = stringResource(id = string.show_widget_settings)
+        ) {
+            navController.navigate(ScreenNames.WIDGET_SETTINGS_SCREEN)
+        }
 
         MenuSettingsRowWithIcon(
             onClick = { context.openAppSystemSettings() },
@@ -112,18 +130,10 @@ fun SettingsScreen(
 
         )
 
-//        MenuRowWithRadioButton(
-//            optionName = stringResource(id = string.fetch_weather_every_morning),
-//            descriptionText = stringResource(id = string.allow_get_updates_consumes_traffic),
-//            modifier = Modifier,
-//            buttonState = viewModel.alarmState.collectAsState(),
-//            onSwitchClick = { viewModel.onAlarmChanged() }
-//        )
-
         RadioButtonGroup(
             header = stringResource(id = string.measurement_units),
-            nameList = Units.values().map { stringResource(id = it.title) },
-            descriptionList = Units.values().map { stringResource(id = it.description) },
+            nameList = Units.entries.map { stringResource(id = it.title) },
+            descriptionList = Units.entries.map { stringResource(id = it.description) },
             selectedPosition = viewModel.measurementUnits
         ) {
             viewModel.onUnitsChanged(it)

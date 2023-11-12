@@ -23,4 +23,6 @@ interface LocalDataSource {
     fun getFavouriteCity(): Flow<CityItem>
 
     fun getCitySearchHistory(): Flow<List<CityItem>>
+
+    fun getFavouriteCityWeather(): Flow<UpdatedWeatherItem>
 }

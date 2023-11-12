@@ -22,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
-//    private val weatherAlarmManager: WeatherAlarmManager,
     private val workerManager: WorkerManager
 ) : ViewModel() {
 
@@ -40,11 +39,11 @@ class SettingViewModel @Inject constructor(
 
     var measurementUnits = mutableIntStateOf(0)
 
-    private var _alarmState = MutableStateFlow(false)
-    var alarmState = _alarmState.asStateFlow()
-
     private var _isNotificationEnabled = MutableStateFlow(false)
     var isNotificationEnabled = _isNotificationEnabled.asStateFlow()
+
+    private var _isUserNotificationTurnOn = MutableStateFlow(false)
+    var isUserNotificationTurnOn = _isUserNotificationTurnOn.asStateFlow()
 
     private val fetchFrequency = dataStoreDataSource.fetchFrequencyInHours.distinctUntilChanged()
 
@@ -54,7 +53,7 @@ class SettingViewModel @Inject constructor(
         initFetchFrequencyValue()
         initLocation()
         initUnits()
-//        initAlarmState()
+        initUserNotificationTurnOn()
         if (isTiramisuOrAbove()) initNotification()
     }
 
@@ -98,12 +97,6 @@ class SettingViewModel @Inject constructor(
             }
         }
     }
-
-//    private fun initAlarmState() {
-//        weatherAlarmManager.isAlarmSet().let {
-//            _alarmState.value = it
-//        }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun initNotification() {
@@ -153,9 +146,17 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-//    fun onAlarmChanged() {
-//        weatherAlarmManager.setOrCancelAlarm()
-//        initAlarmState()
-//    }
+    private fun initUserNotificationTurnOn() {
+        viewModelScope.launch {
+            dataStoreDataSource.isUserNotificationOn.collectLatest {
+                _isUserNotificationTurnOn.value = it
+            }
+        }
+    }
 
+    fun saveUserNotifications(isNotificationsOn: Boolean) {
+        viewModelScope.launch {
+            dataStoreDataSource.saveUserNotification(isNotificationsOn)
+        }
+    }
 }

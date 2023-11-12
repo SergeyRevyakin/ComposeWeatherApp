@@ -2,6 +2,7 @@ package ru.serg.work
 
 import android.content.Context
 import android.util.Log
+import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -17,6 +18,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
@@ -25,6 +27,7 @@ import ru.serg.model.UpdatedWeatherItem
 import ru.serg.notifications.showDailyForecastNotification
 import ru.serg.notifications.showFetchErrorNotification
 import ru.serg.notifications.showNotification
+import ru.serg.widgets.WeatherWidget
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -50,8 +53,8 @@ class WeatherWorker @AssistedInject constructor(
 
             val repeatingWork =
                 PeriodicWorkRequestBuilder<WeatherWorker>(interval, TimeUnit.HOURS)
+                    .setInitialDelay(interval, TimeUnit.HOURS)
                     .addTag(WORKER_TAG)
-                    .setInitialDelay(interval, TimeUnit.MINUTES)
                     .setConstraints(constraints)
                     .build()
 
@@ -107,10 +110,16 @@ class WeatherWorker @AssistedInject constructor(
                 Log.e(this::class.simpleName, "Fetch service $networkResult")
                 when (networkResult) {
                     is NetworkResult.Success -> {
-                        onWeatherFetchedSuccessful(networkResult.data)
-                        networkResult.data.alertMessage?.let {
-                            showNotification(applicationContext, "ALERT", it)
+                        workerUseCase.isUserNotificationsOn().collectLatest { isNotificationOn ->
+                            if (isNotificationOn) {
+                                onWeatherFetchedSuccessful(networkResult.data)
+                                networkResult.data.alertMessage?.let {
+                                    showNotification(applicationContext, "ALERT", it)
+                                }
+                            }
                         }
+
+                        WeatherWidget().updateAll(applicationContext)
                     }
 
                     is NetworkResult.Error -> {

@@ -1,6 +1,13 @@
 package ru.serg.weather_elements
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -8,6 +15,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -108,5 +116,39 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
 
 fun getHour(l: Long?): String =
     SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
+
+@Composable
+fun getWelcomeText() =
+    buildAnnotatedString {
+        append(stringResource(id = string.welc_app))
+
+        withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+            append(stringResource(id = string.first))
+        }
+
+        append(" ")
+
+        append(stringResource(id = string.welc_f))
+
+        withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+            append(stringResource(id = string.second))
+        }
+
+        append(" ")
+
+        append(stringResource(id = string.welc_s))
+
+    }
+
+fun Modifier.animatedBlur(isShowing: Boolean) =
+    composed {
+        this.blur(
+            animateDpAsState(
+                targetValue = if (isShowing) 8.dp else 0.dp,
+                animationSpec = tween(durationMillis = 200, easing = LinearEasing),
+                label = "blur"
+            ).value
+        )
+    }
 
 

@@ -9,6 +9,11 @@ object Constants {
         const val IS_DARK_THEME = "IS_DARK_THEME"
         const val FETCH_FREQUENCY = "FETCH_FREQUENCY"
         const val MEASUREMENT_UNITS = "MEASUREMENT_UNITS"
+        const val IS_USER_NOTIFICATIONS_ON = "IS_USER_NOTIFICATIONS_ON"
+
+        //Widget settings
+        const val WIDGET_COLOR_CODE = "WIDGET_COLOR_CODE"
     }
 
+    const val WHITE_COLOR_CODE = -4294967296
 }
