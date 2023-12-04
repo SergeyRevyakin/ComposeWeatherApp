@@ -1,6 +1,7 @@
 package ru.serg.designsystem.utils
 
 import ru.serg.drawables.R.drawable
+import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
 import ru.serg.model.UpdatedDailyTempItem
@@ -45,4 +46,9 @@ object MockItems {
             maxTemp = 22.2,
             minTemp = 12.1
         )
+
+    fun getCityMockItem() = CityItem(
+        name = "London",
+        lastTimeUpdated = System.currentTimeMillis()
+    )
 }

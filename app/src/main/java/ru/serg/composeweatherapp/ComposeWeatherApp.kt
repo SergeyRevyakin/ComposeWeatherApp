@@ -19,12 +19,6 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
-    override fun getWorkManagerConfiguration() =
-        Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .build()
-
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
@@ -46,4 +40,10 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .build()
 }
