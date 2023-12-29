@@ -1,0 +1,333 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 12,
+    "identityHash": "3b6a91a57404cbb1831f01decf736336",
+    "entities": [
+      {
+        "tableName": "city_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cityName` TEXT NOT NULL, `country` TEXT, `latitude` REAL, `longitude` REAL, `isFavorite` INTEGER NOT NULL, `city_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lastTimeUpdated` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "cityName",
+            "columnName": "cityName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "city_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastTimeUpdated",
+            "columnName": "lastTimeUpdated",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "city_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "day_weather_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `sunrise` INTEGER, `sunset` INTEGER, `city_id` INTEGER NOT NULL, `uvi` REAL, `dailymorningTemp` REAL NOT NULL, `dailydayTemp` REAL NOT NULL, `dailyeveningTemp` REAL NOT NULL, `dailynightTemp` REAL NOT NULL, `dailymaxTemp` REAL, `dailyminTemp` REAL, `feelsmorningTemp` REAL NOT NULL, `feelsdayTemp` REAL NOT NULL, `feelseveningTemp` REAL NOT NULL, `feelsnightTemp` REAL NOT NULL, `feelsmaxTemp` REAL, `feelsminTemp` REAL, PRIMARY KEY(`city_id`, `datetime`))",
+        "fields": [
+          {
+            "fieldPath": "windDirection",
+            "columnName": "windDirection",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "windSpeed",
+            "columnName": "windSpeed",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "humidity",
+            "columnName": "humidity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pressure",
+            "columnName": "pressure",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weatherDescription",
+            "columnName": "weatherDescription",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weatherIcon",
+            "columnName": "weatherIcon",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateTime",
+            "columnName": "datetime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sunrise",
+            "columnName": "sunrise",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sunset",
+            "columnName": "sunset",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cityId",
+            "columnName": "city_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uvi",
+            "columnName": "uvi",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dailyWeatherItem.morningTemp",
+            "columnName": "dailymorningTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyWeatherItem.dayTemp",
+            "columnName": "dailydayTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyWeatherItem.eveningTemp",
+            "columnName": "dailyeveningTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyWeatherItem.nightTemp",
+            "columnName": "dailynightTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dailyWeatherItem.maxTemp",
+            "columnName": "dailymaxTemp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dailyWeatherItem.minTemp",
+            "columnName": "dailyminTemp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "feelsLike.morningTemp",
+            "columnName": "feelsmorningTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feelsLike.dayTemp",
+            "columnName": "feelsdayTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feelsLike.eveningTemp",
+            "columnName": "feelseveningTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feelsLike.nightTemp",
+            "columnName": "feelsnightTemp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "feelsLike.maxTemp",
+            "columnName": "feelsmaxTemp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "feelsLike.minTemp",
+            "columnName": "feelsminTemp",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "city_id",
+            "datetime"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_day_weather_table_city_id",
+            "unique": false,
+            "columnNames": [
+              "city_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_day_weather_table_city_id` ON `${TABLE_NAME}` (`city_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "hour_weather_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, PRIMARY KEY(`city_id`, `datetime`))",
+        "fields": [
+          {
+            "fieldPath": "feelsLike",
+            "columnName": "feelsLike",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currentTemp",
+            "columnName": "currentTemp",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "windDirection",
+            "columnName": "windDirection",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "windSpeed",
+            "columnName": "windSpeed",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "humidity",
+            "columnName": "humidity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pressure",
+            "columnName": "pressure",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weatherDescription",
+            "columnName": "weatherDescription",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weatherIcon",
+            "columnName": "weatherIcon",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateTime",
+            "columnName": "datetime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cityId",
+            "columnName": "city_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uvi",
+            "columnName": "uvi",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "city_id",
+            "datetime"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_hour_weather_table_datetime",
+            "unique": false,
+            "columnNames": [
+              "datetime"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_hour_weather_table_datetime` ON `${TABLE_NAME}` (`datetime`)"
+          },
+          {
+            "name": "index_hour_weather_table_city_id",
+            "unique": false,
+            "columnNames": [
+              "city_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_hour_weather_table_city_id` ON `${TABLE_NAME}` (`city_id`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b6a91a57404cbb1831f01decf736336')"
+    ]
+  }
+}

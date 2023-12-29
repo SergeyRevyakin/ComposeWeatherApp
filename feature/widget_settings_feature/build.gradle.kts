@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":work"))
     implementation(project(":widgets"))
     implementation(project(":res:strings"))
+    implementation(project(":res:drawables"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
