@@ -30,6 +30,7 @@ interface WeatherDao {
     suspend fun deleteWeather(cityId: Int) {
         deleteWeatherItemEntities(cityId)
         deleteHourlyWeatherEntities(cityId)
+        deleteCity(cityId)
     }
 
     @Transaction
@@ -40,6 +41,9 @@ interface WeatherDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveCity(cityEntity: CityEntity)
+
+    @Query("DELETE FROM ${Constants.CITY_TABLE} WHERE ${Constants.CITY_ID} =:cityId")
+    suspend fun deleteCity(cityId: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeatherItemEntity(weatherItemList: List<DailyWeatherEntity>)
@@ -54,15 +58,13 @@ interface WeatherDao {
     @Query("SELECT * FROM ${Constants.CITY_TABLE}")
     fun getWeatherWithCity(): Flow<List<CityWeather>>
 
-    @Query("SELECT * FROM ${Constants.HOUR_WEATHER_TABLE} WHERE ${Constants.CITY_ID} =:cityId")
-    fun getHourlyItemsByCity(cityId: Int): Flow<List<HourlyWeatherEntity>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHourlyEntity(hourlyWeatherEntities: List<HourlyWeatherEntity>)
 
     @Query("DELETE FROM ${Constants.HOUR_WEATHER_TABLE} WHERE dateTime < :currentTimeStamp")
     suspend fun cleanupOutdatedHourlyWeatherEntities(currentTimeStamp: Long)
 
+    //
     @Query("DELETE FROM ${Constants.HOUR_WEATHER_TABLE} WHERE ${Constants.CITY_ID} = :cityId")
     suspend fun deleteHourlyWeatherEntities(cityId: Int)
 

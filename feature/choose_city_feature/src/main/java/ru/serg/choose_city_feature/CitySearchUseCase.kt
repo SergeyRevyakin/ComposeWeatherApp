@@ -31,5 +31,5 @@ class CitySearchUseCase @Inject constructor(
         localDataSource.insertCityItemToSearchHistory(cityItem)
 
     suspend fun deleteCityItem(cityItem: CityItem) =
-        localDataSource.deleteCityItemToHistorySearch(cityItem)
+        localDataSource.deleteCityItemHistorySearch(cityItem)
 }
