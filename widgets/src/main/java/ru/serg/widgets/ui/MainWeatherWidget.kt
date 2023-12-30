@@ -2,6 +2,8 @@ package ru.serg.widgets.ui
 
 import android.content.ComponentName
 import android.content.Intent
+import android.provider.AlarmClock
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -61,20 +63,7 @@ fun MainWeatherWidget(
     val paddingBottom = 3.dp
 
     Column(
-        modifier = GlanceModifier.fillMaxSize()
-            .clickable {
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    component = ComponentName(
-                        packageName,
-                        Constants.MAIN_ACTIVITY_PACKAGE
-                    )
-                    ctx.startActivity(this)
-                }
-            },
+        modifier = GlanceModifier.fillMaxSize(),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxWidth()
@@ -86,6 +75,13 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.Start,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = AlarmClock.ACTION_SET_ALARM
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 AndroidRemoteViews(
                     remoteViews = clockView,
@@ -117,6 +113,19 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.End,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            component = ComponentName(
+                                packageName,
+                                Constants.MAIN_ACTIVITY_PACKAGE
+                            )
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 Row(
                     horizontalAlignment = Alignment.End,
@@ -151,6 +160,16 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.Start,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            setData(
+                                CalendarContract.CONTENT_URI.buildUpon().appendPath("time").build()
+                            )
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 AndroidRemoteViews(
                     remoteViews = dateView,
@@ -182,6 +201,19 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.End,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            component = ComponentName(
+                                packageName,
+                                Constants.MAIN_ACTIVITY_PACKAGE
+                            )
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 Row(
                     horizontalAlignment = Alignment.End,
