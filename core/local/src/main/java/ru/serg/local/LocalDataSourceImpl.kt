@@ -68,8 +68,8 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteCityItemToHistorySearch(cityItem: CityItem) {
-        cityDao.deleteCityFromHistory(cityItem.toCityEntity())
+    override suspend fun deleteCityItemHistorySearch(cityItem: CityItem) {
+        weatherDao.deleteWeather(cityItem.id)
     }
 
     override suspend fun insertCityItemToSearchHistory(cityItem: CityItem) {

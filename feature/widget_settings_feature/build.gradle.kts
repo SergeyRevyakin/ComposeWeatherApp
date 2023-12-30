@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":work"))
     implementation(project(":widgets"))
     implementation(project(":res:strings"))
+    implementation(project(":res:drawables"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
@@ -50,6 +51,4 @@ dependencies {
     implementation(libs.androidx.glance)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
-
-    implementation("com.github.skydoves:colorpicker-compose:1.0.5")
 }

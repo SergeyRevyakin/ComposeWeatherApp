@@ -16,7 +16,7 @@ interface LocalDataSource {
     )
 
 
-    suspend fun deleteCityItemToHistorySearch(cityItem: CityItem)
+    suspend fun deleteCityItemHistorySearch(cityItem: CityItem)
 
     suspend fun insertCityItemToSearchHistory(cityItem: CityItem)
 
