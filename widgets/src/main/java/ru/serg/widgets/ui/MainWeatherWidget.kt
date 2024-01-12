@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -35,6 +36,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import ru.serg.model.CityItem
 import ru.serg.model.HourlyWeather
+import ru.serg.model.WidgetDataSettings
 import ru.serg.service.FetchWeatherService
 import ru.serg.widgets.Constants
 import ru.serg.widgets.R
@@ -46,7 +48,7 @@ import kotlin.math.roundToInt
 fun MainWeatherWidget(
     hourWeather: HourlyWeather,
     cityItem: CityItem,
-    color: Color,
+    settings: WidgetDataSettings,
 ) {
     Log.e("ComposeWeatherWidget", "Composition started")
     val packageName = LocalContext.current.packageName
@@ -55,12 +57,18 @@ fun MainWeatherWidget(
     val ctx = LocalContext.current
 
     val currentColor by remember {
-        mutableStateOf(color)
+        mutableStateOf(Color(settings.color))
     }
 
-    val bigFont = 38
-    val smallFont = 18
-    val paddingBottom = 3.dp
+    val bigFont by remember {
+        mutableIntStateOf(settings.bigFontSize)
+    }
+    val smallFont by remember {
+        mutableIntStateOf(settings.smallFontSize)
+    }
+    val paddingBottom by remember {
+        mutableStateOf(settings.bottomPadding.dp)
+    }
 
     Column(
         modifier = GlanceModifier.fillMaxSize(),
@@ -143,7 +151,8 @@ fun MainWeatherWidget(
                     )
 
                     Image(
-                        provider = ImageProvider(hourWeather.weatherIcon), contentDescription = "",
+                        provider = ImageProvider(hourWeather.weatherIcon),
+                        contentDescription = "",
                         modifier = GlanceModifier.size(56.dp),
                         colorFilter = ColorFilter.tint(ColorProvider(currentColor))
                     )
@@ -164,7 +173,8 @@ fun MainWeatherWidget(
                         Intent().apply {
                             action = Intent.ACTION_VIEW
                             setData(
-                                CalendarContract.CONTENT_URI.buildUpon().appendPath("time").build()
+                                CalendarContract.CONTENT_URI.buildUpon().appendPath("time")
+                                    .build()
                             )
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             ctx.startActivity(this)

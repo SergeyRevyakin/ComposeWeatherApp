@@ -14,6 +14,12 @@ interface DataStoreDataSource {
     val isUserNotificationOn: Flow<Boolean>
 
     val widgetColorCode: Flow<Long>
+
+    val widgetBigFontSize: Flow<Int>
+
+    val widgetSmallFontSize: Flow<Int>
+
+    val widgetBottomPadding: Flow<Int>
     suspend fun saveDarkMode(isDark: Boolean)
 
     suspend fun saveFetchFrequency(positionInList: Int)
@@ -23,5 +29,11 @@ interface DataStoreDataSource {
     suspend fun saveUserNotification(isNotificationOn: Boolean)
 
     suspend fun saveWidgetColorCode(colorCode: Long)
+
+    suspend fun saveWidgetBigFontSize(size: Int)
+
+    suspend fun saveWidgetSmallFontSize(size: Int)
+
+    suspend fun saveWidgetBottomPadding(padding: Int)
 
 }

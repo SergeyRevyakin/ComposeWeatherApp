@@ -2,7 +2,6 @@ package ru.serg.widgets
 
 import android.content.Context
 import android.os.Build
-import androidx.compose.ui.graphics.Color
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.GlanceAppWidget
@@ -39,12 +38,15 @@ class WeatherWidget : GlanceAppWidget() {
         val localDataSource = widgetDependencies.localDataSource()
         val dataStoreDataSource = widgetDependencies.dataStoreDataSource()
 
+        val weatherWidgetUseCase = WeatherWidgetUseCase(dataStoreDataSource)
+
         UpdateWorker.setupPeriodicWork(appContext)
 
         localDataSource.getFavouriteCityWeather().collectLatest { weatherItem ->
-            dataStoreDataSource.widgetColorCode.collectLatest {
+            weatherWidgetUseCase.prepareData().collectLatest { settings ->
+                println(settings)
                 WeatherWidget().updateAll(appContext)
-                val color = Color(it.toULong())
+
                 provideContent {
                     GlanceTheme(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
@@ -56,7 +58,7 @@ class WeatherWidget : GlanceAppWidget() {
                         MainWeatherWidget(
                             weatherItem.hourlyWeatherList.first(),
                             weatherItem.cityItem,
-                            color
+                            settings
                         )
                     }
                 }
