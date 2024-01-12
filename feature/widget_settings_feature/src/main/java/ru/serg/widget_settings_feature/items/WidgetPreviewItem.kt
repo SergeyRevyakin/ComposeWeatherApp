@@ -1,9 +1,8 @@
 package ru.serg.widget_settings_feature.items
 
-import android.app.WallpaperManager
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,11 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,19 +38,22 @@ fun WidgetPreviewItem(
     cityItem: CityItem = MockItems.getCityMockItem(),
 ) {
 
-    val currentColor = animateColorAsState(targetValue = color, label = "").value
+    val currentColor by animateColorAsState(targetValue = color, label = "")
+    val backgroundColor by animateColorAsState(
+        targetValue =
+        if (android.graphics.Color.luminance(currentColor.toArgb()) > 0.29f) Color.Black else Color.White,
+        label = ""
+    )
 
     val bigFont = 38
     val smallFont = 18
     val paddingBottom = 3.dp
 
-    val wallpaperDrawable = WallpaperManager.getInstance(LocalContext.current).drawable
-    val bitmap = (wallpaperDrawable as BitmapDrawable).bitmap
-
 
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .background(backgroundColor)
             .padding(12.dp),
     ) {
         Row(
@@ -202,9 +205,33 @@ fun WidgetPreviewItem(
 
 @Preview
 @Composable
-private fun PreviewWidgetDemo() {
+private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
         WidgetPreviewItem(color = Color.White)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWidgetDemoGreen() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.Green)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWidgetDemoBlack() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.Black)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWidgetDemo() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.DarkGray)
     }
 }
 
