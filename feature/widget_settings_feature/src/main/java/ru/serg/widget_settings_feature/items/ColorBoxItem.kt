@@ -20,7 +20,7 @@ import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 
 @Composable
 fun ColorBoxItem(
-    colorC: Color,
+    color: Color,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onClick: (Color) -> Unit = {}
@@ -31,7 +31,7 @@ fun ColorBoxItem(
         label = ""
     )
 
-    val boxColor = animateColorAsState(targetValue = colorC, label = "")
+    val boxColor = animateColorAsState(targetValue = color, label = "")
 
     Box(
         modifier = modifier
@@ -44,7 +44,7 @@ fun ColorBoxItem(
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-                onClick(colorC)
+                onClick(color)
             }
     )
 }
@@ -56,7 +56,7 @@ private fun ColorBoxItemPreview() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDark) {
-        ColorBoxItem(colorC = Color.Red, isSelected = true)
+        ColorBoxItem(color = Color.Red, isSelected = true)
     }
 }
 
@@ -67,6 +67,6 @@ private fun ColorBoxItemDarkPreview() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDark) {
-        ColorBoxItem(colorC = Color.Blue)
+        ColorBoxItem(color = Color.Blue)
     }
 }

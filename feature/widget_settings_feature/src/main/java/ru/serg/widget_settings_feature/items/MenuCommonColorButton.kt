@@ -67,7 +67,7 @@ fun MenuCommonColorButton(
             }
         }
 
-        ColorBoxItem(colorC = color)
+        ColorBoxItem(color = color)
     }
 }
 
