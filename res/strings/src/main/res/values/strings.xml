@@ -51,6 +51,8 @@
     <string name="enter_color_code">Enter color code</string>
     <string name="color_code_format">In XXXXX format</string>
     <string name="widget_preview">Widget preview</string>
+    <string name="widget_big_font_size">Widget main text size</string>
+    <string name="widget_small_font_size">Widget additional info text size</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>

@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
@@ -18,8 +19,16 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _widgetColorFlow = MutableStateFlow(Color.White)
     val widgetColorFlow = _widgetColorFlow.asStateFlow()
 
+    private val _widgetBigFontFlow = MutableStateFlow(0f)
+    val widgetBigFontFlow = _widgetBigFontFlow.asStateFlow()
+
+    private val _widgetSmallFontFlow = MutableStateFlow(0f)
+    val widgetSmallFontFlow = _widgetSmallFontFlow.asStateFlow()
+
     init {
         initWidgetColor()
+        initWidgetBigFontSize()
+        initWidgetSmallFontSize()
     }
 
     private fun initWidgetColor() {
@@ -33,6 +42,35 @@ class WidgetSettingsViewModel @Inject constructor(
     fun saveWidgetColor(color: Color) {
         viewModelScope.launch {
             dataSource.saveWidgetColorCode(color.value.toLong())
+        }
+    }
+
+    private fun initWidgetBigFontSize() {
+        viewModelScope.launch {
+            dataSource.widgetBigFontSize.collectLatest {
+                println("Collecting $it")
+                _widgetBigFontFlow.value = it.toFloat()
+            }
+        }
+    }
+
+    fun saveWidgetBigFont(size: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetBigFontSize(size.toInt())
+        }
+    }
+
+    private fun initWidgetSmallFontSize() {
+        viewModelScope.launch {
+            dataSource.widgetSmallFontSize.distinctUntilChanged().collectLatest {
+                _widgetSmallFontFlow.value = it.toFloat()
+            }
+        }
+    }
+
+    fun saveWidgetSmallFont(size: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetSmallFontSize(size.toInt())
         }
     }
 }

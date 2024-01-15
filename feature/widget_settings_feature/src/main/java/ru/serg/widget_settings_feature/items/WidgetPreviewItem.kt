@@ -33,6 +33,8 @@ import kotlin.math.roundToInt
 @Composable
 fun WidgetPreviewItem(
     color: Color,
+    bigFont: Int,
+    smallFont: Int,
     modifier: Modifier = Modifier,
     hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
     cityItem: CityItem = MockItems.getCityMockItem(),
@@ -45,16 +47,15 @@ fun WidgetPreviewItem(
         label = ""
     )
 
-    val bigFont = 38
-    val smallFont = 18
     val paddingBottom = 3.dp
 
 
     Column(
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(12.dp),
+            .padding(horizontal = 12.dp, vertical = 24.dp),
     ) {
         Row(
             modifier = Modifier
@@ -207,7 +208,7 @@ fun WidgetPreviewItem(
 @Composable
 private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White)
+        WidgetPreviewItem(color = Color.White, 38, 18)
     }
 }
 
@@ -215,7 +216,7 @@ private fun PreviewWidgetDemoWhite() {
 @Composable
 private fun PreviewWidgetDemoGreen() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Green)
+        WidgetPreviewItem(color = Color.Green, 38, 18)
     }
 }
 
@@ -223,7 +224,7 @@ private fun PreviewWidgetDemoGreen() {
 @Composable
 private fun PreviewWidgetDemoBlack() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Black)
+        WidgetPreviewItem(color = Color.Black, 42, 14)
     }
 }
 
@@ -231,7 +232,7 @@ private fun PreviewWidgetDemoBlack() {
 @Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.DarkGray)
+        WidgetPreviewItem(color = Color.DarkGray, 46, 12)
     }
 }
 
