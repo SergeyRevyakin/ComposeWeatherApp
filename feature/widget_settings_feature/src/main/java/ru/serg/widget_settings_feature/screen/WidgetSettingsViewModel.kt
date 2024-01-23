@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
@@ -25,10 +26,14 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _widgetSmallFontFlow = MutableStateFlow(0f)
     val widgetSmallFontFlow = _widgetSmallFontFlow.asStateFlow()
 
+    private val _isWidgetSystemDataShown = MutableStateFlow(false)
+    val isWidgetSystemDataShown = _isWidgetSystemDataShown.asStateFlow()
+
     init {
         initWidgetColor()
         initWidgetBigFontSize()
         initWidgetSmallFontSize()
+        initWidgetSystemData()
     }
 
     private fun initWidgetColor() {
@@ -71,6 +76,22 @@ class WidgetSettingsViewModel @Inject constructor(
     fun saveWidgetSmallFont(size: Float) {
         viewModelScope.launch {
             dataSource.saveWidgetSmallFontSize(size.toInt())
+        }
+    }
+
+    private fun initWidgetSystemData() {
+        viewModelScope.launch {
+            dataSource.isWidgetSystemDataShown.collectLatest { isShown ->
+                _isWidgetSystemDataShown.update {
+                    isShown
+                }
+            }
+        }
+    }
+
+    fun saveWidgetSystemDataShown(isShown: Boolean) {
+        viewModelScope.launch {
+            dataSource.saveWidgetSystemDataShown(isShown)
         }
     }
 }

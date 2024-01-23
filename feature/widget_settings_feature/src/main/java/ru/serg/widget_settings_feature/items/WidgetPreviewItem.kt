@@ -35,6 +35,7 @@ fun WidgetPreviewItem(
     color: Color,
     bigFont: Int,
     smallFont: Int,
+    isSystemDataShown: Boolean,
     modifier: Modifier = Modifier,
     hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
     cityItem: CityItem = MockItems.getCityMockItem(),
@@ -161,43 +162,45 @@ fun WidgetPreviewItem(
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Top,
-                modifier = Modifier.weight(1f)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
-
-                    ) {
-                    Text(
-                        text = "Last updated " + getHour(cityItem.lastTimeUpdated),
-                        style = TextStyle(
-                            color = currentColor,
-                            fontSize = 12.sp
-                        )
-                    )
-                    Image(
-                        painter = painterResource(ru.serg.drawables.R.drawable.ic_refresh),
-                        contentDescription = "",
-                        modifier = Modifier.size(18.dp),
-                        colorFilter = ColorFilter.tint(currentColor)
-                    )
-                }
-
-
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
+            if (isSystemDataShown) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = "Last recomposition " + getHour(System.currentTimeMillis()),
-                        style = TextStyle(
-                            color = currentColor,
-                            fontSize = 12.sp
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+
+                        ) {
+                        Text(
+                            text = "Last updated " + getHour(cityItem.lastTimeUpdated),
+                            style = TextStyle(
+                                color = currentColor,
+                                fontSize = 12.sp
+                            )
                         )
-                    )
+                        Image(
+                            painter = painterResource(ru.serg.drawables.R.drawable.ic_refresh),
+                            contentDescription = "",
+                            modifier = Modifier.size(18.dp),
+                            colorFilter = ColorFilter.tint(currentColor)
+                        )
+                    }
+
+
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Last recomposition " + getHour(System.currentTimeMillis()),
+                            style = TextStyle(
+                                color = currentColor,
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -208,7 +211,7 @@ fun WidgetPreviewItem(
 @Composable
 private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White, 38, 18)
+        WidgetPreviewItem(color = Color.White, 38, 18, true)
     }
 }
 
@@ -216,7 +219,7 @@ private fun PreviewWidgetDemoWhite() {
 @Composable
 private fun PreviewWidgetDemoGreen() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Green, 38, 18)
+        WidgetPreviewItem(color = Color.Green, 38, 18, false)
     }
 }
 
@@ -224,7 +227,7 @@ private fun PreviewWidgetDemoGreen() {
 @Composable
 private fun PreviewWidgetDemoBlack() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Black, 42, 14)
+        WidgetPreviewItem(color = Color.Black, 42, 14, true)
     }
 }
 
@@ -232,7 +235,7 @@ private fun PreviewWidgetDemoBlack() {
 @Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.DarkGray, 46, 12)
+        WidgetPreviewItem(color = Color.DarkGray, 46, 12, false)
     }
 }
 

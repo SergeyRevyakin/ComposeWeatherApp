@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -42,6 +43,7 @@ fun WidgetSettingsScreen(
     val colorState by viewModel.widgetColorFlow.collectAsState()
     val bigFontSize by viewModel.widgetBigFontFlow.collectAsState()
     val smallFontSize by viewModel.widgetSmallFontFlow.collectAsState()
+    val isWidgetSystemDataShown = viewModel.isWidgetSystemDataShown.collectAsState()
 
     Column(
         modifier = Modifier
@@ -66,6 +68,7 @@ fun WidgetSettingsScreen(
             color = colorState,
             bigFont = bigFontSize.toInt(),
             smallFont = smallFontSize.toInt(),
+            isSystemDataShown = isWidgetSystemDataShown.value,
             modifier = Modifier
                 .padding(bottom = 16.dp)
         )
@@ -119,6 +122,13 @@ fun WidgetSettingsScreen(
             onValueChange = { viewModel.saveWidgetSmallFont(it) },
             modifier = Modifier.padding(horizontal = 12.dp)
         )
+
+        MenuRowWithRadioButton(
+            optionName = stringResource(id = R.string.widget_system_data_label),
+            descriptionText = stringResource(id = R.string.widget_system_data_desc),
+            buttonState = isWidgetSystemDataShown,
+            modifier = Modifier.padding(top = 12.dp),
+            onSwitchClick = { viewModel.saveWidgetSystemDataShown(it) })
     }
 }
 

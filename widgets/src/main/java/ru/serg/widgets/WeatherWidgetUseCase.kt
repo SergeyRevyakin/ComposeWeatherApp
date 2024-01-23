@@ -13,8 +13,15 @@ class WeatherWidgetUseCase(
         dataStoreDataSource.widgetBigFontSize,
         dataStoreDataSource.widgetSmallFontSize,
         dataStoreDataSource.widgetBottomPadding,
-    ) { color, bigFontSize, smallFontSize, bottomPadding ->
-        WidgetDataSettings(color.toULong(), bigFontSize, smallFontSize, bottomPadding)
+        dataStoreDataSource.isWidgetSystemDataShown,
+    ) { color, bigFontSize, smallFontSize, bottomPadding, isSystemDataShown ->
+        WidgetDataSettings(
+            color = color.toULong(),
+            bigFontSize = bigFontSize,
+            smallFontSize = smallFontSize,
+            bottomPadding = bottomPadding,
+            isSystemDataShown = isSystemDataShown
+        )
     }
 
 }

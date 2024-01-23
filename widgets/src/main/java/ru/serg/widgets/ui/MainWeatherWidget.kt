@@ -70,6 +70,10 @@ fun MainWeatherWidget(
         mutableStateOf(settings.bottomPadding.dp)
     }
 
+    val isSystemDataShown by remember {
+        mutableStateOf(settings.isSystemDataShown)
+    }
+
     Column(
         modifier = GlanceModifier.fillMaxSize(),
     ) {
@@ -259,46 +263,48 @@ fun MainWeatherWidget(
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalAlignment = Alignment.Vertical.Top,
-                modifier = GlanceModifier.defaultWeight()
-            ) {
-                Row(
+            if (isSystemDataShown) {
+                Column(
                     horizontalAlignment = Alignment.End,
-                    verticalAlignment = Alignment.Vertical.CenterVertically,
-                    modifier = GlanceModifier.clickable {
-                        val intent = Intent(ctx, FetchWeatherService::class.java)
-                        ctx.startForegroundService(intent)
+                    verticalAlignment = Alignment.Vertical.Top,
+                    modifier = GlanceModifier.defaultWeight()
+                ) {
+                    Row(
+                        horizontalAlignment = Alignment.End,
+                        verticalAlignment = Alignment.Vertical.CenterVertically,
+                        modifier = GlanceModifier.clickable {
+                            val intent = Intent(ctx, FetchWeatherService::class.java)
+                            ctx.startForegroundService(intent)
+                        }
+                    ) {
+                        Text(
+                            text = "Last updated " + getHour(cityItem.lastTimeUpdated),
+                            style = TextStyle(
+                                color = ColorProvider(currentColor),
+                                fontSize = 12.sp
+                            )
+                        )
+                        Image(
+                            provider = ImageProvider(ru.serg.drawables.R.drawable.ic_refresh),
+                            contentDescription = "",
+                            modifier = GlanceModifier.size(18.dp),
+                            colorFilter = ColorFilter.tint(ColorProvider(currentColor))
+                        )
                     }
-                ) {
-                    Text(
-                        text = "Last updated " + getHour(cityItem.lastTimeUpdated),
-                        style = TextStyle(
-                            color = ColorProvider(currentColor),
-                            fontSize = 12.sp
-                        )
-                    )
-                    Image(
-                        provider = ImageProvider(ru.serg.drawables.R.drawable.ic_refresh),
-                        contentDescription = "",
-                        modifier = GlanceModifier.size(18.dp),
-                        colorFilter = ColorFilter.tint(ColorProvider(currentColor))
-                    )
-                }
 
 
-                Row(
-                    horizontalAlignment = Alignment.End,
-                    verticalAlignment = Alignment.Vertical.CenterVertically,
-                ) {
-                    Text(
-                        text = "Last recomposition " + getHour(System.currentTimeMillis()),
-                        style = TextStyle(
-                            color = ColorProvider(currentColor),
-                            fontSize = 12.sp
+                    Row(
+                        horizontalAlignment = Alignment.End,
+                        verticalAlignment = Alignment.Vertical.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Last recomposition " + getHour(System.currentTimeMillis()),
+                            style = TextStyle(
+                                color = ColorProvider(currentColor),
+                                fontSize = 12.sp
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

@@ -20,6 +20,9 @@ interface DataStoreDataSource {
     val widgetSmallFontSize: Flow<Int>
 
     val widgetBottomPadding: Flow<Int>
+
+    val isWidgetSystemDataShown: Flow<Boolean>
+
     suspend fun saveDarkMode(isDark: Boolean)
 
     suspend fun saveFetchFrequency(positionInList: Int)
@@ -36,4 +39,5 @@ interface DataStoreDataSource {
 
     suspend fun saveWidgetBottomPadding(padding: Int)
 
+    suspend fun saveWidgetSystemDataShown(isShown: Boolean)
 }

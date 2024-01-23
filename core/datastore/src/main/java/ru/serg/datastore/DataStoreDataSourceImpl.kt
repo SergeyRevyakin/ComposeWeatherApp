@@ -34,6 +34,8 @@ class DataStoreDataSourceImpl @Inject constructor(
             intPreferencesKey(Constants.WidgetSettings.WIDGET_SETTINGS_SMALL_FONT)
         val WIDGET_BOTTOM_PADDING =
             intPreferencesKey(Constants.WidgetSettings.WIDGET_SETTINGS_BOTTOM_PADDING)
+        val IS_WIDGET_SYSTEM_DATA_SHOWN =
+            booleanPreferencesKey(Constants.WidgetSettings.IS_WIDGET_SYSTEM_DATA_SHOWN)
     }
 
 
@@ -104,6 +106,10 @@ class DataStoreDataSourceImpl @Inject constructor(
         it[WIDGET_BOTTOM_PADDING] ?: Constants.WidgetSettings.DEFAULT_BOTTOM_PADDING
     }.distinctUntilChanged()
 
+    override val isWidgetSystemDataShown: Flow<Boolean> = dataStore.data.map {
+        it[IS_WIDGET_SYSTEM_DATA_SHOWN]
+            ?: Constants.WidgetSettings.DEFAULT_IS_WIDGET_SYSTEM_DATA_SHOWN
+    }.distinctUntilChanged()
 
     override suspend fun saveWidgetColorCode(colorCode: Long) {
         dataStore.edit {
@@ -126,6 +132,12 @@ class DataStoreDataSourceImpl @Inject constructor(
     override suspend fun saveWidgetBottomPadding(padding: Int) {
         dataStore.edit {
             it[WIDGET_BOTTOM_PADDING] = padding
+        }
+    }
+
+    override suspend fun saveWidgetSystemDataShown(isShown: Boolean) {
+        dataStore.edit {
+            it[IS_WIDGET_SYSTEM_DATA_SHOWN] = isShown
         }
     }
 }

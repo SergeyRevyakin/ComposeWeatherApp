@@ -15,8 +15,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 54
-        versionName = "0.54"
+        versionCode = 55
+        versionName = "0.55"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
