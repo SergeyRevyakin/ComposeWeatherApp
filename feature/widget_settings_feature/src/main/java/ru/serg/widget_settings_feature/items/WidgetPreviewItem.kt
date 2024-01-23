@@ -35,6 +35,7 @@ fun WidgetPreviewItem(
     color: Color,
     bigFont: Int,
     smallFont: Int,
+    bottomPadding: Int,
     isSystemDataShown: Boolean,
     modifier: Modifier = Modifier,
     hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
@@ -48,7 +49,7 @@ fun WidgetPreviewItem(
         label = ""
     )
 
-    val paddingBottom = 3.dp
+    val paddingBottom = bottomPadding.dp
 
 
     Column(
@@ -211,7 +212,7 @@ fun WidgetPreviewItem(
 @Composable
 private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White, 38, 18, true)
+        WidgetPreviewItem(color = Color.White, 38, 18, 8, true)
     }
 }
 
@@ -219,7 +220,7 @@ private fun PreviewWidgetDemoWhite() {
 @Composable
 private fun PreviewWidgetDemoGreen() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Green, 38, 18, false)
+        WidgetPreviewItem(color = Color.Green, 38, 18, 0, false)
     }
 }
 
@@ -227,7 +228,7 @@ private fun PreviewWidgetDemoGreen() {
 @Composable
 private fun PreviewWidgetDemoBlack() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Black, 42, 14, true)
+        WidgetPreviewItem(color = Color.Black, 42, 14, 5, true)
     }
 }
 
@@ -235,7 +236,7 @@ private fun PreviewWidgetDemoBlack() {
 @Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.DarkGray, 46, 12, false)
+        WidgetPreviewItem(color = Color.DarkGray, 46, 12, 3, false)
     }
 }
 

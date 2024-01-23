@@ -33,7 +33,11 @@ fun SliderWithButtons(
                 .size(48.dp)
                 .clip(CircleShape)
                 .clickable {
-                    onValueChange(value - 1)
+                    if ((value - 1) >= 0) {
+                        onValueChange(value - 1)
+                    } else {
+                        onValueChange(0f)
+                    }
                 }
                 .padding(8.dp))
 

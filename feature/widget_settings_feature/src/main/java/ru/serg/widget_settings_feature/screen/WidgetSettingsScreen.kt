@@ -43,6 +43,7 @@ fun WidgetSettingsScreen(
     val colorState by viewModel.widgetColorFlow.collectAsState()
     val bigFontSize by viewModel.widgetBigFontFlow.collectAsState()
     val smallFontSize by viewModel.widgetSmallFontFlow.collectAsState()
+    val bottomPadding by viewModel.widgetBottomPadding.collectAsState()
     val isWidgetSystemDataShown = viewModel.isWidgetSystemDataShown.collectAsState()
 
     Column(
@@ -68,6 +69,7 @@ fun WidgetSettingsScreen(
             color = colorState,
             bigFont = bigFontSize.toInt(),
             smallFont = smallFontSize.toInt(),
+            bottomPadding = bottomPadding.toInt(),
             isSystemDataShown = isWidgetSystemDataShown.value,
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -120,6 +122,21 @@ fun WidgetSettingsScreen(
             value = smallFontSize,
             valueRange = 12f..24f,
             onValueChange = { viewModel.saveWidgetSmallFont(it) },
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+
+        Text(
+            text = stringResource(id = R.string.widget_bottom_padding),
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(bottom = 12.dp, top = 36.dp)
+                .padding(horizontal = 24.dp)
+        )
+
+        SliderWithButtons(
+            value = bottomPadding,
+            valueRange = 0f..12f,
+            onValueChange = { viewModel.saveWidgetBottomPadding(it) },
             modifier = Modifier.padding(horizontal = 12.dp)
         )
 

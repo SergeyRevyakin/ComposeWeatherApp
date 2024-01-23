@@ -29,11 +29,19 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _isWidgetSystemDataShown = MutableStateFlow(false)
     val isWidgetSystemDataShown = _isWidgetSystemDataShown.asStateFlow()
 
+    private val _widgetBottomPadding = MutableStateFlow(0f)
+    val widgetBottomPadding = _widgetBottomPadding.asStateFlow()
+
     init {
+        initValues()
+    }
+
+    private fun initValues() {
         initWidgetColor()
         initWidgetBigFontSize()
         initWidgetSmallFontSize()
         initWidgetSystemData()
+        initWidgetBottomPadding()
     }
 
     private fun initWidgetColor() {
@@ -53,7 +61,6 @@ class WidgetSettingsViewModel @Inject constructor(
     private fun initWidgetBigFontSize() {
         viewModelScope.launch {
             dataSource.widgetBigFontSize.collectLatest {
-                println("Collecting $it")
                 _widgetBigFontFlow.value = it.toFloat()
             }
         }
@@ -92,6 +99,22 @@ class WidgetSettingsViewModel @Inject constructor(
     fun saveWidgetSystemDataShown(isShown: Boolean) {
         viewModelScope.launch {
             dataSource.saveWidgetSystemDataShown(isShown)
+        }
+    }
+
+    private fun initWidgetBottomPadding() {
+        viewModelScope.launch {
+            dataSource.widgetBottomPadding.collectLatest { padding ->
+                _widgetBottomPadding.update {
+                    padding.toFloat()
+                }
+            }
+        }
+    }
+
+    fun saveWidgetBottomPadding(padding: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetBottomPadding(padding.toInt())
         }
     }
 }
