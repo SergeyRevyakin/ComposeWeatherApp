@@ -1,7 +1,7 @@
 [versions]
 accompanist-navigation-animation = "0.32.0"
 accompanist-swiperefresh = "0.32.0"
-accompanist-permissions = "0.32.0"
+accompanist-permissions = "0.33.2-alpha"
 accompanist-systemuicontroller = "0.32.0"
 activity-compose = "1.8.2"
 androidx-foundation = "1.5.4"
@@ -9,25 +9,25 @@ androidx-material = "1.5.4"
 appcompat = "1.6.1"
 compose-bom = "2023.10.01"
 core-ktx = "1.12.0"
-datastore-preferences = "1.1.0-alpha07"
+datastore-preferences = "1.1.0-beta01"
 espresso-core = "3.5.1"
 glance = "1.0.0"
-gradle = "8.4.0-alpha01"
+gradle = "8.4.0-alpha05"
 hilt-android = "2.50"
 hilt-navigation-compose = "1.1.0"
 junit = "1.1.5"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 kotlinx-datetime = "0.5.0"
 kotlinx-serialization-json = "1.6.2"
 kotlinxCoroutines = "1.7.3"
 ktor-client = "2.3.7"
-lifecycle-runtime-ktx = "2.6.2"
+lifecycle-runtime-ktx = "2.7.0"
 material = "1.11.0"
 material3 = "1.1.2"
 multidex = "2.0.1"
 navigation-compose = "2.7.6"
 permission-flow-android = "1.2.0"
-play-services-location = "21.0.1"
+play-services-location = "21.1.0"
 room-testing = "2.6.1"
 secretsGradlePlugin = "2.0.1"
 ui = "1.5.4"
@@ -40,11 +40,11 @@ androidxTestRunner = "1.5.2"
 androidxUiAutomator = "2.2.0"
 androidxEspresso = "3.5.1"
 junit4 = "4.13.2"
-ksp = "1.9.21-1.0.16"
+ksp = "1.9.22-1.0.16"
 secrets = "2.0.1"
 annotationJvm = "1.7.1"
 turbine = "1.0.0"
-compose-compiler = "1.5.7"
+compose-compiler = "1.5.8"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
@@ -158,15 +158,6 @@ ktor = [
     "ktor-client-logging",
     "ktor-client-serialization",
     "ktor-serialization-kotlinx-json"
-]
-
-accompanist = [
-    "accompanist-navigation-animation",
-    "accompanist-pager",
-    "accompanist-pager-indicators",
-    "accompanist-permissions",
-    "accompanist-swiperefresh",
-    "accompanist-systemuicontroller"
 ]
 
 hilt = [

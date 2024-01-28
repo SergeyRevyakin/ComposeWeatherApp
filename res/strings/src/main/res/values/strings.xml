@@ -43,6 +43,7 @@
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
     <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
     <string name="show_widget_settings">Show widget settings</string>
+    <string name="settings_current_app_verions">App version: %1$s</string>
 
     <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
@@ -51,6 +52,11 @@
     <string name="enter_color_code">Enter color code</string>
     <string name="color_code_format">In XXXXX format</string>
     <string name="widget_preview">Widget preview</string>
+    <string name="widget_big_font_size">Widget main text size</string>
+    <string name="widget_small_font_size">Widget additional info text size</string>
+    <string name="widget_system_data_label">Show system data</string>
+    <string name="widget_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
+    <string name="widget_bottom_padding">Space between lines</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>

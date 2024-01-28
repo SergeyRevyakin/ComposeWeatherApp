@@ -1,9 +1,8 @@
 package ru.serg.widget_settings_feature.items
 
-import android.app.WallpaperManager
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,11 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,25 +33,31 @@ import kotlin.math.roundToInt
 @Composable
 fun WidgetPreviewItem(
     color: Color,
+    bigFont: Int,
+    smallFont: Int,
+    bottomPadding: Int,
+    isSystemDataShown: Boolean,
     modifier: Modifier = Modifier,
     hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
     cityItem: CityItem = MockItems.getCityMockItem(),
 ) {
 
-    val currentColor = animateColorAsState(targetValue = color, label = "").value
+    val currentColor by animateColorAsState(targetValue = color, label = "")
+    val backgroundColor by animateColorAsState(
+        targetValue =
+        if (android.graphics.Color.luminance(currentColor.toArgb()) > 0.29f) Color.Black else Color.White,
+        label = ""
+    )
 
-    val bigFont = 38
-    val smallFont = 18
-    val paddingBottom = 3.dp
-
-    val wallpaperDrawable = WallpaperManager.getInstance(LocalContext.current).drawable
-    val bitmap = (wallpaperDrawable as BitmapDrawable).bitmap
+    val paddingBottom = bottomPadding.dp
 
 
     Column(
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .background(backgroundColor)
+            .padding(horizontal = 12.dp, vertical = 24.dp),
     ) {
         Row(
             modifier = Modifier
@@ -157,43 +163,45 @@ fun WidgetPreviewItem(
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Top,
-                modifier = Modifier.weight(1f)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
-
-                    ) {
-                    Text(
-                        text = "Last updated " + getHour(cityItem.lastTimeUpdated),
-                        style = TextStyle(
-                            color = currentColor,
-                            fontSize = 12.sp
-                        )
-                    )
-                    Image(
-                        painter = painterResource(ru.serg.drawables.R.drawable.ic_refresh),
-                        contentDescription = "",
-                        modifier = Modifier.size(18.dp),
-                        colorFilter = ColorFilter.tint(currentColor)
-                    )
-                }
-
-
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
+            if (isSystemDataShown) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = "Last recomposition " + getHour(System.currentTimeMillis()),
-                        style = TextStyle(
-                            color = currentColor,
-                            fontSize = 12.sp
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+
+                        ) {
+                        Text(
+                            text = "Last updated " + getHour(cityItem.lastTimeUpdated),
+                            style = TextStyle(
+                                color = currentColor,
+                                fontSize = 12.sp
+                            )
                         )
-                    )
+                        Image(
+                            painter = painterResource(ru.serg.drawables.R.drawable.ic_refresh),
+                            contentDescription = "",
+                            modifier = Modifier.size(18.dp),
+                            colorFilter = ColorFilter.tint(currentColor)
+                        )
+                    }
+
+
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Last recomposition " + getHour(System.currentTimeMillis()),
+                            style = TextStyle(
+                                color = currentColor,
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -202,9 +210,33 @@ fun WidgetPreviewItem(
 
 @Preview
 @Composable
+private fun PreviewWidgetDemoWhite() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.White, 38, 18, 8, true)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWidgetDemoGreen() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.Green, 38, 18, 0, false)
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewWidgetDemoBlack() {
+    ComposeWeatherAppTheme {
+        WidgetPreviewItem(color = Color.Black, 42, 14, 5, true)
+    }
+}
+
+@Preview
+@Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White)
+        WidgetPreviewItem(color = Color.DarkGray, 46, 12, 3, false)
     }
 }
 

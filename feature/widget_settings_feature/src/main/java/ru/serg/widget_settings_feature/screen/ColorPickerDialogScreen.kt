@@ -14,14 +14,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -52,14 +53,11 @@ fun ColorPickerDialogScreen(
     onColor: (Color) -> Unit,
 ) {
 
-
     AlertDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(),
         modifier = Modifier.fillMaxWidth()
-    )
-    {
-
+    ) {
         val context = LocalContext.current
         val colorState = remember {
             mutableStateOf(
@@ -75,12 +73,8 @@ fun ColorPickerDialogScreen(
             )
         }
 
-        val textValue = remember {
-            mutableStateOf(
-                ""
-            )
-        }
-
+        var textValue =
+            colorState.value.toArgb().toString()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,7 +87,6 @@ fun ColorPickerDialogScreen(
                 )
                 .padding(24.dp)
         ) {
-
             Box(
                 modifier = Modifier
                     .padding(bottom = 36.dp)
@@ -116,7 +109,7 @@ fun ColorPickerDialogScreen(
             ) {
                 items(colorSet.size) {
                     ColorBoxItem(
-                        colorC = colorSet.elementAt(it),
+                        color = colorSet.elementAt(it),
                         isSelected = selectedElementIndex.intValue == it,
                         modifier = Modifier.aspectRatio(1f)
                     ) { color ->
@@ -136,10 +129,10 @@ fun ColorPickerDialogScreen(
             )
 
             OutlinedTextField(
-                value = textValue.value,
+                value = textValue,
                 onValueChange = {
-//                    colorState.value = parseColor(it)
-                    textValue.value = it
+                    colorState.value = parseColor(it)
+                    textValue = it
                 },
                 label = {
                     Text(text = stringResource(id = string.enter_color_code))
@@ -155,17 +148,17 @@ fun ColorPickerDialogScreen(
                         Icons.Filled.Close,
                         contentDescription = stringResource(id = string.accessibility_desc_clear_field_icon),
                         modifier = Modifier
-                            .clickable {
-//                                parseColor()
-                            }
                             .clip(CircleShape)
+                            .clickable {
+                                textValue = ""
+                            },
                     )
                 },
                 modifier = Modifier
                     .padding(vertical = 24.dp),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
-                textStyle = TextStyle(fontSize = 18.sp)
+                textStyle = TextStyle(fontSize = 20.sp),
             )
 
             PrimaryButton(
@@ -178,8 +171,18 @@ fun ColorPickerDialogScreen(
 }
 
 fun parseColor(string: String): Color {
-    return Color(string.toULong())
+
+    return try {
+        Color(string.toLong())
+    } catch (_: Exception) {
+        try {
+            Color(string.toInt())
+        } catch (_: Exception) {
+            Color.White
+        }
+    }
 }
+//}
 
 @Preview(showBackground = true)
 @Composable

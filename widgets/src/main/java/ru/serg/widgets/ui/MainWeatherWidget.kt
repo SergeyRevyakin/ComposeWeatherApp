@@ -2,11 +2,14 @@ package ru.serg.widgets.ui
 
 import android.content.ComponentName
 import android.content.Intent
+import android.provider.AlarmClock
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -33,6 +36,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import ru.serg.model.CityItem
 import ru.serg.model.HourlyWeather
+import ru.serg.model.WidgetDataSettings
 import ru.serg.service.FetchWeatherService
 import ru.serg.widgets.Constants
 import ru.serg.widgets.R
@@ -44,7 +48,7 @@ import kotlin.math.roundToInt
 fun MainWeatherWidget(
     hourWeather: HourlyWeather,
     cityItem: CityItem,
-    color: Color,
+    settings: WidgetDataSettings,
 ) {
     Log.e("ComposeWeatherWidget", "Composition started")
     val packageName = LocalContext.current.packageName
@@ -53,28 +57,25 @@ fun MainWeatherWidget(
     val ctx = LocalContext.current
 
     val currentColor by remember {
-        mutableStateOf(color)
+        mutableStateOf(Color(settings.color))
     }
 
-    val bigFont = 38
-    val smallFont = 18
-    val paddingBottom = 3.dp
+    val bigFont by remember {
+        mutableIntStateOf(settings.bigFontSize)
+    }
+    val smallFont by remember {
+        mutableIntStateOf(settings.smallFontSize)
+    }
+    val paddingBottom by remember {
+        mutableStateOf(settings.bottomPadding.dp)
+    }
+
+    val isSystemDataShown by remember {
+        mutableStateOf(settings.isSystemDataShown)
+    }
 
     Column(
-        modifier = GlanceModifier.fillMaxSize()
-            .clickable {
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    component = ComponentName(
-                        packageName,
-                        Constants.MAIN_ACTIVITY_PACKAGE
-                    )
-                    ctx.startActivity(this)
-                }
-            },
+        modifier = GlanceModifier.fillMaxSize(),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxWidth()
@@ -86,6 +87,13 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.Start,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = AlarmClock.ACTION_SET_ALARM
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 AndroidRemoteViews(
                     remoteViews = clockView,
@@ -117,6 +125,19 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.End,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            component = ComponentName(
+                                packageName,
+                                Constants.MAIN_ACTIVITY_PACKAGE
+                            )
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 Row(
                     horizontalAlignment = Alignment.End,
@@ -134,7 +155,8 @@ fun MainWeatherWidget(
                     )
 
                     Image(
-                        provider = ImageProvider(hourWeather.weatherIcon), contentDescription = "",
+                        provider = ImageProvider(hourWeather.weatherIcon),
+                        contentDescription = "",
                         modifier = GlanceModifier.size(56.dp),
                         colorFilter = ColorFilter.tint(ColorProvider(currentColor))
                     )
@@ -151,6 +173,17 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.Start,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            setData(
+                                CalendarContract.CONTENT_URI.buildUpon().appendPath("time")
+                                    .build()
+                            )
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 AndroidRemoteViews(
                     remoteViews = dateView,
@@ -182,6 +215,19 @@ fun MainWeatherWidget(
                 horizontalAlignment = Alignment.End,
                 verticalAlignment = Alignment.Vertical.Top,
                 modifier = GlanceModifier.defaultWeight()
+                    .clickable {
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            component = ComponentName(
+                                packageName,
+                                Constants.MAIN_ACTIVITY_PACKAGE
+                            )
+                            ctx.startActivity(this)
+                        }
+                    }
             ) {
                 Row(
                     horizontalAlignment = Alignment.End,
@@ -217,46 +263,48 @@ fun MainWeatherWidget(
                 )
             }
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalAlignment = Alignment.Vertical.Top,
-                modifier = GlanceModifier.defaultWeight()
-            ) {
-                Row(
+            if (isSystemDataShown) {
+                Column(
                     horizontalAlignment = Alignment.End,
-                    verticalAlignment = Alignment.Vertical.CenterVertically,
-                    modifier = GlanceModifier.clickable {
-                        val intent = Intent(ctx, FetchWeatherService::class.java)
-                        ctx.startForegroundService(intent)
+                    verticalAlignment = Alignment.Vertical.Top,
+                    modifier = GlanceModifier.defaultWeight()
+                ) {
+                    Row(
+                        horizontalAlignment = Alignment.End,
+                        verticalAlignment = Alignment.Vertical.CenterVertically,
+                        modifier = GlanceModifier.clickable {
+                            val intent = Intent(ctx, FetchWeatherService::class.java)
+                            ctx.startForegroundService(intent)
+                        }
+                    ) {
+                        Text(
+                            text = "Last updated " + getHour(cityItem.lastTimeUpdated),
+                            style = TextStyle(
+                                color = ColorProvider(currentColor),
+                                fontSize = 12.sp
+                            )
+                        )
+                        Image(
+                            provider = ImageProvider(ru.serg.drawables.R.drawable.ic_refresh),
+                            contentDescription = "",
+                            modifier = GlanceModifier.size(18.dp),
+                            colorFilter = ColorFilter.tint(ColorProvider(currentColor))
+                        )
                     }
-                ) {
-                    Text(
-                        text = "Last updated " + getHour(cityItem.lastTimeUpdated),
-                        style = TextStyle(
-                            color = ColorProvider(currentColor),
-                            fontSize = 12.sp
-                        )
-                    )
-                    Image(
-                        provider = ImageProvider(ru.serg.drawables.R.drawable.ic_refresh),
-                        contentDescription = "",
-                        modifier = GlanceModifier.size(18.dp),
-                        colorFilter = ColorFilter.tint(ColorProvider(currentColor))
-                    )
-                }
 
 
-                Row(
-                    horizontalAlignment = Alignment.End,
-                    verticalAlignment = Alignment.Vertical.CenterVertically,
-                ) {
-                    Text(
-                        text = "Last recomposition " + getHour(System.currentTimeMillis()),
-                        style = TextStyle(
-                            color = ColorProvider(currentColor),
-                            fontSize = 12.sp
+                    Row(
+                        horizontalAlignment = Alignment.End,
+                        verticalAlignment = Alignment.Vertical.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Last recomposition " + getHour(System.currentTimeMillis()),
+                            style = TextStyle(
+                                color = ColorProvider(currentColor),
+                                fontSize = 12.sp
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

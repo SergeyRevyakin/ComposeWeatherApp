@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.LocationOff
@@ -27,6 +29,7 @@ import ru.serg.common.ScreenNames
 import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
+import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.designsystem.top_item.TopItem
 import ru.serg.model.enums.Units
 import ru.serg.settings_feature.Constants
@@ -68,22 +71,23 @@ fun SettingsScreen(
             onSwitchClick = viewModel::onScreenModeChanged
         )
 
+        val notificationIcon =
+            if (viewModel.isNotificationEnabled.collectAsState().value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff
+
+        val notificationHeader = if (viewModel.isNotificationEnabled.collectAsState().value)
+            stringResource(id = string.app_can_send_you_notifications)
+        else stringResource(id = string.app_can_not_send_you_notifications)
+
+        val notificationDescription = if (viewModel.isNotificationEnabled.collectAsState().value)
+            stringResource(id = string.tap_to_turn_it_on)
+        else stringResource(id = string.tap_to_turn_it_off)
+
         if (isTiramisuOrAbove()) {
             MenuSettingsRowWithIcon(
                 onClick = { context.openAppSystemSettings() },
-                iconImageVector = if (viewModel.isNotificationEnabled.collectAsState().value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff,
-                headerText = if (viewModel.isNotificationEnabled.collectAsState().value) stringResource(
-                    id = string.app_can_send_you_notifications
-                )
-                else stringResource(
-                    id = string.app_can_not_send_you_notifications
-                ),
-                descriptionText = if (viewModel.isNotificationEnabled.collectAsState().value) stringResource(
-                    id = string.tap_to_turn_it_on
-                )
-                else stringResource(
-                    id = string.tap_to_turn_it_off
-                )
+                iconImageVector = notificationIcon,
+                headerText = notificationHeader,
+                descriptionText = notificationDescription
 
             )
         }
@@ -118,16 +122,22 @@ fun SettingsScreen(
             navController.navigate(ScreenNames.WIDGET_SETTINGS_SCREEN)
         }
 
+        val locationIcon =
+            if (viewModel.isLocationEnabled.collectAsState().value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff
+
+        val locationHeaderText = if (viewModel.isLocationEnabled.collectAsState().value)
+            stringResource(id = string.location_is_on)
+        else stringResource(id = string.location_is_off)
+
+        val locationDescriptionText = if (viewModel.isLocationEnabled.collectAsState().value)
+            stringResource(id = string.tap_to_turn_it_on)
+        else stringResource(id = string.tap_to_turn_it_off)
+
         MenuSettingsRowWithIcon(
             onClick = { context.openAppSystemSettings() },
-            iconImageVector = if (viewModel.isLocationEnabled.collectAsState().value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff,
-            headerText = if (viewModel.isLocationEnabled.collectAsState().value) stringResource(id = string.location_is_on)
-            else stringResource(id = string.location_is_off),
-            descriptionText = if (viewModel.isLocationEnabled.collectAsState().value) stringResource(
-                id = string.tap_to_turn_it_on
-            )
-            else stringResource(id = string.tap_to_turn_it_off)
-
+            iconImageVector = locationIcon,
+            headerText = locationHeaderText,
+            descriptionText = locationDescriptionText
         )
 
         RadioButtonGroup(
@@ -138,6 +148,19 @@ fun SettingsScreen(
         ) {
             viewModel.onUnitsChanged(it)
         }
+
+        val versionName = LocalContext.current.packageManager.getPackageInfo(
+            LocalContext.current.packageName,
+            0
+        ).versionName
+
+        Text(
+            text = stringResource(id = string.settings_current_app_verions, versionName),
+            style = settingsSubText,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp)
+        )
     }
 }
 

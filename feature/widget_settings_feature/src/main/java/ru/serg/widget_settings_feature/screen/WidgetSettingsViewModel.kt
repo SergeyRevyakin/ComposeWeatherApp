@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
@@ -18,8 +20,28 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _widgetColorFlow = MutableStateFlow(Color.White)
     val widgetColorFlow = _widgetColorFlow.asStateFlow()
 
+    private val _widgetBigFontFlow = MutableStateFlow(0f)
+    val widgetBigFontFlow = _widgetBigFontFlow.asStateFlow()
+
+    private val _widgetSmallFontFlow = MutableStateFlow(0f)
+    val widgetSmallFontFlow = _widgetSmallFontFlow.asStateFlow()
+
+    private val _isWidgetSystemDataShown = MutableStateFlow(false)
+    val isWidgetSystemDataShown = _isWidgetSystemDataShown.asStateFlow()
+
+    private val _widgetBottomPadding = MutableStateFlow(0f)
+    val widgetBottomPadding = _widgetBottomPadding.asStateFlow()
+
     init {
+        initValues()
+    }
+
+    private fun initValues() {
         initWidgetColor()
+        initWidgetBigFontSize()
+        initWidgetSmallFontSize()
+        initWidgetSystemData()
+        initWidgetBottomPadding()
     }
 
     private fun initWidgetColor() {
@@ -33,6 +55,66 @@ class WidgetSettingsViewModel @Inject constructor(
     fun saveWidgetColor(color: Color) {
         viewModelScope.launch {
             dataSource.saveWidgetColorCode(color.value.toLong())
+        }
+    }
+
+    private fun initWidgetBigFontSize() {
+        viewModelScope.launch {
+            dataSource.widgetBigFontSize.collectLatest {
+                _widgetBigFontFlow.value = it.toFloat()
+            }
+        }
+    }
+
+    fun saveWidgetBigFont(size: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetBigFontSize(size.toInt())
+        }
+    }
+
+    private fun initWidgetSmallFontSize() {
+        viewModelScope.launch {
+            dataSource.widgetSmallFontSize.distinctUntilChanged().collectLatest {
+                _widgetSmallFontFlow.value = it.toFloat()
+            }
+        }
+    }
+
+    fun saveWidgetSmallFont(size: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetSmallFontSize(size.toInt())
+        }
+    }
+
+    private fun initWidgetSystemData() {
+        viewModelScope.launch {
+            dataSource.isWidgetSystemDataShown.collectLatest { isShown ->
+                _isWidgetSystemDataShown.update {
+                    isShown
+                }
+            }
+        }
+    }
+
+    fun saveWidgetSystemDataShown(isShown: Boolean) {
+        viewModelScope.launch {
+            dataSource.saveWidgetSystemDataShown(isShown)
+        }
+    }
+
+    private fun initWidgetBottomPadding() {
+        viewModelScope.launch {
+            dataSource.widgetBottomPadding.collectLatest { padding ->
+                _widgetBottomPadding.update {
+                    padding.toFloat()
+                }
+            }
+        }
+    }
+
+    fun saveWidgetBottomPadding(padding: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetBottomPadding(padding.toInt())
         }
     }
 }
