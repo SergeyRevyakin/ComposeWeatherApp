@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.LocationOff
@@ -27,6 +29,7 @@ import ru.serg.common.ScreenNames
 import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
+import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.designsystem.top_item.TopItem
 import ru.serg.model.enums.Units
 import ru.serg.settings_feature.Constants
@@ -127,7 +130,6 @@ fun SettingsScreen(
                 id = string.tap_to_turn_it_on
             )
             else stringResource(id = string.tap_to_turn_it_off)
-
         )
 
         RadioButtonGroup(
@@ -138,6 +140,19 @@ fun SettingsScreen(
         ) {
             viewModel.onUnitsChanged(it)
         }
+
+        val versionName = LocalContext.current.packageManager.getPackageInfo(
+            LocalContext.current.packageName,
+            0
+        ).versionName
+
+        Text(
+            text = stringResource(id = string.settings_current_app_verions, versionName),
+            style = settingsSubText,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 24.dp)
+        )
     }
 }
 

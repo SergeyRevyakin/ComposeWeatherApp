@@ -43,6 +43,7 @@
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
     <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
     <string name="show_widget_settings">Show widget settings</string>
+    <string name="settings_current_app_verions">App version: %1$s</string>
 
     <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
