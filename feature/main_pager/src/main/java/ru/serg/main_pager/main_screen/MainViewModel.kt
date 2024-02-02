@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.NetworkStatus
@@ -51,6 +52,14 @@ class MainViewModel @Inject constructor(
 
     val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
 
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, t ->
+            isLoading.value = false
+            _citiesWeather.update {
+                CommonScreenState.Error(t.localizedMessage)
+            }
+        }
+
     init {
         val locationPermissionFlow = PermissionFlow.getInstance().getMultiplePermissionState(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -68,7 +77,7 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun initCitiesWeatherFlow() {
+    fun initCitiesWeatherFlow() {
         viewModelScope.launch {
             localDataSource.getWeatherFlow().debounce(200L).collectLatest {
                 when {
@@ -83,7 +92,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun setInitialState(isLocationAvailable: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when (state) {
                     is CommonScreenState.Empty -> {
@@ -117,7 +126,7 @@ class MainViewModel @Inject constructor(
 
 
     private fun checkWeatherItem(weatherItem: UpdatedWeatherItem) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             when {
                 dateUtils.isFetchDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
                     refresh()
@@ -133,7 +142,7 @@ class MainViewModel @Inject constructor(
     fun refresh() {
         if (networkStatus.isNetworkConnected()) {
             isLoading.value = true
-            viewModelScope.launch {
+            viewModelScope.launch(coroutineExceptionHandler) {
                 val item =
                     (citiesWeather.value as? CommonScreenState.Success)?.updatedWeatherList?.get(
                         observableItemNumber.value
@@ -150,6 +159,7 @@ class MainViewModel @Inject constructor(
                                 is NetworkResult.Error -> {
                                     isLoading.value = false
                                 }
+
                                 is NetworkResult.Success -> isLoading.value = false
                             }
                         }
@@ -172,15 +182,9 @@ class MainViewModel @Inject constructor(
                         coordinatesWrapper,
                     )
                 }
-//                .catch {
-//                    it
-//                }
                 .launchIn(this)
         }
     }
 
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, _ ->
-            //TODO handle exception
-        }
+
 }

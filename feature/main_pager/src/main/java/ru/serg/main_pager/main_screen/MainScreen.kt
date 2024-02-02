@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.serg.designsystem.common.ErrorItem
 import ru.serg.designsystem.common.SunLoadingScreen
 import ru.serg.designsystem.top_item.PagerTopItem
 import ru.serg.main_pager.CommonScreenState
@@ -119,6 +120,10 @@ fun MainScreen(
                     }
                 )
             }
+        }
+
+        AnimatedVisibility(visible = screenState is CommonScreenState.Error) {
+            ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
         }
     }
 }
