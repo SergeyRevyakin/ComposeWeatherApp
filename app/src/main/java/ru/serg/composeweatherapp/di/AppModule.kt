@@ -11,7 +11,6 @@ import dagger.hilt.components.SingletonComponent
 import ru.serg.common.NetworkStatus
 import ru.serg.datastore.dataStore
 import ru.serg.location.LocationDataSource
-import ru.serg.service.WeatherAlarmManager
 import ru.serg.work.WorkerManager
 import javax.inject.Singleton
 
@@ -30,12 +29,6 @@ class AppModule {
     fun provideLocationService(
         @ApplicationContext context: Context,
     ): LocationDataSource = LocationDataSource(context)
-
-    @Singleton
-    @Provides
-    fun provideWeatherAlarmManager(
-        @ApplicationContext context: Context
-    ): WeatherAlarmManager = WeatherAlarmManager(context)
 
     @Singleton
     @Provides
