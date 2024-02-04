@@ -1,11 +1,11 @@
 @file:OptIn(
-    FlowPreview::class, ExperimentalAnimationApi::class,
-    ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class
+    FlowPreview::class,
+    ExperimentalCoroutinesApi::class,
+    ExperimentalFoundationApi::class
 )
 
 package ru.serg.composeweatherapp
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -78,7 +78,7 @@ fun Navigation(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
             },
             exitTransition = {
@@ -94,7 +94,9 @@ fun Navigation(
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
+                ) + fadeOut(
+                    animationSpec = tween(300)
                 )
             }
         ) {
@@ -108,14 +110,26 @@ fun Navigation(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(300)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(500)
-                )
+                    animationSpec = tween(300)
+                ) + fadeOut(animationSpec = tween(300))
             }
         ) {
             SettingsScreen(
@@ -128,13 +142,13 @@ fun Navigation(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
             }
         ) {
@@ -151,7 +165,7 @@ fun Navigation(
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
             },
             exitTransition = {
@@ -167,7 +181,7 @@ fun Navigation(
             popExitTransition = {
                 slideOutVertically(
                     targetOffsetY = { it },
-                    animationSpec = tween(500)
+                    animationSpec = tween(300)
                 )
             }
         ) {

@@ -10,9 +10,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,16 +25,21 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FetchWeatherService : Service() {
 
+    companion object {
+        private const val SERVICE_ID = 222
+    }
+
     @Inject
     lateinit var weatherServiceUseCase: WeatherServiceUseCase
 
-    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, _ ->
+            stop()
+        }
+
+    private val serviceScope = CoroutineScope(coroutineExceptionHandler + Dispatchers.IO)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        when (intent?.action) {
-//            START_ACTION -> start()
-//            STOP_ACTION -> stop()
-//        }
         start()
         return super.onStartCommand(intent, flags, startId)
     }
@@ -75,6 +80,7 @@ class FetchWeatherService : Service() {
                         val updatedNotification =
                             serviceNotification.setContentText("Error ${it.message}")
                         notificationManager.notify(SERVICE_ID, updatedNotification.build())
+                        stop()
                     }
 
                     is ServiceFetchingResult.Loading -> {}
@@ -102,11 +108,5 @@ class FetchWeatherService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
-    }
-
-    companion object {
-        const val START_ACTION = "start"
-        const val STOP_ACTION = "stop"
-        private const val SERVICE_ID = 222
     }
 }
