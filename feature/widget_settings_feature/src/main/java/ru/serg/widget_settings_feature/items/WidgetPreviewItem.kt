@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
@@ -57,7 +58,8 @@ fun WidgetPreviewItem(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(horizontal = 12.dp, vertical = 24.dp),
+            .padding(horizontal = 12.dp, vertical = 24.dp)
+            .height(180.dp),
     ) {
         Row(
             modifier = Modifier
