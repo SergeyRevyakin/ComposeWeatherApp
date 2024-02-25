@@ -78,6 +78,7 @@ android {
 
     namespace = "ru.serg.composeweatherapp"
 
+
 //    testOptions {
 //        unitTests {
 //            isIncludeAndroidResources = true
