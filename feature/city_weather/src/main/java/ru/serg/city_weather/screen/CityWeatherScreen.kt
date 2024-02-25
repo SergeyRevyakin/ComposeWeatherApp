@@ -7,7 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,7 +35,7 @@ fun CityWeatherScreen(
     ) {
         TopItem(
             header = "Current weather in",
-            leftIconImageVector = Icons.Rounded.ArrowBack,
+            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             onLeftIconClick = { navController.navigateUp() },
             isLoading = screenState is ScreenState.Loading
         )

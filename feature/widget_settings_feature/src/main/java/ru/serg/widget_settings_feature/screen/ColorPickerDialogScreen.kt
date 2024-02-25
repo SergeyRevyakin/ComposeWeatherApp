@@ -20,7 +20,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -53,10 +53,10 @@ fun ColorPickerDialogScreen(
     onColor: (Color) -> Unit,
 ) {
 
-    AlertDialog(
+    BasicAlertDialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        properties = DialogProperties()
     ) {
         val context = LocalContext.current
         val colorState = remember {

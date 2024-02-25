@@ -54,10 +54,6 @@ class LocalDataSourceImpl @Inject constructor(
     ) {
         scope.launch {
 
-            hourlyWeatherList.map {
-
-            }
-
             weatherDao.saveWeather(
                 hourlyWeatherList.map { it.toHourlyWeatherEntity(cityItem.id) },
                 dailyWeatherList.map { it.toDailyWeatherEntity(cityItem.id) },

@@ -260,6 +260,40 @@ class WeatherDaoTest {
         assertEquals(1, dailyWeatherList.size)
     }
 
+    @Test
+    fun put_new_favourite_city() = runTest {
+        // Given
+        weatherDao.saveWeather(
+            listOf(
+                hourlyWeatherEntity.copy(dateTime = 120),
+                hourlyWeatherEntity.copy(dateTime = 124)
+            ),
+            listOf(
+                dailyWeatherEntity.copy(dateTime = 120),
+                dailyWeatherEntity.copy(dateTime = 124)
+            ),
+            cityEntity.copy(lastTimeUpdated = 12, id = -1)
+        )
+
+        // When
+        weatherDao.saveWeather(
+            listOf(
+                hourlyWeatherEntity.copy(dateTime = 120),
+                hourlyWeatherEntity.copy(dateTime = 124)
+            ),
+            listOf(
+                dailyWeatherEntity.copy(dateTime = 120),
+                dailyWeatherEntity.copy(dateTime = 124)
+            ),
+            cityEntity.copy(lastTimeUpdated = 12, id = -1, cityName = "london")
+        )
+
+        // Then
+        val deletedCityWeather = weatherDao.getWeatherWithCity().first().first()
+        assertEquals("london", deletedCityWeather.cityEntity.cityName)
+        assertEquals(-1, deletedCityWeather.cityEntity.id)
+    }
+
 
 }
 
