@@ -9,7 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.LocationOff
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Notifications
@@ -56,7 +56,7 @@ fun SettingsScreen(
     ) {
         TopItem(
             header = stringResource(id = string.settings),
-            leftIconImageVector = Icons.Rounded.ArrowBack,
+            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
             onRightIconClick = null

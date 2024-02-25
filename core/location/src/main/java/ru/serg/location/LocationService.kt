@@ -11,5 +11,5 @@ interface LocationService {
         updateFrequency: Long = 15
     ): Flow<Coordinates>
 
-    class LocationException(message: String) : Exception()
+    class LocationException(override val message: String) : Exception()
 }

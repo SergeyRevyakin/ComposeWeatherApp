@@ -20,7 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -67,7 +67,7 @@ fun ChooseCityScreen(
     ) {
         TopItem(
             header = stringResource(id = string.look_for_the_place),
-            leftIconImageVector = Icons.Rounded.ArrowBack,
+            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
             onRightIconClick = null,
