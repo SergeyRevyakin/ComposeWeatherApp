@@ -1,61 +1,51 @@
 [versions]
-accompanist-navigation-animation = "0.32.0"
-accompanist-swiperefresh = "0.32.0"
-accompanist-permissions = "0.33.2-alpha"
-accompanist-systemuicontroller = "0.32.0"
 activity-compose = "1.8.2"
-androidx-foundation = "1.6.0"
-androidx-material = "1.6.0"
+androidx-foundation = "1.6.2"
+androidx-material = "1.6.2"
 appcompat = "1.6.1"
-compose-bom = "2024.01.00"
+compose-bom = "2024.02.01"
 core-ktx = "1.12.0"
 datastore-preferences = "1.1.0-beta01"
 espresso-core = "3.5.1"
 glance = "1.0.0"
-gradle = "8.4.0-alpha07"
+gradle = "8.4.0-alpha11"
 hilt-android = "2.50"
 hilt-navigation-compose = "1.1.0"
 junit = "1.1.5"
 kotlin = "1.9.22"
 kotlinx-datetime = "0.5.0"
-kotlinx-serialization-json = "1.6.2"
-kotlinxCoroutines = "1.7.3"
-ktor-client = "2.3.7"
+kotlinx-serialization-json = "1.6.3"
+kotlinxCoroutines = "1.8.0"
+ktor-client = "2.3.8"
 lifecycle-runtime-ktx = "2.7.0"
 material = "1.11.0"
-material3 = "1.1.2"
+material3 = "1.2.0"
 multidex = "2.0.1"
-navigation-compose = "2.7.6"
+navigation-compose = "2.7.7"
 permission-flow-android = "1.2.0"
 play-services-location = "21.1.0"
 room-testing = "2.6.1"
 secretsGradlePlugin = "2.0.1"
-ui = "1.6.0"
-ui-test-junit4 = "1.6.0"
+ui = "1.6.2"
+ui-test-junit4 = "1.6.2"
 work-runtime-ktx = "2.9.0"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
-androidxUiAutomator = "2.2.0"
+androidxUiAutomator = "2.3.0"
 androidxEspresso = "3.5.1"
 junit4 = "4.13.2"
 ksp = "1.9.22-1.0.16"
 secrets = "2.0.1"
 annotationJvm = "1.7.1"
 turbine = "1.0.0"
-compose-compiler = "1.5.8"
+compose-compiler = "1.5.10"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
 
 [libraries]
-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist-swiperefresh" }
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist-swiperefresh" }
-accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist-navigation-animation" }
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-swiperefresh" }
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-systemuicontroller" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -88,12 +78,9 @@ androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-juni
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-foundation" }
-gradle-build = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
-hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-android" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
