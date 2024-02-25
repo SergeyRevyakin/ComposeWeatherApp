@@ -23,7 +23,9 @@ android {
 dependencies {
     implementation(project(":res:strings"))
     implementation(project(":res:drawables"))
+    implementation(libs.kotlinx.coroutines.android)
+
     testImplementation(project(":core:testing"))
 
-    implementation(libs.kotlinx.coroutines.android)
+
 }

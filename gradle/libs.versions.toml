@@ -40,6 +40,7 @@ ksp = "1.9.22-1.0.16"
 secrets = "2.0.1"
 annotationJvm = "1.7.1"
 turbine = "1.0.0"
+mockito = "5.10.0"
 compose-compiler = "1.5.10"
 minSdk = "27"
 compileSdk = "34"
@@ -107,6 +108,7 @@ androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiaut
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }

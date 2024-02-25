@@ -51,6 +51,7 @@ dependencies {
 
     api(libs.kotlin.test)
     testImplementation(libs.kotlin.test)
+    api(libs.mockito)
     androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(libs.androidx.test.runner)
     api(libs.turbine)
