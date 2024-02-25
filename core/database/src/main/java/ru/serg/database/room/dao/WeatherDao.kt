@@ -21,6 +21,8 @@ interface WeatherDao {
         dailyWeatherEntities: List<DailyWeatherEntity>,
         cityEntity: CityEntity
     ) {
+        deleteWeather(cityEntity.id)
+
         insertWeatherItemEntity(dailyWeatherEntities)
         insertHourlyEntity(hourlyWeatherEntities)
         saveCity(cityEntity)
