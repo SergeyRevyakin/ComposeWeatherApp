@@ -5,5 +5,6 @@ data class WidgetDataSettings(
     val bigFontSize: Int,
     val smallFontSize: Int,
     val bottomPadding: Int,
-    val isSystemDataShown: Boolean
+    val isSystemDataShown: Boolean,
+    val iconSize: Int
 )

@@ -157,7 +157,7 @@ fun MainWeatherWidget(
                     Image(
                         provider = ImageProvider(hourWeather.weatherIcon),
                         contentDescription = "",
-                        modifier = GlanceModifier.size(56.dp),
+                        modifier = GlanceModifier.size(settings.iconSize.dp),
                         colorFilter = ColorFilter.tint(ColorProvider(currentColor))
                     )
                 }

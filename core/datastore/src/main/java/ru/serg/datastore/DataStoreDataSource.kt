@@ -23,7 +23,7 @@ interface DataStoreDataSource {
 
     val isWidgetSystemDataShown: Flow<Boolean>
 
-    val iconSize: Flow<Int>
+    val widgetIconSize: Flow<Int>
 
     suspend fun saveDarkMode(isDark: Boolean)
 

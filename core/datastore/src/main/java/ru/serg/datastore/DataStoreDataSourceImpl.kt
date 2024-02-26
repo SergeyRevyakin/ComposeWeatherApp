@@ -113,7 +113,7 @@ class DataStoreDataSourceImpl @Inject constructor(
             ?: Constants.WidgetSettings.DEFAULT_IS_WIDGET_SYSTEM_DATA_SHOWN
     }.distinctUntilChanged()
 
-    override val iconSize: Flow<Int> = dataStore.data.map {
+    override val widgetIconSize: Flow<Int> = dataStore.data.map {
         it[WIDGET_SETTINGS_ICON_SIZE]
             ?: Constants.WidgetSettings.DEFAULT_WIDGET_ICON_SIZE
     }.distinctUntilChanged()
