@@ -23,6 +23,8 @@ interface DataStoreDataSource {
 
     val isWidgetSystemDataShown: Flow<Boolean>
 
+    val iconSize: Flow<Int>
+
     suspend fun saveDarkMode(isDark: Boolean)
 
     suspend fun saveFetchFrequency(positionInList: Int)
@@ -40,4 +42,6 @@ interface DataStoreDataSource {
     suspend fun saveWidgetBottomPadding(padding: Int)
 
     suspend fun saveWidgetSystemDataShown(isShown: Boolean)
+
+    suspend fun saveWidgetIconSize(iconSize: Int)
 }
