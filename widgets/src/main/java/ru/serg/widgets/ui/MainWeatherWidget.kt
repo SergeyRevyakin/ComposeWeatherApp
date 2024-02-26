@@ -80,12 +80,12 @@ fun MainWeatherWidget(
         Row(
             modifier = GlanceModifier.fillMaxWidth()
                 .padding(bottom = paddingBottom),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
-                verticalAlignment = Alignment.Vertical.Top,
+                verticalAlignment = Alignment.Vertical.CenterVertically,
                 modifier = GlanceModifier.defaultWeight()
                     .clickable {
                         Intent().apply {
@@ -123,7 +123,7 @@ fun MainWeatherWidget(
 
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalAlignment = Alignment.Vertical.Top,
+                verticalAlignment = Alignment.Vertical.CenterVertically,
                 modifier = GlanceModifier.defaultWeight()
                     .clickable {
                         Intent().apply {
@@ -141,7 +141,7 @@ fun MainWeatherWidget(
             ) {
                 Row(
                     horizontalAlignment = Alignment.End,
-                    verticalAlignment = Alignment.Vertical.Top,
+                    verticalAlignment = Alignment.Vertical.CenterVertically,
                 ) {
                     Text(
                         text = hourWeather.currentTemp.roundToInt().toString() + "°",

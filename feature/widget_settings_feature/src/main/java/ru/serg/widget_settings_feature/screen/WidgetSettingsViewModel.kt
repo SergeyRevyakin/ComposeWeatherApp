@@ -32,6 +32,9 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _widgetBottomPadding = MutableStateFlow(0f)
     val widgetBottomPadding = _widgetBottomPadding.asStateFlow()
 
+    private val _widgetIconSize = MutableStateFlow(0f)
+    val widgetIconSize = _widgetIconSize.asStateFlow()
+
     init {
         initValues()
     }
@@ -41,6 +44,7 @@ class WidgetSettingsViewModel @Inject constructor(
         initWidgetBigFontSize()
         initWidgetSmallFontSize()
         initWidgetSystemData()
+        initWidgetIconSize()
         initWidgetBottomPadding()
     }
 
@@ -80,6 +84,16 @@ class WidgetSettingsViewModel @Inject constructor(
         }
     }
 
+    private fun initWidgetIconSize() {
+        viewModelScope.launch {
+            dataSource.widgetIconSize.collectLatest { value ->
+                _widgetIconSize.update {
+                    value.toFloat()
+                }
+            }
+        }
+    }
+
     fun saveWidgetSmallFont(size: Float) {
         viewModelScope.launch {
             dataSource.saveWidgetSmallFontSize(size.toInt())
@@ -115,6 +129,12 @@ class WidgetSettingsViewModel @Inject constructor(
     fun saveWidgetBottomPadding(padding: Float) {
         viewModelScope.launch {
             dataSource.saveWidgetBottomPadding(padding.toInt())
+        }
+    }
+
+    fun saveWidgetIconSize(iconSize: Float) {
+        viewModelScope.launch {
+            dataSource.saveWidgetIconSize(iconSize.toInt())
         }
     }
 }
