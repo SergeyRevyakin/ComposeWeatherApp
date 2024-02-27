@@ -38,6 +38,7 @@ fun WidgetPreviewItem(
     smallFont: Int,
     bottomPadding: Int,
     isSystemDataShown: Boolean,
+    iconSize: Int,
     modifier: Modifier = Modifier,
     hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
     cityItem: CityItem = MockItems.getCityMockItem(),
@@ -65,12 +66,12 @@ fun WidgetPreviewItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = paddingBottom),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
@@ -82,12 +83,12 @@ fun WidgetPreviewItem(
 
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier.weight(1f)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.Top,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = hourWeather.currentTemp.roundToInt().toString() + "°",
@@ -101,7 +102,7 @@ fun WidgetPreviewItem(
 
                     Image(
                         painter = painterResource(hourWeather.weatherIcon), contentDescription = "",
-                        modifier = Modifier.size(56.dp),
+                        modifier = Modifier.size(iconSize.dp),
                         colorFilter = ColorFilter.tint(currentColor)
                     )
                 }
@@ -214,7 +215,7 @@ fun WidgetPreviewItem(
 @Composable
 private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White, 38, 18, 8, true)
+        WidgetPreviewItem(color = Color.White, 38, 18, 8, true, 56)
     }
 }
 
@@ -222,7 +223,7 @@ private fun PreviewWidgetDemoWhite() {
 @Composable
 private fun PreviewWidgetDemoGreen() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Green, 38, 18, 0, false)
+        WidgetPreviewItem(color = Color.Green, 38, 18, 0, false, 64)
     }
 }
 
@@ -230,7 +231,7 @@ private fun PreviewWidgetDemoGreen() {
 @Composable
 private fun PreviewWidgetDemoBlack() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Black, 42, 14, 5, true)
+        WidgetPreviewItem(color = Color.Black, 42, 14, 5, true, 36)
     }
 }
 
@@ -238,7 +239,7 @@ private fun PreviewWidgetDemoBlack() {
 @Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.DarkGray, 46, 12, 3, false)
+        WidgetPreviewItem(color = Color.DarkGray, 46, 12, 3, false, 24)
     }
 }
 

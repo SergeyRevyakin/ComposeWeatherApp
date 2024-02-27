@@ -36,6 +36,8 @@ class DataStoreDataSourceImpl @Inject constructor(
             intPreferencesKey(Constants.WidgetSettings.WIDGET_SETTINGS_BOTTOM_PADDING)
         val IS_WIDGET_SYSTEM_DATA_SHOWN =
             booleanPreferencesKey(Constants.WidgetSettings.IS_WIDGET_SYSTEM_DATA_SHOWN)
+        val WIDGET_SETTINGS_ICON_SIZE =
+            intPreferencesKey(Constants.WidgetSettings.WIDGET_SETTINGS_ICON_SIZE)
     }
 
 
@@ -111,6 +113,11 @@ class DataStoreDataSourceImpl @Inject constructor(
             ?: Constants.WidgetSettings.DEFAULT_IS_WIDGET_SYSTEM_DATA_SHOWN
     }.distinctUntilChanged()
 
+    override val widgetIconSize: Flow<Int> = dataStore.data.map {
+        it[WIDGET_SETTINGS_ICON_SIZE]
+            ?: Constants.WidgetSettings.DEFAULT_WIDGET_ICON_SIZE
+    }.distinctUntilChanged()
+
     override suspend fun saveWidgetColorCode(colorCode: Long) {
         dataStore.edit {
             it[WIDGET_COLOR] = colorCode
@@ -138,6 +145,12 @@ class DataStoreDataSourceImpl @Inject constructor(
     override suspend fun saveWidgetSystemDataShown(isShown: Boolean) {
         dataStore.edit {
             it[IS_WIDGET_SYSTEM_DATA_SHOWN] = isShown
+        }
+    }
+
+    override suspend fun saveWidgetIconSize(iconSize: Int) {
+        dataStore.edit {
+            it[WIDGET_SETTINGS_ICON_SIZE] = iconSize
         }
     }
 }

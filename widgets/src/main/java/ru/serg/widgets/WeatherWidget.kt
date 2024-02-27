@@ -44,8 +44,8 @@ class WeatherWidget : GlanceAppWidget() {
 
         localDataSource.getFavouriteCityWeather().collectLatest { weatherItem ->
             weatherWidgetUseCase.prepareData().collectLatest { settings ->
-                println(settings)
-                WeatherWidget().updateAll(appContext)
+
+            WeatherWidget().updateAll(appContext)
 
                 provideContent {
                     GlanceTheme(

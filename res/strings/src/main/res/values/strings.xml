@@ -59,6 +59,7 @@
     <string name="widget_system_data_label">Show system data</string>
     <string name="widget_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
     <string name="widget_bottom_padding">Space between lines</string>
+    <string name="widget_icon_size">Weather icon size</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>
