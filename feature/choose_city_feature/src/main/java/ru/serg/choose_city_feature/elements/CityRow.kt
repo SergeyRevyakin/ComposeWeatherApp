@@ -22,7 +22,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,7 +42,7 @@ fun CityRow(
     cityItem: CityItem,
     onItemClick: ((CityItem) -> Unit),
     onAddClick: ((CityItem) -> Unit),
-    isAddedToFavorites: State<Boolean>,
+    isAddedToFavorites: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val backgroundColor = MaterialTheme.colors.surface
@@ -52,9 +51,9 @@ fun CityRow(
 
     val borderColor =
         animateColorAsState(
-            targetValue = if (isAddedToFavorites.value) MaterialTheme.colors.primary else backgroundColor,
+            targetValue = if (isAddedToFavorites) MaterialTheme.colors.primary else backgroundColor,
             label = "color",
-            animationSpec = tween(300, easing = FastOutLinearInEasing)
+            animationSpec = tween(200, easing = FastOutLinearInEasing)
         )
 
     Row(
@@ -85,9 +84,9 @@ fun CityRow(
         )
 
         AnimatedVisibility(
-            visible = !isAddedToFavorites.value,
-            enter = fadeIn(tween(300, easing = FastOutLinearInEasing)),
-            exit = fadeOut(tween(300, easing = FastOutLinearInEasing))
+            visible = !isAddedToFavorites,
+            enter = fadeIn(tween(200, easing = FastOutLinearInEasing)),
+            exit = fadeOut(tween(200, easing = FastOutLinearInEasing))
         ) {
             Icon(
                 imageVector = Icons.Rounded.Add,
@@ -110,15 +109,12 @@ fun CityRow(
 @Preview
 @Composable
 fun PreviewCityRow() {
-    val isFavourite = remember {
-        mutableStateOf(false)
-    }
     ComposeWeatherAppTheme {
         CityRow(
             cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
             onItemClick = {},
             onAddClick = {},
-            isAddedToFavorites = isFavourite
+            isAddedToFavorites = false
         )
     }
 }
@@ -130,14 +126,11 @@ fun PreviewCityRowDark() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDark) {
-        val isFavourite = remember {
-            mutableStateOf(true)
-        }
         CityRow(
             cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
             onItemClick = {},
             onAddClick = {},
-            isAddedToFavorites = isFavourite
+            isAddedToFavorites = true
         )
     }
 }
@@ -149,14 +142,11 @@ fun PreviewCityRowDarkNotFav() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDark) {
-        val isFavourite = remember {
-            mutableStateOf(false)
-        }
         CityRow(
             cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
             onItemClick = {},
             onAddClick = {},
-            isAddedToFavorites = isFavourite
+            isAddedToFavorites = false
         )
     }
 }
