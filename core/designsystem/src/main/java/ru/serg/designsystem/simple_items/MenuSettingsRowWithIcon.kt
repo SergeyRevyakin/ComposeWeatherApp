@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,9 +44,9 @@ fun MenuSettingsRowWithIcon(
                 onClick.invoke()
             }
             .background(
-                MaterialTheme.colors.surface
+                MaterialTheme.colorScheme.surface
                     .copy(alpha = 0.9f)
-                    .compositeOver(MaterialTheme.colors.onBackground),
+                    .compositeOver(MaterialTheme.colorScheme.onBackground),
                 RoundedCornerShape(24.dp)
             )
             .padding(12.dp)
@@ -54,7 +54,7 @@ fun MenuSettingsRowWithIcon(
     ) {
         Icon(
             imageVector = iconImageVector, contentDescription = "",
-            tint = MaterialTheme.colors.primary,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(48.dp)
 
         )
@@ -71,7 +71,7 @@ fun MenuSettingsRowWithIcon(
             )
             Text(
                 text = descriptionText,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .fillMaxWidth()

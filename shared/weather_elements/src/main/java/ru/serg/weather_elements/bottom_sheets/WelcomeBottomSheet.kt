@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationSearching
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,9 +41,9 @@ fun WelcomeBottomSheet(
 ) {
     val gradient = Brush.linearGradient(
         listOf(
-            MaterialTheme.colors.background.copy(alpha = 0.8f)
-                .compositeOver(MaterialTheme.colors.onBackground),
-            MaterialTheme.colors.background
+            MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                .compositeOver(MaterialTheme.colorScheme.onBackground),
+            MaterialTheme.colorScheme.background
         ),
     )
     Column(
@@ -68,12 +68,12 @@ fun WelcomeBottomSheet(
             textAlign = TextAlign.Center
         )
 
-        Divider(
-            color = MaterialTheme.colors.primary,
-            thickness = 1.dp,
+        HorizontalDivider(
             modifier = Modifier
                 .padding(bottom = 8.dp)
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp),
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.primary
         )
 
         Text(

@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,14 +52,14 @@ fun SunriseSunsetItem(
                 .padding(bottom = 12.dp)
                 .shadow(
                     elevation = 10.dp,
-                    spotColor = MaterialTheme.colors.primary,
+                    spotColor = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(24.dp)
                 )
-                .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(24.dp))
+                .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(24.dp))
                 .background(
-                    MaterialTheme.colors.surface
+                    MaterialTheme.colorScheme.surface
                         .copy(alpha = 0.9f)
-                        .compositeOver(MaterialTheme.colors.onBackground)
+                        .compositeOver(MaterialTheme.colorScheme.onBackground)
                 )
                 .padding(16.dp)
 

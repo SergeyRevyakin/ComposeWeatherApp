@@ -25,19 +25,19 @@ class ChooseCityViewModel @Inject constructor(
     private val citySearchUseCase: CitySearchUseCase,
 ) : ViewModel() {
 
-    private val _newScreenState: MutableStateFlow<ScreenState> =
+    private val _screenState: MutableStateFlow<ScreenState> =
         MutableStateFlow(ScreenState.getInitialState())
-    val newScreenState = _newScreenState.asStateFlow()
+    val screenState = _screenState.asStateFlow()
 
     init {
-        initNewDebounceSearcher()
-        initNewFavouriteCities()
+        initDebounceSearcher()
+        initFavouriteCities()
     }
 
-    private fun initNewDebounceSearcher() {
-        var lastSearchInput = _newScreenState.value.searchText
+    private fun initDebounceSearcher() {
+        var lastSearchInput = _screenState.value.searchText
         viewModelScope.launch {
-            newScreenState.debounce(3000).distinctUntilChanged().collectLatest { state ->
+            screenState.debounce(3000).distinctUntilChanged().collectLatest { state ->
                 state.searchText.takeIf {
                     state.searchText.isNotBlank() && state.searchText != lastSearchInput
                 }?.let {
@@ -48,7 +48,7 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    private fun initNewFavouriteCities() {
+    private fun initFavouriteCities() {
         viewModelScope.launch {
             citySearchUseCase.getFavouriteCitiesFlow().collectLatest {
                 handleIntent(Intent.FavouriteCityListChanged(it))
@@ -87,7 +87,7 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: Intent) {
-        _newScreenState.update {
+        _screenState.update {
 
             when (intent) {
                 is Intent.OnTextChanges -> {
@@ -115,7 +115,7 @@ class ChooseCityViewModel @Inject constructor(
 
 
     private fun onTextEntered(input: String): ScreenState {
-        return newScreenState.value.copy(
+        return screenState.value.copy(
             isLoading = input.isNotBlank(),
             screenError = null,
             searchText = input
@@ -124,13 +124,13 @@ class ChooseCityViewModel @Inject constructor(
 
     private fun onCityDataUpdate(list: List<CityItem>): ScreenState {
         return if (list.isEmpty()) {
-            newScreenState.value.copy(
+            screenState.value.copy(
                 isLoading = false,
                 screenError = ScreenError.NO_CITIES,
                 foundCitiesList = emptyList()
             )
         } else {
-            newScreenState.value.copy(
+            screenState.value.copy(
                 isLoading = false,
                 screenError = null,
                 foundCitiesList = list
@@ -139,20 +139,20 @@ class ChooseCityViewModel @Inject constructor(
     }
 
     private fun favouriteCityListChanged(list: List<CityItem>): ScreenState {
-        return newScreenState.value.copy(
+        return screenState.value.copy(
             favoriteCitiesList = list
         )
     }
 
     private fun onNetworkError(): ScreenState {
-        return newScreenState.value.copy(
+        return screenState.value.copy(
             isLoading = false,
             screenError = ScreenError.NETWORK_ERROR,
         )
     }
 
     private fun setLoading(isLoading: Boolean): ScreenState {
-        return newScreenState.value.copy(
+        return screenState.value.copy(
             isLoading = isLoading,
         )
     }

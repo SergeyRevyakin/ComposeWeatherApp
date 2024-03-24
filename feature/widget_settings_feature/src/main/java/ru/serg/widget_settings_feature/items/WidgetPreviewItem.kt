@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,9 +40,9 @@ fun WidgetPreviewItem(
     isSystemDataShown: Boolean,
     iconSize: Int,
     modifier: Modifier = Modifier,
-    hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem(),
-    cityItem: CityItem = MockItems.getCityMockItem(),
 ) {
+    val hourWeather: HourlyWeather = MockItems.getHourlyWeatherMockItem()
+    val cityItem: CityItem = MockItems.getCityMockItem()
 
     val currentColor by animateColorAsState(targetValue = color, label = "")
     val backgroundColor by animateColorAsState(

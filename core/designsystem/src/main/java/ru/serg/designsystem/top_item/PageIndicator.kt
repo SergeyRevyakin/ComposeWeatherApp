@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Circle
 import androidx.compose.material.icons.rounded.MyLocation
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,9 +43,9 @@ fun PageIndicator(
 
             val color = animateColorAsState(
                 targetValue = if (selectedItem == iteration) {
-                    MaterialTheme.colors.primary
+                    MaterialTheme.colorScheme.primary
                 } else {
-                    MaterialTheme.colors.onBackground.copy(0.4f)
+                    MaterialTheme.colorScheme.onBackground.copy(0.4f)
                 }, animationSpec = tween(300, easing = EaseInOut), label = "color"
             )
 

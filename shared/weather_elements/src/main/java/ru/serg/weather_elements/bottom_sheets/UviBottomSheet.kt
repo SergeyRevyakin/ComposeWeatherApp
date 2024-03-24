@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,9 +38,10 @@ fun UviBottomSheet(
         .padding(12.dp)
         .fillMaxWidth()
         .background(
-            MaterialTheme.colors.surface
+            MaterialTheme.colorScheme.surface
                 .copy(alpha = 0.9f)
-                .compositeOver(MaterialTheme.colors.onBackground), RoundedCornerShape(24.dp)
+                .compositeOver(MaterialTheme.colorScheme.onBackground),
+            RoundedCornerShape(24.dp)
         )
         .clip(RoundedCornerShape(24.dp))
         .clickable {
@@ -54,17 +55,17 @@ fun UviBottomSheet(
             textAlign = TextAlign.Center
         )
 
-        Divider(
-            color = MaterialTheme.colors.primary,
+        HorizontalDivider(
+            modifier = Modifier.padding(bottom = 8.dp),
             thickness = 1.dp,
-            modifier = Modifier.padding(bottom = 8.dp)
+            color = MaterialTheme.colorScheme.primary
         )
 
 
         Text(
             text = stringResource(id = uvIndex.descriptionId),
             style = descriptionSubHeader,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp)
         )

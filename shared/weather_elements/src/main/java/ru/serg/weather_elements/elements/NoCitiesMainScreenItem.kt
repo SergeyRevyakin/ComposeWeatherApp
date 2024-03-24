@@ -1,27 +1,20 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package ru.serg.weather_elements.elements
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LocationSearching
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,9 +25,8 @@ import ru.serg.designsystem.common.CardButton
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.strings.R.string
-import ru.serg.weather_elements.animatedBlur
-import ru.serg.weather_elements.bottom_sheets.WelcomeBottomSheet
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoCitiesMainScreenItem(
     onSearchClick: (() -> Unit),
@@ -43,9 +35,9 @@ fun NoCitiesMainScreenItem(
 ) {
 
     val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Expanded,
-        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = true
+//        initialValue = ModalBottomSheetValue.Expanded,
+//        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
+//        skipHalfExpanded = true
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -54,27 +46,28 @@ fun NoCitiesMainScreenItem(
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
     }
-
-    ModalBottomSheetLayout(
-        sheetState = sheetState,
-        sheetContent = {
-            WelcomeBottomSheet(
-                { coroutineScope.launch { sheetState.hide() } },
-                onSearchClick,
-                onRequestPermissionClick
-            )
-        },
-        modifier = Modifier.fillMaxSize(),
-        sheetShape = RoundedCornerShape(24.dp),
-        sheetElevation = 10.dp,
-        sheetBackgroundColor = Color.Transparent,
-        scrimColor = Color.Transparent,
-    ) {
+//
+//    ModalBottomSheet(
+//        sheetState = sheetState,
+//        sheetContent = {
+//            WelcomeBottomSheet(
+//                { coroutineScope.launch { sheetState.hide() } },
+//                onSearchClick,
+//                onRequestPermissionClick
+//            )
+//        },
+//        modifier = Modifier.fillMaxSize()
+//            .clip(RoundedCornerShape(24.dp)),
+//        sheetShape = ,
+//        sheetElevation = 10.dp,
+//        sheetBackgroundColor = Color.Transparent,
+//        scrimColor = Color.Transparent,
+//    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 120.dp, bottom = 24.dp)
-                .animatedBlur(sheetState.targetValue == ModalBottomSheetValue.Expanded),
+//                .animatedBlur(sheetState.targetValue == ModalBottomSheetValue.Expanded),
         ) {
             Text(
                 text = stringResource(id = string.no_weather_data_available),
@@ -102,7 +95,7 @@ fun NoCitiesMainScreenItem(
                     .clickable {
                         goToSettings()
                     },
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
 
@@ -113,7 +106,7 @@ fun NoCitiesMainScreenItem(
                 onSearchClick()
             }
 
-        }
+//        }
     }
 }
 

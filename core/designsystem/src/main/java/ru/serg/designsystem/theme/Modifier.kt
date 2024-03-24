@@ -5,7 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Brush
@@ -22,11 +22,11 @@ fun Modifier.gradientBorder(borderWidth: Int = 2, cornerRadius: Int = 24) =
             BorderStroke(
                 borderWidth.dp, Brush.sweepGradient(
                     listOf(
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.onBackground,
-                        MaterialTheme.colors.onBackground,
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.primary,
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.onBackground,
+                        MaterialTheme.colorScheme.onBackground,
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.primary,
                     ),
                 )
             ),

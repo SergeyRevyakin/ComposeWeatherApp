@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +48,7 @@ fun CurrentTempItem(
                 ) + ", ",
                 fontSize = 28.sp,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(
                     letterSpacing = 2.sp
@@ -61,7 +61,7 @@ fun CurrentTempItem(
                 text = it.firstLetterToUpperCase(),
                 fontSize = 28.sp,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
 
                 style = TextStyle(
                     letterSpacing = 2.sp

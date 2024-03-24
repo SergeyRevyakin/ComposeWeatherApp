@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.SentimentDissatisfied
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,9 +48,9 @@ fun ErrorItem(
     ) {
         val gradient = Brush.linearGradient(
             listOf(
-                MaterialTheme.colors.background.copy(alpha = 0.8f)
-                    .compositeOver(MaterialTheme.colors.onBackground),
-                MaterialTheme.colors.background
+                MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                    .compositeOver(MaterialTheme.colorScheme.onBackground),
+                MaterialTheme.colorScheme.background
             ),
         )
 
@@ -59,7 +59,7 @@ fun ErrorItem(
                 .padding(12.dp)
                 .shadow(
                     elevation = 10.dp,
-                    spotColor = MaterialTheme.colors.primary,
+                    spotColor = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(24.dp)
                 )
                 .clip(RoundedCornerShape(24.dp))
@@ -67,7 +67,6 @@ fun ErrorItem(
                 .background(gradient)
                 .fillMaxWidth()
                 .wrapContentHeight(),
-//                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -86,7 +85,7 @@ fun ErrorItem(
                 Modifier
                     .padding(end = 16.dp)
                     .size(72.dp),
-                tint = MaterialTheme.colors.primary
+                tint = MaterialTheme.colorScheme.primary
             )
 
             Text(
@@ -106,7 +105,7 @@ fun ErrorItem(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(

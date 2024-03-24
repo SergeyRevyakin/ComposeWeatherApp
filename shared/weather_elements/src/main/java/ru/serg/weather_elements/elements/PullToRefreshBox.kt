@@ -2,10 +2,10 @@ package ru.serg.weather_elements.elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +33,7 @@ fun PullRefreshBox(
             modifier = Modifier.align(Alignment.TopCenter),
             refreshing = isRefreshingWorkaround,
             state = state,
-            contentColor = MaterialTheme.colors.primary,
+            contentColor = MaterialTheme.colorScheme.primary,
         )
     }
 }

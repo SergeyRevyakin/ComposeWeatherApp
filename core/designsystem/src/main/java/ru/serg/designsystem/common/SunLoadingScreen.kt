@@ -44,10 +44,11 @@ fun SunLoadingScreen() {
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = drawable.ic_sun),
+            painter = painterResource(id = drawable.ic_sunny_day),
+//            tint = MaterialTheme.colorScheme.primary,
             contentDescription = "Logo",
             modifier = Modifier
-                .fillMaxSize(0.4f)
+                .fillMaxSize(0.6f)
                 .align(Alignment.Center)
                 .rotate(rotation.value)
         )

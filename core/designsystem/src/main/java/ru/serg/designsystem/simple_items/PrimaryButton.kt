@@ -6,8 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,19 +33,19 @@ fun PrimaryButton(
                 onClick.invoke()
             }
             .background(
-                MaterialTheme.colors.primary
+                MaterialTheme.colorScheme.primary
                     .copy(alpha = 0.9f)
-                    .compositeOver(MaterialTheme.colors.onPrimary),
+                    .compositeOver(MaterialTheme.colorScheme.onPrimary),
                 RoundedCornerShape(16.dp)
             )
-            .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(24.dp))
+            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(24.dp))
             .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
         Text(
             text = headerText,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

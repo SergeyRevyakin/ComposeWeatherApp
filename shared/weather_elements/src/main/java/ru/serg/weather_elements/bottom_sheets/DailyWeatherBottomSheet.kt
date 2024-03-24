@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,9 +53,9 @@ fun DailyWeatherBottomSheet(
             .padding(12.dp)
             .fillMaxWidth()
             .background(
-                MaterialTheme.colors.surface
+                MaterialTheme.colorScheme.surface
                     .copy(alpha = 0.9f)
-                    .compositeOver(MaterialTheme.colors.onBackground),
+                    .compositeOver(MaterialTheme.colorScheme.onBackground),
                 RoundedCornerShape(24.dp)
             )
             .clip(RoundedCornerShape(24.dp))
@@ -70,10 +70,10 @@ fun DailyWeatherBottomSheet(
                 .headerModifier()
         )
 
-        Divider(
-            color = MaterialTheme.colors.primary,
+        HorizontalDivider(
+            modifier = Modifier.padding(bottom = 8.dp),
             thickness = 1.dp,
-            modifier = Modifier.padding(bottom = 8.dp)
+            color = MaterialTheme.colorScheme.primary
         )
 
         Row(
@@ -85,7 +85,7 @@ fun DailyWeatherBottomSheet(
             Text(
                 text = daily.weatherDescription,
                 style = descriptionSubHeader,
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 8.dp)
@@ -173,10 +173,11 @@ fun DailyWeatherBottomSheet(
                 )
             }
         }
-        Divider(
-            color = MaterialTheme.colors.primary,
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 8.dp),
             thickness = 1.dp,
-            modifier = Modifier.padding(vertical = 8.dp)
+            color = MaterialTheme.colorScheme.primary
         )
 
 
