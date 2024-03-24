@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -34,13 +33,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ru.serg.choose_city_feature.Constants
 import ru.serg.choose_city_feature.elements.CityRow
 import ru.serg.choose_city_feature.elements.CitySearchItem
 import ru.serg.choose_city_feature.elements.SearchTextField
+import ru.serg.choose_city_feature.screen.screen_state.ScreenError
 import ru.serg.common.ScreenNames
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -55,8 +54,9 @@ fun ChooseCityScreen(
     viewModel: ChooseCityViewModel = hiltViewModel(),
     navController: NavController = rememberNavController()
 ) {
-
-    val favouriteCities by viewModel.favouriteCitiesList.collectAsState()
+    val newState by viewModel.newScreenState.collectAsState()
+    val favouriteCities = newState.favoriteCitiesList
+    val searchText = newState.searchText
 
     Column(
         modifier = modifier
@@ -71,12 +71,14 @@ fun ChooseCityScreen(
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
             onRightIconClick = null,
-            isLoading = viewModel.screenState.isLoading
+            isLoading = newState.isLoading
         )
 
         SearchTextField(
-            value = viewModel.inputSharedFlow.collectAsState(initial = Constants.EMPTY_STRING).value,
-            onValueChange = viewModel::onSharedFlowText,
+            value = searchText,
+            onValueChange = {
+                viewModel.handleIntent(Intent.OnTextChanges(it))
+            },
             modifier = Modifier
                 .padding(top = 24.dp)
                 .padding(horizontal = 24.dp)
@@ -98,10 +100,11 @@ fun ChooseCityScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     state = rememberLazyListState()
                 ) {
-                    items(favouriteCities,
+                    items(
+                        favouriteCities.size,
                         key = { it }) {
                         CitySearchItem(
-                            cityItem = it,
+                            cityItem = favouriteCities[it],
                             onDelete = viewModel::onDeleteClick,
                             onItemClick = { cityItem ->
                                 navController.navigate(
@@ -121,17 +124,24 @@ fun ChooseCityScreen(
         }
 
         AnimatedVisibility(
-            visible = (!viewModel.screenState.isLoading && !viewModel.screenState.message.isNullOrBlank()),
-            enter = fadeIn(animationSpec = tween(500)),
-            exit = fadeOut(animationSpec = tween(500))
+            visible = (!newState.isLoading && (newState.screenError != null)),
+            enter = fadeIn(animationSpec = tween(300)),
+            exit = fadeOut(animationSpec = tween(300))
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                val screenErrorText = when (newState.screenError) {
+                    ScreenError.NO_CITIES -> stringResource(id = string.error_no_results_found)
+                    ScreenError.NETWORK_ERROR -> stringResource(id = string.error_check_connection_or_try_again_later)
+                    else -> Constants.EMPTY_STRING
+                }
+
                 Text(
-                    text = viewModel.screenState.message.orEmpty(),
+                    text = screenErrorText,
                     fontSize = 24.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -141,48 +151,36 @@ fun ChooseCityScreen(
             }
         }
 
-        when {
-            (viewModel.screenState.isLoading) -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) { }
-            }
+        if (newState.foundCitiesList.isNotEmpty()) {
+            Text(
+                text = stringResource(id = string.are_you_looking_for_one_of_this),
+                style = headerStyle,
+                modifier = Modifier
+                    .headerModifier()
+            )
+            Column(
+                modifier = modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                newState.foundCitiesList.forEach { cityItem ->
 
-            (viewModel.screenState.data.isNotEmpty()) -> {
-                Text(
-                    text = stringResource(id = string.are_you_looking_for_one_of_this),
-                    style = headerStyle,
-                    modifier = Modifier
-                        .headerModifier()
-                )
-                Column(
-                    modifier = modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    viewModel.screenState.data.forEach { cityItem ->
-
-                        val isFavourite = viewModel.favouriteCitiesList.map { cityItemList ->
-                            cityItemList.firstOrNull {
-                                (it.name == cityItem.name &&
-                                        it.country == cityItem.country &&
-                                        it.longitude == cityItem.longitude &&
-                                        it.latitude == cityItem.latitude)
-                            } != null
-                        }.collectAsState(initial = false)
-
-                        CityRow(
-                            cityItem = cityItem,
-                            onItemClick = {
-                                navController.navigate(
-                                    "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
-                                )
-                            },
-                            onAddClick = viewModel::onCityClicked,
-                            isAddedToFavorites = isFavourite
-                        )
+                    val isFavourite = favouriteCities.any {
+                        (it.name == cityItem.name &&
+                                it.country == cityItem.country &&
+                                it.longitude == cityItem.longitude &&
+                                it.latitude == cityItem.latitude)
                     }
+
+                    CityRow(
+                        cityItem = cityItem,
+                        onItemClick = {
+                            navController.navigate(
+                                "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
+                            )
+                        },
+                        onAddClick = viewModel::onCityClicked,
+                        isAddedToFavorites = isFavourite
+                    )
                 }
             }
         }

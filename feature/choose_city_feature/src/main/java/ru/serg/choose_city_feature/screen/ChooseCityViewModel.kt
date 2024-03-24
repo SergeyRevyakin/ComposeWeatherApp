@@ -1,23 +1,19 @@
 package ru.serg.choose_city_feature.screen
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.choose_city_feature.CitySearchUseCase
+import ru.serg.choose_city_feature.screen.screen_state.ScreenError
+import ru.serg.choose_city_feature.screen.screen_state.ScreenState
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.model.CityItem
@@ -29,65 +25,50 @@ class ChooseCityViewModel @Inject constructor(
     private val citySearchUseCase: CitySearchUseCase,
 ) : ViewModel() {
 
-    var screenState by mutableStateOf(
-        ChoseCityScreenStates(
-            isLoading = false,
-            message = "Enter city name"
-        )
-    )
-        private set
-
-    var favouriteCitiesList: StateFlow<List<CityItem>> = MutableStateFlow(emptyList())
-
-    private var _inputSharedFlow = MutableSharedFlow<String>(
-        replay = 1,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-
-    val inputSharedFlow = _inputSharedFlow.asSharedFlow()
+    private val _newScreenState: MutableStateFlow<ScreenState> =
+        MutableStateFlow(ScreenState.getInitialState())
+    val newScreenState = _newScreenState.asStateFlow()
 
     init {
-        initFavouriteCities()
-        initDebounceSearcher()
+        initNewDebounceSearcher()
+        initNewFavouriteCities()
     }
 
-    private fun initDebounceSearcher() {
+    private fun initNewDebounceSearcher() {
+        var lastSearchInput = _newScreenState.value.searchText
         viewModelScope.launch {
-            _inputSharedFlow.debounce(3000).collectLatest {
-                if (it.isNotBlank()) fetchCities(it)
+            newScreenState.debounce(3000).distinctUntilChanged().collectLatest { state ->
+                state.searchText.takeIf {
+                    state.searchText.isNotBlank() && state.searchText != lastSearchInput
+                }?.let {
+                    lastSearchInput = it
+                    fetchCities(it)
+                } ?: handleIntent(Intent.OnLoading(false))
             }
         }
     }
 
-    private fun initFavouriteCities() {
-        favouriteCitiesList = citySearchUseCase.getFavouriteCitiesFlow()
-            .stateIn(
-                scope = viewModelScope,
-                initialValue = emptyList(),
-                started = SharingStarted.WhileSubscribed(5_000)
-            )
+    private fun initNewFavouriteCities() {
+        viewModelScope.launch {
+            citySearchUseCase.getFavouriteCitiesFlow().collectLatest {
+                handleIntent(Intent.FavouriteCityListChanged(it))
+            }
+        }
     }
 
     private suspend fun fetchCities(input: String?) {
         citySearchUseCase.fetchCityListFlow(input).asResult().collectLatest { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> {
-                    setLoadingState()
+                    handleIntent(Intent.OnLoading(true))
                 }
 
                 is NetworkResult.Error -> {
-                    setErrorState(networkResult.message)
+                    handleIntent(Intent.OnNetworkError)
                 }
 
                 is NetworkResult.Success -> {
-                    val cityList = networkResult.data
-                    if (cityList.isEmpty()) {
-                        setErrorState(input, "No results found")
-                    } else {
-                        screenState =
-                            screenState.copy(isLoading = false, data = cityList, message = null)
-                    }
+                    handleIntent(Intent.OnCityDataUpdated(networkResult.data))
                 }
             }
         }
@@ -105,26 +86,74 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    fun onSharedFlowText(input: String) {
-        if (input.isNotBlank()) {
-            setLoadingState()
-        } else {
-            setErrorState("")
-        }
-        viewModelScope.launch {
-            _inputSharedFlow.emit(input)
+    fun handleIntent(intent: Intent) {
+        _newScreenState.update {
+
+            when (intent) {
+                is Intent.OnTextChanges -> {
+                    onTextEntered(intent.inputText)
+                }
+
+                is Intent.OnCityDataUpdated -> {
+                    onCityDataUpdate(intent.list)
+                }
+
+                is Intent.OnNetworkError -> {
+                    onNetworkError()
+                }
+
+                is Intent.FavouriteCityListChanged -> {
+                    favouriteCityListChanged(intent.list)
+                }
+
+                is Intent.OnLoading -> {
+                    setLoading(intent.isLoading)
+                }
+            }
         }
     }
 
-    private fun setErrorState(input: String?, errorText: String? = null) {
-        screenState = screenState.copy(
-            isLoading = false,
-            data = emptyList(),
-            message = (errorText ?: if (input.isNullOrBlank()) "Enter city name" else "Error")
+
+    private fun onTextEntered(input: String): ScreenState {
+        return newScreenState.value.copy(
+            isLoading = input.isNotBlank(),
+            screenError = null,
+            searchText = input
         )
     }
 
-    private fun setLoadingState() {
-        screenState = screenState.copy(isLoading = true)
+    private fun onCityDataUpdate(list: List<CityItem>): ScreenState {
+        return if (list.isEmpty()) {
+            newScreenState.value.copy(
+                isLoading = false,
+                screenError = ScreenError.NO_CITIES,
+                foundCitiesList = emptyList()
+            )
+        } else {
+            newScreenState.value.copy(
+                isLoading = false,
+                screenError = null,
+                foundCitiesList = list
+            )
+        }
+    }
+
+    private fun favouriteCityListChanged(list: List<CityItem>): ScreenState {
+        return newScreenState.value.copy(
+            favoriteCitiesList = list
+        )
+    }
+
+    private fun onNetworkError(): ScreenState {
+        return newScreenState.value.copy(
+            isLoading = false,
+            screenError = ScreenError.NETWORK_ERROR,
+        )
+    }
+
+    private fun setLoading(isLoading: Boolean): ScreenState {
+        return newScreenState.value.copy(
+            isLoading = isLoading,
+        )
     }
 }
