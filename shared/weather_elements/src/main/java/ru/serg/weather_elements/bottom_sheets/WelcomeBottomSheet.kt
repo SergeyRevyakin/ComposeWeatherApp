@@ -1,13 +1,10 @@
 package ru.serg.weather_elements.bottom_sheets
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationSearching
 import androidx.compose.material.icons.filled.Search
@@ -18,16 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
-import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.elements.IconRowButton
@@ -35,36 +28,20 @@ import ru.serg.weather_elements.getWelcomeText
 
 @Composable
 fun WelcomeBottomSheet(
-    onDismiss: () -> Unit,
     onSearchClick: () -> Unit,
     onEnableLocationClick: () -> Unit
 ) {
-    val gradient = Brush.linearGradient(
-        listOf(
-            MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
-                .compositeOver(MaterialTheme.colorScheme.onBackground),
-            MaterialTheme.colorScheme.background
-        ),
-    )
+
     Column(
         modifier = Modifier
-            .padding(12.dp)
             .fillMaxWidth()
-            .background(
-                gradient,
-                RoundedCornerShape(24.dp)
-            )
-            .clip(RoundedCornerShape(24.dp))
-            .clickable {
-                onDismiss()
-            }
-
     ) {
         Text(
             text = stringResource(id = string.welcome),
             style = headerStyle,
             modifier = Modifier
-                .headerModifier(),
+                .padding(bottom = 24.dp)
+                .padding(horizontal = 24.dp),
             textAlign = TextAlign.Center
         )
 
@@ -116,7 +93,6 @@ fun PreviewWelcomeBottomSheet() {
         WelcomeBottomSheet(
             {},
             {},
-            {}
         )
     }
 }
@@ -132,7 +108,6 @@ fun PreviewLightWelcomeBottomSheet() {
         WelcomeBottomSheet(
             {},
             {},
-            {}
         )
     }
 }
