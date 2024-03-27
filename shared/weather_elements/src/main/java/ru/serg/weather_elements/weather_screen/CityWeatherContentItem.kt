@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -42,7 +41,7 @@ import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
 import ru.serg.weather_elements.elements.CityWeatherContentItemViewModel
 import ru.serg.weather_elements.elements.SunriseSunsetItem
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityWeatherContentItem(
     weatherItem: UpdatedWeatherItem,
