@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.glance.appwidget.updateAll
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = isDarkTheme
             ) {
                 Surface(
-                    color = MaterialTheme.colors.background,
+                    color = MaterialTheme.colorScheme.surface,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Navigation(viewModel)

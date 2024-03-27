@@ -17,9 +17,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,9 +54,9 @@ fun ChooseCityScreen(
     viewModel: ChooseCityViewModel = hiltViewModel(),
     navController: NavController = rememberNavController()
 ) {
-    val newState by viewModel.newScreenState.collectAsState()
-    val favouriteCities = newState.favoriteCitiesList
-    val searchText = newState.searchText
+    val screenState by viewModel.screenState.collectAsState()
+    val favouriteCities = screenState.favoriteCitiesList
+    val searchText = screenState.searchText
 
     Column(
         modifier = modifier
@@ -71,7 +71,7 @@ fun ChooseCityScreen(
             rightIconImageVector = null,
             onLeftIconClick = { navController.navigateUp() },
             onRightIconClick = null,
-            isLoading = newState.isLoading
+            isLoading = screenState.isLoading
         )
 
         SearchTextField(
@@ -124,7 +124,7 @@ fun ChooseCityScreen(
         }
 
         AnimatedVisibility(
-            visible = (!newState.isLoading && (newState.screenError != null)),
+            visible = (!screenState.isLoading && (screenState.screenError != null)),
             enter = fadeIn(animationSpec = tween(300)),
             exit = fadeOut(animationSpec = tween(300))
         ) {
@@ -134,7 +134,7 @@ fun ChooseCityScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                val screenErrorText = when (newState.screenError) {
+                val screenErrorText = when (screenState.screenError) {
                     ScreenError.NO_CITIES -> stringResource(id = string.error_no_results_found)
                     ScreenError.NETWORK_ERROR -> stringResource(id = string.error_check_connection_or_try_again_later)
                     else -> Constants.EMPTY_STRING
@@ -151,7 +151,7 @@ fun ChooseCityScreen(
             }
         }
 
-        if (newState.foundCitiesList.isNotEmpty()) {
+        if (screenState.foundCitiesList.isNotEmpty()) {
             Text(
                 text = stringResource(id = string.are_you_looking_for_one_of_this),
                 style = headerStyle,
@@ -162,7 +162,7 @@ fun ChooseCityScreen(
                 modifier = modifier.padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                newState.foundCitiesList.forEach { cityItem ->
+                screenState.foundCitiesList.forEach { cityItem ->
 
                     val isFavourite = favouriteCities.any {
                         (it.name == cityItem.name &&

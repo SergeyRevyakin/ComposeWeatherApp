@@ -16,11 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,13 +45,13 @@ fun CityRow(
     isAddedToFavorites: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = MaterialTheme.colors.surface
+    val backgroundColor = MaterialTheme.colorScheme.surface
         .copy(alpha = 0.9f)
         .compositeOver(Color.White)
 
     val borderColor =
         animateColorAsState(
-            targetValue = if (isAddedToFavorites) MaterialTheme.colors.primary else backgroundColor,
+            targetValue = if (isAddedToFavorites) MaterialTheme.colorScheme.primary else backgroundColor,
             label = "color",
             animationSpec = tween(200, easing = FastOutLinearInEasing)
         )
@@ -90,7 +90,7 @@ fun CityRow(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Add,
-                tint = MaterialTheme.colors.primary,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(id = string.accessibility_desc_add_to_favourite_icon),
                 modifier = Modifier
                     .size(48.dp)

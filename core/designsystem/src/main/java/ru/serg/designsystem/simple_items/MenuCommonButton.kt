@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,12 +36,12 @@ fun MenuCommonButton(
                 onClick.invoke()
             }
             .background(
-                MaterialTheme.colors.surface
+                MaterialTheme.colorScheme.surface
                     .copy(alpha = 0.9f)
-                    .compositeOver(MaterialTheme.colors.onBackground),
+                    .compositeOver(MaterialTheme.colorScheme.onBackground),
                 RoundedCornerShape(24.dp)
             )
-            .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(24.dp))
+            .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(24.dp))
             .padding(24.dp)
     ) {
         Text(

@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
@@ -92,8 +92,8 @@ fun PreviewRadioButtonGroup() {
 
         RadioButtonGroup(
             header = stringResource(id = string.measurement_units),
-            nameList = Units.values().map { stringResource(id = it.title) },
-            descriptionList = Units.values().map { stringResource(id = it.description) },
+            nameList = Units.entries.map { stringResource(id = it.title) },
+            descriptionList = Units.entries.map { stringResource(id = it.description) },
             selectedPosition = position,
             onSelectListener = { }
         )

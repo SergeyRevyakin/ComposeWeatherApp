@@ -14,14 +14,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -80,9 +80,9 @@ fun ColorPickerDialogScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .background(
-                    MaterialTheme.colors.surface
+                    MaterialTheme.colorScheme.surface
                         .copy(alpha = 0.9f)
-                        .compositeOver(MaterialTheme.colors.onBackground),
+                        .compositeOver(MaterialTheme.colorScheme.onBackground),
                     RoundedCornerShape(24.dp)
                 )
                 .padding(24.dp)
@@ -121,7 +121,7 @@ fun ColorPickerDialogScreen(
 
             Text(
                 text = "Or add your own color",
-                color = MaterialTheme.colors.onBackground,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),

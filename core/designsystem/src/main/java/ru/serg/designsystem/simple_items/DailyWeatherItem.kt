@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
@@ -53,7 +52,7 @@ fun DailyWeatherItem(
             .fillMaxWidth()
             .shadow(
                 elevation = 10.dp,
-                spotColor = MaterialTheme.colors.primary,
+                spotColor = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(24.dp)
             )
             .gradientBorder(
@@ -62,9 +61,9 @@ fun DailyWeatherItem(
             )
             .clip(RoundedCornerShape(24.dp))
             .background(
-                MaterialTheme.colors.surface
+                MaterialTheme.colorScheme.background
                     .copy(alpha = 0.9f)
-                    .compositeOver(Color.White)
+                    .compositeOver(MaterialTheme.colorScheme.onBackground)
             )
             .clickable {
                 onClick.invoke()
@@ -81,7 +80,6 @@ fun DailyWeatherItem(
             fontSize = 18.sp,
             modifier = Modifier
                 .weight(1.3f)
-                .padding(start = 12.dp)
         )
 
         Text(
@@ -94,7 +92,7 @@ fun DailyWeatherItem(
         Image(
             painter = painterResource(id = item.weatherIcon),
             contentDescription = stringResource(id = string.accessibility_desc_weather_icon),
-            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .weight(1.3f)

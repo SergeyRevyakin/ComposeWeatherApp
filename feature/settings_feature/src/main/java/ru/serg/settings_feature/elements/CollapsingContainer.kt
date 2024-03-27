@@ -21,26 +21,26 @@ fun CollapsingContainer(
     AnimatedVisibility(
         visible = isVisible.value,
         enter = expandVertically(
-            animationSpec = tween(600),
+            animationSpec = tween(300),
             expandFrom = Alignment.Top,
             initialHeight = { 0 }
         ) + fadeIn(
             initialAlpha = 0.3f,
-            animationSpec = tween(300)
+            animationSpec = tween(150)
         ) + slideInVertically(
             initialOffsetY = { -200 },
-            animationSpec = tween(600)
+            animationSpec = tween(300)
         ),
         exit = shrinkVertically(
-            animationSpec = tween(600),
+            animationSpec = tween(300),
             shrinkTowards = Alignment.Top,
             targetHeight = { 0 }
         ) + fadeOut(
             targetAlpha = 0.3f,
-            animationSpec = tween(300)
+            animationSpec = tween(150)
         ) + slideOutVertically(
             targetOffsetY = { -200 },
-            animationSpec = tween(600)
+            animationSpec = tween(300)
         )
     ) {
         Column {

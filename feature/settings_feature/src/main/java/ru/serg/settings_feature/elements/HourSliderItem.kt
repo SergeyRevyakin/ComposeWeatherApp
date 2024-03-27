@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
@@ -50,14 +50,31 @@ fun HourSliderItem(
         val textSize = with(LocalDensity.current) { 14.sp.toPx() }
         val canvasHeight = 50.dp
         val textPaint = android.graphics.Paint().apply {
-            color = MaterialTheme.colors.onBackground.toArgb()
+            color = MaterialTheme.colorScheme.onBackground.toArgb()
             textAlign = android.graphics.Paint.Align.CENTER
             this.textSize = textSize
         }
 
-        val primaryColor = MaterialTheme.colors.primary
+        val primaryColor = MaterialTheme.colorScheme.primary
 
         Box(contentAlignment = Alignment.Center) {
+            Slider(
+                value = stateValue.value,
+                onValueChange = {
+                    stateValue.value = it
+                },
+                onValueChangeFinished = {
+                    onValueChanged.invoke(stateValue.value.toInt())
+                },
+                valueRange = 0f..hours.size.minus(1).toFloat(),
+                steps = hours.size.minus(2),
+                colors = SliderDefaults.colors(
+                    activeTickColor = Color.Transparent,
+                    inactiveTickColor = Color.Transparent
+
+                )
+            )
+
             Canvas(
                 modifier = Modifier
                     .height(canvasHeight)
@@ -84,23 +101,6 @@ fun HourSliderItem(
                     }
                 }
             }
-
-            Slider(
-                value = stateValue.value,
-                onValueChange = {
-                    stateValue.value = it
-                },
-                onValueChangeFinished = {
-                    onValueChanged.invoke(stateValue.value.toInt())
-                },
-                valueRange = 0f..hours.size.minus(1).toFloat(),
-                steps = hours.size.minus(2),
-                colors = SliderDefaults.colors(
-                    activeTickColor = Color.Transparent,
-                    inactiveTickColor = Color.Transparent
-
-                )
-            )
         }
 
         Text(

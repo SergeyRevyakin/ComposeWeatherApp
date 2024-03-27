@@ -1,7 +1,9 @@
 package ru.serg.weather_elements.weather_screen
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,14 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,19 +37,22 @@ import ru.serg.weather_elements.getHourWithNowAndAccent
 
 @Composable
 fun HourlyWeatherItem(item: HourlyWeather, units: Units) {
-    Card(
-        elevation = 10.dp,
-        shape = RoundedCornerShape(8.dp),
+    Column(
         modifier = Modifier
             .width(80.dp)
             .wrapContentHeight()
+            .background(
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.surface
+                    .copy(alpha = 0.9f)
+                    .compositeOver(MaterialTheme.colorScheme.onSurface)
+            )
     ) {
-        Column {
             Row {
                 Image(
                     painter = painterResource(id = item.weatherIcon),
                     contentDescription = "Weather icon",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -62,7 +67,10 @@ fun HourlyWeatherItem(item: HourlyWeather, units: Units) {
             ) {
 
                 Text(
-                    text = getHourWithNowAndAccent(item.dateTime, MaterialTheme.colors.primary),
+                    text = getHourWithNowAndAccent(
+                        item.dateTime,
+                        MaterialTheme.colorScheme.primary
+                    ),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -83,7 +91,6 @@ fun HourlyWeatherItem(item: HourlyWeather, units: Units) {
                         .fillMaxWidth()
                 )
             }
-        }
     }
 }
 
@@ -101,7 +108,7 @@ fun PreviewDarkHourlyItem() {
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES, name = "Dark mode", showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_NO, name = "Light mode", showBackground = true)
 @Composable
 fun PreviewLightHourlyItem() {
     val isDarkTheme = remember {

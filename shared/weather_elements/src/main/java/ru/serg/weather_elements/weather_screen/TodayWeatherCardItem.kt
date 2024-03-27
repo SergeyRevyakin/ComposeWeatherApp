@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,9 +47,9 @@ fun TodayWeatherCardItem(
 ) {
     val gradient = Brush.linearGradient(
         listOf(
-            MaterialTheme.colors.background.copy(alpha = 0.8f)
-                .compositeOver(MaterialTheme.colors.onBackground),
-            MaterialTheme.colors.background
+            MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                .compositeOver(MaterialTheme.colorScheme.onBackground),
+            MaterialTheme.colorScheme.background
         ),
     )
 
@@ -58,7 +58,7 @@ fun TodayWeatherCardItem(
             .padding(12.dp)
             .shadow(
                 elevation = 10.dp,
-                spotColor = MaterialTheme.colors.primary,
+                spotColor = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(24.dp)
             )
             .clip(RoundedCornerShape(24.dp))

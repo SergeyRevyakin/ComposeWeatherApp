@@ -3,7 +3,7 @@ package ru.serg.weather_elements
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -122,7 +122,7 @@ fun getWelcomeText() =
     buildAnnotatedString {
         append(stringResource(id = string.welc_app))
 
-        withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             append(stringResource(id = string.first))
         }
 
@@ -130,7 +130,7 @@ fun getWelcomeText() =
 
         append(stringResource(id = string.welc_f))
 
-        withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
             append(stringResource(id = string.second))
         }
 

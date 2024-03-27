@@ -5,9 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +26,7 @@ fun MenuRowWithRadioButton(
     onSwitchClick: ((Boolean) -> Unit) = {}
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .padding(24.dp),
@@ -36,7 +36,6 @@ fun MenuRowWithRadioButton(
             Column(
                 modifier = modifier
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
             ) {
                 Text(
                     text = optionName,
@@ -57,14 +56,12 @@ fun MenuRowWithRadioButton(
                 fontSize = 18.sp,
                 modifier = modifier
                     .weight(1f)
-                    .align(Alignment.CenterVertically)
             )
         }
 
         Box(
             modifier = modifier
-                .size(48.dp)
-                .align(Alignment.CenterVertically)
+                .padding(start = 12.dp)
         ) {
 
             Switch(
