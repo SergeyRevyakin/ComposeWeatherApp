@@ -78,7 +78,7 @@ class NetworkModule {
                 url {
                     protocol = URLProtocol.HTTPS
                     parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
-                    parameters.append(LANG, Locale.getDefault().country)
+                    parameters.append(LANG, Locale.getDefault().language)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
@@ -124,7 +124,7 @@ class NetworkModule {
                 url {
                     protocol = URLProtocol.HTTPS
                     parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
-                    parameters.append(LANG, Locale.getDefault().country)
+                    parameters.append(LANG, Locale.getDefault().language)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
@@ -170,7 +170,7 @@ class NetworkModule {
                 url {
                     protocol = URLProtocol.HTTPS
                     parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
-                    parameters.append(LANG, Locale.getDefault().country)
+                    parameters.append(LANG, Locale.getDefault().language)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
