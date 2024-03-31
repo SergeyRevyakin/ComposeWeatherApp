@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.serg.common.mapUvIndex
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -167,7 +166,7 @@ fun CityWeatherContentItem(
             sheetState = sheetState
         ) {
             UviBottomSheet(
-                uvIndex = mapUvIndex(weatherItem.hourlyWeatherList.first().uvi),
+                value = weatherItem.hourlyWeatherList.first().uvi
             )
         }
     }
