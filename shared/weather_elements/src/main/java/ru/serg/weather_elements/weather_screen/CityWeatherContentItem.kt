@@ -77,8 +77,6 @@ fun CityWeatherContentItem(
             .animatedBlur(sheetState.targetValue == SheetValue.Expanded)
 
     ) {
-
-
         Text(
             text = city,
             style = headerStyle,
@@ -173,6 +171,4 @@ fun CityWeatherContentItem(
             )
         }
     }
-
-
 }

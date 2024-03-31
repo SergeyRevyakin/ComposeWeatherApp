@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,7 +39,10 @@ import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
 import ru.serg.weather_elements.elements.NoCitiesMainScreenItem
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
@@ -129,7 +133,7 @@ fun MainScreen(
                     state = pagerState,
                     userScrollEnabled = true,
                     reverseLayout = false,
-                    outOfBoundsPageCount = 1,
+//                    outOfBoundsPageCount = 1,
                     pageContent = {
                         PagerScreen(
                             weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
