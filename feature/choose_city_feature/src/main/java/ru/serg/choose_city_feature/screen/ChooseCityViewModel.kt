@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.choose_city_feature.CitySearchUseCase
+import ru.serg.choose_city_feature.screen.screen_state.Action
 import ru.serg.choose_city_feature.screen.screen_state.ScreenError
 import ru.serg.choose_city_feature.screen.screen_state.ScreenState
 import ru.serg.common.NetworkResult
@@ -74,15 +75,23 @@ class ChooseCityViewModel @Inject constructor(
         }
     }
 
-    fun onCityClicked(cityItem: CityItem) {
+    private fun onAddCityClick(cityItem: CityItem) {
         viewModelScope.launch {
             citySearchUseCase.saveCityItem(cityItem)
         }
     }
 
-    fun onDeleteClick(cityItem: CityItem) {
+    private fun onDeleteCityClick(cityItem: CityItem) {
         viewModelScope.launch {
             citySearchUseCase.deleteCityItem(cityItem)
+        }
+    }
+
+    fun doAction(action: Action) {
+        when (action) {
+            is Action.OnAddCityClick -> onAddCityClick(action.cityItem)
+            is Action.OnDeleteCityClick -> onDeleteCityClick(action.cityItem)
+            is Action.OnTextChanged -> handleIntent(Intent.OnTextChanges(action.inputText))
         }
     }
 

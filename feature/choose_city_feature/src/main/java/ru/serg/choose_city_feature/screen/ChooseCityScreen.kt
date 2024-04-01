@@ -39,6 +39,7 @@ import ru.serg.choose_city_feature.Constants
 import ru.serg.choose_city_feature.elements.CityRow
 import ru.serg.choose_city_feature.elements.CitySearchItem
 import ru.serg.choose_city_feature.elements.SearchTextField
+import ru.serg.choose_city_feature.screen.screen_state.Action
 import ru.serg.choose_city_feature.screen.screen_state.ScreenError
 import ru.serg.common.ScreenNames
 import ru.serg.designsystem.theme.headerModifier
@@ -102,10 +103,12 @@ fun ChooseCityScreen(
                 ) {
                     items(
                         favouriteCities.size,
-                        key = { it }) {
+                        key = { it }) { item ->
                         CitySearchItem(
-                            cityItem = favouriteCities[it],
-                            onDelete = viewModel::onDeleteClick,
+                            cityItem = favouriteCities[item],
+                            onDelete = {
+                                viewModel.doAction(Action.OnDeleteCityClick(it))
+                            },
                             onItemClick = { cityItem ->
                                 navController.navigate(
                                     "${ScreenNames.CITY_WEATHER_SCREEN}/${
@@ -178,7 +181,9 @@ fun ChooseCityScreen(
                                 "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
                             )
                         },
-                        onAddClick = viewModel::onCityClicked,
+                        onAddClick = {
+                            viewModel.doAction(Action.OnAddCityClick(it))
+                        },
                         isAddedToFavorites = isFavourite
                     )
                 }
