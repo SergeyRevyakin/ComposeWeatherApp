@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -165,6 +166,7 @@ fun ChooseCityScreen(
                 modifier = modifier.padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                val keyboard = LocalSoftwareKeyboardController.current
                 screenState.foundCitiesList.forEach { cityItem ->
 
                     val isFavourite = favouriteCities.any {
@@ -177,6 +179,7 @@ fun ChooseCityScreen(
                     CityRow(
                         cityItem = cityItem,
                         onItemClick = {
+                            keyboard?.hide()
                             navController.navigate(
                                 "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
                             )
