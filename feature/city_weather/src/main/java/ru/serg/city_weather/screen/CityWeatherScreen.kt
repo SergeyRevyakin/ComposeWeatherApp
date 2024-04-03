@@ -13,11 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.serg.designsystem.common.ErrorItem
 import ru.serg.designsystem.top_item.TopItem
+import ru.serg.strings.R.string
 import ru.serg.weather_elements.ScreenState
 import ru.serg.weather_elements.weather_screen.CityWeatherContentItem
 
@@ -34,7 +36,7 @@ fun CityWeatherScreen(
             .fillMaxSize()
     ) {
         TopItem(
-            header = "Current weather in",
+            header = stringResource(id = string.weather_in),
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             onLeftIconClick = remember {
                 { navController.navigateUp() }

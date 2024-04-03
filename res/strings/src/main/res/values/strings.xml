@@ -1,6 +1,6 @@
 <resources>
     <!--    Common-->
-    <string name="app_name">Serg Weather</string>
+    <string name="app_name" translatable="false">Serg Weather</string>
     <string name="no_connection">No Internet Connection</string>
     <string name="now">now</string>
     <string name="refresh">Refresh</string>
@@ -15,6 +15,8 @@
 
     <string name="enter_city_name">Enter city or place name</string>
     <string name="eg_city_name">e.g. London</string>
+
+    <string name="weather_in">Weather in</string>
 
     <string name="no_weather_data_available">No weather data available</string>
     <string name="please_allow_us_to_get_location_access">Please allow us to get location access</string>
@@ -73,9 +75,9 @@
     <string name="units_imperial_description">Temperature in Fahrenheit and wind speed in miles/hour</string>
     <string name="units_kelvin_description">Temperature in Kelvin and wind speed in meter/sec</string>
 
-    <string name="units_metric_degrees">℃</string>
-    <string name="units_imperial_degrees">℉</string>
-    <string name="units_kelvin_degrees">K</string>
+    <string name="units_metric_degrees" translatable="false">℃</string>
+    <string name="units_imperial_degrees" translatable="false">℉</string>
+    <string name="units_kelvin_degrees" translatable="false">K</string>
 
     <string name="units_metric_wind_speed">m/s</string>
     <string name="units_imperial_wind_speed">mph</string>
@@ -118,8 +120,8 @@
     <!--    Welcome bottomsheet-->
     <string name="welcome">Welcome</string>
     <string name="search_city">Search place by its name</string>
-    <string name="turn_on_geolocation">Turn on gelocation</string>
-    <string name="welcome_desc_breaks">%2$s%3$s
+    <string name="turn_on_geolocation">Turn on geolocation</string>
+    <string name="welcome_desc_breaks" translatable="false">%2$s%3$s
     </string>
     <string name="welcome_desc">Welcome to Serg Weather App\n\nWe have two different options to get weather data
         \n\nFirst one is enter name of the place that you are interested in.
@@ -131,7 +133,7 @@
     <string name="first">First </string>
     <string name="second">Second </string>
 
-    <string name="degree_sign">°</string>
+    <string name="degree_sign" translatable="false">°</string>
 
     <!--    Icons description-->
     <string name="accessibility_desc_weather_icon">Weather icon</string>
