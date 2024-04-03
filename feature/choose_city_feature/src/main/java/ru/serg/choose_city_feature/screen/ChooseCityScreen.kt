@@ -23,6 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -53,9 +55,10 @@ import ru.serg.strings.R.string
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
-    viewModel: ChooseCityViewModel = hiltViewModel(),
+
     navController: NavController = rememberNavController()
 ) {
+    val viewModel: ChooseCityViewModel = hiltViewModel()
     val screenState by viewModel.screenState.collectAsState()
     val favouriteCities = screenState.favoriteCitiesList
     val searchText = screenState.searchText
@@ -67,19 +70,24 @@ fun ChooseCityScreen(
             .imePadding()
             .verticalScroll(rememberScrollState()),
     ) {
+
         TopItem(
             header = stringResource(id = string.look_for_the_place),
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             rightIconImageVector = null,
-            onLeftIconClick = { navController.navigateUp() },
+            onLeftIconClick = remember {
+                { navController.navigateUp() }
+            },
             onRightIconClick = null,
             isLoading = screenState.isLoading
         )
 
         SearchTextField(
             value = searchText,
-            onValueChange = {
-                viewModel.handleIntent(Intent.OnTextChanges(it))
+            onValueChange = remember {
+                { it: String ->
+                    viewModel.handleIntent(Intent.OnTextChanges(it))
+                }
             },
             modifier = Modifier
                 .padding(top = 24.dp)
@@ -106,18 +114,24 @@ fun ChooseCityScreen(
                         favouriteCities.size,
                         key = { it }) { item ->
                         CitySearchItem(
-                            cityItem = favouriteCities[item],
-                            onDelete = {
-                                viewModel.doAction(Action.OnDeleteCityClick(it))
+                            cityItemState = remember {
+                                mutableStateOf(favouriteCities[item])
                             },
-                            onItemClick = { cityItem ->
-                                navController.navigate(
-                                    "${ScreenNames.CITY_WEATHER_SCREEN}/${
-                                        Json.encodeToString(
-                                            cityItem
-                                        )
-                                    }"
-                                )
+                            onDelete = remember {
+                                { city ->
+                                    viewModel.doAction(Action.OnDeleteCityClick(city))
+                                }
+                            },
+                            onItemClick = remember {
+                                { cityItem ->
+                                    navController.navigate(
+                                        "${ScreenNames.CITY_WEATHER_SCREEN}/${
+                                            Json.encodeToString(
+                                                cityItem
+                                            )
+                                        }"
+                                    )
+                                }
                             },
                             modifier = Modifier
                                 .animateItemPlacement()

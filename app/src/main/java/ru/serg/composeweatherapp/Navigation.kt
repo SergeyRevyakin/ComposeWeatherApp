@@ -15,6 +15,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -65,10 +66,17 @@ fun Navigation(
                 )
             },
         ) {
+            val onLeftClick = remember {
+                { navController.navigate(ScreenNames.CHOOSE_CITY_SCREEN) }
+            }
+            val onRightClick = remember {
+                { navController.navigate(ScreenNames.SETTINGS_SCREEN) }
+            }
+
             MainScreen(
                 viewModule,
-                { navController.navigate(ScreenNames.CHOOSE_CITY_SCREEN) },
-                { navController.navigate(ScreenNames.SETTINGS_SCREEN) }
+                onLeftClick,
+                onRightClick
             )
         }
 

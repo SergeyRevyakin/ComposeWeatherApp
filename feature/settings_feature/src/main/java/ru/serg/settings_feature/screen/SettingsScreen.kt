@@ -17,10 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -43,10 +43,9 @@ import ru.serg.strings.R.string
 @Composable
 fun SettingsScreen(
     navController: NavController = rememberNavController(),
-    viewModel: SettingViewModel = hiltViewModel()
 ) {
+    val viewModel: SettingViewModel = hiltViewModel()
     val scrollableState = rememberScrollState()
-
     val context = LocalContext.current
 
     Column(
@@ -54,11 +53,14 @@ fun SettingsScreen(
             .fillMaxSize()
             .verticalScroll(state = scrollableState, enabled = true)
     ) {
+
         TopItem(
             header = stringResource(id = string.settings),
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
             rightIconImageVector = null,
-            onLeftIconClick = { navController.navigateUp() },
+            onLeftIconClick = remember {
+                { navController.navigateUp() }
+            },
             onRightIconClick = null
         )
 
@@ -162,10 +164,4 @@ fun SettingsScreen(
                 .padding(bottom = 24.dp)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    SettingsScreen()
 }

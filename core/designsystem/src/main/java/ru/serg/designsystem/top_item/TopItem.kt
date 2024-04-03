@@ -77,9 +77,11 @@ fun TopItem(
                     .padding(start = 24.dp, end = 16.dp)
                     .size(48.dp)
                     .clip(CircleShape)
-                    .clickable {
-                        onRightIconClick?.invoke()
-                    },
+                    .then(
+                        if (rightIconImageVector != null) Modifier.clickable {
+                            onRightIconClick?.invoke()
+                        } else Modifier
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {

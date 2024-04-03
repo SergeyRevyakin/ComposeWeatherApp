@@ -48,14 +48,14 @@ fun WidgetSettingsScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-//            .verticalScroll(state = scrollableState, enabled = true)
     ) {
         item {
+
             TopItem(
                 header = stringResource(id = R.string.widget_settings),
                 leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 rightIconImageVector = null,
-                onLeftIconClick = { navController.navigateUp() },
+                onLeftIconClick = remember { { navController.navigateUp() } },
                 onRightIconClick = null
             )
         }

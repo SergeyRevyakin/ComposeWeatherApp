@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -24,9 +25,8 @@ import ru.serg.weather_elements.weather_screen.CityWeatherContentItem
 fun CityWeatherScreen(
     modifier: Modifier = Modifier,
     navController: NavController = rememberNavController(),
-    viewModel: CityWeatherViewModel = hiltViewModel()
 ) {
-
+    val viewModel: CityWeatherViewModel = hiltViewModel()
     val screenState by viewModel.uiState.collectAsState()
 
     Column(
@@ -36,7 +36,9 @@ fun CityWeatherScreen(
         TopItem(
             header = "Current weather in",
             leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            onLeftIconClick = { navController.navigateUp() },
+            onLeftIconClick = remember {
+                { navController.navigateUp() }
+            },
             isLoading = screenState is ScreenState.Loading
         )
 
@@ -64,7 +66,5 @@ fun CityWeatherScreen(
                 )
             }
         }
-
-
     }
 }

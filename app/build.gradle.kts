@@ -15,8 +15,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 71
-        versionName = "0.71"
+        versionCode = 73
+        versionName = "0.73"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -69,12 +69,12 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
-    packaging {
-        resources {
-            excludes.add("META-INF/**")
-            excludes.add("META-INF/versions/**")
-        }
-    }
+//    packaging {
+//        resources {
+//            excludes.add("META-INF/**")
+//            excludes.add("META-INF/versions/**")
+//        }
+//    }
 
     namespace = "ru.serg.composeweatherapp"
 
