@@ -10,9 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -171,26 +169,28 @@ fun Navigation(
                 type = NavType.StringType
             }),
             enterTransition = {
-                slideInVertically(
-                    initialOffsetY = { it },
-                    animationSpec = tween(300)
-                )
-            },
-            exitTransition = {
-                fadeOut(
+                slideInHorizontally(
+                    initialOffsetX = { it },
                     animationSpec = tween(300)
                 )
             },
             popEnterTransition = {
-                fadeIn(
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
                     animationSpec = tween(300)
                 )
             },
             popExitTransition = {
-                slideOutVertically(
-                    targetOffsetY = { it },
+                slideOutHorizontally(
+                    targetOffsetX = { it },
                     animationSpec = tween(300)
-                )
+                ) + fadeOut(animationSpec = tween(300))
             }
         ) {
             CityWeatherScreen(navController = navController)
