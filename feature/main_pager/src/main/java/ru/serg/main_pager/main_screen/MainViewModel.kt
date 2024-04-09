@@ -51,6 +51,7 @@ class MainViewModel @Inject constructor(
     var citiesWeather = _citiesWeather.asStateFlow()
 
     val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
+    private val isLocationAvailable = MutableStateFlow(false)
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, t ->
@@ -67,14 +68,14 @@ class MainViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            locationPermissionFlow.collect {
+            locationPermissionFlow.collectLatest {
+                isLocationAvailable.emit(
+                    it.grantedPermissions.isNotEmpty()
+                )
                 setInitialState(it.grantedPermissions.isNotEmpty())
             }
-
         }
-
         initCitiesWeatherFlow()
-
     }
 
     fun initCitiesWeatherFlow() {
@@ -93,7 +94,7 @@ class MainViewModel @Inject constructor(
 
     private fun setInitialState(isLocationAvailable: Boolean) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
+            _citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when (state) {
                     is CommonScreenState.Empty -> {
                         if (isLocationAvailable) {
@@ -103,6 +104,7 @@ class MainViewModel @Inject constructor(
                     }
 
                     is CommonScreenState.Success -> {
+
                         observableItemNumber.collectLatest {
                             try {
                                 val item =
@@ -112,7 +114,6 @@ class MainViewModel @Inject constructor(
                                 observableItemNumber.value -= 1
                                 setInitialState(isLocationAvailable)
                             }
-
                         }
                     }
 
@@ -150,7 +151,9 @@ class MainViewModel @Inject constructor(
 
                 item?.let { updatedWeatherItem ->
                     if (updatedWeatherItem.cityItem.isFavorite) {
-                        checkLocationAndFetchWeather()
+                        if (isLocationAvailable.value) {
+                            checkLocationAndFetchWeather()
+                        } else weatherRepository.removeFavouriteCityParam(updatedWeatherItem)
                     } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
                         .asResult()
                         .collectLatest {
@@ -185,6 +188,4 @@ class MainViewModel @Inject constructor(
                 .launchIn(this)
         }
     }
-
-
 }

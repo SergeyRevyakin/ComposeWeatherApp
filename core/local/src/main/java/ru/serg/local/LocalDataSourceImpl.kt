@@ -26,7 +26,6 @@ class LocalDataSourceImpl @Inject constructor(
 
     override fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>> {
 
-
         return weatherDao.getWeatherWithCity().map { list ->
             list.map {
                 it.toWeatherItem()
@@ -98,5 +97,4 @@ class LocalDataSourceImpl @Inject constructor(
             } ?: it.first()
         }.distinctUntilChanged()
     }
-
 }

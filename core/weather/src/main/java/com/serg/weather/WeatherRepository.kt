@@ -79,4 +79,11 @@ class WeatherRepository @Inject constructor(
 
         }.flowOn(Dispatchers.IO)
 
+    fun removeFavouriteCityParam(weatherItem: UpdatedWeatherItem) {
+        localDataSource.saveWeather(
+            hourlyWeatherList = weatherItem.hourlyWeatherList,
+            dailyWeatherList = weatherItem.dailyWeatherList,
+            cityItem = weatherItem.cityItem.copy(isFavorite = false)
+        )
+    }
 }
