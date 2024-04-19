@@ -62,7 +62,6 @@ import ru.serg.strings.R.string
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
-
     navController: NavController = rememberNavController()
 ) {
     val viewModel: ChooseCityViewModel = hiltViewModel()
