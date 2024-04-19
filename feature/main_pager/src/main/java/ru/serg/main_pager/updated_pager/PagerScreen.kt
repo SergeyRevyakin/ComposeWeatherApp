@@ -33,10 +33,10 @@ fun PagerScreen(
         visible = weatherItem.dailyWeatherList.isNotEmpty() && weatherItem.hourlyWeatherList.isNotEmpty(),
         enter = slideInVertically(
             initialOffsetY = { 1500 },
-            animationSpec = tween(500)
+            animationSpec = tween(300)
         ),
         exit = fadeOut(
-            animationSpec = tween(0)
+            animationSpec = tween(150)
         )
 
     ) {

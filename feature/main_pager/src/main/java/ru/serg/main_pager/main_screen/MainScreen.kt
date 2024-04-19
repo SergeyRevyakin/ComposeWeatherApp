@@ -8,22 +8,21 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,7 +32,7 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.serg.designsystem.common.ErrorItem
 import ru.serg.designsystem.common.SunLoadingScreen
-import ru.serg.designsystem.top_item.PagerTopItem
+import ru.serg.designsystem.top_item.PagerTopBar
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
@@ -81,22 +80,26 @@ fun MainScreen(
     }
 
     Box(Modifier.nestedScroll(state.nestedScrollConnection)) {
+        val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
 
-        Column(
+        Scaffold(
             modifier = modifier
                 .fillMaxSize()
-        ) {
-            PagerTopItem(
-                leftIconImageVector = Icons.Rounded.Search,
-                rightIconImageVector = Icons.Rounded.Settings,
-                onLeftIconClick = navigateToChooseCity,
-                onRightIconClick = navigateToSettings,
-                isLoading = viewModel.isLoading.value,
-                pagerState = pagerState,
-                hasFavourite =
-                (screenState as? CommonScreenState.Success)?.updatedWeatherList?.any { it.cityItem.isFavorite }
-                    ?: false
-            )
+                .nestedScroll(state.nestedScrollConnection),
+            topBar = {
+                PagerTopBar(
+                    pagerState = pagerState,
+                    isLoading = isLoading,
+                    onLeftIconClick = remember {
+                        navigateToChooseCity
+                    },
+                    onRightIconClick = remember {
+                        navigateToSettings
+                    },
+                    appBarState = appBarState
+                )
+            }
+        ) { padding ->
 
             val context = LocalContext.current
 
@@ -126,27 +129,32 @@ fun MainScreen(
                 SunLoadingScreen()
             }
 
-            AnimatedVisibility(visible = screenState is CommonScreenState.Success) {
+//            AnimatedVisibility(visible = screenState is CommonScreenState.Success) {
 
-                HorizontalPager(
-                    modifier = Modifier.fillMaxWidth(),
-                    state = pagerState,
-                    userScrollEnabled = true,
-                    reverseLayout = false,
-//                    outOfBoundsPageCount = 1,
-                    pageContent = {
-                        PagerScreen(
-                            weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
-                        )
-                    }
-                )
-            }
+            HorizontalPager(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+
+                    .nestedScroll(appBarState.nestedScrollConnection),
+                state = pagerState,
+                userScrollEnabled = true,
+                reverseLayout = false,
+                pageContent = {
+                    PagerScreen(
+                        weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
+                        modifier = Modifier
+                    )
+                }
+            )
+//            }
 
             AnimatedVisibility(visible = screenState is CommonScreenState.Error) {
                 ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
             }
-        }
 
+
+        }
         PullToRefreshContainer(
             state = state,
             modifier = Modifier.align(Alignment.TopCenter),
