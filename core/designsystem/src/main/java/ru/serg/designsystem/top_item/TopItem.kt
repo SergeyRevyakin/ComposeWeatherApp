@@ -102,7 +102,7 @@ fun TopItem(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewTopBar() {
+fun PreviewTopItem() {
     TopItem(
         header = "Moscow",
         leftIconImageVector = Icons.Rounded.Search,
