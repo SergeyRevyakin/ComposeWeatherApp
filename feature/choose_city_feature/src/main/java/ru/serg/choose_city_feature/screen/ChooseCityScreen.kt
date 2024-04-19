@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -83,7 +84,7 @@ fun ChooseCityScreen(
                 holder = remember {
                     TopBarHolder(
                         header = header,
-                        leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                        leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
                         onLeftIconClick = { navController.navigateUp() },
                         onRightIconClick = null,
@@ -99,7 +100,8 @@ fun ChooseCityScreen(
             modifier = modifier
                 .fillMaxSize()
                 .padding(padding)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .nestedScroll(appBarState.nestedScrollConnection),
         ) {
             SearchTextField(
                 value = searchText,

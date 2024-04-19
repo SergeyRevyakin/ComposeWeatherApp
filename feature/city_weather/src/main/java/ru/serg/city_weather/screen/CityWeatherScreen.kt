@@ -6,23 +6,32 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.serg.designsystem.common.ErrorItem
-import ru.serg.designsystem.top_item.TopItem
+import ru.serg.designsystem.top_item.TopBar
+import ru.serg.designsystem.top_item.TopBarHolder
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.ScreenState
 import ru.serg.weather_elements.weather_screen.CityWeatherContentItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityWeatherScreen(
     modifier: Modifier = Modifier,
@@ -31,41 +40,59 @@ fun CityWeatherScreen(
     val viewModel: CityWeatherViewModel = hiltViewModel()
     val screenState by viewModel.uiState.collectAsState()
 
-    Column(
+    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val header = stringResource(id = string.weather_in)
+
+    Scaffold(
         modifier = modifier
             .fillMaxSize()
-    ) {
-        TopItem(
-            header = stringResource(id = string.weather_in),
-            leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-            onLeftIconClick = remember {
-                { navController.navigateUp() }
-            },
-            isLoading = screenState is ScreenState.Loading
-        )
-
-        AnimatedVisibility(visible = screenState is ScreenState.Error) {
-            val errorText = (screenState as? ScreenState.Error)?.message
-            ErrorItem(errorText = errorText)
-        }
-
-        AnimatedVisibility(
-            visible = screenState is ScreenState.Success,
-            enter = fadeIn(
-                animationSpec = tween(300)
-            ),
-            exit = fadeOut(
-                animationSpec = tween(300)
+            .navigationBarsPadding()
+            .imePadding(),
+        topBar = {
+            TopBar(
+                holder = remember {
+                    TopBarHolder(
+                        header = header,
+                        leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
+                        onLeftIconClick = { navController.navigateUp() },
+                        appBarState = appBarState
+                    )
+                },
+                isLoading = screenState is ScreenState.Loading
             )
 
+        }
+    ) { padding ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(padding)
+                .nestedScroll(appBarState.nestedScrollConnection)
         ) {
-            val weatherItem = (screenState as? ScreenState.Success)?.weatherItem
 
-            weatherItem?.let {
-                CityWeatherContentItem(
-                    weatherItem = weatherItem,
-                    modifier = modifier
+            AnimatedVisibility(visible = screenState is ScreenState.Error) {
+                val errorText = (screenState as? ScreenState.Error)?.message
+                ErrorItem(errorText = errorText)
+            }
+
+            AnimatedVisibility(
+                visible = screenState is ScreenState.Success,
+                enter = fadeIn(
+                    animationSpec = tween(300)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(300)
                 )
+
+            ) {
+                val weatherItem = (screenState as? ScreenState.Success)?.weatherItem
+
+                weatherItem?.let {
+                    CityWeatherContentItem(
+                        weatherItem = weatherItem,
+                        modifier = modifier
+                    )
+                }
             }
         }
     }
