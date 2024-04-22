@@ -38,14 +38,11 @@ fun PagerScreen(
         exit = fadeOut(
             animationSpec = tween(150)
         )
-
     ) {
-
         CityWeatherContentItem(
             weatherItem = weatherItem,
             modifier = modifier
         )
-
     }
 }
 
