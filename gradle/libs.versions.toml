@@ -7,6 +7,7 @@ compose-bom = "2024.04.01"
 core-ktx = "1.13.0"
 datastore-preferences = "1.1.0"
 espresso-core = "3.5.1"
+firebaseBom = "32.8.1"
 glance = "1.1.0-beta02"
 gradle = "8.5.0-alpha06"
 hilt-android = "2.51.1"
@@ -44,6 +45,8 @@ compose-compiler = "1.5.11"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
+firebase-plugin = "4.4.1"
+firebase-crashlytics = "2.9.9"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -76,6 +79,9 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-foundation" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
@@ -111,6 +117,8 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+firebase = { id = "com.google.gms.google-services", version.ref = "firebase-plugin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 android-application = { id = "com.android.application", version.ref = "gradle" }
 android-library = { id = "com.android.library", version.ref = "gradle" }
 android-test = { id = "com.android.test", version.ref = "gradle" }

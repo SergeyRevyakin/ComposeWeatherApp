@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "10660488963",
+    "project_id": "serg-weather",
+    "storage_bucket": "serg-weather.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10660488963:android:5744210a256163895c6b36",
+        "android_client_info": {
+          "package_name": "ru.serg.composeweatherapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBztYWSE_im1KmMk7jrGFcjVGh6chhwXrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

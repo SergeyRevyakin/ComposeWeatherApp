@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.firebase)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -15,8 +17,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 75
-        versionName = "0.75"
+        versionCode = 76
+        versionName = "0.76"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -68,7 +70,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-
+    flavorDimensions += "environment"
+//    productFlavors {
+//        create("prod") {
+//            dimension = "environment"
+//            configure<CrashlyticsExtension> {
+//                mappingFileUploadEnabled = true
+//            }
+//        }
+//    }
 //    packaging {
 //        resources {
 //            excludes.add("META-INF/**")
@@ -161,5 +171,7 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
 
-
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }
