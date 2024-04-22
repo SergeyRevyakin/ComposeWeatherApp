@@ -62,7 +62,7 @@ fun NoCitiesMainScreenItem(
             modifier = Modifier
                 .headerModifier()
                 .fillMaxWidth()
-                .padding(bottom = 20.dp),
+//                .padding(bottom = 20.dp),
         )
 
         CardButton(
@@ -76,12 +76,12 @@ fun NoCitiesMainScreenItem(
             text = stringResource(id = string.click_here_to_change_it_in_settings),
             fontSize = 22.sp,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(bottom = 32.dp)
+                .padding(vertical = 12.dp)
                 .clickable {
                     goToSettings()
-                },
+                }
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center
         )
