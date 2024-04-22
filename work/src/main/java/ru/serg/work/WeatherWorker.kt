@@ -126,7 +126,7 @@ class WeatherWorker @AssistedInject constructor(
                         onError(networkResult.message)
                     }
 
-                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Loading -> Unit
                 }
             }.launchIn(serviceScope)
     }
