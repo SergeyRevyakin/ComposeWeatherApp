@@ -103,17 +103,31 @@ fun MainScreen(
 
             val context = LocalContext.current
 
-            AnimatedVisibility(visible = screenState is CommonScreenState.Empty) {
+            AnimatedVisibility(
+                visible = screenState is CommonScreenState.Empty,
+                enter = fadeIn(
+                    animationSpec = tween(300)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(300)
+                )
+            ) {
 
                 NoCitiesMainScreenItem(
-                    onSearchClick = navigateToChooseCity,
-                    onRequestPermissionClick = {
-                        permissionLauncher.launch(
-                            ACCESS_COARSE_LOCATION,
-                            ACCESS_FINE_LOCATION
-                        )
+                    onSearchClick = remember {
+                        navigateToChooseCity
                     },
-                    goToSettings = { context.openAppSystemSettings() }
+                    onRequestPermissionClick = remember {
+                        {
+                            permissionLauncher.launch(
+                                ACCESS_COARSE_LOCATION,
+                                ACCESS_FINE_LOCATION
+                            )
+                        }
+                    },
+                    goToSettings = remember {
+                        { context.openAppSystemSettings() }
+                    }
                 )
             }
 
@@ -129,32 +143,46 @@ fun MainScreen(
                 SunLoadingScreen()
             }
 
-//            AnimatedVisibility(visible = screenState is CommonScreenState.Success) {
+            AnimatedVisibility(
+                visible = screenState is CommonScreenState.Success,
+                enter = fadeIn(
+                    animationSpec = tween(300)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(300)
+                )
+            ) {
 
-            HorizontalPager(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-
-                    .nestedScroll(appBarState.nestedScrollConnection),
-                state = pagerState,
-                userScrollEnabled = true,
-                reverseLayout = false,
-                pageContent = {
-                    PagerScreen(
-                        weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
-                        modifier = Modifier
-                    )
-                }
-            )
-//            }
-
-            AnimatedVisibility(visible = screenState is CommonScreenState.Error) {
-                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+                HorizontalPager(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize()
+                        .nestedScroll(appBarState.nestedScrollConnection),
+                    state = pagerState,
+                    userScrollEnabled = true,
+                    reverseLayout = false,
+                    pageContent = {
+                        PagerScreen(
+                            weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
+                            modifier = Modifier
+                        )
+                    }
+                )
             }
 
-
+            AnimatedVisibility(
+                visible = screenState is CommonScreenState.Error,
+                enter = fadeIn(
+                    animationSpec = tween(300)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(300)
+                )
+            ) {
+                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+            }
         }
+
         PullToRefreshContainer(
             state = state,
             modifier = Modifier.align(Alignment.TopCenter),
