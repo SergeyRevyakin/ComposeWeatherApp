@@ -1,4 +1,4 @@
-package com.serg.weather
+package ru.serg.weather
 
 
 fun Double?.orZero() = this ?: 0.0

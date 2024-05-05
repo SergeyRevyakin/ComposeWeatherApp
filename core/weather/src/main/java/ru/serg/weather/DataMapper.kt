@@ -1,4 +1,4 @@
-package com.serg.weather
+package ru.serg.weather
 
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather

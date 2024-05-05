@@ -1,4 +1,4 @@
-package com.serg.weather
+package ru.serg.weather
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

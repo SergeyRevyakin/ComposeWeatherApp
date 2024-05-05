@@ -6,7 +6,6 @@ import android.Manifest
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serg.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -29,6 +28,7 @@ import ru.serg.location.LocationService
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.DateUseCase
 import ru.serg.model.UpdatedWeatherItem
+import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -116,8 +116,6 @@ class MainViewModel @Inject constructor(
                             }
                         }
                     }
-
-                    is CommonScreenState.Loading -> {}
 
                     else -> {}
                 }

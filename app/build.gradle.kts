@@ -6,8 +6,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.firebase)
-    alias(libs.plugins.firebase.crashlytics)
+//    alias(libs.plugins.firebase)
+//    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -171,7 +171,7 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
 
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
+//    implementation(platform(libs.firebase.bom))
+//    implementation(libs.firebase.analytics)
+//    implementation(libs.firebase.crashlytics)
 }

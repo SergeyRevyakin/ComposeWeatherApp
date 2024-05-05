@@ -3,7 +3,6 @@
 package ru.serg.service
 
 import android.util.Log
-import com.serg.weather.WeatherRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -13,6 +12,7 @@ import ru.serg.common.asResult
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.location.LocationDataSource
 import ru.serg.model.UpdatedWeatherItem
+import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
 class WeatherServiceUseCase @Inject constructor(

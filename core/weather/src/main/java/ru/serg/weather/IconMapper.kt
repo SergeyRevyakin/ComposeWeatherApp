@@ -1,4 +1,4 @@
-package com.serg.weather
+package ru.serg.weather
 
 import ru.serg.drawables.R.drawable
 

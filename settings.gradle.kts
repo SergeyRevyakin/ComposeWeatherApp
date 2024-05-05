@@ -11,6 +11,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            setUrl("https://androidx.dev/storage/compose-compiler/repository/")
+        }
     }
 }
 rootProject.name = "ComposeWeatherApp"
