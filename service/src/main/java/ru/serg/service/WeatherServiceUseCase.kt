@@ -11,7 +11,7 @@ import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.location.LocationDataSource
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class WeatherServiceUseCase @Inject constructor(
     private val locationService: LocationDataSource,
     private val dataStoreDataSource: DataStoreDataSource
 ) {
-    fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<UpdatedWeatherItem>> =
+    fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<WeatherItem>> =
 
         dataStoreDataSource.fetchFrequency.flatMapLatest { fetchFrequency ->
             Log.e(this::class.simpleName, "Fetch frequency $fetchFrequency")

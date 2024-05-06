@@ -6,10 +6,10 @@ import ru.serg.database.room.entity.HourlyWeatherEntity
 import ru.serg.database.room.entity.toCityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 
 
-fun CityWeather.toWeatherItem() = UpdatedWeatherItem(
+fun CityWeather.toWeatherItem() = WeatherItem(
     cityItem = cityEntity.toCityItem(),
     hourlyWeatherList = hourlyWeatherEntity.map {
         it.toHourlyWeather()
@@ -65,7 +65,7 @@ fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
     windSpeed = windSpeed.orZero(),
     windDirection = windDirection.orZero(),
     weatherIcon = weatherIcon.orZero(),
-    weatherDescription = weatherDescription.orEmpty(),
+    weatherDescription = weatherDescription,
     humidity = humidity.orZero(),
     pressure = pressure.orZero(),
     dateTime = dateTime.orZero(),

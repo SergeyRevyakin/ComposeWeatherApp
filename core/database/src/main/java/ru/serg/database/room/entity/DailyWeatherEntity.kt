@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import ru.serg.database.Constants
-import ru.serg.model.UpdatedDailyTempItem
+import ru.serg.model.DailyTempItem
 
 @Entity(
     tableName = Constants.DAY_WEATHER_TABLE,
@@ -27,8 +27,8 @@ data class DailyWeatherEntity(
     )
     val cityId: Int,
     @Embedded(prefix = Constants.DAILY)
-    val dailyWeatherItem: UpdatedDailyTempItem,
+    val dailyWeatherItem: DailyTempItem,
     @Embedded(prefix = Constants.FEELS)
-    val feelsLike: UpdatedDailyTempItem,
+    val feelsLike: DailyTempItem,
     val uvi: Double?
 )

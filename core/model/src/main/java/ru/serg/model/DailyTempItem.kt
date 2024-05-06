@@ -3,7 +3,7 @@ package ru.serg.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UpdatedDailyTempItem(
+data class DailyTempItem(
     val morningTemp: Double,
     val dayTemp: Double,
     val eveningTemp: Double,

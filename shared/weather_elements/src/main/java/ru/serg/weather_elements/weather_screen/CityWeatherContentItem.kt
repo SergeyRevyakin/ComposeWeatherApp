@@ -31,7 +31,7 @@ import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.DailyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.animatedBlur
 import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
@@ -43,7 +43,7 @@ import ru.serg.weather_elements.elements.SunriseSunsetItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityWeatherContentItem(
-    weatherItem: UpdatedWeatherItem,
+    weatherItem: WeatherItem,
     modifier: Modifier = Modifier,
     viewModel: CityWeatherContentItemViewModel = hiltViewModel()
 ) {

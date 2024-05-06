@@ -2,9 +2,9 @@ package ru.serg.designsystem.utils
 
 import ru.serg.drawables.R.drawable
 import ru.serg.model.CityItem
+import ru.serg.model.DailyTempItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedDailyTempItem
 
 object MockItems {
     fun getDailyWeatherMockItem() =
@@ -38,7 +38,7 @@ object MockItems {
         )
 
     private fun getUpdatedDailyTempMockItem() =
-        UpdatedDailyTempItem(
+        DailyTempItem(
             morningTemp = 14.5,
             dayTemp = 21.2,
             eveningTemp = 18.1,

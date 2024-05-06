@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.notifications.showDailyForecastNotification
 import ru.serg.notifications.showFetchErrorNotification
 import ru.serg.notifications.showNotification
@@ -131,7 +131,7 @@ class WeatherWorker @AssistedInject constructor(
             }.launchIn(serviceScope)
     }
 
-    private fun onWeatherFetchedSuccessful(weatherItem: UpdatedWeatherItem?) {
+    private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem?) {
         weatherItem?.let {
             showDailyForecastNotification(applicationContext, weatherItem)
         }

@@ -27,7 +27,7 @@ import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.DateUseCase
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
@@ -108,7 +108,7 @@ class MainViewModel @Inject constructor(
                         observableItemNumber.collectLatest {
                             try {
                                 val item =
-                                    (citiesWeather.value as CommonScreenState.Success).updatedWeatherList[it]
+                                    (citiesWeather.value as CommonScreenState.Success).weatherList[it]
                                 checkWeatherItem(item)
                             } catch (_: Exception) {
                                 observableItemNumber.value -= 1
@@ -117,14 +117,14 @@ class MainViewModel @Inject constructor(
                         }
                     }
 
-                    else -> {}
+                    else -> Unit
                 }
             }
         }
     }
 
 
-    private fun checkWeatherItem(weatherItem: UpdatedWeatherItem) {
+    private fun checkWeatherItem(weatherItem: WeatherItem) {
         viewModelScope.launch(coroutineExceptionHandler) {
             when {
                 dateUtils.isFetchDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
@@ -143,7 +143,7 @@ class MainViewModel @Inject constructor(
             isLoading.value = true
             viewModelScope.launch(coroutineExceptionHandler) {
                 val item =
-                    (citiesWeather.value as? CommonScreenState.Success)?.updatedWeatherList?.get(
+                    (citiesWeather.value as? CommonScreenState.Success)?.weatherList?.get(
                         observableItemNumber.value
                     )
 

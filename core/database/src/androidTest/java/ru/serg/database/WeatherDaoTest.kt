@@ -16,7 +16,7 @@ import ru.serg.database.room.dao.WeatherDao
 import ru.serg.database.room.entity.CityEntity
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
-import ru.serg.model.UpdatedDailyTempItem
+import ru.serg.model.DailyTempItem
 
 private lateinit var weatherDatabase: AppDatabase
 private lateinit var weatherDao: WeatherDao
@@ -331,7 +331,7 @@ val dailyWeatherEntity = DailyWeatherEntity(
     sunrise = System.currentTimeMillis(),
     sunset = System.currentTimeMillis(),
     cityId = 1,
-    dailyWeatherItem = UpdatedDailyTempItem(25.0, 20.0, 20.0, 20.0, 20.0, 16.0),
-    feelsLike = UpdatedDailyTempItem(25.0, 20.0, 20.0, 20.0, 20.0, 16.0),
+    dailyWeatherItem = DailyTempItem(25.0, 20.0, 20.0, 20.0, 20.0, 16.0),
+    feelsLike = DailyTempItem(25.0, 20.0, 20.0, 20.0, 20.0, 16.0),
     uvi = 6.0
 )

@@ -58,7 +58,7 @@ fun MainScreen(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        (screenState as? CommonScreenState.Success)?.updatedWeatherList?.size ?: 0
+        (screenState as? CommonScreenState.Success)?.weatherList?.size ?: 0
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -163,7 +163,7 @@ fun MainScreen(
                     reverseLayout = false,
                     pageContent = {
                         PagerScreen(
-                            weatherItem = (screenState as CommonScreenState.Success).updatedWeatherList[it],
+                            weatherItem = (screenState as CommonScreenState.Success).weatherList[it],
                             modifier = Modifier
                         )
                     }
