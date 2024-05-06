@@ -98,6 +98,14 @@
     <string name="uiv_very_high_description">Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly</string>
     <string name="uiv_extreme_description">Extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes</string>
 
+    <!--    Air Quality strings-->
+    <string name="aqi_value">Air quality: %1$s</string>
+    <string name="aqi_good">Good</string>
+    <string name="aqi_fair">Fair</string>
+    <string name="aqi_moderate">Moderate</string>
+    <string name="aqi_poor">Poor</string>
+    <string name="aqi_very_poor">Very poor</string>
+
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>

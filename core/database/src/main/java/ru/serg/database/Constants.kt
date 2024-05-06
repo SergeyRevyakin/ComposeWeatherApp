@@ -10,6 +10,7 @@ internal object Constants {
     const val CITY_ID = "city_id"
     const val DATETIME = "datetime"
 
-    const val FEELS = "feels"
-    const val DAILY = "daily"
+    const val FEELS = "feels_"
+    const val DAILY = "daily_"
+    const val AIR_QUALITY = "air_quality_"
 }

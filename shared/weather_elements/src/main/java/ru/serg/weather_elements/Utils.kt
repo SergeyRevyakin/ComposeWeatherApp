@@ -151,4 +151,15 @@ fun Modifier.animatedBlur(isShowing: Boolean) =
         )
     }
 
+@Composable
+fun getAqiStringByIndex(index: Int): String =
+    when (index) {
+        1 -> stringResource(id = string.aqi_good)
+        2 -> stringResource(id = string.aqi_fair)
+        3 -> stringResource(id = string.aqi_moderate)
+        4 -> stringResource(id = string.aqi_poor)
+        5 -> stringResource(id = string.aqi_very_poor)
+        else -> ""
+    }
+
 

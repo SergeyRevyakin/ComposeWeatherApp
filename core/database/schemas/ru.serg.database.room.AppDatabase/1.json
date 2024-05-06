@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3b6a91a57404cbb1831f01decf736336",
+    "identityHash": "d358980f734d371bf40a55ea7c4a08a3",
     "entities": [
       {
         "tableName": "city_table",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "day_weather_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `sunrise` INTEGER, `sunset` INTEGER, `city_id` INTEGER NOT NULL, `uvi` REAL, `dailymorningTemp` REAL NOT NULL, `dailydayTemp` REAL NOT NULL, `dailyeveningTemp` REAL NOT NULL, `dailynightTemp` REAL NOT NULL, `dailymaxTemp` REAL, `dailyminTemp` REAL, `feelsmorningTemp` REAL NOT NULL, `feelsdayTemp` REAL NOT NULL, `feelseveningTemp` REAL NOT NULL, `feelsnightTemp` REAL NOT NULL, `feelsmaxTemp` REAL, `feelsminTemp` REAL, PRIMARY KEY(`city_id`, `datetime`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `sunrise` INTEGER, `sunset` INTEGER, `city_id` INTEGER NOT NULL, `uvi` REAL, `daily_morningTemp` REAL NOT NULL, `daily_dayTemp` REAL NOT NULL, `daily_eveningTemp` REAL NOT NULL, `daily_nightTemp` REAL NOT NULL, `daily_maxTemp` REAL, `daily_minTemp` REAL, `feels_morningTemp` REAL NOT NULL, `feels_dayTemp` REAL NOT NULL, `feels_eveningTemp` REAL NOT NULL, `feels_nightTemp` REAL NOT NULL, `feels_maxTemp` REAL, `feels_minTemp` REAL, PRIMARY KEY(`city_id`, `datetime`))",
         "fields": [
           {
             "fieldPath": "windDirection",
@@ -132,73 +132,73 @@
           },
           {
             "fieldPath": "dailyWeatherItem.morningTemp",
-            "columnName": "dailymorningTemp",
+            "columnName": "daily_morningTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "dailyWeatherItem.dayTemp",
-            "columnName": "dailydayTemp",
+            "columnName": "daily_dayTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "dailyWeatherItem.eveningTemp",
-            "columnName": "dailyeveningTemp",
+            "columnName": "daily_eveningTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "dailyWeatherItem.nightTemp",
-            "columnName": "dailynightTemp",
+            "columnName": "daily_nightTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "dailyWeatherItem.maxTemp",
-            "columnName": "dailymaxTemp",
+            "columnName": "daily_maxTemp",
             "affinity": "REAL",
             "notNull": false
           },
           {
             "fieldPath": "dailyWeatherItem.minTemp",
-            "columnName": "dailyminTemp",
+            "columnName": "daily_minTemp",
             "affinity": "REAL",
             "notNull": false
           },
           {
             "fieldPath": "feelsLike.morningTemp",
-            "columnName": "feelsmorningTemp",
+            "columnName": "feels_morningTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "feelsLike.dayTemp",
-            "columnName": "feelsdayTemp",
+            "columnName": "feels_dayTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "feelsLike.eveningTemp",
-            "columnName": "feelseveningTemp",
+            "columnName": "feels_eveningTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "feelsLike.nightTemp",
-            "columnName": "feelsnightTemp",
+            "columnName": "feels_nightTemp",
             "affinity": "REAL",
             "notNull": true
           },
           {
             "fieldPath": "feelsLike.maxTemp",
-            "columnName": "feelsmaxTemp",
+            "columnName": "feels_maxTemp",
             "affinity": "REAL",
             "notNull": false
           },
           {
             "fieldPath": "feelsLike.minTemp",
-            "columnName": "feelsminTemp",
+            "columnName": "feels_minTemp",
             "affinity": "REAL",
             "notNull": false
           }
@@ -225,7 +225,7 @@
       },
       {
         "tableName": "hour_weather_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, PRIMARY KEY(`city_id`, `datetime`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, `air_quality_co` REAL, `air_quality_nh3` REAL, `air_quality_no` REAL, `air_quality_no2` REAL, `air_quality_o3` REAL, `air_quality_pm10` REAL, `air_quality_pm25` REAL, `air_quality_so2` REAL, `air_quality_owmIndex` INTEGER, `air_quality_europeanIndex` INTEGER, PRIMARY KEY(`city_id`, `datetime`))",
         "fields": [
           {
             "fieldPath": "feelsLike",
@@ -292,6 +292,66 @@
             "columnName": "uvi",
             "affinity": "REAL",
             "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.co",
+            "columnName": "air_quality_co",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.nh3",
+            "columnName": "air_quality_nh3",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.no",
+            "columnName": "air_quality_no",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.no2",
+            "columnName": "air_quality_no2",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.o3",
+            "columnName": "air_quality_o3",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.pm10",
+            "columnName": "air_quality_pm10",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.pm25",
+            "columnName": "air_quality_pm25",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.so2",
+            "columnName": "air_quality_so2",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.owmIndex",
+            "columnName": "air_quality_owmIndex",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airQuality.europeanIndex",
+            "columnName": "air_quality_europeanIndex",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -327,7 +387,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b6a91a57404cbb1831f01decf736336')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd358980f734d371bf40a55ea7c4a08a3')"
     ]
   }
 }

@@ -10,5 +10,6 @@ data class HourlyWeather(
     val weatherDescription: String,
     val weatherIcon: Int,
     val dateTime: Long,
-    val uvi: Double
+    val uvi: Double,
+    val airQuality: AirQuality
 )

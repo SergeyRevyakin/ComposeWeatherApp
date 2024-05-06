@@ -33,8 +33,10 @@ class WeatherRepository @Inject constructor(
             DataMapper.mapDailyWeather(it)
         } ?: listOf()
 
-        val hourlyWeather = oneCallResponse.hourly?.map {
-            DataMapper.mapHourlyWeather(it)
+        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
+            val airQualityResponseItem =
+                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
+            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
         } ?: listOf()
 
         if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
@@ -64,8 +66,10 @@ class WeatherRepository @Inject constructor(
                 DataMapper.mapDailyWeather(it)
             } ?: listOf()
 
-            val hourlyWeather = oneCallResponse.hourly?.map {
-                DataMapper.mapHourlyWeather(it)
+        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
+            val airQualityResponseItem =
+                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
+            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
             } ?: listOf()
 
             if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {

@@ -35,6 +35,7 @@ import ru.serg.drawables.R.drawable
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.getAqiStringByIndex
 import ru.serg.weather_elements.getFormattedLastUpdateDate
 import kotlin.math.roundToInt
 
@@ -118,6 +119,18 @@ fun TodayWeatherCardItem(
                     ),
                     hasInfoButton = true,
                     onInfoClick = showUviInfo
+                )
+
+                ParamRowWithInfoItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 12.dp),
+                    paramIcon = drawable.ic_sandstorm,
+                    paramValue = stringResource(
+                        id = string.aqi_value,
+                        getAqiStringByIndex(index = weatherItem.airQuality.owmIndex)
+                    ),
                 )
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)

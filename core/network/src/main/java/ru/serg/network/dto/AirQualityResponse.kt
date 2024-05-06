@@ -9,7 +9,7 @@ data class AirQualityResponse(
     @SerialName("coord")
     val coordinates: Coord? = null,
     @SerialName("list")
-    val list: List<AirQualityResponseItem>? = null
+    val list: List<AirQualityResponseItem> = emptyList()
 ) {
 
     @Serializable
@@ -17,7 +17,7 @@ data class AirQualityResponse(
         @SerialName("components")
         val components: Components? = null,
         @SerialName("dt")
-        val timestamp: Int? = null,
+        val timestamp: Long? = null,
         @SerialName("main")
         val airQualityIndex: AirQualityIndex? = null
     )

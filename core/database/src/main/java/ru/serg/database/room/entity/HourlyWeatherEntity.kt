@@ -1,8 +1,10 @@
 package ru.serg.database.room.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import ru.serg.database.Constants
+import ru.serg.model.AirQuality
 
 @Entity(
     tableName = Constants.HOUR_WEATHER_TABLE,
@@ -27,6 +29,8 @@ data class HourlyWeatherEntity(
         index = true
     )
     val cityId: Int,
-    val uvi: Double?
+    val uvi: Double?,
+    @Embedded(prefix = Constants.AIR_QUALITY)
+    val airQuality: AirQuality?
 )
 
