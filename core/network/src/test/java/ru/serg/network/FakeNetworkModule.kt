@@ -102,4 +102,33 @@ class FakeNetworkModule {
         }
         return httpClient
     }
+
+    fun provideHttpAirQualityClient(): HttpClient {
+
+        val engine = MockEngine {
+            respond(
+                content = ResponseConstants.AIR_QUALITY_RESPONSE,
+                status = HttpStatusCode.OK,
+                headers = headersOf(HttpHeaders.ContentType, "application/json")
+            )
+        }
+
+        val httpClient = HttpClient(
+            engine = engine
+        ) {
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    encodeDefaults = true
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                    explicitNulls = false
+                })
+            }
+            expectSuccess = false
+        }
+        return httpClient
+    }
+
 }

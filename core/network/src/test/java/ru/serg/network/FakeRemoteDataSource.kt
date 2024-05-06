@@ -3,6 +3,7 @@ package ru.serg.network
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import ru.serg.network.dto.AirQualityResponse
 import ru.serg.network.dto.CityNameGeocodingResponseItem
 import ru.serg.network.dto.OneCallResponse
 import ru.serg.network.dto.WeatherResponse
@@ -13,6 +14,7 @@ class FakeRemoteDataSource {
         FakeNetworkModule().provideHttpWeatherClient(),
         FakeNetworkModule().provideHttpOneCallClient(),
         FakeNetworkModule().provideHttpCityClient(),
+        FakeNetworkModule().provideHttpAirQualityClient(),
         FakeDataStoreDataSource()
     )
 
@@ -39,6 +41,15 @@ class FakeRemoteDataSource {
         runTest {
             val res = remoteDataSource.getCityForAutocomplete(" ")
             assertEquals(CityNameGeocodingResponseItem::class, res.last().first()::class)
+
+        }
+    }
+
+    @Test
+    fun testAirQuality() {
+        runTest {
+            val res = remoteDataSource.getAirQuality(0.0, 0.0)
+            assertEquals(AirQualityResponse::class, res.last()::class)
 
         }
     }
