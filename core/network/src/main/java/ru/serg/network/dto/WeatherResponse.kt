@@ -42,14 +42,6 @@ data class WeatherResponse(
     )
 
     @Serializable
-    data class Coord(
-        @SerialName("lat")
-        val lat: Double?,
-        @SerialName("lon")
-        val lon: Double?
-    )
-
-    @Serializable
     data class Main(
         @SerialName("feels_like")
         val feelsLike: Double?,

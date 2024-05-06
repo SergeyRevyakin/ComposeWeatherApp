@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.model.enums.Units
+import ru.serg.network.dto.AirQualityResponse
 import ru.serg.network.dto.CityNameGeocodingResponseItem
 import ru.serg.network.dto.OneCallResponse
 import ru.serg.network.dto.WeatherResponse
@@ -18,6 +19,7 @@ class RemoteDataSourceImpl @Inject constructor(
     @Named(NetworkModule.WEATHER) private val httpClientWeather: HttpClient,
     @Named(NetworkModule.ONECALL) private val httpClientOneCall: HttpClient,
     @Named(NetworkModule.GEOCODING) private val httpClientGeocoding: HttpClient,
+    @Named(NetworkModule.AIR_QUALITY) private val httpClientAirQuality: HttpClient,
     private val dataStoreDataSource: DataStoreDataSource
 ) : RemoteDataSource {
 
@@ -59,5 +61,15 @@ class RemoteDataSourceImpl @Inject constructor(
                 parameter("q", input)
                 parameter("limit", 15)
             }.body())
+        }
+
+    override fun getAirQuality(lat: Double, lon: Double): Flow<AirQualityResponse> =
+        flow {
+            emit(
+                httpClientAirQuality.get {
+                    parameter("lon", lon)
+                    parameter("lat", lat)
+                }.body()
+            )
         }
 }

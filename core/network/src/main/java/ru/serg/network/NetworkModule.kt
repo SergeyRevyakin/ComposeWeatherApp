@@ -34,9 +34,11 @@ class NetworkModule {
         const val BASE_URL_ONECALL = "api.openweathermap.org/data/2.5/onecall"
         const val BASE_URL_WEATHER = "api.openweathermap.org/data/2.5/weather"
         const val BASE_URL_GEOCODING = "api.openweathermap.org/geo/1.0/direct"
+        const val BASE_URL_AIR_QUALITY = "api.openweathermap.org/data/2.5/air_pollution/forecast"
         const val WEATHER = "weather"
         const val ONECALL = "onecall"
         const val GEOCODING = "geo"
+        const val AIR_QUALITY = "air_quality"
         const val APP_ID = "appid"
         const val LANG = "lang"
     }
@@ -171,6 +173,51 @@ class NetworkModule {
                     protocol = URLProtocol.HTTPS
                     parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
                     parameters.append(LANG, Locale.getDefault().language)
+                }
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+        }
+    }
+
+    @Singleton
+    @Provides
+    @Named(AIR_QUALITY)
+    fun provideAirQualityHttpClient(): HttpClient {
+
+        return HttpClient(Android) {
+
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    encodeDefaults = true
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                    explicitNulls = false
+                })
+            }
+
+            install(Logging) {
+                if (BuildConfig.DEBUG) {
+                    logger = Logger.SIMPLE
+                    level = LogLevel.BODY
+                } else {
+                    logger = Logger.EMPTY
+                    level = LogLevel.NONE
+                }
+            }
+            expectSuccess = false
+            install(HttpTimeout) {
+                requestTimeoutMillis = 15000L
+                connectTimeoutMillis = 15000L
+                socketTimeoutMillis = 15000L
+            }
+
+            defaultRequest {
+                host = BASE_URL_AIR_QUALITY
+                url {
+                    protocol = URLProtocol.HTTPS
+                    parameters.append(APP_ID, BuildConfig.OWM_API_KEY)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
