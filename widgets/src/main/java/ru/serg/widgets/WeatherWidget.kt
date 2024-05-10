@@ -56,9 +56,9 @@ class WeatherWidget : GlanceAppWidget() {
                     )
                     {
                         MainWeatherWidget(
-                            weatherItem.hourlyWeatherList.first(),
+                            weatherItem.hourlyWeatherList,
                             weatherItem.cityItem,
-                            settings
+                            settings,
                         )
                     }
                 }
