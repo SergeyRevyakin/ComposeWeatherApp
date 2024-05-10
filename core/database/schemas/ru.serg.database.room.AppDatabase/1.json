@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d358980f734d371bf40a55ea7c4a08a3",
+    "identityHash": "e697fd6deddf64016e376debc13fa2f4",
     "entities": [
       {
         "tableName": "city_table",
@@ -225,7 +225,7 @@
       },
       {
         "tableName": "hour_weather_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, `air_quality_co` REAL, `air_quality_nh3` REAL, `air_quality_no` REAL, `air_quality_no2` REAL, `air_quality_o3` REAL, `air_quality_pm10` REAL, `air_quality_pm25` REAL, `air_quality_so2` REAL, `air_quality_owmIndex` INTEGER, `air_quality_europeanIndex` INTEGER, PRIMARY KEY(`city_id`, `datetime`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, `air_quality_co` REAL, `air_quality_nh3` REAL, `air_quality_no` REAL, `air_quality_no2` REAL, `air_quality_o3` REAL, `air_quality_pm10` REAL, `air_quality_pm25` REAL, `air_quality_so2` REAL, `air_quality_owmIndex` INTEGER, PRIMARY KEY(`city_id`, `datetime`))",
         "fields": [
           {
             "fieldPath": "feelsLike",
@@ -346,12 +346,6 @@
             "columnName": "air_quality_owmIndex",
             "affinity": "INTEGER",
             "notNull": false
-          },
-          {
-            "fieldPath": "airQuality.europeanIndex",
-            "columnName": "air_quality_europeanIndex",
-            "affinity": "INTEGER",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -387,7 +381,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd358980f734d371bf40a55ea7c4a08a3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e697fd6deddf64016e376debc13fa2f4')"
     ]
   }
 }

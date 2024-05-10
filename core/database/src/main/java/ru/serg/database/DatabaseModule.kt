@@ -25,6 +25,7 @@ class DatabaseModule {
             AppDatabase::class.java,
             Constants.WEATHER_DATABASE
         )
+            .fallbackToDestructiveMigrationOnDowngrade()
             .fallbackToDestructiveMigration()
             .build()
     }
