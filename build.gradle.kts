@@ -15,7 +15,7 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.secrets) apply false
-    §    alias(libs.plugins.firebase) apply false
+    alias(libs.plugins.firebase) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
 }
 
