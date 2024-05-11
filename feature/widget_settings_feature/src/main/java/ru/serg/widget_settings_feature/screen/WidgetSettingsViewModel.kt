@@ -29,6 +29,9 @@ class WidgetSettingsViewModel @Inject constructor(
     private val _isWidgetSystemDataShown = MutableStateFlow(false)
     val isWidgetSystemDataShown = _isWidgetSystemDataShown.asStateFlow()
 
+    private val _isWidgetWeatherChangesShown = MutableStateFlow(false)
+    val isWidgetWeatherChangesShown = _isWidgetWeatherChangesShown.asStateFlow()
+
     private val _widgetBottomPadding = MutableStateFlow(0f)
     val widgetBottomPadding = _widgetBottomPadding.asStateFlow()
 
@@ -46,6 +49,7 @@ class WidgetSettingsViewModel @Inject constructor(
         initWidgetSystemData()
         initWidgetIconSize()
         initWidgetBottomPadding()
+        initWidgetWeatherChanges()
     }
 
     private fun initWidgetColor() {
@@ -110,9 +114,25 @@ class WidgetSettingsViewModel @Inject constructor(
         }
     }
 
+    private fun initWidgetWeatherChanges() {
+        viewModelScope.launch {
+            dataSource.isWidgetWeatherChangesShown.collectLatest { isShown ->
+                _isWidgetWeatherChangesShown.update {
+                    isShown
+                }
+            }
+        }
+    }
+
     fun saveWidgetSystemDataShown(isShown: Boolean) {
         viewModelScope.launch {
             dataSource.saveWidgetSystemDataShown(isShown)
+        }
+    }
+
+    fun saveWidgetWeatherChangesShown(isShown: Boolean) {
+        viewModelScope.launch {
+            dataSource.saveWidgetWeatherChangesShown(isShown)
         }
     }
 

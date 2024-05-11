@@ -19,8 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +40,7 @@ fun WidgetPreviewItem(
     smallFont: Int,
     bottomPadding: Int,
     isSystemDataShown: Boolean,
+    isWeatherChangesShown: Boolean,
     iconSize: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -148,6 +151,30 @@ fun WidgetPreviewItem(
         }
 
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = paddingBottom),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.Center
+        ) {
+
+            if (isWeatherChangesShown) {
+                Text(
+                    text = stringResource(
+                        ru.serg.strings.R.string.widget_weather_changes_expected,
+                        stringResource(id = ru.serg.strings.R.string.widget_settings_bad_weather_example)
+                    ),
+                    textAlign = TextAlign.Start,
+                    style = TextStyle(
+                        color = currentColor,
+                        fontSize = smallFont.sp
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+
+        Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
@@ -215,7 +242,12 @@ fun WidgetPreviewItem(
 @Composable
 private fun PreviewWidgetDemoWhite() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.White, 38, 18, 8, true, 56)
+        WidgetPreviewItem(
+            color = Color.White, 38, 18, 8,
+            isSystemDataShown = true,
+            isWeatherChangesShown = true,
+            iconSize = 56
+        )
     }
 }
 
@@ -223,7 +255,12 @@ private fun PreviewWidgetDemoWhite() {
 @Composable
 private fun PreviewWidgetDemoGreen() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Green, 38, 18, 0, false, 64)
+        WidgetPreviewItem(
+            color = Color.Green, 38, 18, 0,
+            isSystemDataShown = false,
+            isWeatherChangesShown = false,
+            iconSize = 64
+        )
     }
 }
 
@@ -231,7 +268,12 @@ private fun PreviewWidgetDemoGreen() {
 @Composable
 private fun PreviewWidgetDemoBlack() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.Black, 42, 14, 5, true, 36)
+        WidgetPreviewItem(
+            color = Color.Black, 42, 14, 5,
+            isSystemDataShown = true,
+            isWeatherChangesShown = false,
+            iconSize = 36
+        )
     }
 }
 
@@ -239,7 +281,12 @@ private fun PreviewWidgetDemoBlack() {
 @Composable
 private fun PreviewWidgetDemo() {
     ComposeWeatherAppTheme {
-        WidgetPreviewItem(color = Color.DarkGray, 46, 12, 3, false, 24)
+        WidgetPreviewItem(
+            color = Color.DarkGray, 46, 12, 3,
+            isSystemDataShown = false,
+            isWeatherChangesShown = true,
+            iconSize = 24
+        )
     }
 }
 

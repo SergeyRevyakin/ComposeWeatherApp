@@ -84,7 +84,7 @@ fun WidgetSettingsScreen(
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.widget_preview),
+                    text = stringResource(id = R.string.widget_settings_preview),
                     style = headerStyle,
                     modifier = Modifier.headerModifier()
                 )
@@ -106,7 +106,7 @@ fun WidgetSettingsScreen(
 
             item {
                 MenuCommonColorButton(
-                    headerText = stringResource(id = R.string.widget_color),
+                    headerText = stringResource(id = R.string.widget_settings_color),
                     color = colorState
                 ) {
                     openColorPickDialog.value = true
@@ -129,8 +129,17 @@ fun WidgetSettingsScreen(
             }
 
             item {
+                MenuRowWithRadioButton(
+                    optionName = stringResource(id = R.string.widget_settings_weather_changes_label),
+                    descriptionText = stringResource(id = R.string.widget_settings_weather_changes_desc),
+                    buttonState = isWidgetWeatherChangesShown,
+                    modifier = Modifier.padding(top = 12.dp),
+                    onSwitchClick = { viewModel.saveWidgetWeatherChangesShown(it) })
+            }
+
+            item {
                 Text(
-                    text = stringResource(id = R.string.widget_big_font_size),
+                    text = stringResource(id = R.string.widget_settings_big_font_size),
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(bottom = 12.dp, top = 36.dp)
@@ -149,7 +158,7 @@ fun WidgetSettingsScreen(
 
             item {
                 Text(
-                    text = stringResource(id = R.string.widget_small_font_size),
+                    text = stringResource(id = R.string.widget_settings_small_font_size),
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(bottom = 12.dp, top = 36.dp)
@@ -168,7 +177,7 @@ fun WidgetSettingsScreen(
 
             item {
                 Text(
-                    text = stringResource(id = R.string.widget_bottom_padding),
+                    text = stringResource(id = R.string.widget_settings_bottom_padding),
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(bottom = 12.dp, top = 36.dp)
@@ -187,7 +196,7 @@ fun WidgetSettingsScreen(
 
             item {
                 Text(
-                    text = stringResource(id = R.string.widget_icon_size),
+                    text = stringResource(id = R.string.widget_settings_icon_size),
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(bottom = 12.dp, top = 36.dp)
@@ -206,8 +215,8 @@ fun WidgetSettingsScreen(
 
             item {
                 MenuRowWithRadioButton(
-                    optionName = stringResource(id = R.string.widget_system_data_label),
-                    descriptionText = stringResource(id = R.string.widget_system_data_desc),
+                    optionName = stringResource(id = R.string.widget_settings_system_data_label),
+                    descriptionText = stringResource(id = R.string.widget_settings_system_data_desc),
                     buttonState = isWidgetSystemDataShown,
                     modifier = Modifier.padding(top = 12.dp),
                     onSwitchClick = { viewModel.saveWidgetSystemDataShown(it) })

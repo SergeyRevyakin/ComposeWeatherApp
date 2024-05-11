@@ -247,9 +247,10 @@ fun MainWeatherWidget(
         }
 
         Row(
-            modifier = GlanceModifier.fillMaxWidth(),
+            modifier = GlanceModifier.fillMaxWidth()
+                .padding(bottom = paddingBottom),
             verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            horizontalAlignment = Alignment.Horizontal.Start
         ) {
             val nextHourWeather = nextWeatherList.getOrNull(1)
             val isBadWeatherExpected = badWeatherList().contains(nextHourWeather?.weatherIcon)

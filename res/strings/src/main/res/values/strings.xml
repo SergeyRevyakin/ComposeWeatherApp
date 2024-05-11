@@ -52,17 +52,20 @@
 
     <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
-    <string name="widget_color">Widget color</string>
+    <string name="widget_settings_color">Widget color</string>
     <string name="pick_color">Pick color</string>
     <string name="enter_color_code">Enter color code</string>
     <string name="color_code_format">In XXXXX format</string>
-    <string name="widget_preview">Widget preview</string>
-    <string name="widget_big_font_size">Widget main text size</string>
-    <string name="widget_small_font_size">Widget additional info text size</string>
-    <string name="widget_system_data_label">Show system data</string>
-    <string name="widget_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
-    <string name="widget_bottom_padding">Space between lines</string>
-    <string name="widget_icon_size">Weather icon size</string>
+    <string name="widget_settings_preview">Widget preview</string>
+    <string name="widget_settings_big_font_size">Widget main text size</string>
+    <string name="widget_settings_small_font_size">Widget additional info text size</string>
+    <string name="widget_settings_system_data_label">Show system data</string>
+    <string name="widget_settings_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
+    <string name="widget_settings_weather_changes_label">Show weather changes warnings</string>
+    <string name="widget_settings_weather_changes_desc">Aware you about rain, snow or thunderstorm in next hour</string>
+    <string name="widget_settings_bottom_padding">Space between lines</string>
+    <string name="widget_settings_icon_size">Weather icon size</string>
+    <string name="widget_settings_bad_weather_example">Heavy rain</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>
