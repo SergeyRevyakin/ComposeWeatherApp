@@ -16,6 +16,7 @@ import ru.serg.database.room.dao.WeatherDao
 import ru.serg.database.room.entity.CityEntity
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
+import ru.serg.model.AirQuality
 import ru.serg.model.DailyTempItem
 
 private lateinit var weatherDatabase: AppDatabase
@@ -317,7 +318,8 @@ val hourlyWeatherEntity = HourlyWeatherEntity(
     weatherIcon = 123,
     dateTime = System.currentTimeMillis(),
     cityId = 1,
-    uvi = 6.0
+    uvi = 6.0,
+    airQuality = AirQuality.blankAirQuality()
 )
 
 val dailyWeatherEntity = DailyWeatherEntity(

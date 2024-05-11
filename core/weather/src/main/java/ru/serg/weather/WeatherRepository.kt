@@ -62,28 +62,28 @@ class WeatherRepository @Inject constructor(
         remoteDataSource.getAirQuality(cityItem.latitude, cityItem.longitude)
     ) { oneCallResponse, airQualityResponse ->
 
-            val dailyWeather = oneCallResponse.daily?.map {
-                DataMapper.mapDailyWeather(it)
-            } ?: listOf()
+        val dailyWeather = oneCallResponse.daily?.map {
+            DataMapper.mapDailyWeather(it)
+        } ?: listOf()
 
         val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
             val airQualityResponseItem =
                 airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
             DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-            } ?: listOf()
+        } ?: listOf()
 
-            if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
-                localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-            }
+        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
+            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
+        }
 
         WeatherItem(
-                cityItem,
-                dailyWeather,
-                hourlyWeather,
-                oneCallResponse.alert?.description
-            )
+            cityItem,
+            dailyWeather,
+            hourlyWeather,
+            oneCallResponse.alert?.description
+        )
 
-        }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
 
     fun removeFavouriteCityParam(weatherItem: WeatherItem) {
         localDataSource.saveWeather(
