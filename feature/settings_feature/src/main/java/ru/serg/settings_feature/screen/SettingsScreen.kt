@@ -13,10 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.LocationOff
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,6 +41,12 @@ import ru.serg.settings_feature.Constants
 import ru.serg.settings_feature.elements.CollapsingContainer
 import ru.serg.settings_feature.elements.HourSliderItem
 import ru.serg.settings_feature.elements.RadioButtonGroup
+import ru.serg.settings_feature.getLocationDescriptionText
+import ru.serg.settings_feature.getLocationHeaderText
+import ru.serg.settings_feature.getLocationIcon
+import ru.serg.settings_feature.getNotificationDescription
+import ru.serg.settings_feature.getNotificationHeader
+import ru.serg.settings_feature.getNotificationIcon
 import ru.serg.settings_feature.isTiramisuOrAbove
 import ru.serg.settings_feature.openAppSystemSettings
 import ru.serg.strings.R.string
@@ -98,17 +100,10 @@ fun SettingsScreen(
                 onSwitchClick = viewModel::onScreenModeChanged
             )
 
-            val notificationIcon =
-                if (viewModel.isNotificationEnabled.collectAsState().value) Icons.Rounded.Notifications else Icons.Rounded.NotificationsOff
-
-            val notificationHeader = if (viewModel.isNotificationEnabled.collectAsState().value)
-                stringResource(id = string.app_can_send_you_notifications)
-            else stringResource(id = string.app_can_not_send_you_notifications)
-
-            val notificationDescription =
-                if (viewModel.isNotificationEnabled.collectAsState().value)
-                    stringResource(id = string.tap_to_turn_it_on)
-                else stringResource(id = string.tap_to_turn_it_off)
+            val isNotificationEnabled = viewModel.isNotificationEnabled.collectAsState().value
+            val notificationIcon = getNotificationIcon(isNotificationEnabled)
+            val notificationHeader = getNotificationHeader(isNotificationEnabled)
+            val notificationDescription = getNotificationDescription(isNotificationEnabled)
 
             if (isTiramisuOrAbove()) {
                 MenuSettingsRowWithIcon(
@@ -150,16 +145,10 @@ fun SettingsScreen(
                 navController.navigate(ScreenNames.WIDGET_SETTINGS_SCREEN)
             }
 
-            val locationIcon =
-                if (viewModel.isLocationEnabled.collectAsState().value) Icons.Rounded.LocationOn else Icons.Rounded.LocationOff
-
-            val locationHeaderText = if (viewModel.isLocationEnabled.collectAsState().value)
-                stringResource(id = string.location_is_on)
-            else stringResource(id = string.location_is_off)
-
-            val locationDescriptionText = if (viewModel.isLocationEnabled.collectAsState().value)
-                stringResource(id = string.tap_to_turn_it_on)
-            else stringResource(id = string.tap_to_turn_it_off)
+            val isLocationEnabled = viewModel.isLocationEnabled.collectAsState().value
+            val locationIcon = getLocationIcon(isLocationEnabled)
+            val locationHeaderText = getLocationHeaderText(isLocationEnabled)
+            val locationDescriptionText = getLocationDescriptionText(isLocationEnabled)
 
             MenuSettingsRowWithIcon(
                 onClick = { context.openAppSystemSettings() },
