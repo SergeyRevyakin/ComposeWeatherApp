@@ -94,7 +94,7 @@ fun SettingsScreen(
             MenuRowWithRadioButton(
                 optionName = stringResource(id = string.use_dark_mode),
                 modifier = Modifier,
-                buttonState = viewModel.isDarkModeEnabled.collectAsState(),
+                buttonState = viewModel.isDarkModeEnabled.collectAsState().value,
                 onSwitchClick = viewModel::onScreenModeChanged
             )
 
@@ -124,7 +124,7 @@ fun SettingsScreen(
                 optionName = stringResource(id = string.update_weather_in_background),
                 descriptionText = stringResource(id = string.allow_get_updates_consumes_traffic),
                 modifier = Modifier,
-                buttonState = viewModel.isBackgroundFetchWeatherEnabled.collectAsState(),
+                buttonState = viewModel.isBackgroundFetchWeatherEnabled.collectAsState().value,
                 onSwitchClick = viewModel::onBackgroundFetchChanged
             )
 
@@ -133,7 +133,7 @@ fun SettingsScreen(
                 MenuRowWithRadioButton(
                     optionName = stringResource(id = string.show_notifications_when_updated),
                     modifier = Modifier,
-                    buttonState = viewModel.isUserNotificationTurnOn.collectAsState(),
+                    buttonState = viewModel.isUserNotificationTurnOn.collectAsState().value,
                     onSwitchClick = viewModel::saveUserNotifications
                 )
 

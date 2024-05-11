@@ -50,7 +50,8 @@ fun WidgetSettingsScreen(
     val smallFontSize by viewModel.widgetSmallFontFlow.collectAsState()
     val bottomPadding by viewModel.widgetBottomPadding.collectAsState()
     val iconSize by viewModel.widgetIconSize.collectAsState()
-    val isWidgetSystemDataShown = viewModel.isWidgetSystemDataShown.collectAsState()
+    val isWidgetSystemDataShown by viewModel.isWidgetSystemDataShown.collectAsState()
+    val isWidgetWeatherChangesShown by viewModel.isWidgetWeatherChangesShown.collectAsState()
 
     val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
     val header = stringResource(id = R.string.widget_settings)
@@ -95,7 +96,8 @@ fun WidgetSettingsScreen(
                     bigFont = bigFontSize.toInt(),
                     smallFont = smallFontSize.toInt(),
                     bottomPadding = bottomPadding.toInt(),
-                    isSystemDataShown = isWidgetSystemDataShown.value,
+                    isSystemDataShown = isWidgetSystemDataShown,
+                    isWeatherChangesShown = isWidgetWeatherChangesShown,
                     iconSize = iconSize.toInt(),
                     modifier = Modifier
                         .padding(bottom = 16.dp)
