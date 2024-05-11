@@ -109,6 +109,32 @@
     <string name="aqi_poor">Poor</string>
     <string name="aqi_very_poor">Very poor</string>
 
+    <string name="aqi_eu_index_1">Good</string>
+    <string name="aqi_eu_index_2">Fair</string>
+    <string name="aqi_eu_index_3">Moderate</string>
+    <string name="aqi_eu_index_4">Poor</string>
+    <string name="aqi_eu_index_5">Very poor</string>
+    <string name="aqi_eu_index_6">Extremely poor</string>
+    <string name="aqi_eu_index_unknown">Unknown</string>
+    <string name="aqi_eu_general_pop_desc_1">The air quality is good. Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_2">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_3">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_4">Consider reducing intense activities outdoors, if you experience symptoms such as sore eyes, a cough or sore throat</string>
+    <string name="aqi_eu_general_pop_desc_5">Consider reducing intense activities outdoors, if you experience symptoms such as sore eyes, a cough or sore throat	</string>
+    <string name="aqi_eu_general_pop_desc_6">Reduce physical activities outdoors.	</string>
+    <string name="aqi_eu_sensitive_pop_desc_1">The air quality is good. Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_sensitive_pop_desc_2">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_sensitive_pop_desc_3">Consider reducing intense outdoor activities, if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_4">Consider reducing physical activities, particularly outdoors, especially if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_5">Reduce physical activities, particularly outdoors, especially if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_6">Avoid physical activities outdoors</string>
+
+    <string name="aqi_index">Air quality index</string>
+    <string name="aqi_general_population">General population</string>
+    <string name="aqi_sensitive_population">Sensitive populations</string>
+    <string name="aqi_based_on_eu_calc">Scaled with European Air Quality Index, click for more info</string>
+    <string name="aqi_eu_link" translatable="false">https://airindex.eea.europa.eu/AQI/index.html#</string>
+
     <!--    Widget strings-->
     <string name="widget_weather_changes_expected">Weather changes expected: %1$s</string>
     <string name="widget_last_updated">Last updated %1$s</string>

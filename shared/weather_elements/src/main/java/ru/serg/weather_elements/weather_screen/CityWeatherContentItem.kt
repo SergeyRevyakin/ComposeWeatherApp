@@ -34,6 +34,7 @@ import ru.serg.model.DailyWeather
 import ru.serg.model.WeatherItem
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.animatedBlur
+import ru.serg.weather_elements.bottom_sheets.AirQualityBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DialogContainer
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
@@ -56,6 +57,10 @@ fun CityWeatherContentItem(
     val units by viewModel.units.collectAsState()
 
     var showUviDetailsBottomSheet by remember {
+        mutableStateOf(false)
+    }
+
+    var showAqiDetailsBottomSheet by remember {
         mutableStateOf(false)
     }
 
@@ -91,6 +96,9 @@ fun CityWeatherContentItem(
             lastUpdatedTime = weatherItem.cityItem.lastTimeUpdated,
             showUviInfo = {
                 showUviDetailsBottomSheet = true
+            },
+            showAqiInfo = {
+                showAqiDetailsBottomSheet = true
             }
         )
 
@@ -167,6 +175,17 @@ fun CityWeatherContentItem(
         ) {
             UviBottomSheet(
                 value = weatherItem.hourlyWeatherList.first().uvi
+            )
+        }
+    }
+
+    if (showAqiDetailsBottomSheet) {
+        DialogContainer(
+            onDismiss = { showAqiDetailsBottomSheet = !showAqiDetailsBottomSheet },
+            sheetState = sheetState
+        ) {
+            AirQualityBottomSheet(
+                weatherItem.hourlyWeatherList.first().airQuality
             )
         }
     }

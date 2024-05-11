@@ -51,4 +51,74 @@ data class AirQuality(
             else -> -1
         }
     }
+
+    fun getPM25PollutionIndex(): Int {
+        return when (pm25.roundToInt()) {
+            in 0..10 -> 1
+            in 10..20 -> 2
+            in 20..25 -> 3
+            in 25..50 -> 4
+            in 50..75 -> 5
+            in 75..Int.MAX_VALUE -> 6
+            else -> -1
+        }
+    }
+
+    fun getPM10PollutionIndex(): Int {
+        return when (pm10.roundToInt()) {
+            in 0..20 -> 1
+            in 20..40 -> 2
+            in 40..50 -> 3
+            in 50..100 -> 4
+            in 100..150 -> 5
+            in 150..Int.MAX_VALUE -> 6
+            else -> -1
+        }
+    }
+
+    fun getNO2PollutionIndex(): Int {
+        return when (no2.roundToInt()) {
+            in 0..40 -> 1
+            in 40..90 -> 2
+            in 90..120 -> 3
+            in 120..230 -> 4
+            in 230..340 -> 5
+            in 340..Int.MAX_VALUE -> 6
+            else -> -1
+        }
+    }
+
+    fun getO3PollutionIndex(): Int {
+        return when (o3.roundToInt()) {
+            in 0..50 -> 1
+            in 50..100 -> 2
+            in 100..130 -> 3
+            in 130..240 -> 4
+            in 240..380 -> 5
+            in 380..Int.MAX_VALUE -> 6
+            else -> -1
+        }
+    }
+
+    fun getSO2PollutionIndex(): Int {
+        return when (so2.roundToInt()) {
+            in 0..100 -> 1
+            in 100..200 -> 2
+            in 200..350 -> 3
+            in 350..500 -> 4
+            in 500..750 -> 5
+            in 750..Int.MAX_VALUE -> 6
+            else -> -1
+        }
+    }
+
+    fun getEUPollutionIndex(): Int {
+        return listOf(
+            getPM25PollutionIndex(),
+            getPM10PollutionIndex(),
+            getNO2PollutionIndex(),
+            getO3PollutionIndex(),
+            getSO2PollutionIndex()
+        ).max()
+    }
 }

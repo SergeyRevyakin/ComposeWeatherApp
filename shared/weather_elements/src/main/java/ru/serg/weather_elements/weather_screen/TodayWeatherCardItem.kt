@@ -44,7 +44,8 @@ fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
     units: Units,
     lastUpdatedTime: Long = System.currentTimeMillis(),
-    showUviInfo: () -> Unit = {}
+    showUviInfo: () -> Unit = {},
+    showAqiInfo: () -> Unit = {},
 ) {
     val gradient = Brush.linearGradient(
         listOf(
@@ -131,6 +132,8 @@ fun TodayWeatherCardItem(
                         id = string.aqi_value,
                         getAqiStringByIndex(index = weatherItem.airQuality.owmIndex)
                     ),
+                    hasInfoButton = true,
+                    onInfoClick = showAqiInfo
                 )
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
