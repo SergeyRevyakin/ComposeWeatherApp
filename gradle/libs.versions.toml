@@ -8,17 +8,17 @@ core-ktx = "1.13.1"
 datastore-preferences = "1.1.1"
 espresso-core = "3.5.1"
 firebaseBom = "33.0.0"
-glance = "1.1.0-beta02"
-gradle = "8.5.0-alpha08"
+glance = "1.1.0-rc01"
+gradle = "8.6.0-alpha03"
 hilt-android = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 junit = "1.1.5"
-kotlin = "2.0.0-RC1"
-kotlinx-datetime = "0.5.0"
+kotlin = "2.0.0"
+kotlinx-datetime = "0.6.0"
 kotlinx-serialization-json = "1.6.3"
-kotlinxCoroutines = "1.8.0"
+kotlinxCoroutines = "1.8.1"
 ktor-client = "2.3.11"
-lifecycle-runtime-ktx = "2.7.0"
+lifecycle-runtime-ktx = "2.8.0"
 material = "1.12.0"
 material3 = "1.2.1"
 multidex = "2.0.1"
@@ -37,16 +37,15 @@ androidxTestRunner = "1.5.2"
 androidxUiAutomator = "2.3.0"
 androidxEspresso = "3.5.1"
 junit4 = "4.13.2"
-ksp = "2.0.0-RC1-1.0.20"
+ksp = "2.0.0-1.0.21"
 secrets = "2.0.1"
-annotationJvm = "1.7.1"
+annotationJvm = "1.8.0"
 turbine = "1.1.0"
-compose-compiler = "1.5.13-dev-k2.0.0-RC1-50f08dfa4b4"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
 firebase-plugin = "4.4.1"
-firebase-crashlytics = "2.9.9"
+firebase-crashlytics = "3.0.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -126,6 +125,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gradle-build = { id = "com.android.tools.build.gradle", version.ref = "gradle" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 
 [bundles]

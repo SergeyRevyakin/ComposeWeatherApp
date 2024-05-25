@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -27,9 +28,6 @@ android {
         compose = true
         viewBinding = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 dependencies {
@@ -48,7 +46,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.material3)
 
-    debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.bundles.hilt)
@@ -57,4 +54,5 @@ dependencies {
     implementation(libs.androidx.glance)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
+    debugImplementation(libs.compose.ui.tooling)
 }

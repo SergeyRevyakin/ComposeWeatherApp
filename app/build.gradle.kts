@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.firebase)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -17,8 +18,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 80
-        versionName = "0.80"
+        versionCode = 81
+        versionName = "0.81"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -67,9 +68,7 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
+
     flavorDimensions += "environment"
 //    productFlavors {
 //        create("prod") {

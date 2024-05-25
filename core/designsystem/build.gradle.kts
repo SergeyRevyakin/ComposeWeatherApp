@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -24,9 +25,7 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
+
 }
 
 dependencies {
@@ -34,11 +33,12 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":res:strings"))
     implementation(project(":res:drawables"))
-    testImplementation(project(":core:testing"))
-    androidTestImplementation(project(":core:testing"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
     implementation(libs.kotlinx.datetime)
+
+    testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 
 }
