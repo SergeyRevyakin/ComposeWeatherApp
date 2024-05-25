@@ -252,10 +252,15 @@ fun MainWeatherWidget(
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.Horizontal.Start
         ) {
+            val isBadWeatherCurrently =
+                badWeatherList().contains(nextWeatherList.getOrNull(0)?.weatherIcon)
+
             val nextHourWeather = nextWeatherList.getOrNull(1)
             val isBadWeatherExpected = badWeatherList().contains(nextHourWeather?.weatherIcon)
 
-            if (isBadWeatherExpected && nextHourWeather != null) {
+            val showBadWeatherNotification = isBadWeatherExpected && !isBadWeatherCurrently
+
+            if (showBadWeatherNotification && nextHourWeather != null) {
                 Text(
                     text = LocalContext.current.getString(
                         ru.serg.strings.R.string.widget_weather_changes_expected,
