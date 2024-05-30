@@ -19,6 +19,12 @@ data class CustomColors(
     val green: Color = goodGreen,
     val yellowLight: Color = primaryLight,
     val yellowDark: Color = primaryDark,
+    val aqiGoodColor: Color = aqiGood,
+    val aqiFairColor: Color = aqiFair,
+    val aqiModerateColor: Color = aqiModerate,
+    val aqiPoorColor: Color = aqiPoor,
+    val aqiVeryPoorColor: Color = aqiVeryPoor,
+    val aqiExtremelyPoorColor: Color = aqiExtremelyPoor,
 )
 
 val LocalCustomColorsPalette = staticCompositionLocalOf { CustomColors() }

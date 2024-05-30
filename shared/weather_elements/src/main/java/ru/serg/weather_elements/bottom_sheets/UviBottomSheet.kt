@@ -12,10 +12,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.serg.common.UvIndex
+import ru.serg.common.mapUvIndex
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.descriptionSubHeader
 import ru.serg.designsystem.theme.headerStyle
@@ -24,8 +28,9 @@ import ru.serg.strings.R.string
 
 @Composable
 fun UviBottomSheet(
-    uvIndex: UvIndex,
+    value: Double
 ) {
+    val uvIndex = mapUvIndex(value)
     Column(
         modifier = Modifier
             .padding(12.dp)
@@ -46,8 +51,20 @@ fun UviBottomSheet(
             color = MaterialTheme.colorScheme.primary
         )
 
+        val descriptionText = buildAnnotatedString {
+            append(stringResource(id = uvIndex.descriptionId))
+            append(" - ")
+            withStyle(
+                SpanStyle(
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
+                append(value.toString())
+            }
+        }
+
         Text(
-            text = stringResource(id = uvIndex.descriptionId),
+            text = descriptionText,
             style = descriptionSubHeader,
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
@@ -72,9 +89,8 @@ fun PreviewUviBottomSheet() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-
         UviBottomSheet(
-            UvIndex.VERY_HIGH,
+            9.0
         )
     }
 }
@@ -86,9 +102,8 @@ fun PreviewLightUviBottomSheet() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-
         UviBottomSheet(
-            UvIndex.HIGH,
+            6.0
         )
     }
 }

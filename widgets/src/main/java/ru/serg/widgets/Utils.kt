@@ -32,3 +32,16 @@ object Utils {
 
 fun getHour(l: Long?): String =
     SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
+
+fun badWeatherList() = listOf(
+    ru.serg.drawables.R.drawable.ic_rain,
+    ru.serg.drawables.R.drawable.ic_rain_mix,
+    ru.serg.drawables.R.drawable.ic_snow,
+    ru.serg.drawables.R.drawable.ic_snowflake_cold,
+    ru.serg.drawables.R.drawable.ic_thunderstorm,
+    ru.serg.drawables.R.drawable.ic_showers,
+    ru.serg.drawables.R.drawable.ic_storm_showers,
+    ru.serg.drawables.R.drawable.ic_lightning,
+    ru.serg.drawables.R.drawable.ic_sprinkle,
+    ru.serg.drawables.R.drawable.ic_sleet,
+)

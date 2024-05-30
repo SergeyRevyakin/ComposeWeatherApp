@@ -6,7 +6,6 @@ import android.Manifest
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serg.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -28,7 +27,8 @@ import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
 import ru.serg.main_pager.CommonScreenState
 import ru.serg.main_pager.DateUseCase
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
+import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -51,6 +51,7 @@ class MainViewModel @Inject constructor(
     var citiesWeather = _citiesWeather.asStateFlow()
 
     val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
+    private val isLocationAvailable = MutableStateFlow(false)
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, t ->
@@ -67,14 +68,14 @@ class MainViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            locationPermissionFlow.collect {
+            locationPermissionFlow.collectLatest {
+                isLocationAvailable.emit(
+                    it.grantedPermissions.isNotEmpty()
+                )
                 setInitialState(it.grantedPermissions.isNotEmpty())
             }
-
         }
-
         initCitiesWeatherFlow()
-
     }
 
     fun initCitiesWeatherFlow() {
@@ -93,7 +94,7 @@ class MainViewModel @Inject constructor(
 
     private fun setInitialState(isLocationAvailable: Boolean) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
+            _citiesWeather.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when (state) {
                     is CommonScreenState.Empty -> {
                         if (isLocationAvailable) {
@@ -103,29 +104,27 @@ class MainViewModel @Inject constructor(
                     }
 
                     is CommonScreenState.Success -> {
+
                         observableItemNumber.collectLatest {
                             try {
                                 val item =
-                                    (citiesWeather.value as CommonScreenState.Success).updatedWeatherList[it]
+                                    (citiesWeather.value as CommonScreenState.Success).weatherList[it]
                                 checkWeatherItem(item)
                             } catch (_: Exception) {
                                 observableItemNumber.value -= 1
                                 setInitialState(isLocationAvailable)
                             }
-
                         }
                     }
 
-                    is CommonScreenState.Loading -> {}
-
-                    else -> {}
+                    else -> Unit
                 }
             }
         }
     }
 
 
-    private fun checkWeatherItem(weatherItem: UpdatedWeatherItem) {
+    private fun checkWeatherItem(weatherItem: WeatherItem) {
         viewModelScope.launch(coroutineExceptionHandler) {
             when {
                 dateUtils.isFetchDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
@@ -144,13 +143,15 @@ class MainViewModel @Inject constructor(
             isLoading.value = true
             viewModelScope.launch(coroutineExceptionHandler) {
                 val item =
-                    (citiesWeather.value as? CommonScreenState.Success)?.updatedWeatherList?.get(
+                    (citiesWeather.value as? CommonScreenState.Success)?.weatherList?.get(
                         observableItemNumber.value
                     )
 
                 item?.let { updatedWeatherItem ->
                     if (updatedWeatherItem.cityItem.isFavorite) {
-                        checkLocationAndFetchWeather()
+                        if (isLocationAvailable.value) {
+                            checkLocationAndFetchWeather()
+                        } else weatherRepository.removeFavouriteCityParam(updatedWeatherItem)
                     } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
                         .asResult()
                         .collectLatest {
@@ -185,6 +186,4 @@ class MainViewModel @Inject constructor(
                 .launchIn(this)
         }
     }
-
-
 }

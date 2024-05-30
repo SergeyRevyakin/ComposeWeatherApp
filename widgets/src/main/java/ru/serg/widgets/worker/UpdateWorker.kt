@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
@@ -31,14 +30,9 @@ class UpdateWorker @AssistedInject constructor(
 
         fun setupPeriodicWork(context: Context) {
 
-            val constraints = Constraints.Builder()
-                .setRequiresBatteryNotLow(true)
-                .build()
-
             val repeatingWork =
                 PeriodicWorkRequestBuilder<UpdateWorker>(15, TimeUnit.MINUTES)
                     .addTag(UPDATER_WORKER_TAG)
-                    .setConstraints(constraints)
                     .build()
 
 

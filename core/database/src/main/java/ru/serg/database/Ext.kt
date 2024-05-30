@@ -4,12 +4,13 @@ import ru.serg.database.room.entity.CityWeather
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
 import ru.serg.database.room.entity.toCityItem
+import ru.serg.model.AirQuality
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 
 
-fun CityWeather.toWeatherItem() = UpdatedWeatherItem(
+fun CityWeather.toWeatherItem() = WeatherItem(
     cityItem = cityEntity.toCityItem(),
     hourlyWeatherList = hourlyWeatherEntity.map {
         it.toHourlyWeather()
@@ -29,7 +30,8 @@ fun HourlyWeatherEntity.toHourlyWeather() = HourlyWeather(
     humidity = humidity.orZero(),
     pressure = pressure.orZero(),
     dateTime = dateTime.orZero(),
-    uvi = uvi.orZero()
+    uvi = uvi.orZero(),
+    airQuality = airQuality.orBlank()
 )
 
 fun DailyWeatherEntity.toDailyWeather() = DailyWeather(
@@ -58,6 +60,7 @@ fun HourlyWeather.toHourlyWeatherEntity(cityId: Int) = HourlyWeatherEntity(
     pressure = pressure.orZero(),
     dateTime = dateTime.orZero(),
     uvi = uvi.orZero(),
+    airQuality = airQuality,
     cityId = cityId
 )
 
@@ -65,7 +68,7 @@ fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
     windSpeed = windSpeed.orZero(),
     windDirection = windDirection.orZero(),
     weatherIcon = weatherIcon.orZero(),
-    weatherDescription = weatherDescription.orEmpty(),
+    weatherDescription = weatherDescription,
     humidity = humidity.orZero(),
     pressure = pressure.orZero(),
     dateTime = dateTime.orZero(),
@@ -83,3 +86,5 @@ fun Double?.orZero() = this ?: 0.0
 fun Int?.orZero() = this ?: 0
 
 fun Long?.orZero() = this ?: 0
+
+fun AirQuality?.orBlank() = this ?: AirQuality.blankAirQuality()

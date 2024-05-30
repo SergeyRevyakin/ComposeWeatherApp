@@ -1,10 +1,11 @@
 package ru.serg.designsystem.utils
 
 import ru.serg.drawables.R.drawable
+import ru.serg.model.AirQuality
 import ru.serg.model.CityItem
+import ru.serg.model.DailyTempItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedDailyTempItem
 
 object MockItems {
     fun getDailyWeatherMockItem() =
@@ -34,11 +35,12 @@ object MockItems {
             currentTemp = 20.1,
             feelsLike = 23.3,
             dateTime = System.currentTimeMillis(),
-            uvi = 2.2
+            uvi = 2.2,
+            airQuality = AirQuality.blankAirQuality()
         )
 
     private fun getUpdatedDailyTempMockItem() =
-        UpdatedDailyTempItem(
+        DailyTempItem(
             morningTemp = 14.5,
             dayTemp = 21.2,
             eveningTemp = 18.1,

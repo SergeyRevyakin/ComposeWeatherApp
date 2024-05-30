@@ -1,6 +1,6 @@
 <resources>
     <!--    Common-->
-    <string name="app_name">Serg Weather</string>
+    <string name="app_name" translatable="false">Serg Weather</string>
     <string name="no_connection">No Internet Connection</string>
     <string name="now">now</string>
     <string name="refresh">Refresh</string>
@@ -15,6 +15,8 @@
 
     <string name="enter_city_name">Enter city or place name</string>
     <string name="eg_city_name">e.g. London</string>
+
+    <string name="weather_in">Weather in</string>
 
     <string name="no_weather_data_available">No weather data available</string>
     <string name="please_allow_us_to_get_location_access">Please allow us to get location access</string>
@@ -50,17 +52,20 @@
 
     <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
-    <string name="widget_color">Widget color</string>
+    <string name="widget_settings_color">Widget color</string>
     <string name="pick_color">Pick color</string>
     <string name="enter_color_code">Enter color code</string>
     <string name="color_code_format">In XXXXX format</string>
-    <string name="widget_preview">Widget preview</string>
-    <string name="widget_big_font_size">Widget main text size</string>
-    <string name="widget_small_font_size">Widget additional info text size</string>
-    <string name="widget_system_data_label">Show system data</string>
-    <string name="widget_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
-    <string name="widget_bottom_padding">Space between lines</string>
-    <string name="widget_icon_size">Weather icon size</string>
+    <string name="widget_settings_preview">Widget preview</string>
+    <string name="widget_settings_big_font_size">Widget main text size</string>
+    <string name="widget_settings_small_font_size">Widget additional info text size</string>
+    <string name="widget_settings_system_data_label">Show system data</string>
+    <string name="widget_settings_system_data_desc">This option shows last time when weather data was fetched and widget was updated.\nIt might help understand is widget working correct or now</string>
+    <string name="widget_settings_weather_changes_label">Show weather changes warnings</string>
+    <string name="widget_settings_weather_changes_desc">Aware you about rain, snow or thunderstorm in next hour</string>
+    <string name="widget_settings_bottom_padding">Space between lines</string>
+    <string name="widget_settings_icon_size">Weather icon size</string>
+    <string name="widget_settings_bad_weather_example">Heavy rain</string>
 
     <!--    Measurement units-->
     <string name="measurement_units">Measurement units</string>
@@ -73,9 +78,9 @@
     <string name="units_imperial_description">Temperature in Fahrenheit and wind speed in miles/hour</string>
     <string name="units_kelvin_description">Temperature in Kelvin and wind speed in meter/sec</string>
 
-    <string name="units_metric_degrees">℃</string>
-    <string name="units_imperial_degrees">℉</string>
-    <string name="units_kelvin_degrees">K</string>
+    <string name="units_metric_degrees" translatable="false">℃</string>
+    <string name="units_imperial_degrees" translatable="false">℉</string>
+    <string name="units_kelvin_degrees" translatable="false">K</string>
 
     <string name="units_metric_wind_speed">m/s</string>
     <string name="units_imperial_wind_speed">mph</string>
@@ -95,6 +100,45 @@
     <string name="uiv_high_description">High risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed</string>
     <string name="uiv_very_high_description">Very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly</string>
     <string name="uiv_extreme_description">Extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes</string>
+
+    <!--    Air Quality strings-->
+    <string name="aqi_value">Air quality: %1$s</string>
+    <string name="aqi_good">Good</string>
+    <string name="aqi_fair">Fair</string>
+    <string name="aqi_moderate">Moderate</string>
+    <string name="aqi_poor">Poor</string>
+    <string name="aqi_very_poor">Very poor</string>
+
+    <string name="aqi_eu_index_1">Good</string>
+    <string name="aqi_eu_index_2">Fair</string>
+    <string name="aqi_eu_index_3">Moderate</string>
+    <string name="aqi_eu_index_4">Poor</string>
+    <string name="aqi_eu_index_5">Very poor</string>
+    <string name="aqi_eu_index_6">Extremely poor</string>
+    <string name="aqi_eu_index_unknown">Unknown</string>
+    <string name="aqi_eu_general_pop_desc_1">The air quality is good. Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_2">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_3">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_general_pop_desc_4">Consider reducing intense activities outdoors, if you experience symptoms such as sore eyes, a cough or sore throat</string>
+    <string name="aqi_eu_general_pop_desc_5">Consider reducing intense activities outdoors, if you experience symptoms such as sore eyes, a cough or sore throat	</string>
+    <string name="aqi_eu_general_pop_desc_6">Reduce physical activities outdoors.	</string>
+    <string name="aqi_eu_sensitive_pop_desc_1">The air quality is good. Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_sensitive_pop_desc_2">Enjoy your usual outdoor activities</string>
+    <string name="aqi_eu_sensitive_pop_desc_3">Consider reducing intense outdoor activities, if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_4">Consider reducing physical activities, particularly outdoors, especially if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_5">Reduce physical activities, particularly outdoors, especially if you experience symptoms</string>
+    <string name="aqi_eu_sensitive_pop_desc_6">Avoid physical activities outdoors</string>
+
+    <string name="aqi_index">Air quality index</string>
+    <string name="aqi_general_population">General population</string>
+    <string name="aqi_sensitive_population">Sensitive populations</string>
+    <string name="aqi_based_on_eu_calc">Scaled with European Air Quality Index, click for more info</string>
+    <string name="aqi_eu_link" translatable="false">https://airindex.eea.europa.eu/AQI/index.html#</string>
+
+    <!--    Widget strings-->
+    <string name="widget_weather_changes_expected">Weather changes expected: %1$s</string>
+    <string name="widget_last_updated">Last updated %1$s</string>
+    <string name="widget_last_recomposition">Last redraw %1$s</string>
 
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
@@ -118,8 +162,8 @@
     <!--    Welcome bottomsheet-->
     <string name="welcome">Welcome</string>
     <string name="search_city">Search place by its name</string>
-    <string name="turn_on_geolocation">Turn on gelocation</string>
-    <string name="welcome_desc_breaks">%2$s%3$s
+    <string name="turn_on_geolocation">Turn on geolocation</string>
+    <string name="welcome_desc_breaks" translatable="false">%2$s%3$s
     </string>
     <string name="welcome_desc">Welcome to Serg Weather App\n\nWe have two different options to get weather data
         \n\nFirst one is enter name of the place that you are interested in.
@@ -131,7 +175,7 @@
     <string name="first">First </string>
     <string name="second">Second </string>
 
-    <string name="degree_sign">°</string>
+    <string name="degree_sign" translatable="false">°</string>
 
     <!--    Icons description-->
     <string name="accessibility_desc_weather_icon">Weather icon</string>

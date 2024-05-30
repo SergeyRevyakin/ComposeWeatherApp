@@ -20,7 +20,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.common.R.color
 import ru.serg.drawables.R.drawable
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_ERROR_REQUEST_CODE
 import ru.serg.notifications.Constants.Notifications.NOTIFICATION_REQUEST_CODE
 import ru.serg.notifications.Constants.Notifications.TARGET_ACTIVITY_NAME
@@ -47,7 +47,7 @@ fun showNotification(context: Context, header: String?, text: String?) {
 }
 
 @SuppressLint("MissingPermission")
-fun showDailyForecastNotification(context: Context, weatherItem: UpdatedWeatherItem) {
+fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
 
     val weatherXml = weatherItem.hourlyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)
@@ -91,7 +91,7 @@ fun showDailyForecastNotification(context: Context, weatherItem: UpdatedWeatherI
 }
 
 @SuppressLint("MissingPermission")
-fun showDailyServiceForecastNotification(context: Context, weatherItem: UpdatedWeatherItem) {
+fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
 
     val weatherXml = weatherItem.dailyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
     val img = getBitmapFromVectorDrawable(context, weatherXml)

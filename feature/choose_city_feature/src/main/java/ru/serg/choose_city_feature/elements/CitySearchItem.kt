@@ -12,6 +12,9 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,11 +29,12 @@ import ru.serg.strings.R.string
 
 @Composable
 fun CitySearchItem(
-    cityItem: CityItem,
+    cityItemState: State<CityItem>,
     onDelete: ((CityItem) -> Unit),
     onItemClick: ((CityItem) -> Unit),
     modifier: Modifier = Modifier
 ) {
+    val cityItem = cityItemState.value
     Row(
         modifier = modifier
             .gradientBorder(1, 16)
@@ -69,6 +73,11 @@ fun CitySearchItem(
 @Composable
 fun PreviewCitySearchItem() {
     ComposeWeatherAppTheme {
-        CitySearchItem(cityItem = CityItem(name = "Moscow", ""), onDelete = {}, onItemClick = {})
+        val city = remember {
+            mutableStateOf(
+                CityItem(name = "Moscow", "")
+            )
+        }
+        CitySearchItem(cityItemState = city, onDelete = {}, onItemClick = {})
     }
 }

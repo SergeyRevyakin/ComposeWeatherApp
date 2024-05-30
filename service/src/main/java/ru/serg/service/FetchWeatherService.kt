@@ -17,7 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.serg.drawables.R.drawable
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.notifications.Constants
 import ru.serg.notifications.showDailyServiceForecastNotification
 import javax.inject.Inject
@@ -83,14 +83,14 @@ class FetchWeatherService : Service() {
                         stop()
                     }
 
-                    is ServiceFetchingResult.Loading -> {}
+                    else -> Unit
                 }
             }.launchIn(serviceScope)
 
 
     }
 
-    private fun onWeatherFetchedSuccessful(weatherItem: UpdatedWeatherItem) {
+    private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem) {
         stop()
         showDailyServiceForecastNotification(applicationContext, weatherItem)
     }

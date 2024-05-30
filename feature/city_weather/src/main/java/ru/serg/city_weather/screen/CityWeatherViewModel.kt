@@ -5,7 +5,6 @@ package ru.serg.city_weather.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serg.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,6 +17,7 @@ import kotlinx.serialization.json.Json
 import ru.serg.city_weather.Constants
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
+import ru.serg.weather.WeatherRepository
 import ru.serg.weather_elements.ScreenState
 import javax.inject.Inject
 

@@ -8,6 +8,12 @@ val primaryLight = Color(0xFF795900)
 val goodGreen = Color(0xFF1B5E20)
 val goodRed = Color(0xFFC62828)
 
+val aqiGood = Color(0xFF4FF0E6)
+val aqiFair = Color(0xFF51CCAA)
+val aqiModerate = Color(0xFFF0E641)
+val aqiPoor = Color(0xFFFF5150)
+val aqiVeryPoor = Color(0xFF960132)
+val aqiExtremelyPoor = Color(0xFF7D2181)
 
 val md_theme_light_primary = Color(0xFF795900)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)

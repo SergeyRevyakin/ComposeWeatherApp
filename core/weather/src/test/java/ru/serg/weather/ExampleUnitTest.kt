@@ -1,4 +1,4 @@
-package com.serg.weather
+package ru.serg.weather
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.sp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import ru.serg.model.UpdatedDailyTempItem
+import ru.serg.model.DailyTempItem
 import java.time.format.TextStyle
 import java.util.Locale
 import java.util.UUID
 
-fun getMinMaxTemp(temp: UpdatedDailyTempItem, units: String): String {
+fun getMinMaxTemp(temp: DailyTempItem, units: String): String {
     return "${temp.minTemp?.toInt()}-${temp.maxTemp?.toInt()}$units"
 }
 

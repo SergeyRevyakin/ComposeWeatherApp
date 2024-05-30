@@ -8,12 +8,12 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.serg.designsystem.common.SunLoadingScreen
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.weather_elements.weather_screen.CityWeatherContentItem
 
 @Composable
 fun PagerScreen(
-    weatherItem: UpdatedWeatherItem,
+    weatherItem: WeatherItem,
     modifier: Modifier = Modifier,
 ) {
 
@@ -33,19 +33,16 @@ fun PagerScreen(
         visible = weatherItem.dailyWeatherList.isNotEmpty() && weatherItem.hourlyWeatherList.isNotEmpty(),
         enter = slideInVertically(
             initialOffsetY = { 1500 },
-            animationSpec = tween(500)
+            animationSpec = tween(300)
         ),
         exit = fadeOut(
-            animationSpec = tween(0)
+            animationSpec = tween(150)
         )
-
     ) {
-
         CityWeatherContentItem(
             weatherItem = weatherItem,
             modifier = modifier
         )
-
     }
 }
 

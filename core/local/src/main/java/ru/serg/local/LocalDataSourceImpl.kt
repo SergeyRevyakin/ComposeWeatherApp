@@ -15,7 +15,7 @@ import ru.serg.database.toWeatherItem
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import javax.inject.Inject
 
 class LocalDataSourceImpl @Inject constructor(
@@ -24,8 +24,7 @@ class LocalDataSourceImpl @Inject constructor(
 ) : LocalDataSource {
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    override fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>> {
-
+    override fun getWeatherFlow(): Flow<List<WeatherItem>> {
 
         return weatherDao.getWeatherWithCity().map { list ->
             list.map {
@@ -91,12 +90,11 @@ class LocalDataSourceImpl @Inject constructor(
             }
     }.distinctUntilChanged()
 
-    override fun getFavouriteCityWeather(): Flow<UpdatedWeatherItem> {
+    override fun getFavouriteCityWeather(): Flow<WeatherItem> {
         return getWeatherFlow().map {
             it.firstOrNull { updatedWeatherItem ->
                 updatedWeatherItem.cityItem.isFavorite
             } ?: it.first()
         }.distinctUntilChanged()
     }
-
 }

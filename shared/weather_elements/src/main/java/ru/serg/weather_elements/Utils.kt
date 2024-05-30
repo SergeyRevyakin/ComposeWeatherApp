@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import ru.serg.designsystem.theme.customColors
 import ru.serg.strings.R.string
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -151,4 +152,25 @@ fun Modifier.animatedBlur(isShowing: Boolean) =
         )
     }
 
+@Composable
+fun getAqiStringByIndex(index: Int): String =
+    when (index) {
+        1 -> stringResource(id = string.aqi_good)
+        2 -> stringResource(id = string.aqi_fair)
+        3 -> stringResource(id = string.aqi_moderate)
+        4 -> stringResource(id = string.aqi_poor)
+        5 -> stringResource(id = string.aqi_very_poor)
+        else -> ""
+    }
 
+@Composable
+fun getAqiColorByIndex(index: Int): Color =
+    when (index) {
+        1 -> MaterialTheme.customColors.aqiGoodColor
+        2 -> MaterialTheme.customColors.aqiFairColor
+        3 -> MaterialTheme.customColors.aqiModerateColor
+        4 -> MaterialTheme.customColors.aqiPoorColor
+        5 -> MaterialTheme.customColors.aqiVeryPoorColor
+        6 -> MaterialTheme.customColors.aqiExtremelyPoorColor
+        else -> Color.White
+    }

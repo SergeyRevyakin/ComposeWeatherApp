@@ -41,12 +41,13 @@ import ru.serg.service.FetchWeatherService
 import ru.serg.widgets.Constants
 import ru.serg.widgets.R
 import ru.serg.widgets.Utils
+import ru.serg.widgets.badWeatherList
 import ru.serg.widgets.getHour
 import kotlin.math.roundToInt
 
 @Composable
 fun MainWeatherWidget(
-    hourWeather: HourlyWeather,
+    nextWeatherList: List<HourlyWeather>,
     cityItem: CityItem,
     settings: WidgetDataSettings,
 ) {
@@ -55,6 +56,7 @@ fun MainWeatherWidget(
     val clockView = RemoteViews(packageName, R.layout.text_clock_layout)
     val dateView = RemoteViews(packageName, R.layout.text_clock_layout)
     val ctx = LocalContext.current
+    val currentHourWeather = nextWeatherList.first()
 
     val currentColor by remember {
         mutableStateOf(Color(settings.color))
@@ -144,7 +146,7 @@ fun MainWeatherWidget(
                     verticalAlignment = Alignment.Vertical.CenterVertically,
                 ) {
                     Text(
-                        text = hourWeather.currentTemp.roundToInt().toString() + "°",
+                        text = currentHourWeather.currentTemp.roundToInt().toString() + "°",
                         style = TextStyle(
                             fontSize = bigFont.sp,
                             fontWeight = FontWeight.Normal,
@@ -155,7 +157,7 @@ fun MainWeatherWidget(
                     )
 
                     Image(
-                        provider = ImageProvider(hourWeather.weatherIcon),
+                        provider = ImageProvider(currentHourWeather.weatherIcon),
                         contentDescription = "",
                         modifier = GlanceModifier.size(settings.iconSize.dp),
                         colorFilter = ColorFilter.tint(ColorProvider(currentColor))
@@ -234,13 +236,41 @@ fun MainWeatherWidget(
                     verticalAlignment = Alignment.Vertical.Top,
                 ) {
                     Text(
-                        text = hourWeather.weatherDescription,
+                        text = currentHourWeather.weatherDescription,
                         style = TextStyle(
                             color = ColorProvider(currentColor),
                             fontSize = smallFont.sp
                         )
                     )
                 }
+            }
+        }
+
+        Row(
+            modifier = GlanceModifier.fillMaxWidth()
+                .padding(bottom = paddingBottom),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.Horizontal.Start
+        ) {
+            val isBadWeatherCurrently =
+                badWeatherList().contains(nextWeatherList.getOrNull(0)?.weatherIcon)
+
+            val nextHourWeather = nextWeatherList.getOrNull(1)
+            val isBadWeatherExpected = badWeatherList().contains(nextHourWeather?.weatherIcon)
+
+            val showBadWeatherNotification = isBadWeatherExpected && !isBadWeatherCurrently
+
+            if (showBadWeatherNotification && nextHourWeather != null) {
+                Text(
+                    text = LocalContext.current.getString(
+                        ru.serg.strings.R.string.widget_weather_changes_expected,
+                        nextHourWeather.weatherDescription
+                    ),
+                    style = TextStyle(
+                        color = ColorProvider(currentColor),
+                        fontSize = smallFont.sp
+                    ),
+                )
             }
         }
 
@@ -278,7 +308,10 @@ fun MainWeatherWidget(
                         }
                     ) {
                         Text(
-                            text = "Last updated " + getHour(cityItem.lastTimeUpdated),
+                            text = LocalContext.current.getString(
+                                ru.serg.strings.R.string.widget_last_updated,
+                                getHour(cityItem.lastTimeUpdated)
+                            ),
                             style = TextStyle(
                                 color = ColorProvider(currentColor),
                                 fontSize = 12.sp
@@ -298,7 +331,10 @@ fun MainWeatherWidget(
                         verticalAlignment = Alignment.Vertical.CenterVertically,
                     ) {
                         Text(
-                            text = "Last recomposition " + getHour(System.currentTimeMillis()),
+                            text = LocalContext.current.getString(
+                                ru.serg.strings.R.string.widget_last_recomposition,
+                                getHour(System.currentTimeMillis())
+                            ),
                             style = TextStyle(
                                 color = ColorProvider(currentColor),
                                 fontSize = 12.sp
@@ -310,4 +346,5 @@ fun MainWeatherWidget(
         }
     }
 }
+
 

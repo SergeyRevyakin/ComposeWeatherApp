@@ -1,33 +1,34 @@
 [versions]
-activity-compose = "1.8.2"
-androidx-foundation = "1.6.4"
-androidx-material = "1.6.4"
+activity-compose = "1.9.0"
+androidx-foundation = "1.6.7"
+androidx-material = "1.6.7"
 appcompat = "1.6.1"
-compose-bom = "2024.03.00"
-core-ktx = "1.12.0"
-datastore-preferences = "1.1.0-beta02"
+compose-bom = "2024.05.00"
+core-ktx = "1.13.1"
+datastore-preferences = "1.1.1"
 espresso-core = "3.5.1"
-glance = "1.0.0"
-gradle = "8.5.0-alpha02"
-hilt-android = "2.51"
+firebaseBom = "33.0.0"
+glance = "1.1.0-rc01"
+gradle = "8.6.0-alpha03"
+hilt-android = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 junit = "1.1.5"
-kotlin = "1.9.23"
-kotlinx-datetime = "0.5.0"
+kotlin = "2.0.0"
+kotlinx-datetime = "0.6.0"
 kotlinx-serialization-json = "1.6.3"
-kotlinxCoroutines = "1.8.0"
-ktor-client = "2.3.9"
-lifecycle-runtime-ktx = "2.7.0"
-material = "1.11.0"
-material3 = "1.3.0-alpha03"
+kotlinxCoroutines = "1.8.1"
+ktor-client = "2.3.11"
+lifecycle-runtime-ktx = "2.8.0"
+material = "1.12.0"
+material3 = "1.2.1"
 multidex = "2.0.1"
 navigation-compose = "2.7.7"
 permission-flow-android = "2.0.0"
 play-services-location = "21.2.0"
 room-testing = "2.6.1"
 secretsGradlePlugin = "2.0.1"
-ui = "1.6.4"
-ui-test-junit4 = "1.6.4"
+ui = "1.6.7"
+ui-test-junit4 = "1.6.7"
 work-runtime-ktx = "2.9.0"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
@@ -36,14 +37,15 @@ androidxTestRunner = "1.5.2"
 androidxUiAutomator = "2.3.0"
 androidxEspresso = "3.5.1"
 junit4 = "4.13.2"
-ksp = "1.9.23-1.0.19"
+ksp = "2.0.0-1.0.21"
 secrets = "2.0.1"
-annotationJvm = "1.7.1"
+annotationJvm = "1.8.0"
 turbine = "1.1.0"
-compose-compiler = "1.5.11"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
+firebase-plugin = "4.4.1"
+firebase-crashlytics = "3.0.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -76,6 +78,9 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-foundation" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
@@ -111,6 +116,8 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+firebase = { id = "com.google.gms.google-services", version.ref = "firebase-plugin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 android-application = { id = "com.android.application", version.ref = "gradle" }
 android-library = { id = "com.android.library", version.ref = "gradle" }
 android-test = { id = "com.android.test", version.ref = "gradle" }
@@ -118,6 +125,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gradle-build = { id = "com.android.tools.build.gradle", version.ref = "gradle" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 
 [bundles]

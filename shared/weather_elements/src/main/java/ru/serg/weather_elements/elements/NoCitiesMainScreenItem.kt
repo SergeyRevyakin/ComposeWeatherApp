@@ -14,6 +14,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import ru.serg.designsystem.common.CardButton
+import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.strings.R.string
@@ -40,6 +42,10 @@ fun NoCitiesMainScreenItem(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(key1 = Unit) {
+        sheetState.show()
+    }
+
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
     }
@@ -56,7 +62,7 @@ fun NoCitiesMainScreenItem(
             modifier = Modifier
                 .headerModifier()
                 .fillMaxWidth()
-                .padding(bottom = 20.dp),
+//                .padding(bottom = 20.dp),
         )
 
         CardButton(
@@ -70,12 +76,12 @@ fun NoCitiesMainScreenItem(
             text = stringResource(id = string.click_here_to_change_it_in_settings),
             fontSize = 22.sp,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .padding(bottom = 32.dp)
+                .padding(vertical = 12.dp)
                 .clickable {
                     goToSettings()
-                },
+                }
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center
         )
@@ -87,14 +93,16 @@ fun NoCitiesMainScreenItem(
             onSearchClick()
         }
 
-        DialogContainer(
-            onDismiss = { coroutineScope.launch { sheetState.hide() } },
-            sheetState = sheetState
-        ) {
-            WelcomeBottomSheet(
-                onSearchClick = onSearchClick,
-                onEnableLocationClick = onRequestPermissionClick
-            )
+        if (sheetState.isVisible) {
+            DialogContainer(
+                onDismiss = { coroutineScope.launch { sheetState.hide() } },
+                sheetState = sheetState
+            ) {
+                WelcomeBottomSheet(
+                    onSearchClick = onSearchClick,
+                    onEnableLocationClick = onRequestPermissionClick
+                )
+            }
         }
     }
 }
@@ -102,5 +110,7 @@ fun NoCitiesMainScreenItem(
 @Preview
 @Composable
 fun PreviewNoCitiesMainScreenItem() {
-    NoCitiesMainScreenItem({}, {}, {})
+    ComposeWeatherAppTheme {
+        NoCitiesMainScreenItem({}, {}, {})
+    }
 }

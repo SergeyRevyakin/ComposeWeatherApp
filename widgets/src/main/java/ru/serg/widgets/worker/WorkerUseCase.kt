@@ -2,11 +2,11 @@
 
 package ru.serg.widgets.worker
 
-import com.serg.weather.WeatherRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
+import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
 class WorkerUseCase @Inject constructor(

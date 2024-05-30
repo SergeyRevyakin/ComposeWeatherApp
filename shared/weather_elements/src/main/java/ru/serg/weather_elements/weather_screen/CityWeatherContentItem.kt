@@ -27,14 +27,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.serg.common.mapUvIndex
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.DailyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.animatedBlur
+import ru.serg.weather_elements.bottom_sheets.AirQualityBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DialogContainer
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
@@ -44,7 +44,7 @@ import ru.serg.weather_elements.elements.SunriseSunsetItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityWeatherContentItem(
-    weatherItem: UpdatedWeatherItem,
+    weatherItem: WeatherItem,
     modifier: Modifier = Modifier,
     viewModel: CityWeatherContentItemViewModel = hiltViewModel()
 ) {
@@ -57,6 +57,10 @@ fun CityWeatherContentItem(
     val units by viewModel.units.collectAsState()
 
     var showUviDetailsBottomSheet by remember {
+        mutableStateOf(false)
+    }
+
+    var showAqiDetailsBottomSheet by remember {
         mutableStateOf(false)
     }
 
@@ -77,8 +81,6 @@ fun CityWeatherContentItem(
             .animatedBlur(sheetState.targetValue == SheetValue.Expanded)
 
     ) {
-
-
         Text(
             text = city,
             style = headerStyle,
@@ -94,6 +96,9 @@ fun CityWeatherContentItem(
             lastUpdatedTime = weatherItem.cityItem.lastTimeUpdated,
             showUviInfo = {
                 showUviDetailsBottomSheet = true
+            },
+            showAqiInfo = {
+                showAqiDetailsBottomSheet = true
             }
         )
 
@@ -169,10 +174,19 @@ fun CityWeatherContentItem(
             sheetState = sheetState
         ) {
             UviBottomSheet(
-                uvIndex = mapUvIndex(weatherItem.hourlyWeatherList.first().uvi),
+                value = weatherItem.hourlyWeatherList.first().uvi
             )
         }
     }
 
-
+    if (showAqiDetailsBottomSheet) {
+        DialogContainer(
+            onDismiss = { showAqiDetailsBottomSheet = !showAqiDetailsBottomSheet },
+            sheetState = sheetState
+        ) {
+            AirQualityBottomSheet(
+                weatherItem.hourlyWeatherList.first().airQuality
+            )
+        }
+    }
 }

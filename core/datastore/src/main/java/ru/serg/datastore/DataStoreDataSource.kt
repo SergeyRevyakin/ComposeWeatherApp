@@ -23,6 +23,8 @@ interface DataStoreDataSource {
 
     val isWidgetSystemDataShown: Flow<Boolean>
 
+    val isWidgetWeatherChangesShown: Flow<Boolean>
+
     val widgetIconSize: Flow<Int>
 
     suspend fun saveDarkMode(isDark: Boolean)
@@ -42,6 +44,8 @@ interface DataStoreDataSource {
     suspend fun saveWidgetBottomPadding(padding: Int)
 
     suspend fun saveWidgetSystemDataShown(isShown: Boolean)
+
+    suspend fun saveWidgetWeatherChangesShown(isShown: Boolean)
 
     suspend fun saveWidgetIconSize(iconSize: Int)
 }

@@ -1,11 +1,6 @@
 package ru.serg.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class DayWeatherItem(
-    val feelsLike: IntraDayTempItem,
-    val temp: IntraDayTempItem,
+data class DailyWeather(
     val windDirection: Int,
     val windSpeed: Double,
     val humidity: Int,
@@ -14,5 +9,8 @@ data class DayWeatherItem(
     val weatherIcon: Int,
     val dateTime: Long,
     val sunrise: Long,
-    val sunset: Long
+    val sunset: Long,
+    val dailyWeatherItem: DailyTempItem,
+    val feelsLike: DailyTempItem,
+    val uvi: Double
 )

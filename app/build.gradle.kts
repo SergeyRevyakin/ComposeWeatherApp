@@ -6,6 +6,9 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.firebase)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -15,8 +18,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 70
-        versionName = "0.70"
+        versionCode = 81
+        versionName = "0.81"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -65,16 +68,22 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 
-    packaging {
-        resources {
-            excludes.add("META-INF/**")
-            excludes.add("META-INF/versions/**")
-        }
-    }
+    flavorDimensions += "environment"
+//    productFlavors {
+//        create("prod") {
+//            dimension = "environment"
+//            configure<CrashlyticsExtension> {
+//                mappingFileUploadEnabled = true
+//            }
+//        }
+//    }
+//    packaging {
+//        resources {
+//            excludes.add("META-INF/**")
+//            excludes.add("META-INF/versions/**")
+//        }
+//    }
 
     namespace = "ru.serg.composeweatherapp"
 
@@ -125,7 +134,6 @@ dependencies {
     implementation(project(":core:local"))
     implementation(project(":core:designsystem"))
     implementation(project(":feature:settings_feature"))
-    implementation(project(":feature:widget_settings_feature"))
     implementation(project(":core:weather"))
     implementation(project(":core:weather"))
     implementation(project(":work"))
@@ -134,6 +142,7 @@ dependencies {
     implementation(project(":feature:main_pager"))
     implementation(project(":service"))
     implementation(project(":widgets"))
+    implementation(project(":feature:widget_settings_feature"))
 
 
     implementation(platform(libs.compose.bom))
@@ -149,9 +158,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity.compose)
 
-    implementation(libs.foundation)
-
-
     //WorkManager
     implementation(libs.androidx.work.runtime.ktx)
 
@@ -164,5 +170,7 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material)
 
-
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }

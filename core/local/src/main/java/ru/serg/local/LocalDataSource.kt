@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
-import ru.serg.model.UpdatedWeatherItem
+import ru.serg.model.WeatherItem
 
 interface LocalDataSource {
-    fun getWeatherFlow(): Flow<List<UpdatedWeatherItem>>
+    fun getWeatherFlow(): Flow<List<WeatherItem>>
 
     fun saveWeather(
         hourlyWeatherList: List<HourlyWeather>,
@@ -24,5 +24,5 @@ interface LocalDataSource {
 
     fun getCitySearchHistory(): Flow<List<CityItem>>
 
-    fun getFavouriteCityWeather(): Flow<UpdatedWeatherItem>
+    fun getFavouriteCityWeather(): Flow<WeatherItem>
 }

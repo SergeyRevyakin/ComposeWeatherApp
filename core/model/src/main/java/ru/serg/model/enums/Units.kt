@@ -5,13 +5,9 @@ import ru.serg.strings.R.string
 
 enum class Units(
     val parameterCode: String,
-//    @StringRes
     val title: Int,
-//    @StringRes
     val description: Int,
-//    @StringRes
     val tempUnits: Int,
-//    @StringRes
     val windUnits: Int
 ) {
     METRIC(
