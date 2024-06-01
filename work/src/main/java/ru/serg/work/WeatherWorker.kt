@@ -123,7 +123,11 @@ class WeatherWorker @AssistedInject constructor(
                     }
 
                     is NetworkResult.Error -> {
-                        onError(networkResult.message)
+                        workerUseCase.isUserNotificationsOn().collectLatest { isNotificationOn ->
+                            if (isNotificationOn) {
+                                onError(networkResult.message)
+                            }
+                        }
                     }
 
                     is NetworkResult.Loading -> Unit

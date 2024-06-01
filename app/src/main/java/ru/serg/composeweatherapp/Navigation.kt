@@ -14,21 +14,25 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import ru.serg.choose_city_feature.screen.ChooseCityScreen
 import ru.serg.city_weather.screen.CityWeatherScreen
-import ru.serg.common.ScreenNames
-import ru.serg.composeweatherapp.utils.Constants
 import ru.serg.main_pager.main_screen.MainScreen
 import ru.serg.main_pager.main_screen.MainViewModel
+import ru.serg.navigation.CityFinderScreen
+import ru.serg.navigation.CityWeatherScreen
+import ru.serg.navigation.MainScreen
+import ru.serg.navigation.ParcCityItem
+import ru.serg.navigation.SettingsScreen
+import ru.serg.navigation.WidgetSettingsScreen
+import ru.serg.navigation.serializableType
 import ru.serg.settings_feature.screen.SettingsScreen
 import ru.serg.widget_settings_feature.screen.WidgetSettingsScreen
+import kotlin.reflect.typeOf
 
 @Composable
 fun Navigation(
@@ -37,38 +41,39 @@ fun Navigation(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = ScreenNames.MAIN_SCREEN,
+        startDestination = MainScreen,
+        typeMap = mapOf(typeOf<ParcCityItem>() to serializableType<ParcCityItem>())
     ) {
+        val animationDuration = 300
 
         // Main Screen
-        composable(
-            ScreenNames.MAIN_SCREEN,
+        composable<MainScreen>(
             enterTransition = {
                 fadeIn(
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             exitTransition = {
                 fadeOut(
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popEnterTransition = {
                 fadeIn(
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popExitTransition = {
                 fadeOut(
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
         ) {
             val onLeftClick = remember {
-                { navController.navigate(ScreenNames.CHOOSE_CITY_SCREEN) }
+                { navController.navigate(CityFinderScreen) }
             }
             val onRightClick = remember {
-                { navController.navigate(ScreenNames.SETTINGS_SCREEN) }
+                { navController.navigate(SettingsScreen) }
             }
 
             MainScreen(
@@ -79,30 +84,31 @@ fun Navigation(
         }
 
         // Choose City screen
-        composable(
-            ScreenNames.CHOOSE_CITY_SCREEN,
+        composable<CityFinderScreen>(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             exitTransition = {
-                fadeOut(
-                    animationSpec = tween(300)
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(animationDuration)
                 )
             },
             popEnterTransition = {
-                fadeIn(
-                    animationSpec = tween(300)
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(animationDuration)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 ) + fadeOut(
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             }
         ) {
@@ -111,31 +117,31 @@ fun Navigation(
             )
         }
 
-        composable(
-            ScreenNames.SETTINGS_SCREEN,
+        //Settings screen
+        composable<SettingsScreen>(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popEnterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(300)
-                ) + fadeOut(animationSpec = tween(300))
+                    animationSpec = tween(animationDuration)
+                ) + fadeOut(animationSpec = tween(animationDuration))
             }
         ) {
             SettingsScreen(
@@ -143,18 +149,18 @@ fun Navigation(
             )
         }
 
-        composable(
-            ScreenNames.WIDGET_SETTINGS_SCREEN,
+        //Widget settings screen
+        composable<WidgetSettingsScreen>(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             }
         ) {
@@ -163,34 +169,32 @@ fun Navigation(
             )
         }
 
-        composable(
-            route = "${ScreenNames.CITY_WEATHER_SCREEN}/{${Constants.CITY_ITEM}}",
-            arguments = listOf(navArgument(Constants.CITY_ITEM) {
-                type = NavType.StringType
-            }),
+        composable<CityWeatherScreen>(
+            typeMap = CityWeatherScreen.typeMap,
+
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popEnterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { -it },
-                    animationSpec = tween(300)
+                    animationSpec = tween(animationDuration)
                 )
             },
             popExitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { it },
-                    animationSpec = tween(300)
-                ) + fadeOut(animationSpec = tween(300))
+                    animationSpec = tween(animationDuration)
+                )
             }
         ) {
             CityWeatherScreen(navController = navController)

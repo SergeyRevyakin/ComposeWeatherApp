@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:network"))
     implementation(project(":core:local"))
+    implementation(project(":core:navigation"))
     implementation(project(":work"))
     implementation(project(":res:strings"))
 

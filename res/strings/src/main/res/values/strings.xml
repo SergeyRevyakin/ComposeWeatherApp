@@ -135,6 +135,22 @@
     <string name="aqi_based_on_eu_calc">Scaled with European Air Quality Index, click for more info</string>
     <string name="aqi_eu_link" translatable="false">https://airindex.eea.europa.eu/AQI/index.html#</string>
 
+    <string name="aqi_no2">NO2</string>
+    <string name="aqi_no2_desc">Nitrogen dioxide</string>
+    <string name="aqi_no2_link">https://en.wikipedia.org/wiki/Nitrogen_dioxide</string>
+    <string name="aqi_o3">O3</string>
+    <string name="aqi_o3_desc">Ozone</string>
+    <string name="aqi_o3_link">https://en.wikipedia.org/wiki/Ozone</string>
+    <string name="aqi_so2">SO2</string>
+    <string name="aqi_so2_desc">Sulphur dioxide</string>
+    <string name="aqi_so2_link">https://en.wikipedia.org/wiki/Sulfur_dioxide</string>
+    <string name="aqi_pm25">Concentration of PM2.5</string>
+    <string name="aqi_pm25_desc">Fine particles matter</string>
+    <string name="aqi_pm25_link">https://en.wikipedia.org/wiki/Particulates</string>
+    <string name="aqi_pm10">Concentration of PM10</string>
+    <string name="aqi_pm10_desc">Coarse particulate matter</string>
+    <string name="aqi_pm10_link">https://en.wikipedia.org/wiki/Particulates#Size,_shape,_and_solubility_matter</string>
+
     <!--    Widget strings-->
     <string name="widget_weather_changes_expected">Weather changes expected: %1$s</string>
     <string name="widget_last_updated">Last updated %1$s</string>

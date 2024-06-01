@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:navigation"))
     implementation(project(":res:strings"))
 
     implementation(platform(libs.compose.bom))
