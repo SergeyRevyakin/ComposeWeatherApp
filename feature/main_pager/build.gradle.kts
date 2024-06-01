@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":core:local"))
     implementation(project(":core:datastore"))
     implementation(project(":core:location"))
+    implementation(project(":core:navigation"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
