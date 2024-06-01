@@ -1,6 +1,7 @@
 package ru.serg.model
 
 import kotlinx.serialization.Serializable
+import ru.serg.model.enums.AirQualityEUIndex
 import kotlin.math.roundToInt
 
 @Serializable
@@ -120,5 +121,11 @@ data class AirQuality(
             getO3PollutionIndex(),
             getSO2PollutionIndex()
         ).max()
+    }
+
+    fun getAirQualityDesc(index: Int): Int {
+        return (AirQualityEUIndex.entries.firstOrNull {
+            it.id == index
+        } ?: AirQualityEUIndex.UNKNOWN).indexDescription
     }
 }

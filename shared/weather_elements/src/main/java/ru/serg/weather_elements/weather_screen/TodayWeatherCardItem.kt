@@ -33,9 +33,9 @@ import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
 import ru.serg.drawables.R.drawable
 import ru.serg.model.HourlyWeather
+import ru.serg.model.enums.AirQualityEUIndex
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
-import ru.serg.weather_elements.getAqiStringByIndex
 import ru.serg.weather_elements.getFormattedLastUpdateDate
 import kotlin.math.roundToInt
 
@@ -122,6 +122,10 @@ fun TodayWeatherCardItem(
                     onInfoClick = showUviInfo
                 )
 
+                val airQualityEUIndex =
+                    AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
+                        ?: AirQualityEUIndex.UNKNOWN
+
                 ParamRowWithInfoItem(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -130,7 +134,7 @@ fun TodayWeatherCardItem(
                     paramIcon = drawable.ic_sandstorm,
                     paramValue = stringResource(
                         id = string.aqi_value,
-                        getAqiStringByIndex(index = weatherItem.airQuality.owmIndex)
+                        stringResource(id = airQualityEUIndex.indexDescription)
                     ),
                     hasInfoButton = true,
                     onInfoClick = showAqiInfo

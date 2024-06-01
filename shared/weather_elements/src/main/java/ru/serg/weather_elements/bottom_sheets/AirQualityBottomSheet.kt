@@ -26,7 +26,9 @@ import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.model.AirQuality
 import ru.serg.model.enums.AirQualityEUIndex
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.elements.PollutionDescriptionRow
 import ru.serg.weather_elements.getAqiColorByIndex
+import kotlin.math.roundToInt
 
 @Composable
 fun AirQualityBottomSheet(
@@ -107,6 +109,52 @@ fun AirQualityBottomSheet(
             text = stringResource(id = airQualityEUIndex.sensitivePopulationEffect),
             style = settingsSubText,
             modifier = Modifier.padding(12.dp)
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 8.dp),
+            thickness = 1.dp,
+            color = accentColor
+        )
+
+        PollutionDescriptionRow(
+            pollutionName = stringResource(string.aqi_pm25),
+            pollutionDescription = stringResource(id = string.aqi_pm25_desc),
+            wikiLink = stringResource(id = string.aqi_pm25_link),
+            pollutionValue = airQuality.pm25.roundToInt().toString(),
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM25PollutionIndex()))
+        )
+
+        PollutionDescriptionRow(
+            pollutionName = stringResource(string.aqi_pm10),
+            pollutionDescription = stringResource(id = string.aqi_pm10_desc),
+            wikiLink = stringResource(id = string.aqi_pm10_link),
+            pollutionValue = airQuality.pm10.roundToInt().toString(),
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM10PollutionIndex()))
+        )
+
+        PollutionDescriptionRow(
+            pollutionName = stringResource(string.aqi_no2),
+            pollutionDescription = stringResource(id = string.aqi_no2_desc),
+            wikiLink = stringResource(id = string.aqi_no2_link),
+            pollutionValue = airQuality.no2.roundToInt().toString(),
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getNO2PollutionIndex()))
+        )
+
+        PollutionDescriptionRow(
+            pollutionName = stringResource(string.aqi_o3),
+            pollutionDescription = stringResource(id = string.aqi_o3_desc),
+            wikiLink = stringResource(id = string.aqi_o3_link),
+            pollutionValue = airQuality.o3.roundToInt().toString(),
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getO3PollutionIndex()))
+        )
+
+        PollutionDescriptionRow(
+            pollutionName = stringResource(string.aqi_so2),
+            pollutionDescription = stringResource(id = string.aqi_so2_desc),
+            wikiLink = stringResource(id = string.aqi_so2_link),
+            pollutionValue = airQuality.so2.roundToInt().toString(),
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getSO2PollutionIndex()))
         )
 
         Spacer(modifier = Modifier.height(16.dp))
