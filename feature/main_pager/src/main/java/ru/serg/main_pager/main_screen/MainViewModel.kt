@@ -94,10 +94,19 @@ class MainViewModel @Inject constructor(
                         isLoading = false,
                         isStartUp = false,
                         weatherList = items,
-                        error = null
+                        error = null,
+                        hasWelcomeDialog = items.isEmpty()
                     )
                 }
             }
+        }
+    }
+
+    fun turnOffDialog() {
+        _pagerScreenState.update {
+            it.copy(
+                hasWelcomeDialog = false
+            )
         }
     }
 

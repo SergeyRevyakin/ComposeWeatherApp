@@ -154,8 +154,11 @@ fun MainScreen(
                     },
                     goToSettings = remember {
                         { context.openAppSystemSettings() }
-                    }
+                    },
+                    hasWelcomeBottomSheet = newScreenState.hasWelcomeDialog
                 )
+
+                viewModel.turnOffDialog()
             }
 
             AnimatedVisibility(

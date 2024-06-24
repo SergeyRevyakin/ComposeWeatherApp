@@ -10,6 +10,7 @@ import androidx.compose.material.icons.rounded.LocationSearching
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -38,12 +39,16 @@ fun NoCitiesMainScreenItem(
     onSearchClick: (() -> Unit),
     onRequestPermissionClick: (() -> Unit),
     goToSettings: (() -> Unit),
+    hasWelcomeBottomSheet: Boolean,
+    modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = Unit) {
-        sheetState.show()
+    if (hasWelcomeBottomSheet) {
+        LaunchedEffect(Unit) {
+            sheetState.show()
+        }
     }
 
     BackHandler(sheetState.isVisible) {
@@ -51,7 +56,7 @@ fun NoCitiesMainScreenItem(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 120.dp, bottom = 24.dp)
             .animatedBlur(sheetState.targetValue != SheetValue.Hidden),
@@ -62,7 +67,6 @@ fun NoCitiesMainScreenItem(
             modifier = Modifier
                 .headerModifier()
                 .fillMaxWidth()
-//                .padding(bottom = 20.dp),
         )
 
         CardButton(
@@ -95,7 +99,11 @@ fun NoCitiesMainScreenItem(
 
         if (sheetState.isVisible) {
             DialogContainer(
-                onDismiss = { coroutineScope.launch { sheetState.hide() } },
+                onDismiss = {
+                    coroutineScope.launch {
+                        sheetState.hide()
+                    }
+                },
                 sheetState = sheetState
             ) {
                 WelcomeBottomSheet(
@@ -111,6 +119,18 @@ fun NoCitiesMainScreenItem(
 @Composable
 fun PreviewNoCitiesMainScreenItem() {
     ComposeWeatherAppTheme {
-        NoCitiesMainScreenItem({}, {}, {})
+        Scaffold {
+            NoCitiesMainScreenItem({}, {}, {}, true, Modifier.padding(it))
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewNoCitiesMainScreenItem2() {
+    ComposeWeatherAppTheme {
+        Scaffold {
+            NoCitiesMainScreenItem({}, {}, {}, false, Modifier.padding(it))
+        }
     }
 }

@@ -11,7 +11,8 @@ data class PagerScreenState(
     val weatherList: List<WeatherItem>,
     val activeItem: Int,
     val error: PagerScreenError?,
-    val isStartUp: Boolean
+    val isStartUp: Boolean,
+    val hasWelcomeDialog: Boolean
 ) {
     companion object {
         fun defaultState() = PagerScreenState(
@@ -21,7 +22,8 @@ data class PagerScreenState(
             weatherList = emptyList(),
             activeItem = 0,
             error = null,
-            isStartUp = true
+            isStartUp = true,
+            hasWelcomeDialog = false
         )
     }
 }
