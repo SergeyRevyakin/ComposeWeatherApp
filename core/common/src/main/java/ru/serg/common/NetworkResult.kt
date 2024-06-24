@@ -9,11 +9,12 @@ sealed class NetworkResult<out T> {
 
     data class Success<T>(val data: T) : NetworkResult<T>()
 
-    data class Error<Nothing>(val message: String?) :
+    data class Error<Nothing>(val message: String?, val throwable: Throwable) :
         NetworkResult<Nothing>()
 
     data object Loading : NetworkResult<Nothing>()
 }
+
 
 fun <T> Flow<T>.asResult(): Flow<NetworkResult<T>> {
     return this
@@ -21,5 +22,12 @@ fun <T> Flow<T>.asResult(): Flow<NetworkResult<T>> {
             NetworkResult.Success(it)
         }
         .onStart { emit(NetworkResult.Loading) }
-        .catch { emit(NetworkResult.Error(it.localizedMessage)) }
+        .catch {
+            emit(
+                NetworkResult.Error(
+                    it.localizedMessage,
+                    throwable = it
+                )
+            )
+        }
 }
