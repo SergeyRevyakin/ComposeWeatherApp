@@ -50,7 +50,6 @@ class WeatherRepository @Inject constructor(
             hourlyWeather,
             oneCallResponse.alert?.description
         )
-
     }.flowOn(Dispatchers.IO)
 
 
@@ -82,7 +81,6 @@ class WeatherRepository @Inject constructor(
             hourlyWeather,
             oneCallResponse.alert?.description
         )
-
     }.flowOn(Dispatchers.IO)
 
     fun removeFavouriteCityParam(weatherItem: WeatherItem) {

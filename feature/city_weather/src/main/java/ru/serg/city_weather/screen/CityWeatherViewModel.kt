@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,12 +21,16 @@ import javax.inject.Inject
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     lateinit var uiState: StateFlow<ScreenState>
 
     init {
+        initScreen()
+    }
+
+    private fun initScreen() {
         viewModelScope.launch {
             CityWeatherScreen.from(savedStateHandle)
                 .let { city ->
@@ -35,7 +40,11 @@ class CityWeatherViewModel @Inject constructor(
                             .map { networkResult ->
                                 when (networkResult) {
                                     is NetworkResult.Loading -> ScreenState.Loading
-                                    is NetworkResult.Error -> ScreenState.Error(networkResult.message)
+                                    is NetworkResult.Error -> ScreenState.Error(
+                                        networkResult.message,
+                                        networkResult.throwable
+                                    )
+
                                     is NetworkResult.Success -> networkResult.data.let { weatherItem ->
                                         ScreenState.Success(
                                             weatherItem
@@ -47,6 +56,31 @@ class CityWeatherViewModel @Inject constructor(
                                 initialValue = ScreenState.Loading,
                                 started = SharingStarted.WhileSubscribed(5_000)
                             )
+                }
+        }
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            CityWeatherScreen.from(savedStateHandle)
+                .let { city ->
+                    weatherRepository.getCityWeatherFlow(city.cityItem.toCityItem(), false)
+                        .asResult()
+                        .collectLatest { networkResult ->
+                            when (networkResult) {
+                                is NetworkResult.Loading -> ScreenState.Loading
+                                is NetworkResult.Error -> ScreenState.Error(
+                                    networkResult.message,
+                                    networkResult.throwable
+                                )
+
+                                is NetworkResult.Success -> networkResult.data.let { weatherItem ->
+                                    ScreenState.Success(
+                                        weatherItem
+                                    )
+                                }
+                            }
+                        }
                 }
         }
     }

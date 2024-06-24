@@ -71,8 +71,10 @@ fun CityWeatherScreen(
         ) {
 
             AnimatedVisibility(visible = screenState is ScreenState.Error) {
-                val errorText = (screenState as? ScreenState.Error)?.message
-                ErrorItem(errorText = errorText)
+                val error = (screenState as? ScreenState.Error)
+                ErrorItem(errorText = error?.message, throwable = error?.throwable) {
+                    viewModel.refresh()
+                }
             }
 
             AnimatedVisibility(

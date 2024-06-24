@@ -2,6 +2,8 @@
     <!--    Common-->
     <string name="app_name" translatable="false">Serg Weather</string>
     <string name="no_connection">No Internet Connection</string>
+    <string name="not_able_to_fetch">Not able to fetch data from server\n Please try later</string>
+    <string name="exception_details">Error details %1$s</string>
     <string name="now">now</string>
     <string name="refresh">Refresh</string>
 
