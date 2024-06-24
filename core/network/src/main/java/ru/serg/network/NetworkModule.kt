@@ -19,13 +19,11 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import java.util.Locale
 import javax.inject.Named
 import javax.inject.Singleton
 
-@OptIn(ExperimentalSerializationApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
@@ -58,6 +56,7 @@ class NetworkModule {
                     ignoreUnknownKeys = true
                     coerceInputValues = true
                     explicitNulls = false
+                    expectSuccess = true
                 })
             }
             install(Logging) {
@@ -69,7 +68,7 @@ class NetworkModule {
                     level = LogLevel.NONE
                 }
             }
-            expectSuccess = false
+
             install(HttpTimeout) {
                 requestTimeoutMillis = 15000L
                 connectTimeoutMillis = 15000L
@@ -114,7 +113,8 @@ class NetworkModule {
                     level = LogLevel.NONE
                 }
             }
-            expectSuccess = false
+            expectSuccess = true
+
             install(HttpTimeout) {
                 requestTimeoutMillis = 15000L
                 connectTimeoutMillis = 15000L
@@ -160,7 +160,8 @@ class NetworkModule {
                     level = LogLevel.NONE
                 }
             }
-            expectSuccess = false
+            expectSuccess = true
+
             install(HttpTimeout) {
                 requestTimeoutMillis = 15000L
                 connectTimeoutMillis = 15000L
@@ -197,6 +198,8 @@ class NetworkModule {
                 })
             }
 
+            expectSuccess = true
+
             install(Logging) {
                 if (BuildConfig.DEBUG) {
                     logger = Logger.SIMPLE
@@ -206,7 +209,6 @@ class NetworkModule {
                     level = LogLevel.NONE
                 }
             }
-            expectSuccess = false
             install(HttpTimeout) {
                 requestTimeoutMillis = 15000L
                 connectTimeoutMillis = 15000L

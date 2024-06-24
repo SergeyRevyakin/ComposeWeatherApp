@@ -18,8 +18,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 81
-        versionName = "0.81"
+        versionCode = 82
+        versionName = "0.82"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -135,7 +135,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:settings_feature"))
     implementation(project(":core:weather"))
-    implementation(project(":core:weather"))
+    implementation(project(":core:navigation"))
     implementation(project(":work"))
     implementation(project(":feature:choose_city_feature"))
     implementation(project(":feature:city_weather"))
@@ -158,10 +158,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity.compose)
 
-    //WorkManager
     implementation(libs.androidx.work.runtime.ktx)
 
-    //Data Store
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.multidex)
@@ -173,4 +171,5 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.kotlinx.serialization.json)
 }

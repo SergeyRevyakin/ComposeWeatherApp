@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "ru.serg.common"
+    namespace = "ru.serg.navigation"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -21,10 +23,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":res:strings"))
-    implementation(project(":res:drawables"))
+    implementation(project(":core:model"))
+    implementation(libs.bundles.compose)
 
-    implementation(libs.kotlinx.coroutines.android)
-
-    testImplementation(project(":core:testing"))
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 }

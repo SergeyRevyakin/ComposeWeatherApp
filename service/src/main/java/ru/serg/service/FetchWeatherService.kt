@@ -14,8 +14,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.serg.drawables.R.drawable
 import ru.serg.model.WeatherItem
 import ru.serg.notifications.Constants
@@ -68,24 +68,26 @@ class FetchWeatherService : Service() {
             startForeground(SERVICE_ID, serviceNotification.build())
         }
 
-        weatherServiceUseCase.checkCurrentLocationAndWeather()
-            .onEach {
-                Log.e(this::class.simpleName, "Fetch service $it")
-                when (it) {
-                    is ServiceFetchingResult.Success -> {
-                        onWeatherFetchedSuccessful(it.data)
-                    }
+        serviceScope.launch {
+            weatherServiceUseCase.checkCurrentLocationAndWeather()
+                .collectLatest {
+                    Log.e(this::class.simpleName, "Fetch service $it")
+                    when (it) {
+                        is ServiceFetchingResult.Success -> {
+                            onWeatherFetchedSuccessful(it.data)
+                        }
 
-                    is ServiceFetchingResult.Error -> {
-                        val updatedNotification =
-                            serviceNotification.setContentText("Error ${it.message}")
-                        notificationManager.notify(SERVICE_ID, updatedNotification.build())
-                        stop()
-                    }
+                        is ServiceFetchingResult.Error -> {
+                            val updatedNotification =
+                                serviceNotification.setContentText("Error ${it.message}")
+                            notificationManager.notify(SERVICE_ID, updatedNotification.build())
+                            stop()
+                        }
 
-                    else -> Unit
+                        else -> Unit
+                    }
                 }
-            }.launchIn(serviceScope)
+        }
 
 
     }

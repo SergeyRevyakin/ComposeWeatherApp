@@ -3,10 +3,7 @@ package ru.serg.designsystem.top_item
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PagerTopBar(
     onLeftIconClick: (() -> Unit)? = null,
@@ -38,6 +35,7 @@ fun PagerTopBar(
     isLoading: Boolean = false,
     pagerState: PagerState,
     appBarState: TopAppBarScrollBehavior?,
+    content: @Composable () -> Unit = {}
 ) {
     Column {
         CenterAlignedTopAppBar(
@@ -73,14 +71,10 @@ fun PagerTopBar(
             visible = isLoading,
             enter = slideInHorizontally(
                 animationSpec = tween(300),
-                initialOffsetX = { -it }) + slideInVertically(
-                animationSpec = tween(200),
-                initialOffsetY = { -it }),
+                initialOffsetX = { -it }),
             exit = slideOutHorizontally(
                 animationSpec = tween(300),
-                targetOffsetX = { it }) + slideOutVertically(
-                animationSpec = tween(200),
-                targetOffsetY = { it })
+                targetOffsetX = { it }),
         ) {
             LinearProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
@@ -91,10 +85,12 @@ fun PagerTopBar(
         }
 
         ConnectivityStatus()
+
+        content()
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun PreviewMaterialPagerTopBar() {
@@ -113,7 +109,7 @@ fun PreviewMaterialPagerTopBar() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun PreviewNoItemMaterialPagerTopBar() {

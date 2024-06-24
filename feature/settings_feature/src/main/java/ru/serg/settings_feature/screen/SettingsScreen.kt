@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.serg.common.ScreenNames
 import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
@@ -37,6 +36,7 @@ import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.designsystem.top_item.TopBar
 import ru.serg.designsystem.top_item.TopBarHolder
 import ru.serg.model.enums.Units
+import ru.serg.navigation.WidgetSettingsScreen
 import ru.serg.settings_feature.Constants
 import ru.serg.settings_feature.elements.CollapsingContainer
 import ru.serg.settings_feature.elements.HourSliderItem
@@ -142,7 +142,7 @@ fun SettingsScreen(
             MenuCommonButton(
                 headerText = stringResource(id = string.show_widget_settings)
             ) {
-                navController.navigate(ScreenNames.WIDGET_SETTINGS_SCREEN)
+                navController.navigate(WidgetSettingsScreen)
             }
 
             val isLocationEnabled = viewModel.isLocationEnabled.collectAsState().value

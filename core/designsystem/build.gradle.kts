@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.kotlinx.datetime)
 
+    api(libs.bundles.ktor)
+
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
 

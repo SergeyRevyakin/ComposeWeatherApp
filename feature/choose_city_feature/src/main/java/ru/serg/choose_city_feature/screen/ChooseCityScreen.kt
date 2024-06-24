@@ -42,19 +42,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import ru.serg.choose_city_feature.Constants
 import ru.serg.choose_city_feature.elements.CityRow
 import ru.serg.choose_city_feature.elements.CitySearchItem
 import ru.serg.choose_city_feature.elements.SearchTextField
 import ru.serg.choose_city_feature.screen.screen_state.Action
 import ru.serg.choose_city_feature.screen.screen_state.ScreenError
-import ru.serg.common.ScreenNames
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.top_item.TopBar
 import ru.serg.designsystem.top_item.TopBarHolder
+import ru.serg.navigation.CityWeatherScreen
+import ru.serg.navigation.toParcCityItem
 import ru.serg.strings.R.string
 
 @ExperimentalFoundationApi
@@ -145,16 +144,14 @@ fun ChooseCityScreen(
                                 onItemClick = remember {
                                     { cityItem ->
                                         navController.navigate(
-                                            "${ScreenNames.CITY_WEATHER_SCREEN}/${
-                                                Json.encodeToString(
-                                                    cityItem
-                                                )
-                                            }"
+                                            CityWeatherScreen(
+                                                cityItem.toParcCityItem()
+                                            )
                                         )
                                     }
                                 },
                                 modifier = Modifier
-                                    .animateItemPlacement()
+                                    .animateItem()
                             )
                         }
                     }
@@ -215,7 +212,7 @@ fun ChooseCityScreen(
                             onItemClick = {
                                 keyboard?.hide()
                                 navController.navigate(
-                                    "${ScreenNames.CITY_WEATHER_SCREEN}/${Json.encodeToString(it)}"
+                                    CityWeatherScreen(cityItem.toParcCityItem())
                                 )
                             },
                             onAddClick = {

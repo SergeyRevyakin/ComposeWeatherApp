@@ -4,9 +4,11 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,15 +34,15 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.serg.designsystem.common.ErrorItem
 import ru.serg.designsystem.common.SunLoadingScreen
+import ru.serg.designsystem.top_item.ErrorTopBarItem
 import ru.serg.designsystem.top_item.PagerTopBar
-import ru.serg.main_pager.CommonScreenState
+import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
 import ru.serg.weather_elements.elements.NoCitiesMainScreenItem
 
 @OptIn(
-    ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class
+    ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class
 )
 @Composable
 fun MainScreen(
@@ -49,62 +51,87 @@ fun MainScreen(
     navigateToSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-
-    val screenState by viewModel.citiesWeather.collectAsState()
+    val newScreenState by viewModel.pagerScreenState.collectAsState()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        (screenState as? CommonScreenState.Success)?.weatherList?.size ?: 0
+        newScreenState.weatherList.size
     }
 
     LaunchedEffect(pagerState.currentPage) {
         viewModel.setPageNumber(pagerState.currentPage)
     }
 
-    val state = rememberPullToRefreshState()
+    val pullToRefreshState = rememberPullToRefreshState()
 
-    val isLoading by viewModel.isLoading
 
-    if (state.isRefreshing) {
-        LaunchedEffect(true) {
+    LaunchedEffect(pullToRefreshState.isRefreshing) {
+        if (pullToRefreshState.isRefreshing) {
             viewModel.refresh()
         }
     }
 
-    LaunchedEffect(isLoading) {
-        state.endRefresh()
+    LaunchedEffect(newScreenState.isLoading) {
+        pullToRefreshState.endRefresh()
     }
 
-    Box(Modifier.nestedScroll(state.nestedScrollConnection)) {
+    Box(Modifier.nestedScroll(pullToRefreshState.nestedScrollConnection)) {
         val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
 
         Scaffold(
             modifier = modifier
                 .fillMaxSize()
-                .nestedScroll(state.nestedScrollConnection),
+                .nestedScroll(pullToRefreshState.nestedScrollConnection),
             topBar = {
                 PagerTopBar(
                     pagerState = pagerState,
-                    isLoading = isLoading,
+                    isLoading = newScreenState.isLoading,
                     onLeftIconClick = remember {
                         navigateToChooseCity
                     },
                     onRightIconClick = remember {
                         navigateToSettings
                     },
-                    appBarState = appBarState
-                )
+                    appBarState = appBarState,
+                ) {
+                    AnimatedVisibility(
+                        visible = newScreenState.error is PagerScreenError,
+                        enter = expandVertically(
+                            animationSpec = tween(300)
+                        ) + slideInVertically(
+                            animationSpec = tween(500),
+                            initialOffsetY = { -it }
+                        ),
+                        exit = shrinkVertically(
+                            animationSpec = tween(500, delayMillis = 3000)
+                        )
+                    ) {
+                        ErrorTopBarItem((newScreenState.error as PagerScreenError.NetworkError).throwable)
+                    }
+                }
             }
         ) { padding ->
 
             val context = LocalContext.current
 
             AnimatedVisibility(
-                visible = screenState is CommonScreenState.Empty,
+                visible = newScreenState.error != null && newScreenState.weatherList.isEmpty(),
+                enter = fadeIn(
+                    animationSpec = tween(300)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(300)
+                )
+            ) {
+                pullToRefreshState.endRefresh()
+                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+            }
+
+            AnimatedVisibility(
+                visible = newScreenState.weatherList.isEmpty() && !newScreenState.isStartUp,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -132,7 +159,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = screenState is CommonScreenState.Loading,
+                visible = newScreenState.isStartUp,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -144,7 +171,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = screenState is CommonScreenState.Success,
+                visible = newScreenState.weatherList.isNotEmpty(),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -152,7 +179,6 @@ fun MainScreen(
                     animationSpec = tween(300)
                 )
             ) {
-
                 HorizontalPager(
                     modifier = Modifier
                         .padding(padding)
@@ -163,28 +189,16 @@ fun MainScreen(
                     reverseLayout = false,
                     pageContent = {
                         PagerScreen(
-                            weatherItem = (screenState as CommonScreenState.Success).weatherList[it],
+                            weatherItem = newScreenState.weatherList[it],
                             modifier = Modifier
                         )
                     }
                 )
             }
-
-            AnimatedVisibility(
-                visible = screenState is CommonScreenState.Error,
-                enter = fadeIn(
-                    animationSpec = tween(300)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(300)
-                )
-            ) {
-                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
-            }
         }
 
         PullToRefreshContainer(
-            state = state,
+            state = pullToRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
             contentColor = MaterialTheme.colorScheme.primary,
         )

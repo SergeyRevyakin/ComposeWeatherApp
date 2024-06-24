@@ -11,4 +11,4 @@ data class CityItem(
     val isFavorite: Boolean = false,
     val id: Int = 0,
     val lastTimeUpdated: Long = 0L
-) : java.io.Serializable
+)

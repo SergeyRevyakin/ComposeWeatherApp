@@ -1,34 +1,32 @@
 [versions]
 activity-compose = "1.9.0"
 androidx-foundation = "1.6.7"
-androidx-material = "1.6.7"
-appcompat = "1.6.1"
-compose-bom = "2024.05.00"
+androidx-material = "1.6.8"
+appcompat = "1.7.0"
+compose-bom = "2024.06.00"
 core-ktx = "1.13.1"
 datastore-preferences = "1.1.1"
-espresso-core = "3.5.1"
-firebaseBom = "33.0.0"
-glance = "1.1.0-rc01"
-gradle = "8.6.0-alpha03"
+firebaseBom = "33.1.1"
+glance = "1.1.0"
+gradle = "8.6.0-alpha07"
 hilt-android = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 junit = "1.1.5"
 kotlin = "2.0.0"
 kotlinx-datetime = "0.6.0"
-kotlinx-serialization-json = "1.6.3"
-kotlinxCoroutines = "1.8.1"
-ktor-client = "2.3.11"
-lifecycle-runtime-ktx = "2.8.0"
+kotlinx-serialization-json = "1.7.0"
+kotlinxCoroutines = "1.9.0-RC"
+ktor-client = "2.3.12"
 material = "1.12.0"
 material3 = "1.2.1"
 multidex = "2.0.1"
-navigation-compose = "2.7.7"
+navigation-compose = "2.8.0-beta03"
 permission-flow-android = "2.0.0"
-play-services-location = "21.2.0"
+play-services-location = "21.3.0"
 room-testing = "2.6.1"
 secretsGradlePlugin = "2.0.1"
-ui = "1.6.7"
-ui-test-junit4 = "1.6.7"
+ui = "1.6.8"
+ui-test-junit4 = "1.6.8"
 work-runtime-ktx = "2.9.0"
 androidxTestCore = "1.5.0"
 androidxTestExt = "1.1.5"
@@ -44,15 +42,15 @@ turbine = "1.1.0"
 minSdk = "27"
 compileSdk = "34"
 targetSdk = "34"
-firebase-plugin = "4.4.1"
-firebase-crashlytics = "3.0.1"
+firebase-plugin = "4.4.2"
+firebase-crashlytics = "3.0.2"
+lifecycleViewmodelSavedstate = "2.8.2"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 androidx-glance = { module = "androidx.glance:glance", version.ref = "glance" }
 androidx-glance-material = { module = "androidx.glance:glance-material3", version.ref = "glance" }
@@ -61,8 +59,6 @@ androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref =
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-navigation-compose" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-runtime-ktx" }
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-material" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
@@ -81,7 +77,6 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-foundation" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android" }
@@ -111,6 +106,7 @@ androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiaut
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version.ref = "annotationJvm" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+androidx-lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycleViewmodelSavedstate" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
@@ -126,6 +122,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gradle-build = { id = "com.android.tools.build.gradle", version.ref = "gradle" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 
 
 [bundles]
