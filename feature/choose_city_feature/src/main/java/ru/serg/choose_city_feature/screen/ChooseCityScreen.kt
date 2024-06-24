@@ -131,7 +131,7 @@ fun ChooseCityScreen(
                     ) {
                         items(
                             favouriteCities.size,
-                            key = { it }) { item ->
+                            key = { favouriteCities[it].hashCode() }) { item ->
                             CitySearchItem(
                                 cityItemState = remember {
                                     mutableStateOf(favouriteCities[item])
