@@ -1,6 +1,5 @@
 [versions]
 activity-compose = "1.9.0"
-androidx-foundation = "1.6.7"
 androidx-material = "1.6.8"
 appcompat = "1.7.0"
 compose-bom = "2024.06.00"
@@ -8,10 +7,10 @@ core-ktx = "1.13.1"
 datastore-preferences = "1.1.1"
 firebaseBom = "33.1.1"
 glance = "1.1.0"
-gradle = "8.6.0-alpha07"
+gradle = "8.5.0"
 hilt-android = "2.51.1"
 hilt-navigation-compose = "1.2.0"
-junit = "1.1.5"
+junit = "1.2.1"
 kotlin = "2.0.0"
 kotlinx-datetime = "0.6.0"
 kotlinx-serialization-json = "1.7.0"
@@ -20,22 +19,22 @@ ktor-client = "2.3.12"
 material = "1.12.0"
 material3 = "1.2.1"
 multidex = "2.0.1"
-navigation-compose = "2.8.0-beta03"
+navigation-compose = "2.8.0-beta04"
 permission-flow-android = "2.0.0"
 play-services-location = "21.3.0"
-room-testing = "2.6.1"
+room = "2.7.0-alpha04"
 secretsGradlePlugin = "2.0.1"
 ui = "1.6.8"
 ui-test-junit4 = "1.6.8"
 work-runtime-ktx = "2.9.0"
-androidxTestCore = "1.5.0"
-androidxTestExt = "1.1.5"
-androidxTestRules = "1.5.0"
-androidxTestRunner = "1.5.2"
+androidxTestCore = "1.6.1"
+androidxTestExt = "1.2.1"
+androidxTestRules = "1.6.1"
+androidxTestRunner = "1.6.1"
 androidxUiAutomator = "2.3.0"
-androidxEspresso = "3.5.1"
+androidxEspresso = "3.6.1"
 junit4 = "4.13.2"
-ksp = "2.0.0-1.0.21"
+ksp = "2.0.0-1.0.22"
 secrets = "2.0.1"
 annotationJvm = "1.8.0"
 turbine = "1.1.0"
@@ -44,7 +43,7 @@ compileSdk = "34"
 targetSdk = "34"
 firebase-plugin = "4.4.2"
 firebase-crashlytics = "3.0.2"
-lifecycleViewmodelSavedstate = "2.8.2"
+lifecycleViewmodelSavedstate = "2.8.3"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -63,10 +62,10 @@ androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "mult
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-material" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-testing" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-testing" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-testing" }
-androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-testing" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui-test-junit4" }
@@ -123,6 +122,7 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gradle-build = { id = "com.android.tools.build.gradle", version.ref = "gradle" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+room = { id = "androidx.room", version.ref = "room" }
 
 
 [bundles]
