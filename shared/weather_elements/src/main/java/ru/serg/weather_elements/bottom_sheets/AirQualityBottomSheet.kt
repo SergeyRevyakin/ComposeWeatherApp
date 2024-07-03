@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +47,7 @@ fun AirQualityBottomSheet(
     Column(
         modifier = Modifier
             .padding(12.dp)
+            .verticalScroll(rememberScrollState())
     )
     {
         Text(
@@ -122,7 +125,8 @@ fun AirQualityBottomSheet(
             pollutionDescription = stringResource(id = string.aqi_pm25_desc),
             wikiLink = stringResource(id = string.aqi_pm25_link),
             pollutionValue = airQuality.pm25.roundToInt().toString(),
-            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM25PollutionIndex()))
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM25PollutionIndex())),
+            pollutionValueIndex = airQuality.getPM25PollutionIndex()
         )
 
         PollutionDescriptionRow(
@@ -130,7 +134,8 @@ fun AirQualityBottomSheet(
             pollutionDescription = stringResource(id = string.aqi_pm10_desc),
             wikiLink = stringResource(id = string.aqi_pm10_link),
             pollutionValue = airQuality.pm10.roundToInt().toString(),
-            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM10PollutionIndex()))
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getPM10PollutionIndex())),
+            pollutionValueIndex = airQuality.getPM10PollutionIndex()
         )
 
         PollutionDescriptionRow(
@@ -138,7 +143,8 @@ fun AirQualityBottomSheet(
             pollutionDescription = stringResource(id = string.aqi_no2_desc),
             wikiLink = stringResource(id = string.aqi_no2_link),
             pollutionValue = airQuality.no2.roundToInt().toString(),
-            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getNO2PollutionIndex()))
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getNO2PollutionIndex())),
+            pollutionValueIndex = airQuality.getNO2PollutionIndex()
         )
 
         PollutionDescriptionRow(
@@ -146,7 +152,8 @@ fun AirQualityBottomSheet(
             pollutionDescription = stringResource(id = string.aqi_o3_desc),
             wikiLink = stringResource(id = string.aqi_o3_link),
             pollutionValue = airQuality.o3.roundToInt().toString(),
-            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getO3PollutionIndex()))
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getO3PollutionIndex())),
+            pollutionValueIndex = airQuality.getO3PollutionIndex()
         )
 
         PollutionDescriptionRow(
@@ -154,7 +161,8 @@ fun AirQualityBottomSheet(
             pollutionDescription = stringResource(id = string.aqi_so2_desc),
             wikiLink = stringResource(id = string.aqi_so2_link),
             pollutionValue = airQuality.so2.roundToInt().toString(),
-            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getSO2PollutionIndex()))
+            pollutionValueDesc = stringResource(id = airQuality.getAirQualityDesc(airQuality.getSO2PollutionIndex())),
+            pollutionValueIndex = airQuality.getSO2PollutionIndex()
         )
 
         Spacer(modifier = Modifier.height(16.dp))

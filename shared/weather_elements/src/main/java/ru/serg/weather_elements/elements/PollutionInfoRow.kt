@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
+import ru.serg.weather_elements.getAqiColorByIndex
 
 @Composable
 fun PollutionDescriptionRow(
@@ -26,10 +28,12 @@ fun PollutionDescriptionRow(
     wikiLink: String,
     pollutionValue: String,
     pollutionValueDesc: String,
-
+    pollutionValueIndex: Int,
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
+    val accentColor = getAqiColorByIndex(pollutionValueIndex)
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -59,13 +63,16 @@ fun PollutionDescriptionRow(
         Text(
             text = pollutionValue,
             fontSize = 20.sp,
+            textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )
 
         Text(
             text = pollutionValueDesc,
-            fontSize = 20.sp,
-            modifier = Modifier.weight(2f)
+            color = accentColor,
+            modifier = Modifier
+                .weight(2f)
+                .padding(start = 8.dp)
         )
     }
 }
@@ -79,7 +86,8 @@ private fun Preview() {
             "Nitrogen dioxide",
             "https://en.wikipedia.org/wiki/Nitrogen_dioxide",
             "12",
-            "Moderate"
+            "Moderate",
+            3
         )
     }
 }
@@ -93,7 +101,8 @@ private fun Preview2() {
             "Nitrogen dioxide",
             "https://en.wikipedia.org/wiki/Nitrogen_dioxide",
             "11",
-            "Good"
+            "Good",
+            1
         )
     }
 }
@@ -110,8 +119,9 @@ private fun PreviewDark() {
             "NO2",
             "Coarse particulate matter",
             "https://en.wikipedia.org/wiki/Nitrogen_dioxide",
-            "12",
-            "Very poor"
+            "1",
+            "Very poor",
+            5
         )
     }
 }

@@ -44,9 +44,6 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.kotlinx.serialization.json)
-
-
-
 }
 
 class RoomSchemaArgProvider(
