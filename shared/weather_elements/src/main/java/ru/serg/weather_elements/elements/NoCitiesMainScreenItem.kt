@@ -107,8 +107,18 @@ fun NoCitiesMainScreenItem(
                 sheetState = sheetState
             ) {
                 WelcomeBottomSheet(
-                    onSearchClick = onSearchClick,
-                    onEnableLocationClick = onRequestPermissionClick
+                    onSearchClick = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }
+                        onSearchClick()
+                    },
+                    onEnableLocationClick = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }
+                        onRequestPermissionClick()
+                    }
                 )
             }
         }

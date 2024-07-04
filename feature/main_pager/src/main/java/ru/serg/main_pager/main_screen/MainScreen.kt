@@ -109,7 +109,11 @@ fun MainScreen(
                             animationSpec = tween(500, delayMillis = 3000)
                         )
                     ) {
-                        ErrorTopBarItem((newScreenState.error as PagerScreenError.NetworkError).throwable)
+                        (newScreenState.error as? PagerScreenError.NetworkError)?.throwable?.let {
+                            ErrorTopBarItem(
+                                it
+                            )
+                        }
                     }
                 }
             }
