@@ -47,8 +47,8 @@ fun ErrorTopBarItem(
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .size(32.dp)
+                    .padding(start = 16.dp)
+                    .size(28.dp)
 
             )
 
@@ -57,7 +57,7 @@ fun ErrorTopBarItem(
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxWidth()
-                    .padding(end = 44.dp),
+                    .padding(end = 32.dp),
                 color = Color.White,
                 textAlign = TextAlign.Center
             )

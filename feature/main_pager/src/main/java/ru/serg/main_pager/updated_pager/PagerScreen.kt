@@ -39,10 +39,12 @@ fun PagerScreen(
             animationSpec = tween(150)
         )
     ) {
-        CityWeatherContentItem(
-            weatherItem = weatherItem,
-            modifier = modifier
-        )
+        if (weatherItem.hourlyWeatherList.isNotEmpty() && weatherItem.dailyWeatherList.isNotEmpty()) {
+            CityWeatherContentItem(
+                weatherItem = weatherItem,
+                modifier = modifier
+            )
+        }
     }
 }
 

@@ -3,7 +3,6 @@
 package ru.serg.main_pager.main_screen
 
 import android.Manifest
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
@@ -42,10 +42,7 @@ class MainViewModel @Inject constructor(
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
     val pagerScreenState = _pagerScreenState.asStateFlow()
-
-
     val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
-    private val isLocationAvailable = MutableStateFlow(false)
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, t ->
@@ -65,25 +62,18 @@ class MainViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            _pagerScreenState.collectLatest {
-                Log.d("Tag", "------ $it")
-            }
+            locationPermissionFlow.distinctUntilChangedBy { _pagerScreenState.value.isLocationAvailable == it.grantedPermissions.isNotEmpty() }
+                .collectLatest { permissionState ->
+                    _pagerScreenState.update {
+                        it.copy(
+                            isLocationAvailable = permissionState.grantedPermissions.isNotEmpty()
+                        )
+                    }
+                }
         }
 
-        viewModelScope.launch {
-            locationPermissionFlow.collectLatest { permissionState ->
-                _pagerScreenState.update {
-                    it.copy(
-                        isLocationAvailable = permissionState.grantedPermissions.isNotEmpty()
-                    )
-                }
-                isLocationAvailable.emit(
-                    permissionState.grantedPermissions.isNotEmpty()
-                )
-                setInitialState(permissionState.grantedPermissions.isNotEmpty())
-            }
-        }
         initCitiesWeatherFlow()
+        setInitialState()
     }
 
     fun initCitiesWeatherFlow() {
@@ -110,16 +100,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun setInitialState(isLocationAvailable: Boolean) {
+    private fun setInitialState() {
         viewModelScope.launch(coroutineExceptionHandler) {
 
             _pagerScreenState.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when {
+                    state.isLoading -> return@collectLatest
+
                     state.weatherList.isEmpty() && !state.isStartUp -> {
-                        if (isLocationAvailable) checkLocationAndFetchWeather()
+                        if (state.isLocationAvailable) checkLocationAndFetchWeather()
                     }
 
-                    !state.isLoading -> {
+                    state.weatherList.isNotEmpty() -> {
                         try {
                             val item = state.weatherList[state.activeItem]
                             checkWeatherItem(item)
@@ -129,7 +121,7 @@ class MainViewModel @Inject constructor(
                                     activeItem = it.activeItem - 1
                                 )
                             }
-                            setInitialState(isLocationAvailable)
+                            setInitialState()
                         }
                     }
                 }
@@ -163,7 +155,7 @@ class MainViewModel @Inject constructor(
 
             item.let { updatedWeatherItem ->
                 if (updatedWeatherItem.cityItem.isFavorite) {
-                    if (isLocationAvailable.value) {
+                    if (_pagerScreenState.value.isLocationAvailable) {
                         checkLocationAndFetchWeather()
                     } else weatherRepository.removeFavouriteCityParam(updatedWeatherItem)
                 } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
@@ -224,6 +216,7 @@ class MainViewModel @Inject constructor(
         }
         viewModelScope.launch(coroutineExceptionHandler) {
             locationService.getLocationUpdate()
+                .distinctUntilChanged()
                 .collectLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
                         coordinatesWrapper,

@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.parcelize) apply false
+    alias(libs.plugins.room) apply false
 }
 
 tasks.register("clean", Delete::class) {
