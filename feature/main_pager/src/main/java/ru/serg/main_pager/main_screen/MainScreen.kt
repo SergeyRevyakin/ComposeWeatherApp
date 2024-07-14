@@ -52,13 +52,13 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-    val newScreenState by viewModel.pagerScreenState.collectAsState()
+    val screenState by viewModel.pagerScreenState.collectAsState()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        newScreenState.weatherList.size
+        screenState.weatherList.size
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -74,7 +74,7 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(newScreenState.isLoading) {
+    LaunchedEffect(screenState.isLoading) {
         pullToRefreshState.endRefresh()
     }
 
@@ -88,7 +88,7 @@ fun MainScreen(
             topBar = {
                 PagerTopBar(
                     pagerState = pagerState,
-                    isLoading = newScreenState.isLoading,
+                    isLoading = screenState.isLoading,
                     onLeftIconClick = remember {
                         navigateToChooseCity
                     },
@@ -98,7 +98,7 @@ fun MainScreen(
                     appBarState = appBarState,
                 ) {
                     AnimatedVisibility(
-                        visible = newScreenState.error is PagerScreenError,
+                        visible = screenState.error is PagerScreenError,
                         enter = expandVertically(
                             animationSpec = tween(300)
                         ) + slideInVertically(
@@ -109,7 +109,7 @@ fun MainScreen(
                             animationSpec = tween(500, delayMillis = 3000)
                         )
                     ) {
-                        (newScreenState.error as? PagerScreenError.NetworkError)?.throwable?.let {
+                        (screenState.error as? PagerScreenError.NetworkError)?.throwable?.let {
                             ErrorTopBarItem(
                                 it
                             )
@@ -122,7 +122,7 @@ fun MainScreen(
             val context = LocalContext.current
 
             AnimatedVisibility(
-                visible = newScreenState.error != null && newScreenState.weatherList.isEmpty(),
+                visible = screenState.error != null && screenState.weatherList.isEmpty(),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -135,7 +135,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = newScreenState.weatherList.isEmpty() && !newScreenState.isStartUp,
+                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp && !screenState.isLoading,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -159,14 +159,14 @@ fun MainScreen(
                     goToSettings = remember {
                         { context.openAppSystemSettings() }
                     },
-                    hasWelcomeBottomSheet = newScreenState.hasWelcomeDialog
+                    hasWelcomeBottomSheet = screenState.hasWelcomeDialog
                 )
 
                 viewModel.turnOffDialog()
             }
 
             AnimatedVisibility(
-                visible = newScreenState.isStartUp,
+                visible = screenState.isStartUp || (screenState.weatherList.isEmpty() && screenState.isLoading),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -178,7 +178,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = newScreenState.weatherList.isNotEmpty(),
+                visible = screenState.weatherList.isNotEmpty(),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -196,7 +196,7 @@ fun MainScreen(
                     reverseLayout = false,
                     pageContent = {
                         PagerScreen(
-                            weatherItem = newScreenState.weatherList[it],
+                            weatherItem = screenState.weatherList[it],
                             modifier = Modifier
                         )
                     }
