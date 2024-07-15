@@ -12,5 +12,6 @@ data class DailyWeather(
     val sunset: Long,
     val dailyWeatherItem: DailyTempItem,
     val feelsLike: DailyTempItem,
-    val uvi: Double
+    val uvi: Double,
+    val precipitationProbability: Int = 0,
 )

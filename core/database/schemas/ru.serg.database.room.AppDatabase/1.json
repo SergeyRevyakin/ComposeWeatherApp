@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e697fd6deddf64016e376debc13fa2f4",
+    "identityHash": "de15126da85aaec17f0226dc9fdef15e",
     "entities": [
       {
         "tableName": "city_table",
@@ -17,20 +17,17 @@
           {
             "fieldPath": "country",
             "columnName": "country",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "latitude",
             "columnName": "latitude",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "longitude",
             "columnName": "longitude",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "isFavorite",
@@ -47,8 +44,7 @@
           {
             "fieldPath": "lastTimeUpdated",
             "columnName": "lastTimeUpdated",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -56,49 +52,41 @@
           "columnNames": [
             "city_id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "day_weather_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `sunrise` INTEGER, `sunset` INTEGER, `city_id` INTEGER NOT NULL, `uvi` REAL, `daily_morningTemp` REAL NOT NULL, `daily_dayTemp` REAL NOT NULL, `daily_eveningTemp` REAL NOT NULL, `daily_nightTemp` REAL NOT NULL, `daily_maxTemp` REAL, `daily_minTemp` REAL, `feels_morningTemp` REAL NOT NULL, `feels_dayTemp` REAL NOT NULL, `feels_eveningTemp` REAL NOT NULL, `feels_nightTemp` REAL NOT NULL, `feels_maxTemp` REAL, `feels_minTemp` REAL, PRIMARY KEY(`city_id`, `datetime`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `sunrise` INTEGER, `sunset` INTEGER, `city_id` INTEGER NOT NULL, `uvi` REAL, `precipitationProbability` INTEGER NOT NULL, `daily_morningTemp` REAL NOT NULL, `daily_dayTemp` REAL NOT NULL, `daily_eveningTemp` REAL NOT NULL, `daily_nightTemp` REAL NOT NULL, `daily_maxTemp` REAL, `daily_minTemp` REAL, `feels_morningTemp` REAL NOT NULL, `feels_dayTemp` REAL NOT NULL, `feels_eveningTemp` REAL NOT NULL, `feels_nightTemp` REAL NOT NULL, `feels_maxTemp` REAL, `feels_minTemp` REAL, PRIMARY KEY(`city_id`, `datetime`))",
         "fields": [
           {
             "fieldPath": "windDirection",
             "columnName": "windDirection",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "windSpeed",
             "columnName": "windSpeed",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "humidity",
             "columnName": "humidity",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "pressure",
             "columnName": "pressure",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "weatherDescription",
             "columnName": "weatherDescription",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "weatherIcon",
             "columnName": "weatherIcon",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "dateTime",
@@ -109,14 +97,12 @@
           {
             "fieldPath": "sunrise",
             "columnName": "sunrise",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "sunset",
             "columnName": "sunset",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "cityId",
@@ -127,8 +113,13 @@
           {
             "fieldPath": "uvi",
             "columnName": "uvi",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "precipitationProbability",
+            "columnName": "precipitationProbability",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "dailyWeatherItem.morningTemp",
@@ -157,14 +148,12 @@
           {
             "fieldPath": "dailyWeatherItem.maxTemp",
             "columnName": "daily_maxTemp",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "dailyWeatherItem.minTemp",
             "columnName": "daily_minTemp",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "feelsLike.morningTemp",
@@ -193,14 +182,12 @@
           {
             "fieldPath": "feelsLike.maxTemp",
             "columnName": "feels_maxTemp",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "feelsLike.minTemp",
             "columnName": "feels_minTemp",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           }
         ],
         "primaryKey": {
@@ -220,60 +207,51 @@
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_day_weather_table_city_id` ON `${TABLE_NAME}` (`city_id`)"
           }
-        ],
-        "foreignKeys": []
+        ]
       },
       {
         "tableName": "hour_weather_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, `air_quality_co` REAL, `air_quality_nh3` REAL, `air_quality_no` REAL, `air_quality_no2` REAL, `air_quality_o3` REAL, `air_quality_pm10` REAL, `air_quality_pm25` REAL, `air_quality_so2` REAL, `air_quality_owmIndex` INTEGER, PRIMARY KEY(`city_id`, `datetime`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`feelsLike` REAL, `currentTemp` REAL, `windDirection` INTEGER, `windSpeed` REAL, `humidity` INTEGER, `pressure` INTEGER, `weatherDescription` TEXT, `weatherIcon` INTEGER, `datetime` INTEGER NOT NULL, `city_id` INTEGER NOT NULL, `uvi` REAL, `precipitationProbability` INTEGER NOT NULL, `air_quality_co` REAL, `air_quality_nh3` REAL, `air_quality_no` REAL, `air_quality_no2` REAL, `air_quality_o3` REAL, `air_quality_pm10` REAL, `air_quality_pm25` REAL, `air_quality_so2` REAL, `air_quality_owmIndex` INTEGER, PRIMARY KEY(`city_id`, `datetime`))",
         "fields": [
           {
             "fieldPath": "feelsLike",
             "columnName": "feelsLike",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "currentTemp",
             "columnName": "currentTemp",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "windDirection",
             "columnName": "windDirection",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "windSpeed",
             "columnName": "windSpeed",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "humidity",
             "columnName": "humidity",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "pressure",
             "columnName": "pressure",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "weatherDescription",
             "columnName": "weatherDescription",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "weatherIcon",
             "columnName": "weatherIcon",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "dateTime",
@@ -290,62 +268,58 @@
           {
             "fieldPath": "uvi",
             "columnName": "uvi",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "precipitationProbability",
+            "columnName": "precipitationProbability",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "airQuality.co",
             "columnName": "air_quality_co",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.nh3",
             "columnName": "air_quality_nh3",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.no",
             "columnName": "air_quality_no",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.no2",
             "columnName": "air_quality_no2",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.o3",
             "columnName": "air_quality_o3",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.pm10",
             "columnName": "air_quality_pm10",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.pm25",
             "columnName": "air_quality_pm25",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.so2",
             "columnName": "air_quality_so2",
-            "affinity": "REAL",
-            "notNull": false
+            "affinity": "REAL"
           },
           {
             "fieldPath": "airQuality.owmIndex",
             "columnName": "air_quality_owmIndex",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -374,14 +348,12 @@
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_hour_weather_table_city_id` ON `${TABLE_NAME}` (`city_id`)"
           }
-        ],
-        "foreignKeys": []
+        ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e697fd6deddf64016e376debc13fa2f4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'de15126da85aaec17f0226dc9fdef15e')"
     ]
   }
 }

@@ -27,6 +27,7 @@ class DatabaseModule {
         )
             .fallbackToDestructiveMigrationOnDowngrade(true)
             .fallbackToDestructiveMigration(true)
+            .addMigrations(AppDatabase.MIGRATION_1_2)
             .build()
     }
 

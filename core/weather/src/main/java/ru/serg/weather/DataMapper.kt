@@ -8,6 +8,7 @@ import ru.serg.model.HourlyWeather
 import ru.serg.network.dto.AirQualityResponse
 import ru.serg.network.dto.OneCallResponse
 import ru.serg.network.dto.WeatherResponse
+import kotlin.math.roundToInt
 
 object DataMapper {
     fun mapCityItem(weatherResponse: WeatherResponse, isFavourite: Boolean) =
@@ -54,7 +55,8 @@ object DataMapper {
         currentTemp = hourly.temp.orZero(),
         feelsLike = hourly.feelsLike.orZero(),
         uvi = hourly.uvi.orZero(),
-        airQuality = mapAirQuality(airQualityResponseItem)
+        airQuality = mapAirQuality(airQualityResponseItem),
+        precipitationProbability = (hourly.pop?.times(100))?.roundToInt() ?: 0
     )
 
     fun mapDailyWeather(daily: OneCallResponse.Daily) = DailyWeather(
@@ -69,7 +71,8 @@ object DataMapper {
         dailyWeatherItem = getUpdatedDailyTempItem(daily),
         sunset = daily.sunset.toTimeStamp(),
         sunrise = daily.sunrise.toTimeStamp(),
-        uvi = daily.uvi.orZero()
+        uvi = daily.uvi.orZero(),
+        precipitationProbability = (daily.pop?.times(100))?.roundToInt() ?: 0
     )
 
     private fun mapAirQuality(responseItem: AirQualityResponse.AirQualityResponseItem?): AirQuality {
