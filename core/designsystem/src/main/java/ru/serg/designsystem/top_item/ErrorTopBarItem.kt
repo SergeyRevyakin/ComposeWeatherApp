@@ -26,7 +26,7 @@ import ru.serg.strings.R.string
 
 @Composable
 fun ErrorTopBarItem(
-    throwable: Throwable
+    throwable: Throwable?
 ) {
     Column(
         modifier = Modifier

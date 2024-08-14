@@ -8,7 +8,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -99,21 +98,12 @@ fun MainScreen(
                 ) {
                     AnimatedVisibility(
                         visible = screenState.error is PagerScreenError,
-                        enter = expandVertically(
-                            animationSpec = tween(300)
-                        ) + slideInVertically(
-                            animationSpec = tween(500),
-                            initialOffsetY = { -it }
-                        ),
-                        exit = shrinkVertically(
-                            animationSpec = tween(500, delayMillis = 3000)
-                        )
+                        enter = expandVertically(animationSpec = tween(300)),
+                        exit = shrinkVertically(animationSpec = tween(300))
                     ) {
-                        (screenState.error as? PagerScreenError.NetworkError)?.throwable?.let {
-                            ErrorTopBarItem(
-                                it
-                            )
-                        }
+                        ErrorTopBarItem(
+                            (screenState.error as? PagerScreenError.NetworkError)?.throwable
+                        )
                     }
                 }
             }
