@@ -25,7 +25,7 @@ fun <T> Flow<T>.asResult(): Flow<NetworkResult<T>> {
         .catch {
             emit(
                 NetworkResult.Error(
-                    it.localizedMessage,
+                    it.message,
                     throwable = it
                 )
             )

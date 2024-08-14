@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.NetworkStatus
 import ru.serg.common.asResult
+import ru.serg.datastore.DataStoreDataSource
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
 import ru.serg.main_pager.DateUseCase
@@ -37,7 +38,8 @@ class MainViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
     private val locationService: LocationService,
     private val dateUtils: DateUseCase,
-    private val networkStatus: NetworkStatus
+    private val networkStatus: NetworkStatus,
+    val dataStoreDataSource: DataStoreDataSource
 ) : ViewModel() {
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
@@ -187,7 +189,7 @@ class MainViewModel @Inject constructor(
                                 mutableList[_pagerScreenState.value.activeItem] = result.data
                                 _pagerScreenState.update {
                                     it.copy(
-                                        isLoading = true,
+                                        isLoading = false,
                                         weatherList = mutableList,
                                         error = null
                                     )
@@ -248,7 +250,7 @@ class MainViewModel @Inject constructor(
                                     mutableList[_pagerScreenState.value.activeItem] = result.data
                                     _pagerScreenState.update {
                                         it.copy(
-                                            isLoading = true,
+                                            isLoading = false,
                                             weatherList = mutableList,
                                             error = null
                                         )

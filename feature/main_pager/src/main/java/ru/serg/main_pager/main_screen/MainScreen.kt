@@ -79,7 +79,7 @@ fun MainScreen(
     }
 
     Box(Modifier.nestedScroll(pullToRefreshState.nestedScrollConnection)) {
-        val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+        val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
         Scaffold(
             modifier = modifier
@@ -195,10 +195,15 @@ fun MainScreen(
                     userScrollEnabled = true,
                     reverseLayout = false,
                     pageContent = {
-                        PagerScreen(
-                            weatherItem = screenState.weatherList[it],
-                            modifier = Modifier
-                        )
+                        val weatherItem = screenState.weatherList[it]
+                        if (weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) {
+                            ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+                        } else {
+                            PagerScreen(
+                                weatherItem = weatherItem,
+                                modifier = Modifier
+                            )
+                        }
                     }
                 )
             }
