@@ -172,7 +172,10 @@ fun SettingsScreen(
             ).versionName
 
             Text(
-                text = stringResource(id = string.settings_current_app_verions, versionName),
+                text = stringResource(
+                    id = string.settings_current_app_verions,
+                    versionName.toString()
+                ),
                 style = settingsSubText,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)

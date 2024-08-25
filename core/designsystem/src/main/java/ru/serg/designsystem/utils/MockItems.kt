@@ -21,7 +21,8 @@ object MockItems {
             dailyWeatherItem = getUpdatedDailyTempMockItem(),
             feelsLike = getUpdatedDailyTempMockItem(),
             dateTime = System.currentTimeMillis(),
-            uvi = 3.2
+            uvi = 3.2,
+            precipitationProbability = 44
         )
 
     fun getHourlyWeatherMockItem() =
@@ -36,7 +37,8 @@ object MockItems {
             feelsLike = 23.3,
             dateTime = System.currentTimeMillis(),
             uvi = 2.2,
-            airQuality = AirQuality.blankAirQuality()
+            airQuality = AirQuality.blankAirQuality(),
+            precipitationProbability = 10
         )
 
     private fun getUpdatedDailyTempMockItem() =

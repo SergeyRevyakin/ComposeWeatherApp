@@ -29,6 +29,10 @@ class WeatherRepository @Inject constructor(
 
         val cityItem = DataMapper.mapCityItem(weatherResponse, true)
 
+        if (weatherResponse.message != null || oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
+            || oneCallResponse.daily.isNullOrEmpty()
+        ) throw Exception(oneCallResponse.message ?: weatherResponse.message)
+
         val dailyWeather = oneCallResponse.daily?.map {
             DataMapper.mapDailyWeather(it)
         } ?: listOf()
@@ -60,6 +64,10 @@ class WeatherRepository @Inject constructor(
         remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude),
         remoteDataSource.getAirQuality(cityItem.latitude, cityItem.longitude)
     ) { oneCallResponse, airQualityResponse ->
+
+        if (oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
+            || oneCallResponse.daily.isNullOrEmpty()
+        ) throw Exception(oneCallResponse.message)
 
         val dailyWeather = oneCallResponse.daily?.map {
             DataMapper.mapDailyWeather(it)

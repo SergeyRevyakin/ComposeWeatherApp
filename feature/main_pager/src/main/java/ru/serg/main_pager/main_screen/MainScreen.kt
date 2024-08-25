@@ -8,7 +8,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -52,13 +51,13 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-    val newScreenState by viewModel.pagerScreenState.collectAsState()
+    val screenState by viewModel.pagerScreenState.collectAsState()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        newScreenState.weatherList.size
+        screenState.weatherList.size
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -74,12 +73,12 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(newScreenState.isLoading) {
+    LaunchedEffect(screenState.isLoading) {
         pullToRefreshState.endRefresh()
     }
 
     Box(Modifier.nestedScroll(pullToRefreshState.nestedScrollConnection)) {
-        val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+        val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
         Scaffold(
             modifier = modifier
@@ -88,7 +87,7 @@ fun MainScreen(
             topBar = {
                 PagerTopBar(
                     pagerState = pagerState,
-                    isLoading = newScreenState.isLoading,
+                    isLoading = screenState.isLoading,
                     onLeftIconClick = remember {
                         navigateToChooseCity
                     },
@@ -98,22 +97,13 @@ fun MainScreen(
                     appBarState = appBarState,
                 ) {
                     AnimatedVisibility(
-                        visible = newScreenState.error is PagerScreenError,
-                        enter = expandVertically(
-                            animationSpec = tween(300)
-                        ) + slideInVertically(
-                            animationSpec = tween(500),
-                            initialOffsetY = { -it }
-                        ),
-                        exit = shrinkVertically(
-                            animationSpec = tween(500, delayMillis = 3000)
-                        )
+                        visible = screenState.error is PagerScreenError,
+                        enter = expandVertically(animationSpec = tween(300)),
+                        exit = shrinkVertically(animationSpec = tween(300))
                     ) {
-                        (newScreenState.error as? PagerScreenError.NetworkError)?.throwable?.let {
-                            ErrorTopBarItem(
-                                it
-                            )
-                        }
+                        ErrorTopBarItem(
+                            (screenState.error as? PagerScreenError.NetworkError)?.throwable
+                        )
                     }
                 }
             }
@@ -122,7 +112,7 @@ fun MainScreen(
             val context = LocalContext.current
 
             AnimatedVisibility(
-                visible = newScreenState.error != null && newScreenState.weatherList.isEmpty(),
+                visible = screenState.error != null && screenState.weatherList.isEmpty(),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -135,7 +125,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = newScreenState.weatherList.isEmpty() && !newScreenState.isStartUp,
+                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp && !screenState.isLoading,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -159,14 +149,14 @@ fun MainScreen(
                     goToSettings = remember {
                         { context.openAppSystemSettings() }
                     },
-                    hasWelcomeBottomSheet = newScreenState.hasWelcomeDialog
+                    hasWelcomeBottomSheet = screenState.hasWelcomeDialog
                 )
 
                 viewModel.turnOffDialog()
             }
 
             AnimatedVisibility(
-                visible = newScreenState.isStartUp,
+                visible = screenState.isStartUp || (screenState.weatherList.isEmpty() && screenState.isLoading),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -178,7 +168,7 @@ fun MainScreen(
             }
 
             AnimatedVisibility(
-                visible = newScreenState.weatherList.isNotEmpty(),
+                visible = screenState.weatherList.isNotEmpty(),
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -195,10 +185,15 @@ fun MainScreen(
                     userScrollEnabled = true,
                     reverseLayout = false,
                     pageContent = {
-                        PagerScreen(
-                            weatherItem = newScreenState.weatherList[it],
-                            modifier = Modifier
-                        )
+                        val weatherItem = screenState.weatherList[it]
+                        if (weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) {
+                            ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+                        } else {
+                            PagerScreen(
+                                weatherItem = weatherItem,
+                                modifier = Modifier
+                            )
+                        }
                     }
                 )
             }

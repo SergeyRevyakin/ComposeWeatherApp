@@ -30,5 +30,6 @@ data class DailyWeatherEntity(
     val dailyWeatherItem: DailyTempItem,
     @Embedded(prefix = Constants.FEELS)
     val feelsLike: DailyTempItem,
-    val uvi: Double?
+    val uvi: Double?,
+    val precipitationProbability: Int = 0
 )

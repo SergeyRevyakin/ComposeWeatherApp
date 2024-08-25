@@ -2,8 +2,8 @@ package ru.serg.designsystem.top_item
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -69,12 +69,8 @@ fun PagerTopBar(
 
         AnimatedVisibility(
             visible = isLoading,
-            enter = slideInHorizontally(
-                animationSpec = tween(300),
-                initialOffsetX = { -it }),
-            exit = slideOutHorizontally(
-                animationSpec = tween(300),
-                targetOffsetX = { it }),
+            enter = expandVertically(animationSpec = tween(300)),
+            exit = shrinkVertically(animationSpec = tween(300)),
         ) {
             LinearProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
