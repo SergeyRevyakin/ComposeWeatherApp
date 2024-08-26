@@ -186,7 +186,8 @@ fun MainScreen(
                     reverseLayout = false,
                     pageContent = {
                         val weatherItem = screenState.weatherList[it]
-                        if (weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) {
+
+                        if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
                             ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
                         } else {
                             PagerScreen(

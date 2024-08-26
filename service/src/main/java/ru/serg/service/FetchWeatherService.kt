@@ -20,6 +20,7 @@ import ru.serg.drawables.R.drawable
 import ru.serg.model.WeatherItem
 import ru.serg.notifications.Constants
 import ru.serg.notifications.showDailyServiceForecastNotification
+import ru.serg.notifications.showFetchErrorNotification
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -82,6 +83,7 @@ class FetchWeatherService : Service() {
                                 serviceNotification.setContentText("Error ${it.message}")
                             notificationManager.notify(SERVICE_ID, updatedNotification.build())
                             stop()
+                            showFetchErrorNotification(applicationContext, it.message)
                         }
 
                         else -> Unit

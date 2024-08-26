@@ -11,7 +11,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
 import ru.serg.widgets.WeatherWidget
 import java.util.concurrent.TimeUnit
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 class UpdateWorker @AssistedInject constructor(
     @Assisted val appContext: Context,
     @Assisted params: WorkerParameters,
-    private val workerUseCase: WorkerUseCase,
+    private val updateWorkerUseCase: UpdateWorkerUseCase,
 ) : CoroutineWorker(appContext, params) {
 
     companion object {
@@ -47,11 +47,10 @@ class UpdateWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
+        updateWorkerUseCase()
+        delay(1000)
         Log.e(TAG, "-- doWork upd")
-        WeatherWidget().updateAll(applicationContext)
-        workerUseCase.updateLocalData().collectLatest {
-            WeatherWidget().updateAll(appContext)
-        }
+        WeatherWidget().updateAll(appContext)
         return Result.success()
     }
 

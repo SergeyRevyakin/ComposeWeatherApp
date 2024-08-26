@@ -2,12 +2,12 @@ package ru.serg.widgets
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.glance.GlanceId
 import androidx.glance.GlanceTheme
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.provideContent
-import androidx.glance.appwidget.updateAll
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.serg.datastore.DataStoreDataSource
 import ru.serg.local.LocalDataSource
 import ru.serg.widgets.ui.MainWeatherWidget
-import ru.serg.widgets.worker.UpdateWorker
 
 class WeatherWidget : GlanceAppWidget() {
 
@@ -40,12 +39,9 @@ class WeatherWidget : GlanceAppWidget() {
 
         val weatherWidgetUseCase = WeatherWidgetUseCase(dataStoreDataSource)
 
-        UpdateWorker.setupPeriodicWork(appContext)
-
         localDataSource.getFavouriteCityWeather().collectLatest { weatherItem ->
             weatherWidgetUseCase.prepareData().collectLatest { settings ->
-
-            WeatherWidget().updateAll(appContext)
+                Log.e("TAG", "Collect latest")
 
                 provideContent {
                     GlanceTheme(
