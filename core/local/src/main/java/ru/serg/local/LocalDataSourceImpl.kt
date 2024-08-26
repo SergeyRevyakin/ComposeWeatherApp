@@ -39,11 +39,16 @@ class LocalDataSourceImpl @Inject constructor(
                         hourlyWeather.dateTime > System.currentTimeMillis()
                     }
                 }
+
                 scope.launch {
                     weatherDao.cleanupOutdatedWeather(System.currentTimeMillis())
                 }
             }
-        }
+        }.distinctUntilChanged()
+    }
+
+    override suspend fun cleanOutdatedWeather() {
+        weatherDao.cleanupOutdatedWeather(System.currentTimeMillis())
     }
 
     override fun saveWeather(

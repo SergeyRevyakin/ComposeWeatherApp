@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -39,9 +40,10 @@ import ru.serg.weather_elements.getHour
 fun DailyWeatherBottomSheet(
     daily: DailyWeather,
     units: Units,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(12.dp)
     ) {
         Text(
@@ -180,6 +182,17 @@ fun DailyWeatherBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
+            paramIcon = drawable.ic_rain,
+            paramValue = stringResource(
+                id = string.precipitation_value,
+                daily.precipitationProbability
+            ),
+        )
+
+        ParamRowItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             paramIcon = drawable.ic_humidity,
             paramValue = stringResource(id = string.humidity_value, daily.humidity),
         )
@@ -204,10 +217,13 @@ fun PreviewDailyWeatherDetailsScreen() {
     }
     ComposeWeatherAppTheme(isDarkTheme) {
 
-        DailyWeatherBottomSheet(
-            daily = MockItems.getDailyWeatherMockItem(),
-            units = Units.METRIC,
-        )
+        Scaffold {
+            DailyWeatherBottomSheet(
+                daily = MockItems.getDailyWeatherMockItem(),
+                units = Units.METRIC,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }
 
@@ -218,11 +234,13 @@ fun PreviewLightDailyWeatherDetailsScreen() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-
-        DailyWeatherBottomSheet(
-            daily = MockItems.getDailyWeatherMockItem(),
-            units = Units.METRIC,
-        )
+        Scaffold {
+            DailyWeatherBottomSheet(
+                daily = MockItems.getDailyWeatherMockItem(),
+                units = Units.METRIC,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }
 

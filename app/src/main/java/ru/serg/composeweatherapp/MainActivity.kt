@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.main_pager.main_screen.MainViewModel
 import ru.serg.widgets.WeatherWidget
+import ru.serg.widgets.worker.UpdateWorker
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
+            UpdateWorker.setupPeriodicWork(applicationContext)
             WeatherWidget().updateAll(applicationContext)
         }
 

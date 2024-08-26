@@ -35,7 +35,7 @@ fun showNotification(context: Context, header: String?, text: String?) {
         context,
         Constants.Notifications.NOTIFICATION_CHANNEL_ID
     )
-        .setSmallIcon(drawable.ic_sun)
+        .setSmallIcon(drawable.ic_sunny_day)
         .setContentTitle(header)
         .setContentText(text)
         .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -49,7 +49,8 @@ fun showNotification(context: Context, header: String?, text: String?) {
 @SuppressLint("MissingPermission")
 fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
 
-    val weatherXml = weatherItem.hourlyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
+    val weatherXml =
+        weatherItem.hourlyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sunny_day
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
 
@@ -93,7 +94,8 @@ fun showDailyForecastNotification(context: Context, weatherItem: WeatherItem) {
 @SuppressLint("MissingPermission")
 fun showDailyServiceForecastNotification(context: Context, weatherItem: WeatherItem) {
 
-    val weatherXml = weatherItem.dailyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sun
+    val weatherXml =
+        weatherItem.dailyWeatherList.firstOrNull()?.weatherIcon ?: drawable.ic_sunny_day
     val img = getBitmapFromVectorDrawable(context, weatherXml)
 
     val pendingIntent = PendingIntent.getActivity(

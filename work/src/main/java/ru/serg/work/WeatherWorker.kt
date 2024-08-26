@@ -2,7 +2,6 @@ package ru.serg.work
 
 import android.content.Context
 import android.util.Log
-import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -15,19 +14,13 @@ import androidx.work.WorkerParameters
 import androidx.work.await
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.model.WeatherItem
 import ru.serg.notifications.showDailyForecastNotification
 import ru.serg.notifications.showFetchErrorNotification
 import ru.serg.notifications.showNotification
-import ru.serg.widgets.WeatherWidget
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -37,6 +30,7 @@ class WeatherWorker @AssistedInject constructor(
     @Assisted val appContext: Context,
     @Assisted params: WorkerParameters,
     private val workerUseCase: WorkerUseCase,
+    private val notificationAvailabilityUseCase: NotificationAvailabilityUseCase
 ) : CoroutineWorker(appContext, params) {
 
     companion object {
@@ -82,9 +76,9 @@ class WeatherWorker @AssistedInject constructor(
         }
     }
 
-    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override suspend fun doWork(): Result {
+        Log.e(this::class.simpleName, "Worker started")
         return try {
 
             fetchWeatherForNotification()
@@ -93,24 +87,29 @@ class WeatherWorker @AssistedInject constructor(
             Result.success()
 
         } catch (e: Exception) {
-            showNotification(
-                applicationContext,
-                "Worker failed",
-                e.message + getHour(System.currentTimeMillis())
-            )
+            notificationAvailabilityUseCase().collectLatest {
+                if (it) {
+                    showNotification(
+                        applicationContext,
+                        "Worker failed",
+                        e.message + getHour(System.currentTimeMillis())
+                    )
+                }
+            }
+
             Log.e(this::class.simpleName, "Worker failed: ${e.message}\n ${e.stackTrace}")
             Result.failure()
         }
     }
 
-    private fun fetchWeatherForNotification() {
-        workerUseCase.fetchFavouriteCity()
+    private suspend fun fetchWeatherForNotification() {
+        workerUseCase()
             .asResult()
-            .onEach { networkResult ->
-                Log.e(this::class.simpleName, "Fetch service $networkResult")
+            .collectLatest { networkResult ->
+                Log.e(this::class.simpleName, "Worker result $networkResult")
                 when (networkResult) {
                     is NetworkResult.Success -> {
-                        workerUseCase.isUserNotificationsOn().collectLatest { isNotificationOn ->
+                        notificationAvailabilityUseCase().collectLatest { isNotificationOn ->
                             if (isNotificationOn) {
                                 onWeatherFetchedSuccessful(networkResult.data)
                                 networkResult.data.alertMessage?.let {
@@ -118,12 +117,10 @@ class WeatherWorker @AssistedInject constructor(
                                 }
                             }
                         }
-
-                        WeatherWidget().updateAll(applicationContext)
                     }
 
                     is NetworkResult.Error -> {
-                        workerUseCase.isUserNotificationsOn().collectLatest { isNotificationOn ->
+                        notificationAvailabilityUseCase().collectLatest { isNotificationOn ->
                             if (isNotificationOn) {
                                 onError(networkResult.message)
                             }
@@ -132,7 +129,7 @@ class WeatherWorker @AssistedInject constructor(
 
                     is NetworkResult.Loading -> Unit
                 }
-            }.launchIn(serviceScope)
+            }
     }
 
     private fun onWeatherFetchedSuccessful(weatherItem: WeatherItem?) {
