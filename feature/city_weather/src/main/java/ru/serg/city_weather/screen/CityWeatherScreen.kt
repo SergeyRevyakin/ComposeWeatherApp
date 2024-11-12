@@ -5,9 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
@@ -40,13 +44,15 @@ fun CityWeatherScreen(
     val viewModel: CityWeatherViewModel = hiltViewModel()
     val screenState by viewModel.uiState.collectAsState()
 
-    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val header = stringResource(id = string.weather_in)
 
     Scaffold(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .consumeWindowInsets(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+            )
             .imePadding(),
         topBar = {
             TopBar(
