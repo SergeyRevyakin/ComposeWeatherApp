@@ -51,7 +51,7 @@ fun MenuRowWithRadioButton(
         } else {
             Text(
                 text = optionName,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 modifier = modifier
                     .weight(1f)
             )

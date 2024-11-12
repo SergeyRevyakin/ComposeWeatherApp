@@ -37,7 +37,8 @@ fun MenuSettingsRowWithIcon(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(vertical = 24.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .clickable {
