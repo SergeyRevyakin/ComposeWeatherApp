@@ -4,10 +4,15 @@ package ru.serg.settings_feature.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -58,13 +63,15 @@ fun SettingsScreen(
     val viewModel: SettingViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val header = stringResource(id = string.settings)
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .consumeWindowInsets(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+            )
             .imePadding(),
         topBar = {
             TopBar(
@@ -140,7 +147,7 @@ fun SettingsScreen(
             }
 
             MenuCommonButton(
-                headerText = stringResource(id = string.show_widget_settings)
+                headerText = stringResource(id = string.show_widget_settings),
             ) {
                 navController.navigate(WidgetSettingsScreen)
             }
@@ -161,7 +168,7 @@ fun SettingsScreen(
                 header = stringResource(id = string.measurement_units),
                 nameList = Units.entries.map { stringResource(id = it.title) },
                 descriptionList = Units.entries.map { stringResource(id = it.description) },
-                selectedPosition = viewModel.measurementUnits
+                selectedPosition = viewModel.measurementUnits,
             ) {
                 viewModel.onUnitsChanged(it)
             }
@@ -178,9 +185,10 @@ fun SettingsScreen(
                 ),
                 style = settingsSubText,
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .padding(bottom = 24.dp)
+                    .padding(24.dp)
             )
+
+            Spacer(Modifier.padding(WindowInsets.navigationBars.asPaddingValues()))
         }
     }
 }
