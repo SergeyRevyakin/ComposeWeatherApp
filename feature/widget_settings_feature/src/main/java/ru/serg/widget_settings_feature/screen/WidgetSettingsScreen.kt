@@ -3,10 +3,16 @@
 package ru.serg.widget_settings_feature.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
@@ -53,13 +59,13 @@ fun WidgetSettingsScreen(
     val isWidgetSystemDataShown by viewModel.isWidgetSystemDataShown.collectAsState()
     val isWidgetWeatherChangesShown by viewModel.isWidgetWeatherChangesShown.collectAsState()
 
-    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val header = stringResource(id = R.string.widget_settings)
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .consumeWindowInsets(WindowInsets.navigationBars)
             .imePadding(),
         topBar = {
             TopBar(
@@ -220,6 +226,20 @@ fun WidgetSettingsScreen(
                     buttonState = isWidgetSystemDataShown,
                     modifier = Modifier.padding(top = 12.dp),
                     onSwitchClick = { viewModel.saveWidgetSystemDataShown(it) })
+            }
+
+            item {
+                Spacer(
+                    Modifier.height(40.dp)
+                )
+            }
+
+            item {
+                Spacer(
+                    Modifier.windowInsetsBottomHeight(
+                        WindowInsets.systemBars
+                    )
+                )
             }
         }
     }

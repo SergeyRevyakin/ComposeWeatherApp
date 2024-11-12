@@ -18,8 +18,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 89
-        versionName = "0.89"
+        versionCode = 90
+        versionName = "0.90"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -128,6 +128,7 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:network_weather_api"))
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:location"))
@@ -153,7 +154,7 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.bundles.hilt.ksp)
 
-    implementation(libs.androidx.core.ktx)
+//    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity.compose)
