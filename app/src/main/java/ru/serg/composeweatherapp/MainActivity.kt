@@ -5,11 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +28,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         startMainScreen()
+        enableEdgeToEdge()
     }
 
     private fun startMainScreen() {
@@ -51,10 +50,7 @@ class MainActivity : ComponentActivity() {
             ComposeWeatherAppTheme(
                 darkTheme = isDarkTheme
             ) {
-                Surface(
-                    color = MaterialTheme.colorScheme.surface,
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                Surface {
                     Navigation(viewModel)
                 }
             }
