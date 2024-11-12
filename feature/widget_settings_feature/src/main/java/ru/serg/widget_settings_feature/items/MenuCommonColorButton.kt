@@ -25,6 +25,7 @@ import ru.serg.designsystem.utils.emptyString
 
 @Composable
 fun MenuCommonColorButton(
+    modifier: Modifier = Modifier,
     headerText: String = emptyString(),
     descriptionText: String = emptyString(),
     color: Color = Color.White,
@@ -32,7 +33,7 @@ fun MenuCommonColorButton(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))

@@ -5,14 +5,13 @@ package ru.serg.widget_settings_feature.screen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
@@ -113,7 +112,8 @@ fun WidgetSettingsScreen(
             item {
                 MenuCommonColorButton(
                     headerText = stringResource(id = R.string.widget_settings_color),
-                    color = colorState
+                    color = colorState,
+                    modifier = Modifier.padding(top = 12.dp)
                 ) {
                     openColorPickDialog.value = true
                 }
@@ -167,7 +167,7 @@ fun WidgetSettingsScreen(
                     text = stringResource(id = R.string.widget_settings_small_font_size),
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .padding(bottom = 12.dp, top = 36.dp)
+                        .padding(bottom = 12.dp, top = 48.dp)
                         .padding(horizontal = 24.dp)
                 )
             }
@@ -186,7 +186,7 @@ fun WidgetSettingsScreen(
                     text = stringResource(id = R.string.widget_settings_bottom_padding),
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .padding(bottom = 12.dp, top = 36.dp)
+                        .padding(bottom = 12.dp, top = 48.dp)
                         .padding(horizontal = 24.dp)
                 )
             }
@@ -205,7 +205,7 @@ fun WidgetSettingsScreen(
                     text = stringResource(id = R.string.widget_settings_icon_size),
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .padding(bottom = 12.dp, top = 36.dp)
+                        .padding(bottom = 12.dp, top = 48.dp)
                         .padding(horizontal = 24.dp)
                 )
             }
@@ -230,14 +230,14 @@ fun WidgetSettingsScreen(
 
             item {
                 Spacer(
-                    Modifier.height(40.dp)
+                    Modifier.height(36.dp)
                 )
             }
 
             item {
                 Spacer(
-                    Modifier.windowInsetsBottomHeight(
-                        WindowInsets.systemBars
+                    Modifier.padding(
+                        WindowInsets.navigationBars.asPaddingValues()
                     )
                 )
             }
