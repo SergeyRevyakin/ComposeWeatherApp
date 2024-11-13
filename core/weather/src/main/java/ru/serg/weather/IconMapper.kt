@@ -31,3 +31,19 @@ object IconMapper {
         }
     }
 }
+
+object VisualCrossingIconMapper {
+    fun map(iconId: String?): Int {
+        return when (iconId) {
+            "thunder-rain", "thunder-showers-day", "thunder-showers-night" -> drawable.ic_thunderstorm
+            "rain", "showers-day", "showers-night" -> drawable.ic_showers
+            "snow", "snow-showers-day", "snow-showers-night" -> drawable.ic_snow
+            "fog" -> drawable.ic_day_haze //???
+            "partly-cloudy-day", "partly-cloudy-night" -> drawable.ic_cloudy_gusts
+            "clear-day", "clear-night" -> drawable.ic_day_sunny
+            "cloudy" -> drawable.ic_cloudy
+            "wind" -> drawable.ic_strong_wind
+            else -> drawable.ic_day_sunny
+        }
+    }
+}

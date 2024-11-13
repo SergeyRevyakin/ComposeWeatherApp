@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
-      <module name="ComposeWeatherApp.app" target="21" />
-      <module name="ComposeWeatherApp.core.common" target="21" />
-      <module name="ComposeWeatherApp.core.database" target="21" />
-      <module name="ComposeWeatherApp.core.datastore" target="21" />
-      <module name="ComposeWeatherApp.core.designsystem" target="21" />
-      <module name="ComposeWeatherApp.core.local" target="21" />
-      <module name="ComposeWeatherApp.core.location" target="21" />
-      <module name="ComposeWeatherApp.core.model" target="21" />
-      <module name="ComposeWeatherApp.core.navigation" target="21" />
-      <module name="ComposeWeatherApp.core.network" target="21" />
-      <module name="ComposeWeatherApp.core.notifications" target="21" />
-      <module name="ComposeWeatherApp.core.testing" target="21" />
-      <module name="ComposeWeatherApp.core.weather" target="21" />
-      <module name="ComposeWeatherApp.feature.choose_city_feature" target="21" />
-      <module name="ComposeWeatherApp.feature.city_weather" target="21" />
-      <module name="ComposeWeatherApp.feature.main_pager" target="21" />
-      <module name="ComposeWeatherApp.feature.settings_feature" target="21" />
-      <module name="ComposeWeatherApp.feature.widget_settings_feature" target="21" />
-      <module name="ComposeWeatherApp.res.drawables" target="21" />
-      <module name="ComposeWeatherApp.res.strings" target="21" />
-      <module name="ComposeWeatherApp.service" target="21" />
-      <module name="ComposeWeatherApp.shared.weather_elements" target="21" />
-      <module name="ComposeWeatherApp.widgets" target="21" />
-      <module name="ComposeWeatherApp.work" target="21" />
-    </bytecodeTargetLevel>
+§    <bytecodeTargetLevel target="21" />
   </component>
 </project>

@@ -12,6 +12,8 @@ import ru.serg.location.LocationDataSource
 import ru.serg.location.LocationService
 import ru.serg.network.RemoteDataSource
 import ru.serg.network.RemoteDataSourceImpl
+import ru.serg.network_weather_api.VisualCrossingRemoteDataSource
+import ru.serg.network_weather_api.VisualCrossingRemoteDataSourceImpl
 import javax.inject.Singleton
 
 @Module
@@ -28,6 +30,12 @@ abstract class DataSources {
     abstract fun bindRemoteDataSource(
         remoteDataSource: RemoteDataSourceImpl
     ): RemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherApiRemoteDataSource(
+        remoteDataSource: VisualCrossingRemoteDataSourceImpl
+    ): VisualCrossingRemoteDataSource
 
     @Binds
     @Singleton

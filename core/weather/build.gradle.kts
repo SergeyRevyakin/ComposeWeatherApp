@@ -28,6 +28,7 @@ dependencies {
 
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:network_weather_api"))
     implementation(project(":core:local"))
     implementation(project(":core:common"))
     implementation(project(":res:drawables"))

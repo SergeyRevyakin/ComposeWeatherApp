@@ -75,7 +75,7 @@ object DataMapper {
         precipitationProbability = (daily.pop?.times(100))?.roundToInt() ?: 0
     )
 
-    private fun mapAirQuality(responseItem: AirQualityResponse.AirQualityResponseItem?): AirQuality {
+    fun mapAirQuality(responseItem: AirQualityResponse.AirQualityResponseItem?): AirQuality {
         return if (responseItem == null) AirQuality.blankAirQuality()
         else {
             AirQuality(

@@ -1,5 +1,6 @@
 package ru.serg.weather
 
+import androidx.compose.ui.util.fastFlatMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -9,10 +10,14 @@ import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
 import ru.serg.model.WeatherItem
 import ru.serg.network.RemoteDataSource
+import ru.serg.network.dto.AirQualityResponse
+import ru.serg.network_weather_api.VisualCrossingRemoteDataSource
+import ru.serg.network_weather_api.dto.VisualCrossingResponse
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
+    private val visualCrossingDataSource: VisualCrossingRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) {
 
@@ -20,28 +25,18 @@ class WeatherRepository @Inject constructor(
         coordinates: Coordinates,
     ): Flow<WeatherItem> = combine(
         remoteDataSource.getWeather(coordinates.latitude, coordinates.longitude),
-        remoteDataSource.getOneCallWeather(
+        remoteDataSource.getAirQuality(coordinates.latitude, coordinates.longitude),
+        visualCrossingDataSource.getVisualCrossingForecast(
             coordinates.latitude,
             coordinates.longitude
-        ),
-        remoteDataSource.getAirQuality(coordinates.latitude, coordinates.longitude)
-    ) { weatherResponse, oneCallResponse, airQualityResponse ->
+        )
+    ) { weatherResponse, airQuality, visualCrossingResponse ->
 
         val cityItem = DataMapper.mapCityItem(weatherResponse, true)
 
-        if (weatherResponse.message != null || oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
-            || oneCallResponse.daily.isNullOrEmpty()
-        ) throw Exception(oneCallResponse.message ?: weatherResponse.message)
+        val hourlyWeather = mapHours(visualCrossingResponse, airQuality)
 
-        val dailyWeather = oneCallResponse.daily?.map {
-            DataMapper.mapDailyWeather(it)
-        } ?: listOf()
-
-        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
-            val airQualityResponseItem =
-                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
-            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-        } ?: listOf()
+        val dailyWeather = mapDays(visualCrossingResponse)
 
         if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
             localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
@@ -52,7 +47,7 @@ class WeatherRepository @Inject constructor(
             cityItem,
             dailyWeather,
             hourlyWeather,
-            oneCallResponse.alert?.description
+            visualCrossingResponse.alerts?.firstOrNull()?.description
         )
     }.flowOn(Dispatchers.IO)
 
@@ -61,33 +56,25 @@ class WeatherRepository @Inject constructor(
         cityItem: CityItem,
         isResultSavingRequired: Boolean = true
     ) = combine(
-        remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude),
+        visualCrossingDataSource.getVisualCrossingForecast(cityItem.latitude, cityItem.longitude),
         remoteDataSource.getAirQuality(cityItem.latitude, cityItem.longitude)
-    ) { oneCallResponse, airQualityResponse ->
+    ) { visualCrossingResponse, airQuality ->
 
-        if (oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
-            || oneCallResponse.daily.isNullOrEmpty()
-        ) throw Exception(oneCallResponse.message)
+        val hourlyWeather = mapHours(visualCrossingResponse, airQuality)
 
-        val dailyWeather = oneCallResponse.daily?.map {
-            DataMapper.mapDailyWeather(it)
-        } ?: listOf()
+        val dailyWeather = mapDays(visualCrossingResponse)
 
-        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
-            val airQualityResponseItem =
-                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
-            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-        } ?: listOf()
+        val updatedCityItem = cityItem.copy(lastTimeUpdated = System.currentTimeMillis())
 
         if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
-            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
+            localDataSource.saveWeather(hourlyWeather, dailyWeather, updatedCityItem)
         }
 
         WeatherItem(
-            cityItem,
+            updatedCityItem,
             dailyWeather,
             hourlyWeather,
-            oneCallResponse.alert?.description
+            visualCrossingResponse.alerts?.firstOrNull()?.description
         )
     }.flowOn(Dispatchers.IO)
 
@@ -98,4 +85,30 @@ class WeatherRepository @Inject constructor(
             cityItem = weatherItem.cityItem.copy(isFavorite = false)
         )
     }
+
+    private fun mapHours(
+        visualCrossingResponse: VisualCrossingResponse,
+        airQuality: AirQualityResponse
+    ) =
+        visualCrossingResponse.days?.mapNotNull { it }?.fastFlatMap { it.hours ?: emptyList() }
+            ?.map { hour ->
+                hour.let { hourly ->
+                    val airQualityResponseItem =
+                        airQuality.list.firstOrNull { it.timestamp.toTimeStamp() == hourly.datetimeEpoch.toTimeStamp() }
+                    VisualCrossingMapper.mapHourlyWeather(hourly, airQualityResponseItem)
+                }
+            }?.filter {
+                it.dateTime > System.currentTimeMillis()
+            } ?: listOf()
+
+    private fun mapDays(visualCrossingResponse: VisualCrossingResponse) =
+        visualCrossingResponse.days?.mapNotNull {
+            it?.let {
+                VisualCrossingMapper.mapDailyWeather(
+                    it
+                )
+            }
+        }?.filter {
+            it.dateTime > System.currentTimeMillis()
+        } ?: listOf()
 }
