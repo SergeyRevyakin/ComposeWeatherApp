@@ -1,10 +1,11 @@
 package ru.serg.database
 
+import ru.serg.database.room.entity.CityEntity
 import ru.serg.database.room.entity.CityWeather
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
-import ru.serg.database.room.entity.toCityItem
 import ru.serg.model.AirQuality
+import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
 import ru.serg.model.WeatherItem
@@ -18,6 +19,26 @@ fun CityWeather.toWeatherItem() = WeatherItem(
     dailyWeatherList = dailyWeatherEntity.map {
         it.toDailyWeather()
     }
+)
+
+fun CityItem.toCityEntity() = CityEntity(
+    name,
+    country,
+    latitude,
+    longitude,
+    isFavorite,
+    if (isFavorite) -1 else id,
+    lastTimeUpdated = System.currentTimeMillis()
+)
+
+fun CityEntity.toCityItem() = CityItem(
+    cityName,
+    country.orEmpty(),
+    latitude ?: 0.0,
+    longitude ?: 0.0,
+    isFavorite,
+    id,
+    lastTimeUpdated ?: 0
 )
 
 fun HourlyWeatherEntity.toHourlyWeather() = HourlyWeather(

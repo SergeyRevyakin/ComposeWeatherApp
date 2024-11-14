@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.dao.WeatherDao
-import ru.serg.database.room.entity.toCityItem
+import ru.serg.database.toCityEntity
+import ru.serg.database.toCityItem
 import ru.serg.database.toDailyWeatherEntity
 import ru.serg.database.toHourlyWeatherEntity
 import ru.serg.database.toWeatherItem
