@@ -25,6 +25,7 @@ class DataStoreDataSourceImpl @Inject constructor(
         val MEASUREMENT_UNITS = intPreferencesKey(Constants.AppSettings.MEASUREMENT_UNITS)
         val IS_USER_NOTIFICATIONS_ON =
             booleanPreferencesKey(Constants.AppSettings.IS_USER_NOTIFICATIONS_ON)
+        val IS_ALERTS_ON = booleanPreferencesKey(Constants.AppSettings.IS_ALERTS_ON)
 
         //Widget settings
         val WIDGET_COLOR = longPreferencesKey(Constants.WidgetSettings.WIDGET_COLOR_CODE)
@@ -90,6 +91,16 @@ class DataStoreDataSourceImpl @Inject constructor(
     override suspend fun saveUserNotification(isNotificationOn: Boolean) {
         dataStore.edit {
             it[IS_USER_NOTIFICATIONS_ON] = isNotificationOn
+        }
+    }
+
+    override val isWeatherAlertsEnabled: Flow<Boolean> = dataStore.data.map {
+        it[IS_ALERTS_ON] ?: true
+    }.distinctUntilChanged()
+
+    override suspend fun saveWeatherAlertsEnabled(isEnabled: Boolean) {
+        dataStore.edit {
+            it[IS_ALERTS_ON] = isEnabled
         }
     }
 

@@ -1,4 +1,4 @@
-package ru.serg.weather_elements.elements
+package ru.serg.weather_elements.weather_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +21,12 @@ class CityWeatherContentItemViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         initialValue = Units.METRIC,
+        started = SharingStarted.WhileSubscribed(5_000)
+    )
+
+    val isAlertsEnabled: StateFlow<Boolean> = dataStoreDataSource.isWeatherAlertsEnabled.stateIn(
+        scope = viewModelScope,
+        initialValue = false,
         started = SharingStarted.WhileSubscribed(5_000)
     )
 }

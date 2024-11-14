@@ -31,6 +31,9 @@ class SettingViewModel @Inject constructor(
     private var _isBackgroundFetchWeatherEnabled = MutableStateFlow(false)
     var isBackgroundFetchWeatherEnabled = _isBackgroundFetchWeatherEnabled.asStateFlow()
 
+    private var _isAlertsEnabled = MutableStateFlow(false)
+    var isAlertsEnabled = _isAlertsEnabled.asStateFlow()
+
     private var _fetchFrequencyValue = MutableStateFlow(0f)
     var fetchFrequencyValue = _fetchFrequencyValue.asStateFlow()
 
@@ -54,6 +57,7 @@ class SettingViewModel @Inject constructor(
         initLocation()
         initUnits()
         initUserNotificationTurnOn()
+        initWeatherAlertsChange()
         if (isTiramisuOrAbove()) initNotification()
     }
 
@@ -67,6 +71,14 @@ class SettingViewModel @Inject constructor(
 
     private fun initBackgroundFetchWeatherChange() {
         _isBackgroundFetchWeatherEnabled.value = workerManager.isWorkerSet()
+    }
+
+    private fun initWeatherAlertsChange() {
+        viewModelScope.launch {
+            dataStoreDataSource.isWeatherAlertsEnabled.collectLatest {
+                _isAlertsEnabled.value = it
+            }
+        }
     }
 
     private fun initFetchFrequencyValue() {
@@ -157,6 +169,12 @@ class SettingViewModel @Inject constructor(
     fun saveUserNotifications(isNotificationsOn: Boolean) {
         viewModelScope.launch {
             dataStoreDataSource.saveUserNotification(isNotificationsOn)
+        }
+    }
+
+    fun onAlertsChanged(isEnabled: Boolean) {
+        viewModelScope.launch {
+            dataStoreDataSource.saveWeatherAlertsEnabled(isEnabled)
         }
     }
 }

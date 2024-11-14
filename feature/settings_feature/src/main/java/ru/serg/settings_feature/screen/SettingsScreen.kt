@@ -130,6 +130,14 @@ fun SettingsScreen(
                 onSwitchClick = viewModel::onBackgroundFetchChanged
             )
 
+            MenuRowWithRadioButton(
+                optionName = stringResource(id = string.show_alerts),
+                descriptionText = stringResource(id = string.show_alerts_desc),
+                modifier = Modifier,
+                buttonState = viewModel.isAlertsEnabled.collectAsState().value,
+                onSwitchClick = viewModel::onAlertsChanged
+            )
+
             CollapsingContainer(isVisible = viewModel.isBackgroundFetchWeatherEnabled.collectAsState()) {
 
                 MenuRowWithRadioButton(
@@ -180,7 +188,7 @@ fun SettingsScreen(
 
             Text(
                 text = stringResource(
-                    id = string.settings_current_app_verions,
+                    id = string.settings_current_app_version,
                     versionName.toString()
                 ),
                 style = settingsSubText,

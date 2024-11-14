@@ -20,7 +20,6 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -42,7 +42,6 @@ import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DialogContainer
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
 import ru.serg.weather_elements.elements.AlertCardItem
-import ru.serg.weather_elements.elements.CityWeatherContentItemViewModel
 import ru.serg.weather_elements.elements.SunriseSunsetItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +57,9 @@ fun CityWeatherContentItem(
 
     val columnState = rememberScrollState()
 
-    val units by viewModel.units.collectAsState()
+    val units by viewModel.units.collectAsStateWithLifecycle()
+
+    val isAlertsEnabled by viewModel.isAlertsEnabled.collectAsStateWithLifecycle()
 
     var showUviDetailsBottomSheet by remember {
         mutableStateOf(false)
@@ -94,8 +95,10 @@ fun CityWeatherContentItem(
             textAlign = TextAlign.Center
         )
 
-        weatherItem.alertList.forEach {
-            AlertCardItem(it)
+        if (isAlertsEnabled) {
+            weatherItem.alertList.forEach {
+                AlertCardItem(it)
+            }
         }
 
         TodayWeatherCardItem(
