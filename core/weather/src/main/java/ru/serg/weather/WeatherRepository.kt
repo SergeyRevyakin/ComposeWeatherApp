@@ -38,8 +38,10 @@ class WeatherRepository @Inject constructor(
 
         val dailyWeather = mapDays(visualCrossingResponse)
 
+        val alerts = mapAlerts(visualCrossingResponse)
+
         if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
-            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
+            localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, cityItem)
             localDataSource.insertCityItemToSearchHistory(cityItem)
         }
 
@@ -47,6 +49,7 @@ class WeatherRepository @Inject constructor(
             cityItem,
             dailyWeather,
             hourlyWeather,
+            alerts,
             visualCrossingResponse.alerts?.firstOrNull()?.description
         )
     }.flowOn(Dispatchers.IO)
@@ -66,14 +69,17 @@ class WeatherRepository @Inject constructor(
 
         val updatedCityItem = cityItem.copy(lastTimeUpdated = System.currentTimeMillis())
 
+        val alerts = mapAlerts(visualCrossingResponse)
+
         if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
-            localDataSource.saveWeather(hourlyWeather, dailyWeather, updatedCityItem)
+            localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, updatedCityItem)
         }
 
         WeatherItem(
             updatedCityItem,
             dailyWeather,
             hourlyWeather,
+            alerts,
             visualCrossingResponse.alerts?.firstOrNull()?.description
         )
     }.flowOn(Dispatchers.IO)
@@ -82,6 +88,7 @@ class WeatherRepository @Inject constructor(
         localDataSource.saveWeather(
             hourlyWeatherList = weatherItem.hourlyWeatherList,
             dailyWeatherList = weatherItem.dailyWeatherList,
+            alertList = weatherItem.alertList,
             cityItem = weatherItem.cityItem.copy(isFavorite = false)
         )
     }
@@ -111,4 +118,9 @@ class WeatherRepository @Inject constructor(
         }?.filter {
             it.dateTime > System.currentTimeMillis()
         } ?: listOf()
+
+    private fun mapAlerts(visualCrossingResponse: VisualCrossingResponse) =
+        visualCrossingResponse.alerts?.map {
+            VisualCrossingMapper.mapAlert(it)
+        } ?: emptyList()
 }

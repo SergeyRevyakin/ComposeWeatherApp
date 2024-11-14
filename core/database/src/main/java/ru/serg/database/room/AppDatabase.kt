@@ -6,14 +6,15 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.dao.WeatherDao
+import ru.serg.database.room.entity.AlertEntity
 import ru.serg.database.room.entity.CityEntity
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
 
 @Database(
-    entities = [CityEntity::class, DailyWeatherEntity::class, HourlyWeatherEntity::class],
+    entities = [CityEntity::class, DailyWeatherEntity::class, HourlyWeatherEntity::class, AlertEntity::class],
     autoMigrations = [],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -8,11 +8,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.serg.database.room.dao.CityDao
 import ru.serg.database.room.dao.WeatherDao
+import ru.serg.database.toAlertEntity
 import ru.serg.database.toCityEntity
 import ru.serg.database.toCityItem
 import ru.serg.database.toDailyWeatherEntity
 import ru.serg.database.toHourlyWeatherEntity
 import ru.serg.database.toWeatherItem
+import ru.serg.model.AlertItem
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
@@ -55,6 +57,7 @@ class LocalDataSourceImpl @Inject constructor(
     override fun saveWeather(
         hourlyWeatherList: List<HourlyWeather>,
         dailyWeatherList: List<DailyWeather>,
+        alertList: List<AlertItem>,
         cityItem: CityItem
     ) {
         scope.launch {
@@ -62,6 +65,7 @@ class LocalDataSourceImpl @Inject constructor(
             weatherDao.saveWeather(
                 hourlyWeatherList.map { it.toHourlyWeatherEntity(cityItem.id) },
                 dailyWeatherList.map { it.toDailyWeatherEntity(cityItem.id) },
+                alertList.map { it.toAlertEntity(cityItem.id) },
                 cityItem.toCityEntity()
             )
             weatherDao.cleanupOutdatedWeather(System.currentTimeMillis())

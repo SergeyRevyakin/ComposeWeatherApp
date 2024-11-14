@@ -1,9 +1,11 @@
 package ru.serg.weather
 
+import ru.serg.model.AlertItem
 import ru.serg.model.DailyTempItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
 import ru.serg.network.dto.AirQualityResponse
+import ru.serg.network_weather_api.dto.visual_crossing.Alert
 import ru.serg.network_weather_api.dto.visual_crossing.Day
 import ru.serg.network_weather_api.dto.visual_crossing.Hour
 import kotlin.math.roundToInt
@@ -58,5 +60,12 @@ object VisualCrossingMapper {
         ),
         sunset = daily.sunsetEpoch.toTimeStamp(),
         sunrise = daily.sunriseEpoch.toTimeStamp(),
+    )
+
+    fun mapAlert(alert: Alert) = AlertItem(
+        startAt = alert.onsetEpoch.toTimeStamp(),
+        endAt = alert.endsEpoch.toTimeStamp(),
+        title = alert.event.orEmpty(),
+        description = alert.description.orEmpty()
     )
 }

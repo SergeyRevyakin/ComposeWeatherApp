@@ -1,10 +1,12 @@
 package ru.serg.database
 
+import ru.serg.database.room.CityWeather
+import ru.serg.database.room.entity.AlertEntity
 import ru.serg.database.room.entity.CityEntity
-import ru.serg.database.room.entity.CityWeather
 import ru.serg.database.room.entity.DailyWeatherEntity
 import ru.serg.database.room.entity.HourlyWeatherEntity
 import ru.serg.model.AirQuality
+import ru.serg.model.AlertItem
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
@@ -13,12 +15,9 @@ import ru.serg.model.WeatherItem
 
 fun CityWeather.toWeatherItem() = WeatherItem(
     cityItem = cityEntity.toCityItem(),
-    hourlyWeatherList = hourlyWeatherEntity.map {
-        it.toHourlyWeather()
-    },
-    dailyWeatherList = dailyWeatherEntity.map {
-        it.toDailyWeather()
-    }
+    hourlyWeatherList = hourlyWeatherEntity.map { it.toHourlyWeather() },
+    dailyWeatherList = dailyWeatherEntity.map { it.toDailyWeather() },
+    alertList = alertEntityList.map { it.toAlertItem() }
 )
 
 fun CityItem.toCityEntity() = CityEntity(
@@ -105,6 +104,20 @@ fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
     precipitationProbability = precipitationProbability
 )
 
+fun AlertEntity.toAlertItem() = AlertItem(
+    startAt = this.startAt,
+    endAt = this.endAt,
+    title = this.title,
+    description = this.description
+)
+
+fun AlertItem.toAlertEntity(cityId: Int) = AlertEntity(
+    startAt = this.startAt,
+    endAt = this.endAt,
+    title = this.title,
+    description = this.description,
+    cityId = cityId
+)
 
 fun Double?.orZero() = this ?: 0.0
 
