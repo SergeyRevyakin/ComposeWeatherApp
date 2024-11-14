@@ -42,7 +42,9 @@ import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DialogContainer
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
 import ru.serg.weather_elements.elements.AlertCardItem
+import ru.serg.weather_elements.elements.HourlyWeatherItem
 import ru.serg.weather_elements.elements.SunriseSunsetItem
+import ru.serg.weather_elements.elements.TodayWeatherCardItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,9 +59,7 @@ fun CityWeatherContentItem(
 
     val columnState = rememberScrollState()
 
-    val units by viewModel.units.collectAsStateWithLifecycle()
-
-    val isAlertsEnabled by viewModel.isAlertsEnabled.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     var showUviDetailsBottomSheet by remember {
         mutableStateOf(false)
@@ -95,7 +95,7 @@ fun CityWeatherContentItem(
             textAlign = TextAlign.Center
         )
 
-        if (isAlertsEnabled) {
+        if (screenState.isAlertsEnabled) {
             weatherItem.alertList.forEach {
                 AlertCardItem(it)
             }
@@ -103,7 +103,7 @@ fun CityWeatherContentItem(
 
         TodayWeatherCardItem(
             weatherItem = weatherItem.hourlyWeatherList.first(),
-            units = units,
+            units = screenState.units,
             lastUpdatedTime = weatherItem.cityItem.lastTimeUpdated,
             showUviInfo = {
                 showUviDetailsBottomSheet = true
@@ -132,7 +132,7 @@ fun CityWeatherContentItem(
             val list =
                 weatherItem.hourlyWeatherList
             items(list.size) {
-                HourlyWeatherItem(item = list[it], units = units)
+                HourlyWeatherItem(item = list[it], units = screenState.units)
             }
         }
 
@@ -154,7 +154,7 @@ fun CityWeatherContentItem(
                 weatherItem.dailyWeatherList
             list.forEach { daily ->
 
-                DailyWeatherItem(item = daily, viewModel.units.value) {
+                DailyWeatherItem(item = daily, screenState.units) {
                     dailyWeather = daily
                     showDailyWeatherBottomSheet = true
                 }
@@ -174,7 +174,7 @@ fun CityWeatherContentItem(
 
                 DailyWeatherBottomSheet(
                     daily = it,
-                    units = units,
+                    units = screenState.units,
                 )
             }
         }

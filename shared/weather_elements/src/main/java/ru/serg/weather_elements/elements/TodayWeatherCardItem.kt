@@ -1,4 +1,4 @@
-package ru.serg.weather_elements.weather_screen
+package ru.serg.weather_elements.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -32,6 +32,7 @@ import ru.serg.designsystem.utils.AnimWeather
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
 import ru.serg.drawables.R.drawable
+import ru.serg.model.AirQuality
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.AirQualityEUIndex
 import ru.serg.model.enums.Units
@@ -126,19 +127,21 @@ fun TodayWeatherCardItem(
                     AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
                         ?: AirQualityEUIndex.UNKNOWN
 
-                ParamRowWithInfoItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                        .padding(horizontal = 12.dp),
-                    paramIcon = drawable.ic_sandstorm,
-                    paramValue = stringResource(
-                        id = string.aqi_value,
-                        stringResource(id = airQualityEUIndex.indexDescription)
-                    ),
-                    hasInfoButton = true,
-                    onInfoClick = showAqiInfo
-                )
+                if (weatherItem.airQuality != AirQuality.blankAirQuality()) {
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_sandstorm,
+                        paramValue = stringResource(
+                            id = string.aqi_value,
+                            stringResource(id = airQualityEUIndex.indexDescription)
+                        ),
+                        hasInfoButton = true,
+                        onInfoClick = showAqiInfo
+                    )
+                }
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 

@@ -1,4 +1,4 @@
-package ru.serg.weather_elements.weather_screen
+package ru.serg.weather_elements.elements
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
