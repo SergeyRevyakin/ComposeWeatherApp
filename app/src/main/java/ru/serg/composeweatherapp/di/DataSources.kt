@@ -1,5 +1,7 @@
 package ru.serg.composeweatherapp.di
 
+import com.serg.network_self_proxy.SelfProxyRemoteDataSource
+import com.serg.network_self_proxy.SelfProxyRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -36,6 +38,12 @@ abstract class DataSources {
     abstract fun bindWeatherApiRemoteDataSource(
         remoteDataSource: VisualCrossingRemoteDataSourceImpl
     ): VisualCrossingRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindSelfProxyRemoteDataSource(
+        remoteDataSource: SelfProxyRemoteDataSourceImpl
+    ): SelfProxyRemoteDataSource
 
     @Binds
     @Singleton

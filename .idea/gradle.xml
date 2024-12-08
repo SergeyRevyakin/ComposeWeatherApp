@@ -21,7 +21,8 @@
             <option value="$PROJECT_DIR$/core/model" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/network" />
-            <option value="$PROJECT_DIR$/core/network_weather_api" />
+            <option value="$PROJECT_DIR$/core/network_self_proxy" />
+            <option value="$PROJECT_DIR$/core/network_visual_crossing_api" />
             <option value="$PROJECT_DIR$/core/notifications" />
             <option value="$PROJECT_DIR$/core/testing" />
             <option value="$PROJECT_DIR$/core/weather" />
@@ -41,7 +42,6 @@
             <option value="$PROJECT_DIR$/work" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
     <option name="parallelModelFetch" value="true" />

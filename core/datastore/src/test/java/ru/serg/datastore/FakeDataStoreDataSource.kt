@@ -19,6 +19,7 @@ class FakeDataStoreDataSource : DataStoreDataSource {
     override val isWidgetSystemDataShown: Flow<Boolean> = flowOf(true)
     override val widgetIconSize: Flow<Int> = flowOf(1)
     override val isWidgetWeatherChangesShown: Flow<Boolean> = flowOf(true)
+    override val isWeatherAlertsEnabled: Flow<Boolean> = flowOf(true)
 
     override suspend fun saveDarkMode(isDark: Boolean) {
 
@@ -61,6 +62,10 @@ class FakeDataStoreDataSource : DataStoreDataSource {
     }
 
     override suspend fun saveWidgetWeatherChangesShown(isShown: Boolean) {
+
+    }
+
+    override suspend fun saveWeatherAlertsEnabled(isEnabled: Boolean) {
 
     }
 }

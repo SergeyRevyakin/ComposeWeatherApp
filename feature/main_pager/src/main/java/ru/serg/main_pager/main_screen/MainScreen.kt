@@ -103,7 +103,6 @@ fun MainScreen(
                     }
                 }
             },
-//            contentWindowInsets = WindowInsets.statusBars
         ) { padding ->
 
             val context = LocalContext.current
@@ -117,12 +116,12 @@ fun MainScreen(
                     animationSpec = tween(300)
                 )
             ) {
-//                pullToRefreshState.endRefresh()
                 ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
             }
 
             AnimatedVisibility(
-                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp && !screenState.isLoading,
+                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp
+                        && !screenState.isLoading && screenState.error == null && screenState.isInit,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),

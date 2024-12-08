@@ -1,4 +1,4 @@
-package ru.serg.network_weather_api
+package com.serg.network_self_proxy
 
 import dagger.Module
 import dagger.Provides
@@ -21,25 +21,21 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.appendPathSegments
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import java.util.Locale
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+class ProxyNetworkModule {
 
     companion object {
-        const val BASE_URL = "weather.visualcrossing.com"
-        const val FORECAST = "/VisualCrossingWebServices/rest/services/timeline/"
-        const val API_KEY_PARAM_NAME = "key"
-        const val UNIT_GROUP_PARAM_NAME = "unitGroup"
-        const val UNIT_GROUP_PARAM_VALUE = "metric"
+        const val BASE_URL = "209.38.184.64"
+        const val FORECAST = "v1/weather/owm_proxy/coord"
         const val LANG = "lang"
     }
 
     @Singleton
     @Provides
-    fun provideHttpClient(): HttpClient {
+    fun provideSelfProxyHttpClient(): HttpClient {
 
         return HttpClient(Android) {
 
@@ -71,13 +67,8 @@ class NetworkModule {
             defaultRequest {
                 host = BASE_URL
                 url {
-                    protocol = URLProtocol.HTTPS
+                    protocol = URLProtocol.HTTP
                     appendPathSegments(FORECAST)
-                    parameters.apply {
-                        append(API_KEY_PARAM_NAME, BuildConfig.VISUAL_CROSSING_API_KEY)
-                        append(UNIT_GROUP_PARAM_NAME, UNIT_GROUP_PARAM_VALUE)
-                        append(LANG, Locale.getDefault().language)
-                    }
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
