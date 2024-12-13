@@ -20,7 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:windowSoftInputMode="adjustResize"
         android:enableOnBackInvokedCallback="true"
-        android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"

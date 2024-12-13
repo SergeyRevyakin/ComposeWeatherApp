@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,7 @@ fun DialogContainer(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         shape = RoundedCornerShape(24.dp),
+        modifier = Modifier.statusBarsPadding(),
         containerColor = MaterialTheme.colorScheme.surface
             .copy(alpha = 0.9f)
             .compositeOver(MaterialTheme.colorScheme.onSurface),

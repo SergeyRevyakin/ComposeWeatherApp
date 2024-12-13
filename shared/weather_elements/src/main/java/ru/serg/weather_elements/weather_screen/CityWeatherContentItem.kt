@@ -166,7 +166,7 @@ fun CityWeatherContentItem(
 
     if (showDailyWeatherBottomSheet) {
         DialogContainer(
-            onDismiss = { showDailyWeatherBottomSheet = !showDailyWeatherBottomSheet },
+            onDismiss = { showDailyWeatherBottomSheet = false },
             sheetState = sheetState
         ) {
 
@@ -182,7 +182,7 @@ fun CityWeatherContentItem(
 
     if (showUviDetailsBottomSheet) {
         DialogContainer(
-            onDismiss = { showUviDetailsBottomSheet = !showUviDetailsBottomSheet },
+            onDismiss = { showUviDetailsBottomSheet = false },
             sheetState = sheetState
         ) {
             UviBottomSheet(
@@ -193,7 +193,7 @@ fun CityWeatherContentItem(
 
     if (showAqiDetailsBottomSheet) {
         DialogContainer(
-            onDismiss = { showAqiDetailsBottomSheet = !showAqiDetailsBottomSheet },
+            onDismiss = { showAqiDetailsBottomSheet = false },
             sheetState = sheetState
         ) {
             AirQualityBottomSheet(

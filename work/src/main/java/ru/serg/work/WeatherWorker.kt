@@ -47,7 +47,7 @@ class WeatherWorker @AssistedInject constructor(
 
             val repeatingWork =
                 PeriodicWorkRequestBuilder<WeatherWorker>(interval, TimeUnit.HOURS)
-                    .setInitialDelay(30, TimeUnit.SECONDS)
+                    .setInitialDelay(interval, TimeUnit.HOURS)
                     .addTag(WORKER_TAG)
                     .setConstraints(constraints)
                     .build()

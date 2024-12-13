@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -44,6 +46,7 @@ import kotlin.math.roundToInt
 fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
     units: Units,
+    modifier: Modifier = Modifier,
     lastUpdatedTime: Long = System.currentTimeMillis(),
     showUviInfo: () -> Unit = {},
     showAqiInfo: () -> Unit = {},
@@ -57,7 +60,7 @@ fun TodayWeatherCardItem(
     )
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(12.dp)
             .shadow(
                 elevation = 10.dp,
@@ -123,11 +126,13 @@ fun TodayWeatherCardItem(
                     onInfoClick = showUviInfo
                 )
 
-                val airQualityEUIndex =
-                    AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
+                val airQualityEUIndex by remember {
+                    mutableStateOf(AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
                         ?: AirQualityEUIndex.UNKNOWN
+                    )
+                }
 
-                if (weatherItem.airQuality != AirQuality.blankAirQuality()) {
+                AnimWeather(weatherItem.airQuality != AirQuality.blankAirQuality()) {
                     ParamRowWithInfoItem(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -171,10 +176,13 @@ fun TodayWeatherCardItemPreview() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        TodayWeatherCardItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Scaffold {
+            TodayWeatherCardItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }
 
@@ -185,9 +193,12 @@ fun TodayWeatherCardItemPreviewDark() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        TodayWeatherCardItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Scaffold {
+            TodayWeatherCardItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }

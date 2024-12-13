@@ -67,7 +67,7 @@ class ProxyNetworkModule {
             defaultRequest {
                 host = BASE_URL
                 url {
-                    protocol = URLProtocol.HTTP
+                    protocol = URLProtocol.HTTPS
                     appendPathSegments(FORECAST)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
