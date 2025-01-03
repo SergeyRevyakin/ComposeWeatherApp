@@ -1,4 +1,4 @@
-package com.serg.weather_proxy.utils.model
+package com.serg.network_self_proxy.dto
 
 import kotlinx.serialization.Serializable
 
@@ -10,15 +10,15 @@ data class CityModel(
     val longitude: Double,
     val county: String,
     val region: String?,
+    val countyCode: String,
     val cityAdditionalInfo: CityAdditionalInfo?,
 )
 
 @Serializable
 data class CityAdditionalInfo(
-    val accuWeatherCityKey: String,
-    val countryNameShort: String,
-    val countryNameFullEn: String,
-    val administrativeAreaEn: String,
-    val gtmOffset: Double,
-    val rating: Int
+    val accuWeatherCityKey: String?,
+    val countryNameFullEn: String?,
+    val administrativeAreaEn: String?,
+    val gtmOffset: Double?,
+    val rating: Int?
 )

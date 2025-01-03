@@ -1,6 +1,5 @@
 package com.serg.network_self_proxy.dto
 
-import com.serg.weather_proxy.utils.model.CityModel
 import kotlinx.serialization.Serializable
 
 @Serializable
