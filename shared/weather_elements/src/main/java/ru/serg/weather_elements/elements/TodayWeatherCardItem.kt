@@ -34,7 +34,6 @@ import ru.serg.designsystem.utils.AnimWeather
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
 import ru.serg.drawables.R.drawable
-import ru.serg.model.AirQuality
 import ru.serg.model.HourlyWeather
 import ru.serg.model.enums.AirQualityEUIndex
 import ru.serg.model.enums.Units
@@ -47,6 +46,7 @@ fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
     units: Units,
     modifier: Modifier = Modifier,
+    hasFrame: Boolean = true,
     lastUpdatedTime: Long = System.currentTimeMillis(),
     showUviInfo: () -> Unit = {},
     showAqiInfo: () -> Unit = {},
@@ -59,8 +59,8 @@ fun TodayWeatherCardItem(
         ),
     )
 
-    Column(
-        modifier = modifier
+    val backgroundModifier = if (hasFrame) modifier.then(
+        Modifier
             .padding(12.dp)
             .shadow(
                 elevation = 10.dp,
@@ -70,6 +70,11 @@ fun TodayWeatherCardItem(
             .clip(RoundedCornerShape(24.dp))
             .gradientBorder()
             .background(gradient)
+    )
+    else modifier
+
+    Column(
+        modifier = backgroundModifier
             .fillMaxWidth()
             .wrapContentHeight()
 
@@ -126,31 +131,29 @@ fun TodayWeatherCardItem(
                     onInfoClick = showUviInfo
                 )
 
-                val airQualityEUIndex by remember {
+                val airQualityEUIndex by remember(weatherItem.airQuality) {
                     mutableStateOf(AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
                         ?: AirQualityEUIndex.UNKNOWN
                     )
                 }
 
-                AnimWeather(weatherItem.airQuality != AirQuality.blankAirQuality()) {
-                    ParamRowWithInfoItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp)
-                            .padding(horizontal = 12.dp),
-                        paramIcon = drawable.ic_sandstorm,
-                        paramValue = stringResource(
-                            id = string.aqi_value,
-                            stringResource(id = airQualityEUIndex.indexDescription)
-                        ),
-                        hasInfoButton = true,
-                        onInfoClick = showAqiInfo
-                    )
-                }
+                ParamRowWithInfoItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 12.dp),
+                    paramIcon = drawable.ic_sandstorm,
+                    paramValue = stringResource(
+                        id = string.aqi_value,
+                        stringResource(id = airQualityEUIndex.indexDescription)
+                    ),
+                    hasInfoButton = true,
+                    onInfoClick = showAqiInfo
+                )
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
-                if (lastUpdatedTime > 0) {
+                if (lastUpdatedTime > 0 && hasFrame) {
                     AnimWeather(targetState = lastUpdatedTime) {
                         Text(
                             text = stringResource(

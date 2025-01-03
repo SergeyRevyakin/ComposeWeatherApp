@@ -34,12 +34,14 @@ import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.DailyWeather
+import ru.serg.model.HourlyWeather
 import ru.serg.model.WeatherItem
 import ru.serg.strings.R.string
 import ru.serg.weather_elements.animatedBlur
 import ru.serg.weather_elements.bottom_sheets.AirQualityBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DailyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.DialogContainer
+import ru.serg.weather_elements.bottom_sheets.HourlyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
 import ru.serg.weather_elements.elements.AlertCardItem
 import ru.serg.weather_elements.elements.HourlyWeatherItem
@@ -74,6 +76,14 @@ fun CityWeatherContentItem(
     }
 
     var dailyWeather: DailyWeather? by remember {
+        mutableStateOf(null)
+    }
+
+    var showHourlyWeatherBottomSheet by remember {
+        mutableStateOf(false)
+    }
+
+    var hourlyWeather: HourlyWeather? by remember {
         mutableStateOf(null)
     }
 
@@ -132,7 +142,13 @@ fun CityWeatherContentItem(
             val list =
                 weatherItem.hourlyWeatherList
             items(list.size) {
-                HourlyWeatherItem(item = list[it], units = screenState.units)
+                HourlyWeatherItem(
+                    item = list[it],
+                    units = screenState.units
+                ) {
+                    hourlyWeather = list[it]
+                    showHourlyWeatherBottomSheet = true
+                }
             }
         }
 
@@ -175,6 +191,29 @@ fun CityWeatherContentItem(
                 DailyWeatherBottomSheet(
                     daily = it,
                     units = screenState.units,
+                )
+            }
+        }
+    }
+
+    if (showHourlyWeatherBottomSheet) {
+        DialogContainer(
+            onDismiss = { showHourlyWeatherBottomSheet = false },
+            sheetState = sheetState
+        ) {
+
+            hourlyWeather?.let {
+
+                HourlyWeatherBottomSheet(
+                    hourlyWeather = it,
+                    units = screenState.units,
+                    modifier = Modifier,
+                    showUvi = {
+                        showUviDetailsBottomSheet = true
+                    },
+                    showAqi = {
+                        showAqiDetailsBottomSheet = true
+                    }
                 )
             }
         }

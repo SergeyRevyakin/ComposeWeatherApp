@@ -109,7 +109,11 @@ class WeatherRepository @Inject constructor(
 
             val dailyWeather =
                 resp.dailyList?.map { SelfDataMapper.mapDailyWeather(it) } ?: emptyList()
-
+            1734300000
+            1734303600
+            1734303600
+            1734300000
+            1734303600000
             val alerts = resp.alertList?.map {
                 AlertItem(
                     startAt = it.startTime.orZero(),
