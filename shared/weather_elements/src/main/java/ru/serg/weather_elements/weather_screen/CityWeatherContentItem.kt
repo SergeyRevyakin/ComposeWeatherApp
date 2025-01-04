@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -201,6 +204,7 @@ fun CityWeatherContentItem(
             onDismiss = { showHourlyWeatherBottomSheet = false },
             sheetState = sheetState
         ) {
+            val scope = rememberCoroutineScope()
 
             hourlyWeather?.let {
 
@@ -209,10 +213,18 @@ fun CityWeatherContentItem(
                     units = screenState.units,
                     modifier = Modifier,
                     showUvi = {
-                        showUviDetailsBottomSheet = true
+                        scope.async {
+                            showHourlyWeatherBottomSheet = false
+//                            delay(100)
+                            showUviDetailsBottomSheet = true
+                        }
                     },
                     showAqi = {
-                        showAqiDetailsBottomSheet = true
+                        scope.launch {
+                            showHourlyWeatherBottomSheet = false
+//                            delay(100)
+                            showAqiDetailsBottomSheet = true
+                        }
                     }
                 )
             }

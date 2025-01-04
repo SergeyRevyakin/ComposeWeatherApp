@@ -39,6 +39,9 @@
     <string name="starts_at">Starts at</string>
     <string name="end_at">Ends at</string>
 
+    <string name="feels_like">Feels like: %1$s</string>
+    <string name="precipitation_probability">Precipitation probability: %1$d%%</string>
+
     <!--    Settings Screen-->
     <string name="settings">Settings</string>
     <string name="use_dark_mode">Use dark mode</string>

@@ -109,12 +109,13 @@ fun TodayWeatherCardItem(
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp),
                     paramIcon = drawable.ic_thermometer,
-                    paramValue = "Feels like: ${
+                    paramValue = stringResource(
+                        string.feels_like,
                         getTemp(
                             temp = weatherItem.feelsLike,
                             stringResource(id = units.tempUnits)
                         )
-                    }",
+                    ),
                 )
 
                 ParamRowWithInfoItem(
@@ -150,6 +151,19 @@ fun TodayWeatherCardItem(
                     hasInfoButton = true,
                     onInfoClick = showAqiInfo
                 )
+
+                if (!hasFrame) {
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_thermometer,
+                        paramValue = stringResource(
+                            string.precipitation_probability,
+                            weatherItem.precipitationProbability
+                        ),
+                    )
+                }
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
