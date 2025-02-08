@@ -3,7 +3,6 @@ package ru.serg.composeweatherapp
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
@@ -37,13 +36,11 @@ class ComposeWeatherApp : Application(), Configuration.Provider {
         }
 
         val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .build()
+        get() = Configuration.Builder().setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.DEBUG).build()
 }
