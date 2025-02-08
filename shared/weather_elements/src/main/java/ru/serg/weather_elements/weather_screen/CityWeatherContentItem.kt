@@ -173,7 +173,8 @@ fun CityWeatherContentItem(
             items(list.size) {
                 HourlyWeatherItem(
                     item = list[it],
-                    units = screenState.units
+                    units = screenState.units,
+                    offsetSeconds = weatherItem.cityItem.secondsOffset
                 ) {
                     hourlyWeather = list[it]
                     showHourlyWeatherBottomSheet = true

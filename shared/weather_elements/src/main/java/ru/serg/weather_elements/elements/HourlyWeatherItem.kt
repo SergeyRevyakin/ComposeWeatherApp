@@ -42,6 +42,7 @@ fun HourlyWeatherItem(
     item: HourlyWeather,
     units: Units,
     modifier: Modifier = Modifier,
+    offsetSeconds: Long = 0,
     onClick: () -> Unit
 ) {
     Column(
@@ -77,6 +78,7 @@ fun HourlyWeatherItem(
                 Text(
                     text = getHourWithNowAndAccent(
                         item.dateTime,
+                        offsetSeconds,
                         MaterialTheme.colorScheme.primary
                     ),
                     fontSize = 12.sp,

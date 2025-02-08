@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.asTimeZone
 import kotlinx.datetime.toJavaZoneOffset
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.designsystem.theme.customColors
@@ -29,11 +30,12 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
+fun getHourWithNowAndAccent(timestamp: Long?, offset: Long, color: Color): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
         val time = Instant.fromEpochMilliseconds(timestamp)
-        val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
+        val date =
+            time.toLocalDateTime(TimeZone.of(UtcOffset(seconds = offset.toInt()).asTimeZone().id))
         val now = LocalDateTime.now()
         return when {
             (timestamp - System.currentTimeMillis() < 60L * 1000L) -> buildAnnotatedString {
@@ -46,8 +48,7 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             date.dayOfYear > now.dayOfYear -> {
                 buildAnnotatedString {
                     append(
-                        SimpleDateFormat("HH:mm", Locale.getDefault())
-                            .format(timestamp)
+                        getFormattedTime(timestamp, offset)
                     )
                     withStyle(
                         style = SpanStyle(
@@ -61,7 +62,7 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             }
 
             else -> buildAnnotatedString {
-                append(SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp))
+                append(getFormattedTime(timestamp, offset))
             }
 
         }
