@@ -111,7 +111,7 @@ fun CityRow(
 fun PreviewCityRow() {
     ComposeWeatherAppTheme {
         CityRow(
-            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
+            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, 0, false),
             onItemClick = {},
             onAddClick = {},
             isAddedToFavorites = false
@@ -127,7 +127,7 @@ fun PreviewCityRowDark() {
     }
     ComposeWeatherAppTheme(isDark) {
         CityRow(
-            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
+            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, 0, false),
             onItemClick = {},
             onAddClick = {},
             isAddedToFavorites = true
@@ -143,7 +143,7 @@ fun PreviewCityRowDarkNotFav() {
     }
     ComposeWeatherAppTheme(isDark) {
         CityRow(
-            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, false),
+            cityItem = CityItem("Moscow", "Ru", 0.0, 0.0, 0, false),
             onItemClick = {},
             onAddClick = {},
             isAddedToFavorites = false

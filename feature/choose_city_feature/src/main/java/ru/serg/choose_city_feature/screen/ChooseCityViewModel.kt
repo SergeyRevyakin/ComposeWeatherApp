@@ -11,10 +11,13 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.serg.choose_city_feature.CitySearchUseCase
 import ru.serg.choose_city_feature.screen.screen_state.Action
 import ru.serg.choose_city_feature.screen.screen_state.ScreenError
 import ru.serg.choose_city_feature.screen.screen_state.ScreenState
+import ru.serg.choose_city_feature.use_cases.DeleteCityUseCase
+import ru.serg.choose_city_feature.use_cases.FetchCityListUseCase
+import ru.serg.choose_city_feature.use_cases.GetFavouriteCitiesUseCase
+import ru.serg.choose_city_feature.use_cases.SaveCityUseCase
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.model.CityItem
@@ -23,7 +26,10 @@ import javax.inject.Inject
 @FlowPreview
 @HiltViewModel
 class ChooseCityViewModel @Inject constructor(
-    private val citySearchUseCase: CitySearchUseCase,
+    private val fetchCityListUseCase: FetchCityListUseCase,
+    private val deleteCityUseCase: DeleteCityUseCase,
+    private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
+    private val saveCityUseCase: SaveCityUseCase
 ) : ViewModel() {
 
     private val _screenState: MutableStateFlow<ScreenState> =
@@ -51,14 +57,14 @@ class ChooseCityViewModel @Inject constructor(
 
     private fun initFavouriteCities() {
         viewModelScope.launch {
-            citySearchUseCase.getFavouriteCitiesFlow().collectLatest {
+            getFavouriteCitiesUseCase().collectLatest {
                 handleIntent(Intent.FavouriteCityListChanged(it))
             }
         }
     }
 
     private suspend fun fetchCities(input: String?) {
-        citySearchUseCase.fetchCityListFlow(input).asResult().collectLatest { networkResult ->
+        fetchCityListUseCase(input).asResult().collectLatest { networkResult ->
             when (networkResult) {
                 is NetworkResult.Loading -> {
                     handleIntent(Intent.OnLoading(true))
@@ -77,13 +83,13 @@ class ChooseCityViewModel @Inject constructor(
 
     private fun onAddCityClick(cityItem: CityItem) {
         viewModelScope.launch {
-            citySearchUseCase.saveCityItem(cityItem)
+            saveCityUseCase(cityItem)
         }
     }
 
     private fun onDeleteCityClick(cityItem: CityItem) {
         viewModelScope.launch {
-            citySearchUseCase.deleteCityItem(cityItem)
+            deleteCityUseCase(cityItem)
         }
     }
 
