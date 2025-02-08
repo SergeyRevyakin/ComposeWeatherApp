@@ -33,14 +33,15 @@ import ru.serg.drawables.R.drawable
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.getFormattedTime
 import ru.serg.weather_elements.getFullDate
-import ru.serg.weather_elements.getHour
 
 @Composable
 fun DailyWeatherBottomSheet(
     daily: DailyWeather,
     units: Units,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offsetSeconds: Long = 0L,
 ) {
     Column(
         modifier = modifier
@@ -89,11 +90,17 @@ fun DailyWeatherBottomSheet(
                     .padding(start = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = stringResource(id = string.sunrise_value, getHour(daily.sunrise)),
+                    text = stringResource(
+                        id = string.sunrise_value,
+                        getFormattedTime(daily.sunrise, offsetSeconds)
+                    ),
                 )
 
                 Text(
-                    text = stringResource(id = string.sunset_value, getHour(daily.sunset)),
+                    text = stringResource(
+                        id = string.sunset_value,
+                        getFormattedTime(daily.sunset, offsetSeconds)
+                    ),
                 )
             }
 

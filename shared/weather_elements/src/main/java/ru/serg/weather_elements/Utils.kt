@@ -129,9 +129,6 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
     }
 }
 
-fun getHour(l: Long?): String =
-    SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
-
 @Composable
 fun getWelcomeText() =
     buildAnnotatedString {
