@@ -17,12 +17,13 @@ fun HourlyWeatherBottomSheet(
     hourlyWeather: HourlyWeather,
     units: Units,
     modifier: Modifier = Modifier,
+    offsetSeconds: Long = 0,
     showUvi: () -> Unit,
     showAqi: () -> Unit
 ) {
     Column {
         Text(
-            text = getFormattedLastUpdateDate(hourlyWeather.dateTime),
+            text = getFormattedLastUpdateDate(hourlyWeather.dateTime, offsetSeconds),
             style = headerStyle,
             modifier = Modifier
                 .padding(bottom = 24.dp)

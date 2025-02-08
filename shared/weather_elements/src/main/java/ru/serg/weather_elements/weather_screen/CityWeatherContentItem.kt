@@ -132,7 +132,10 @@ fun CityWeatherContentItem(
 
         if (screenState.isAlertsEnabled) {
             weatherItem.alertList.forEach {
-                AlertCardItem(it)
+                AlertCardItem(
+                    alertItem = it,
+                    offsetSeconds = weatherItem.cityItem.secondsOffset
+                )
             }
         }
 
@@ -221,6 +224,7 @@ fun CityWeatherContentItem(
                 DailyWeatherBottomSheet(
                     daily = it,
                     units = screenState.units,
+                    offsetSeconds = weatherItem.cityItem.secondsOffset
                 )
             }
         }
@@ -239,6 +243,7 @@ fun CityWeatherContentItem(
                     hourlyWeather = it,
                     units = screenState.units,
                     modifier = Modifier,
+                    offsetSeconds = weatherItem.cityItem.secondsOffset,
                     showUvi = {
                         scope.async {
                             showHourlyWeatherBottomSheet = false

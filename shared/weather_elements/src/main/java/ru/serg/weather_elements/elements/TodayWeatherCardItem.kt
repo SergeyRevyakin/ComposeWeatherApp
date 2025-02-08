@@ -172,7 +172,7 @@ fun TodayWeatherCardItem(
                         Text(
                             text = stringResource(
                                 id = string.last_updated_value,
-                                getFormattedLastUpdateDate(it)
+                                getFormattedLastUpdateDate(it, 0)
                             ),
                             textAlign = TextAlign.End,
                             modifier = Modifier
@@ -214,6 +214,7 @@ fun TodayWeatherCardItemPreviewDark() {
             TodayWeatherCardItem(
                 MockItems.getHourlyWeatherMockItem(),
                 Units.METRIC,
+                hasFrame = false,
                 modifier = Modifier.padding(it)
             )
         }

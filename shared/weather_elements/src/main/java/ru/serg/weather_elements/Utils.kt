@@ -70,22 +70,22 @@ fun getHourWithNowAndAccent(timestamp: Long?, offset: Long, color: Color): Annot
 }
 
 @Composable
-fun getFormattedLastUpdateDate(timestamp: Long): String {
+fun getFormattedLastUpdateDate(timestamp: Long, offset: Long): String {
     val time = Instant.fromEpochMilliseconds(timestamp)
 
     val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
     return when {
         (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.today_value,
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
+            getFormattedTime(timestamp, offset)
         )
 
         (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.yesterday_value,
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
+            getFormattedTime(timestamp, offset)
         )
 
-        else -> SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault()).format(timestamp)
+        else -> getFormattedTime(timestamp, offset)
     }
 }
 

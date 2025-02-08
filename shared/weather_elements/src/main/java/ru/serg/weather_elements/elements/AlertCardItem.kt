@@ -49,7 +49,8 @@ import ru.serg.weather_elements.getFormattedLastUpdateDate
 @Composable
 fun AlertCardItem(
     alertItem: AlertItem,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offsetSeconds: Long = 0,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -119,7 +120,7 @@ fun AlertCardItem(
                     modifier = Modifier
                 )
                 Text(
-                    text = getFormattedLastUpdateDate(alertItem.startAt),
+                    text = getFormattedLastUpdateDate(alertItem.startAt, offsetSeconds),
                     fontSize = 16.sp,
                     modifier = Modifier
                 )
@@ -136,7 +137,7 @@ fun AlertCardItem(
                     modifier = Modifier
                 )
                 Text(
-                    text = getFormattedLastUpdateDate(alertItem.endAt),
+                    text = getFormattedLastUpdateDate(alertItem.endAt, offsetSeconds),
                     textAlign = TextAlign.End,
                     fontSize = 16.sp,
                     modifier = Modifier
