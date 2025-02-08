@@ -81,7 +81,7 @@ fun SettingsScreen(
                         leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
                         onLeftIconClick =
-                        { navController.navigateUp() },
+                            { navController.navigateUp() },
                         onRightIconClick = null,
                         appBarState = appBarState
                     )
@@ -123,19 +123,19 @@ fun SettingsScreen(
             }
 
             MenuRowWithRadioButton(
-                optionName = stringResource(id = string.update_weather_in_background),
-                descriptionText = stringResource(id = string.allow_get_updates_consumes_traffic),
-                modifier = Modifier,
-                buttonState = viewModel.isBackgroundFetchWeatherEnabled.collectAsState().value,
-                onSwitchClick = viewModel::onBackgroundFetchChanged
-            )
-
-            MenuRowWithRadioButton(
                 optionName = stringResource(id = string.show_alerts),
                 descriptionText = stringResource(id = string.show_alerts_desc),
                 modifier = Modifier,
                 buttonState = viewModel.isAlertsEnabled.collectAsState().value,
                 onSwitchClick = viewModel::onAlertsChanged
+            )
+
+            MenuRowWithRadioButton(
+                optionName = stringResource(id = string.update_weather_in_background),
+                descriptionText = stringResource(id = string.allow_get_updates_consumes_traffic),
+                modifier = Modifier,
+                buttonState = viewModel.isBackgroundFetchWeatherEnabled.collectAsState().value,
+                onSwitchClick = viewModel::onBackgroundFetchChanged
             )
 
             CollapsingContainer(isVisible = viewModel.isBackgroundFetchWeatherEnabled.collectAsState()) {
