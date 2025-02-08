@@ -166,6 +166,8 @@
     <string name="widget_last_updated">Last updated %1$s</string>
     <string name="widget_last_recomposition">Last redraw %1$s</string>
 
+    <string name="local_time">Local time: %1$s</string>
+
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
@@ -173,6 +175,8 @@
     <string name="humidity_value">Humidity: %1$d%%</string>
     <string name="pressure_value">Pressure: %1$d</string>
     <string name="precipitation_value">Precipitation probability: %1$d%%</string>
+
+    <string name="sunrise">Sunrise</string>
 
     <string name="morning_value">Morning: %1$.0f%2$s</string>
     <string name="day_value">Day: %1$.0f%2$s</string>

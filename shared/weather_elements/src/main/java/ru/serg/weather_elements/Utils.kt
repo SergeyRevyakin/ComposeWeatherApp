@@ -18,6 +18,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.toJavaZoneOffset
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.designsystem.theme.customColors
 import ru.serg.strings.R.string
@@ -86,6 +88,17 @@ fun getFormattedLastUpdateDate(timestamp: Long): String {
     }
 }
 
+fun getFormattedTime(timestamp: Long, offset: Long): String {
+    val time = timestamp
+
+    val utcOffset = UtcOffset(seconds = offset.toInt())
+
+    val timeZone = java.util.TimeZone.getTimeZone(utcOffset.toJavaZoneOffset())
+
+    return SimpleDateFormat("HH:mm", Locale.getDefault()).apply { this.timeZone = timeZone }
+        .format(time)
+}
+
 fun getFullDate(timestamp: Long?): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
@@ -151,17 +164,6 @@ fun Modifier.animatedBlur(isShowing: Boolean) =
                 label = "blur"
             ).value
         )
-    }
-
-@Composable
-fun getAqiStringByIndex(index: Int): String =
-    when (index) {
-        1 -> stringResource(id = string.aqi_good)
-        2 -> stringResource(id = string.aqi_fair)
-        3 -> stringResource(id = string.aqi_moderate)
-        4 -> stringResource(id = string.aqi_poor)
-        5 -> stringResource(id = string.aqi_very_poor)
-        else -> ""
     }
 
 @Composable
