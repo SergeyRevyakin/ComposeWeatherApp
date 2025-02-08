@@ -27,6 +27,8 @@ interface DataStoreDataSource {
 
     val widgetIconSize: Flow<Int>
 
+    val isWeatherAlertsEnabled: Flow<Boolean>
+
     suspend fun saveDarkMode(isDark: Boolean)
 
     suspend fun saveFetchFrequency(positionInList: Int)
@@ -48,4 +50,6 @@ interface DataStoreDataSource {
     suspend fun saveWidgetWeatherChangesShown(isShown: Boolean)
 
     suspend fun saveWidgetIconSize(iconSize: Int)
+
+    suspend fun saveWeatherAlertsEnabled(isEnabled: Boolean)
 }

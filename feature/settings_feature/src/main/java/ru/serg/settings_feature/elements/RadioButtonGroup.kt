@@ -31,10 +31,11 @@ fun RadioButtonGroup(
     nameList: List<String>,
     descriptionList: List<String>,
     selectedPosition: MutableState<Int>,
-    onSelectListener: (Int) -> Unit
+    modifier: Modifier = Modifier,
+    onSelectListener: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(24.dp),
         verticalArrangement = Arrangement.Center

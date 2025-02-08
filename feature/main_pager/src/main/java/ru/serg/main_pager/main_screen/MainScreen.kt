@@ -8,23 +8,25 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -67,23 +69,17 @@ fun MainScreen(
     val pullToRefreshState = rememberPullToRefreshState()
 
 
-    LaunchedEffect(pullToRefreshState.isRefreshing) {
-        if (pullToRefreshState.isRefreshing) {
-            viewModel.refresh()
-        }
-    }
-
     LaunchedEffect(screenState.isLoading) {
-        pullToRefreshState.endRefresh()
+        pullToRefreshState.animateToHidden()
     }
-
-    Box(Modifier.nestedScroll(pullToRefreshState.nestedScrollConnection)) {
         val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
         Scaffold(
             modifier = modifier
-                .fillMaxSize()
-                .nestedScroll(pullToRefreshState.nestedScrollConnection),
+                .consumeWindowInsets(
+                    WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+                )
+                .fillMaxSize(),
             topBar = {
                 PagerTopBar(
                     pagerState = pagerState,
@@ -106,7 +102,7 @@ fun MainScreen(
                         )
                     }
                 }
-            }
+            },
         ) { padding ->
 
             val context = LocalContext.current
@@ -120,12 +116,12 @@ fun MainScreen(
                     animationSpec = tween(300)
                 )
             ) {
-                pullToRefreshState.endRefresh()
                 ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
             }
 
             AnimatedVisibility(
-                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp && !screenState.isLoading,
+                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp
+                        && !screenState.isLoading && screenState.error == null && screenState.isInit,
                 enter = fadeIn(
                     animationSpec = tween(300)
                 ),
@@ -176,35 +172,35 @@ fun MainScreen(
                     animationSpec = tween(300)
                 )
             ) {
-                HorizontalPager(
-                    modifier = Modifier
-                        .padding(padding)
-                        .fillMaxSize()
-                        .nestedScroll(appBarState.nestedScrollConnection),
-                    state = pagerState,
-                    userScrollEnabled = true,
-                    reverseLayout = false,
-                    pageContent = {
-                        val weatherItem = screenState.weatherList[it]
+                PullToRefreshBox(
+                    state = pullToRefreshState,
+                    onRefresh = { viewModel.refresh() },
+                    isRefreshing = screenState.isLoading
+                ) {
+                    HorizontalPager(
+                        modifier = Modifier
+//                            .safeDrawingPadding()
+                            .fillMaxSize()
+                            .padding(padding)
+                            .nestedScroll(appBarState.nestedScrollConnection),
+                        state = pagerState,
+                        userScrollEnabled = true,
+                        reverseLayout = false,
+                        pageContent = {
+                            val weatherItem = screenState.weatherList[it]
 
-                        if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
-                            ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
-                        } else {
-                            PagerScreen(
-                                weatherItem = weatherItem,
-                                modifier = Modifier
-                            )
+                            if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
+                                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
+                            } else {
+                                PagerScreen(
+                                    weatherItem = weatherItem,
+                                    modifier = Modifier
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
-
-        PullToRefreshContainer(
-            state = pullToRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter),
-            contentColor = MaterialTheme.colorScheme.primary,
-        )
-    }
 }
 

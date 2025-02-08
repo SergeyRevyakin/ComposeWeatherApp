@@ -1,5 +1,6 @@
 package ru.serg.weather_elements.elements
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,19 +29,21 @@ import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.drawables.R.drawable
-import ru.serg.weather_elements.getHour
+import ru.serg.strings.R.string
+import ru.serg.weather_elements.getFormattedTime
 
 @Composable
 fun SunriseSunsetItem(
     sunriseTime: Long,
     sunsetTime: Long,
+    offsetSeconds: Long = 0
 ) {
     Column(
         modifier = Modifier
     ) {
 
         Text(
-            text = "Sunrise",
+            text = stringResource(string.sunrise),
             style = headerStyle,
             modifier = Modifier
                 .headerModifier()
@@ -84,7 +88,7 @@ fun SunriseSunsetItem(
                     )
 
                     Text(
-                        text = getHour(sunriseTime),
+                        text = getFormattedTime(sunriseTime, offsetSeconds),
                         fontSize = 18.sp,
                         modifier = Modifier
                             .wrapContentHeight(align = Alignment.CenterVertically)
@@ -106,7 +110,7 @@ fun SunriseSunsetItem(
                 ) {
 
                     Text(
-                        text = getHour(sunsetTime),
+                        text = getFormattedTime(sunsetTime, offsetSeconds),
                         fontSize = 18.sp,
                         modifier = Modifier
                             .wrapContentHeight(align = Alignment.CenterVertically)

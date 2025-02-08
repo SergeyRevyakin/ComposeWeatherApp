@@ -1,4 +1,4 @@
-package ru.serg.weather_elements.weather_screen
+package ru.serg.weather_elements.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -43,6 +45,8 @@ import kotlin.math.roundToInt
 fun TodayWeatherCardItem(
     weatherItem: HourlyWeather,
     units: Units,
+    modifier: Modifier = Modifier,
+    hasFrame: Boolean = true,
     lastUpdatedTime: Long = System.currentTimeMillis(),
     showUviInfo: () -> Unit = {},
     showAqiInfo: () -> Unit = {},
@@ -55,8 +59,8 @@ fun TodayWeatherCardItem(
         ),
     )
 
-    Column(
-        modifier = Modifier
+    val backgroundModifier = if (hasFrame) modifier.then(
+        Modifier
             .padding(12.dp)
             .shadow(
                 elevation = 10.dp,
@@ -66,6 +70,11 @@ fun TodayWeatherCardItem(
             .clip(RoundedCornerShape(24.dp))
             .gradientBorder()
             .background(gradient)
+    )
+    else modifier
+
+    Column(
+        modifier = backgroundModifier
             .fillMaxWidth()
             .wrapContentHeight()
 
@@ -100,12 +109,13 @@ fun TodayWeatherCardItem(
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp),
                     paramIcon = drawable.ic_thermometer,
-                    paramValue = "Feels like: ${
+                    paramValue = stringResource(
+                        string.feels_like,
                         getTemp(
                             temp = weatherItem.feelsLike,
                             stringResource(id = units.tempUnits)
                         )
-                    }",
+                    ),
                 )
 
                 ParamRowWithInfoItem(
@@ -122,9 +132,11 @@ fun TodayWeatherCardItem(
                     onInfoClick = showUviInfo
                 )
 
-                val airQualityEUIndex =
-                    AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
+                val airQualityEUIndex by remember(weatherItem.airQuality) {
+                    mutableStateOf(AirQualityEUIndex.entries.firstOrNull { it.id == weatherItem.airQuality.getEUPollutionIndex() }
                         ?: AirQualityEUIndex.UNKNOWN
+                    )
+                }
 
                 ParamRowWithInfoItem(
                     modifier = Modifier
@@ -140,14 +152,27 @@ fun TodayWeatherCardItem(
                     onInfoClick = showAqiInfo
                 )
 
+                if (!hasFrame) {
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_rain_mix,
+                        paramValue = stringResource(
+                            string.precipitation_probability,
+                            weatherItem.precipitationProbability
+                        ),
+                    )
+                }
+
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
-                if (lastUpdatedTime > 0) {
+                if (lastUpdatedTime > 0 && hasFrame) {
                     AnimWeather(targetState = lastUpdatedTime) {
                         Text(
                             text = stringResource(
                                 id = string.last_updated_value,
-                                getFormattedLastUpdateDate(it)
+                                getFormattedLastUpdateDate(it, 0)
                             ),
                             textAlign = TextAlign.End,
                             modifier = Modifier
@@ -168,10 +193,13 @@ fun TodayWeatherCardItemPreview() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        TodayWeatherCardItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Scaffold {
+            TodayWeatherCardItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }
 
@@ -182,9 +210,13 @@ fun TodayWeatherCardItemPreviewDark() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        TodayWeatherCardItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Scaffold {
+            TodayWeatherCardItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC,
+                hasFrame = false,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }

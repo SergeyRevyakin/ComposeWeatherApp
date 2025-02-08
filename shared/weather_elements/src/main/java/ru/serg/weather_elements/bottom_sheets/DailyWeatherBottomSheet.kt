@@ -33,14 +33,15 @@ import ru.serg.drawables.R.drawable
 import ru.serg.model.DailyWeather
 import ru.serg.model.enums.Units
 import ru.serg.strings.R.string
+import ru.serg.weather_elements.getFormattedTime
 import ru.serg.weather_elements.getFullDate
-import ru.serg.weather_elements.getHour
 
 @Composable
 fun DailyWeatherBottomSheet(
     daily: DailyWeather,
     units: Units,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    offsetSeconds: Long = 0L,
 ) {
     Column(
         modifier = modifier
@@ -89,11 +90,17 @@ fun DailyWeatherBottomSheet(
                     .padding(start = 8.dp, end = 16.dp)
             ) {
                 Text(
-                    text = stringResource(id = string.sunrise_value, getHour(daily.sunrise)),
+                    text = stringResource(
+                        id = string.sunrise_value,
+                        getFormattedTime(daily.sunrise, offsetSeconds)
+                    ),
                 )
 
                 Text(
-                    text = stringResource(id = string.sunset_value, getHour(daily.sunset)),
+                    text = stringResource(
+                        id = string.sunset_value,
+                        getFormattedTime(daily.sunset, offsetSeconds)
+                    ),
                 )
             }
 
@@ -118,20 +125,25 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(
-                    text = stringResource(
-                        id = string.morning_value,
-                        daily.dailyWeatherItem.morningTemp,
-                        stringResource(id = units.tempUnits)
+                daily.dailyWeatherItem.minTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.daily_min_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
-                Text(
-                    text = stringResource(
-                        id = string.day_value,
-                        daily.dailyWeatherItem.dayTemp,
-                        stringResource(id = units.tempUnits)
+                }
+
+                daily.dailyWeatherItem.maxTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.daily_max_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
             }
 
             Column(
@@ -140,21 +152,25 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(
-                    text = stringResource(
-                        id = string.evening_value,
-                        daily.dailyWeatherItem.eveningTemp,
-                        stringResource(id = units.tempUnits)
+                daily.feelsLike.minTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.feels_min_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
 
-                Text(
-                    text = stringResource(
-                        id = string.night_value,
-                        daily.dailyWeatherItem.nightTemp,
-                        stringResource(id = units.tempUnits)
+                daily.feelsLike.maxTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.feels_max_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
             }
         }
 

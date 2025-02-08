@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
+    implementation(project(":core:network_self_proxy"))
     implementation(project(":core:local"))
     implementation(project(":core:navigation"))
     implementation(project(":work"))

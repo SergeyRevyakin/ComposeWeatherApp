@@ -4,10 +4,15 @@ package ru.serg.settings_feature.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -58,13 +63,15 @@ fun SettingsScreen(
     val viewModel: SettingViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val header = stringResource(id = string.settings)
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .consumeWindowInsets(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+            )
             .imePadding(),
         topBar = {
             TopBar(
@@ -74,7 +81,7 @@ fun SettingsScreen(
                         leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
                         onLeftIconClick =
-                        { navController.navigateUp() },
+                            { navController.navigateUp() },
                         onRightIconClick = null,
                         appBarState = appBarState
                     )
@@ -116,6 +123,14 @@ fun SettingsScreen(
             }
 
             MenuRowWithRadioButton(
+                optionName = stringResource(id = string.show_alerts),
+                descriptionText = stringResource(id = string.show_alerts_desc),
+                modifier = Modifier,
+                buttonState = viewModel.isAlertsEnabled.collectAsState().value,
+                onSwitchClick = viewModel::onAlertsChanged
+            )
+
+            MenuRowWithRadioButton(
                 optionName = stringResource(id = string.update_weather_in_background),
                 descriptionText = stringResource(id = string.allow_get_updates_consumes_traffic),
                 modifier = Modifier,
@@ -140,7 +155,7 @@ fun SettingsScreen(
             }
 
             MenuCommonButton(
-                headerText = stringResource(id = string.show_widget_settings)
+                headerText = stringResource(id = string.show_widget_settings),
             ) {
                 navController.navigate(WidgetSettingsScreen)
             }
@@ -161,7 +176,7 @@ fun SettingsScreen(
                 header = stringResource(id = string.measurement_units),
                 nameList = Units.entries.map { stringResource(id = it.title) },
                 descriptionList = Units.entries.map { stringResource(id = it.description) },
-                selectedPosition = viewModel.measurementUnits
+                selectedPosition = viewModel.measurementUnits,
             ) {
                 viewModel.onUnitsChanged(it)
             }
@@ -173,14 +188,15 @@ fun SettingsScreen(
 
             Text(
                 text = stringResource(
-                    id = string.settings_current_app_verions,
+                    id = string.settings_current_app_version,
                     versionName.toString()
                 ),
                 style = settingsSubText,
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .padding(bottom = 24.dp)
+                    .padding(24.dp)
             )
+
+            Spacer(Modifier.padding(WindowInsets.navigationBars.asPaddingValues()))
         }
     }
 }

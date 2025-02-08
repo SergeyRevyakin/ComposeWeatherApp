@@ -12,7 +12,8 @@ data class PagerScreenState(
     val activeItem: Int,
     val error: PagerScreenError?,
     val isStartUp: Boolean,
-    val hasWelcomeDialog: Boolean
+    val hasWelcomeDialog: Boolean,
+    val isInit: Boolean
 ) {
     companion object {
         fun defaultState() = PagerScreenState(
@@ -23,7 +24,8 @@ data class PagerScreenState(
             activeItem = 0,
             error = null,
             isStartUp = true,
-            hasWelcomeDialog = false
+            hasWelcomeDialog = false,
+            isInit = false
         )
     }
 }

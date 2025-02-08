@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.NetworkStatus
 import ru.serg.common.asResult
-import ru.serg.datastore.DataStoreDataSource
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
 import ru.serg.main_pager.DateUseCase
@@ -39,7 +38,6 @@ class MainViewModel @Inject constructor(
     private val locationService: LocationService,
     private val dateUtils: DateUseCase,
     private val networkStatus: NetworkStatus,
-    val dataStoreDataSource: DataStoreDataSource
 ) : ViewModel() {
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
@@ -68,7 +66,7 @@ class MainViewModel @Inject constructor(
                 .collectLatest { permissionState ->
                     _pagerScreenState.update {
                         it.copy(
-                            isLocationAvailable = permissionState.grantedPermissions.isNotEmpty()
+                            isLocationAvailable = permissionState.grantedPermissions.isNotEmpty(),
                         )
                     }
                 }
@@ -87,7 +85,7 @@ class MainViewModel @Inject constructor(
                         isStartUp = false,
                         weatherList = items,
                         error = null,
-                        hasWelcomeDialog = items.isEmpty()
+                        hasWelcomeDialog = items.isEmpty() && !it.isLocationAvailable
                     )
                 }
             }
@@ -107,13 +105,21 @@ class MainViewModel @Inject constructor(
 
             _pagerScreenState.debounce(200L).distinctUntilChanged().collectLatest { state ->
                 when {
-                    state.isLoading -> return@collectLatest
+                    state.isLoading || state.error != null -> return@collectLatest
 
-                    state.weatherList.isEmpty() && !state.isStartUp -> {
-                        if (state.isLocationAvailable) checkLocationAndFetchWeather()
+                    state.weatherList.isEmpty() -> {
+                        when {
+                            state.isLocationAvailable /*&& !state.isInit*/ -> checkLocationAndFetchWeather()
+                            else -> _pagerScreenState.update {
+                                it.copy(
+                                    isInit = true
+                                )
+                            }
+                        }
+
                     }
 
-                    state.weatherList.isNotEmpty() -> {
+                    else -> {
                         try {
                             val item = state.weatherList[state.activeItem]
                             checkWeatherItem(item)
@@ -167,6 +173,7 @@ class MainViewModel @Inject constructor(
                             is NetworkResult.Error -> _pagerScreenState.update {
                                 it.copy(
                                     isLoading = false,
+                                    isInit = true,
                                     error = PagerScreenError.NetworkError(
                                         result.message.orEmpty(),
                                         result.throwable
@@ -178,7 +185,7 @@ class MainViewModel @Inject constructor(
                                 _pagerScreenState.update {
                                     it.copy(
                                         isLoading = true,
-                                        error = null
+                                        error = null,
                                     )
                                 }
                             }
@@ -191,7 +198,8 @@ class MainViewModel @Inject constructor(
                                     it.copy(
                                         isLoading = false,
                                         weatherList = mutableList,
-                                        error = null
+                                        error = null,
+                                        isInit = true
                                     )
                                 }
                             }
@@ -228,6 +236,7 @@ class MainViewModel @Inject constructor(
                                 is NetworkResult.Error -> _pagerScreenState.update {
                                     it.copy(
                                         isLoading = false,
+                                        isInit = true,
                                         error = PagerScreenError.NetworkError(
                                             result.message.orEmpty(),
                                             result.throwable
@@ -251,6 +260,7 @@ class MainViewModel @Inject constructor(
                                     _pagerScreenState.update {
                                         it.copy(
                                             isLoading = false,
+                                            isInit = true,
                                             weatherList = mutableList,
                                             error = null
                                         )

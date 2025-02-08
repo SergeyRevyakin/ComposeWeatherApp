@@ -22,14 +22,16 @@ import ru.serg.designsystem.utils.emptyString
 
 @Composable
 fun MenuCommonButton(
+    modifier: Modifier = Modifier,
     headerText: String = emptyString(),
     descriptionText: String = emptyString(),
     onClick: (() -> Unit)
 ) {
 
     Column(
-        modifier = Modifier
-            .padding(16.dp)
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(vertical = 24.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
             .clickable {

@@ -29,7 +29,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        const val BASE_URL_ONECALL = "api.openweathermap.org/data/2.5/onecall"
+        const val BASE_URL_ONECALL = "api.openweathermap.org/data/3.0/onecall"
         const val BASE_URL_WEATHER = "api.openweathermap.org/data/2.5/weather"
         const val BASE_URL_GEOCODING = "api.openweathermap.org/geo/1.0/direct"
         const val BASE_URL_AIR_QUALITY = "api.openweathermap.org/data/2.5/air_pollution/forecast"
@@ -56,7 +56,6 @@ class NetworkModule {
                     ignoreUnknownKeys = true
                     coerceInputValues = true
                     explicitNulls = false
-                    expectSuccess = true
                 })
             }
             install(Logging) {

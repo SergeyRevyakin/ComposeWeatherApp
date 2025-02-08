@@ -28,6 +28,8 @@ dependencies {
 
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:network_visual_crossing_api"))
+    implementation(project(":core:network_self_proxy"))
     implementation(project(":core:local"))
     implementation(project(":core:common"))
     implementation(project(":res:drawables"))

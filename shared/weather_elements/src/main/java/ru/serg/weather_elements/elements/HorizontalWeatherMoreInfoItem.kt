@@ -1,4 +1,4 @@
-package ru.serg.weather_elements.weather_screen
+package ru.serg.weather_elements.elements
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement

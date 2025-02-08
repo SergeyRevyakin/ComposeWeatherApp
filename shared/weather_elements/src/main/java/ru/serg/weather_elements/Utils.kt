@@ -18,6 +18,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.asTimeZone
+import kotlinx.datetime.toJavaZoneOffset
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.designsystem.theme.customColors
 import ru.serg.strings.R.string
@@ -27,11 +30,12 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
+fun getHourWithNowAndAccent(timestamp: Long?, offset: Long, color: Color): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
         val time = Instant.fromEpochMilliseconds(timestamp)
-        val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
+        val date =
+            time.toLocalDateTime(TimeZone.of(UtcOffset(seconds = offset.toInt()).asTimeZone().id))
         val now = LocalDateTime.now()
         return when {
             (timestamp - System.currentTimeMillis() < 60L * 1000L) -> buildAnnotatedString {
@@ -44,8 +48,7 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             date.dayOfYear > now.dayOfYear -> {
                 buildAnnotatedString {
                     append(
-                        SimpleDateFormat("HH:mm", Locale.getDefault())
-                            .format(timestamp)
+                        getFormattedTime(timestamp, offset)
                     )
                     withStyle(
                         style = SpanStyle(
@@ -59,7 +62,7 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
             }
 
             else -> buildAnnotatedString {
-                append(SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp))
+                append(getFormattedTime(timestamp, offset))
             }
 
         }
@@ -67,22 +70,34 @@ fun getHourWithNowAndAccent(timestamp: Long?, color: Color): AnnotatedString {
 }
 
 @Composable
-fun getFormattedLastUpdateDate(timestamp: Long): String {
+fun getFormattedLastUpdateDate(timestamp: Long, offset: Long): String {
     val time = Instant.fromEpochMilliseconds(timestamp)
+
     val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
     return when {
         (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.today_value,
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
+            getFormattedTime(timestamp, offset)
         )
 
         (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.yesterday_value,
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(timestamp)
+            getFormattedTime(timestamp, offset)
         )
 
-        else -> SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault()).format(timestamp)
+        else -> getFormattedTime(timestamp, offset)
     }
+}
+
+fun getFormattedTime(timestamp: Long, offset: Long): String {
+    val time = timestamp
+
+    val utcOffset = UtcOffset(seconds = offset.toInt())
+
+    val timeZone = java.util.TimeZone.getTimeZone(utcOffset.toJavaZoneOffset())
+
+    return SimpleDateFormat("HH:mm", Locale.getDefault()).apply { this.timeZone = timeZone }
+        .format(time)
 }
 
 fun getFullDate(timestamp: Long?): AnnotatedString {
@@ -114,9 +129,6 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
         }
     }
 }
-
-fun getHour(l: Long?): String =
-    SimpleDateFormat("HH:mm", Locale.getDefault()).format((l ?: 0L))
 
 @Composable
 fun getWelcomeText() =
@@ -150,17 +162,6 @@ fun Modifier.animatedBlur(isShowing: Boolean) =
                 label = "blur"
             ).value
         )
-    }
-
-@Composable
-fun getAqiStringByIndex(index: Int): String =
-    when (index) {
-        1 -> stringResource(id = string.aqi_good)
-        2 -> stringResource(id = string.aqi_fair)
-        3 -> stringResource(id = string.aqi_moderate)
-        4 -> stringResource(id = string.aqi_poor)
-        5 -> stringResource(id = string.aqi_very_poor)
-        else -> ""
     }
 
 @Composable

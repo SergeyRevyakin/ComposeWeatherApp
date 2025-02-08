@@ -1,100 +1,112 @@
 package ru.serg.weather
 
+import com.serg.network_self_proxy.SelfProxyRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import ru.serg.local.LocalDataSource
+import ru.serg.model.AlertItem
 import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
 import ru.serg.model.WeatherItem
-import ru.serg.network.RemoteDataSource
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
-    private val remoteDataSource: RemoteDataSource,
+    private val selfProxyRemoteDataSource: SelfProxyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) {
 
     fun fetchCurrentLocationWeather(
         coordinates: Coordinates,
-    ): Flow<WeatherItem> = combine(
-        remoteDataSource.getWeather(coordinates.latitude, coordinates.longitude),
-        remoteDataSource.getOneCallWeather(
-            coordinates.latitude,
-            coordinates.longitude
-        ),
-        remoteDataSource.getAirQuality(coordinates.latitude, coordinates.longitude)
-    ) { weatherResponse, oneCallResponse, airQualityResponse ->
+    ): Flow<WeatherItem> =
+        selfProxyRemoteDataSource.getSelfProxyForecast(coordinates.latitude, coordinates.longitude)
+            .map { resp ->
 
-        val cityItem = DataMapper.mapCityItem(weatherResponse, true)
+                val cityItem = SelfDataMapper.mapCityItem(resp, true)
 
-        if (weatherResponse.message != null || oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
-            || oneCallResponse.daily.isNullOrEmpty()
-        ) throw Exception(oneCallResponse.message ?: weatherResponse.message)
+                val hourlyWeather = resp.hourlyList?.map { hourlyWeatherModel ->
+                    SelfDataMapper.mapHourlyWeather(
+                        hourlyWeatherModel,
+                        resp.airPollutionList?.firstOrNull { it.timeStamp == hourlyWeatherModel.dateTime })
+                } ?: emptyList()
 
-        val dailyWeather = oneCallResponse.daily?.map {
-            DataMapper.mapDailyWeather(it)
-        } ?: listOf()
+                val dailyWeather =
+                    resp.dailyList?.map { SelfDataMapper.mapDailyWeather(it) } ?: emptyList()
 
-        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
-            val airQualityResponseItem =
-                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
-            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-        } ?: listOf()
+                val alerts = resp.alertList?.map {
+                    AlertItem(
+                        startAt = it.startTime.orZero(),
+                        endAt = it.endTime.orZero(),
+                        title = it.title.orEmpty(),
+                        description = it.description.orEmpty()
+                    )
+                } ?: emptyList()
 
-        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
-            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-            localDataSource.insertCityItemToSearchHistory(cityItem)
-        }
+                if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
+                    localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, cityItem)
+                    localDataSource.insertCityItemToSearchHistory(cityItem)
+                }
 
-        WeatherItem(
-            cityItem,
-            dailyWeather,
-            hourlyWeather,
-            oneCallResponse.alert?.description
-        )
-    }.flowOn(Dispatchers.IO)
+                WeatherItem(
+                    cityItem,
+                    dailyWeather,
+                    hourlyWeather,
+                    alerts,
+                    alerts.firstOrNull()?.description
+                )
+            }.flowOn(Dispatchers.IO)
 
 
     fun getCityWeatherFlow(
         cityItem: CityItem,
         isResultSavingRequired: Boolean = true
-    ) = combine(
-        remoteDataSource.getOneCallWeather(cityItem.latitude, cityItem.longitude),
-        remoteDataSource.getAirQuality(cityItem.latitude, cityItem.longitude)
-    ) { oneCallResponse, airQualityResponse ->
+    ) = selfProxyRemoteDataSource.getSelfProxyForecast(cityItem.latitude, cityItem.longitude)
+        .map { resp ->
 
-        if (oneCallResponse.message != null || oneCallResponse.hourly.isNullOrEmpty()
-            || oneCallResponse.daily.isNullOrEmpty()
-        ) throw Exception(oneCallResponse.message)
+            val hourlyWeather = resp.hourlyList?.map { hourlyWeatherModel ->
+                SelfDataMapper.mapHourlyWeather(
+                    hourlyWeatherModel,
+                    resp.airPollutionList?.firstOrNull { it.timeStamp == hourlyWeatherModel.dateTime })
+            } ?: emptyList()
 
-        val dailyWeather = oneCallResponse.daily?.map {
-            DataMapper.mapDailyWeather(it)
-        } ?: listOf()
+            val dailyWeather =
+                resp.dailyList?.map { SelfDataMapper.mapDailyWeather(it) } ?: emptyList()
 
-        val hourlyWeather = oneCallResponse.hourly?.map { hourly ->
-            val airQualityResponseItem =
-                airQualityResponse.list.firstOrNull { it.timestamp == hourly.dt }
-            DataMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-        } ?: listOf()
+            val alerts = resp.alertList?.map {
+                AlertItem(
+                    startAt = it.startTime.orZero(),
+                    endAt = it.endTime.orZero(),
+                    title = it.title.orEmpty(),
+                    description = it.description.orEmpty()
+                )
+            } ?: emptyList()
 
-        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
-            localDataSource.saveWeather(hourlyWeather, dailyWeather, cityItem)
-        }
+            val updatedCityItem = cityItem.copy(
+                lastTimeUpdated = System.currentTimeMillis(),
+                secondsOffset = resp.city?.secondsOffset ?: 0L
+            )
 
-        WeatherItem(
-            cityItem,
-            dailyWeather,
-            hourlyWeather,
-            oneCallResponse.alert?.description
-        )
-    }.flowOn(Dispatchers.IO)
+
+
+            if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
+                localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, updatedCityItem)
+            }
+
+            WeatherItem(
+                cityItem,
+                dailyWeather,
+                hourlyWeather,
+                alerts,
+                alerts.firstOrNull()?.description
+            )
+        }.flowOn(Dispatchers.IO)
 
     fun removeFavouriteCityParam(weatherItem: WeatherItem) {
         localDataSource.saveWeather(
             hourlyWeatherList = weatherItem.hourlyWeatherList,
             dailyWeatherList = weatherItem.dailyWeatherList,
+            alertList = weatherItem.alertList,
             cityItem = weatherItem.cityItem.copy(isFavorite = false)
         )
     }

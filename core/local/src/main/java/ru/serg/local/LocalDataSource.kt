@@ -1,6 +1,7 @@
 package ru.serg.local
 
 import kotlinx.coroutines.flow.Flow
+import ru.serg.model.AlertItem
 import ru.serg.model.CityItem
 import ru.serg.model.DailyWeather
 import ru.serg.model.HourlyWeather
@@ -12,6 +13,7 @@ interface LocalDataSource {
     fun saveWeather(
         hourlyWeatherList: List<HourlyWeather>,
         dailyWeatherList: List<DailyWeather>,
+        alertList: List<AlertItem>,
         cityItem: CityItem
     )
 

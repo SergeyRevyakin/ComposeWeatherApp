@@ -10,10 +10,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -69,13 +73,15 @@ fun ChooseCityScreen(
     val searchText = screenState.searchText
 
 
-    val appBarState = TopAppBarDefaults.pinnedScrollBehavior()
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val header = stringResource(id = string.look_for_the_place)
 
     Scaffold(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsPadding()
+            .consumeWindowInsets(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+            )
             .imePadding(),
         topBar = {
             TopBar(

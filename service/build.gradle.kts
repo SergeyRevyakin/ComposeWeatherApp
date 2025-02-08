@@ -36,10 +36,9 @@ dependencies {
     implementation(project(":core:notifications"))
     implementation(project(":res:drawables"))
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-
     implementation(libs.bundles.hilt)
+
     ksp(libs.bundles.hilt.ksp)
 
 }

@@ -36,6 +36,12 @@
     <string name="error_check_connection_or_try_again_later">Check internet connection or try again later</string>
     <string name="error_no_results_found">No results found</string>
 
+    <string name="starts_at">Starts at</string>
+    <string name="end_at">Ends at</string>
+
+    <string name="feels_like">Feels like: %1$s</string>
+    <string name="precipitation_probability">Precipitation probability: %1$d%%</string>
+
     <!--    Settings Screen-->
     <string name="settings">Settings</string>
     <string name="use_dark_mode">Use dark mode</string>
@@ -50,7 +56,9 @@
     <string name="fetch_weather_every_morning">Fetch weather every morning</string>
     <string name="show_notifications_when_updated">Show weather notifications when receive update</string>
     <string name="show_widget_settings">Show widget settings</string>
-    <string name="settings_current_app_verions">App version: %1$s</string>
+    <string name="settings_current_app_version">App version: %1$s</string>
+    <string name="show_alerts">Weather alerts</string>
+    <string name="show_alerts_desc">Show extreme weather alerts on main screen</string>
 
     <!--    Widget Settings Screen-->
     <string name="widget_settings">Widget settings</string>
@@ -158,6 +166,8 @@
     <string name="widget_last_updated">Last updated %1$s</string>
     <string name="widget_last_recomposition">Last redraw %1$s</string>
 
+    <string name="local_time">Local time: %1$s</string>
+
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
@@ -166,10 +176,17 @@
     <string name="pressure_value">Pressure: %1$d</string>
     <string name="precipitation_value">Precipitation probability: %1$d%%</string>
 
+    <string name="sunrise">Sunrise</string>
+
     <string name="morning_value">Morning: %1$.0f%2$s</string>
     <string name="day_value">Day: %1$.0f%2$s</string>
     <string name="evening_value">Evening: %1$.0f%2$s</string>
     <string name="night_value">Night: %1$.0f%2$s</string>
+
+    <string name="daily_max_value">Daily max: %1$.0f%2$s</string>
+    <string name="daily_min_value">Daily min: %1$.0f%2$s</string>
+    <string name="feels_max_value">Feels max: %1$.0f%2$s</string>
+    <string name="feels_min_value">Feels min: %1$.0f%2$s</string>
 
     <string name="sunrise_value">Sunrise: %1$s</string>
     <string name="sunrise_val4ue">Sunrise: %1$s</string>
