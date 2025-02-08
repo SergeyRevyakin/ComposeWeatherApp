@@ -18,7 +18,6 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
-import io.ktor.http.appendPathSegments
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
@@ -30,6 +29,7 @@ class ProxyNetworkModule {
     companion object {
         const val BASE_URL = "209.38.184.64"
         const val FORECAST = "v1/weather/owm_proxy/coord"
+        const val CITY_SEARCH = "/v1/location/city"
         const val LANG = "lang"
     }
 
@@ -68,7 +68,6 @@ class ProxyNetworkModule {
                 host = BASE_URL
                 url {
                     protocol = URLProtocol.HTTPS
-                    appendPathSegments(FORECAST)
                 }
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }

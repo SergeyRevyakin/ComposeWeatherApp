@@ -25,6 +25,7 @@ fun CityItem.toCityEntity() = CityEntity(
     country,
     latitude,
     longitude,
+    secondsOffset,
     isFavorite,
     if (isFavorite) -1 else id,
     lastTimeUpdated = System.currentTimeMillis()
@@ -35,6 +36,7 @@ fun CityEntity.toCityItem() = CityItem(
     country.orEmpty(),
     latitude ?: 0.0,
     longitude ?: 0.0,
+    secondsOffset ?: 0L,
     isFavorite,
     id,
     lastTimeUpdated ?: 0

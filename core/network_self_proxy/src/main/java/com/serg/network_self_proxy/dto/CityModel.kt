@@ -12,6 +12,7 @@ data class CityModel(
     val region: String?,
     val countyCode: String,
     val cityAdditionalInfo: CityAdditionalInfo?,
+    val secondsOffset: Long?,
 )
 
 @Serializable

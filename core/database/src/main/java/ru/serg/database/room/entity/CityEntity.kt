@@ -13,6 +13,7 @@ data class CityEntity(
     val country: String?,
     val latitude: Double?,
     val longitude: Double?,
+    val secondsOffset: Long?,
     val isFavorite: Boolean = false,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = Constants.CITY_ID)

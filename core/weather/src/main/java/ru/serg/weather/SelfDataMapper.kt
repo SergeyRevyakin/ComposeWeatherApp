@@ -17,6 +17,7 @@ object SelfDataMapper {
             country = weatherResponse.city?.county.orEmpty(),
             latitude = weatherResponse.city?.latitude ?: 0.0,
             longitude = weatherResponse.city?.longitude ?: 0.0,
+            secondsOffset = weatherResponse.city?.secondsOffset ?: 0L,
             isFavourite,
             id = if (isFavourite) -1 else 0,
             System.currentTimeMillis()

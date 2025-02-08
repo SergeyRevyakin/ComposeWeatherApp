@@ -14,7 +14,7 @@ import ru.serg.database.room.entity.HourlyWeatherEntity
 @Database(
     entities = [CityEntity::class, DailyWeatherEntity::class, HourlyWeatherEntity::class, AlertEntity::class],
     autoMigrations = [],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {

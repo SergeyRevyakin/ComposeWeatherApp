@@ -10,13 +10,9 @@ import ru.serg.model.AlertItem
 import ru.serg.model.CityItem
 import ru.serg.model.Coordinates
 import ru.serg.model.WeatherItem
-import ru.serg.network.RemoteDataSource
-import ru.serg.network_weather_api.VisualCrossingRemoteDataSource
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
-    private val remoteDataSource: RemoteDataSource,
-    private val visualCrossingDataSource: VisualCrossingRemoteDataSource,
     private val selfProxyRemoteDataSource: SelfProxyRemoteDataSource,
     private val localDataSource: LocalDataSource
 ) {
@@ -109,11 +105,7 @@ class WeatherRepository @Inject constructor(
 
             val dailyWeather =
                 resp.dailyList?.map { SelfDataMapper.mapDailyWeather(it) } ?: emptyList()
-            1734300000
-            1734303600
-            1734303600
-            1734300000
-            1734303600000
+
             val alerts = resp.alertList?.map {
                 AlertItem(
                     startAt = it.startTime.orZero(),
@@ -140,35 +132,6 @@ class WeatherRepository @Inject constructor(
             )
         }.flowOn(Dispatchers.IO)
 
-//    fun getCityWeatherFlow(
-//        cityItem: CityItem,
-//        isResultSavingRequired: Boolean = true
-//    ) = combine(
-//        visualCrossingDataSource.getVisualCrossingForecast(cityItem.latitude, cityItem.longitude),
-//        remoteDataSource.getAirQuality(cityItem.latitude, cityItem.longitude)
-//    ) { visualCrossingResponse, airQuality ->
-//
-//        val hourlyWeather = mapHours(visualCrossingResponse, airQuality)
-//
-//        val dailyWeather = mapDays(visualCrossingResponse)
-//
-//        val updatedCityItem = cityItem.copy(lastTimeUpdated = System.currentTimeMillis())
-//
-//        val alerts = mapAlerts(visualCrossingResponse)
-//
-//        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty() && isResultSavingRequired) {
-//            localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, updatedCityItem)
-//        }
-//
-//        WeatherItem(
-//            updatedCityItem,
-//            dailyWeather,
-//            hourlyWeather,
-//            alerts,
-//            visualCrossingResponse.alerts?.firstOrNull()?.description
-//        )
-//    }.flowOn(Dispatchers.IO)
-
     fun removeFavouriteCityParam(weatherItem: WeatherItem) {
         localDataSource.saveWeather(
             hourlyWeatherList = weatherItem.hourlyWeatherList,
@@ -177,35 +140,4 @@ class WeatherRepository @Inject constructor(
             cityItem = weatherItem.cityItem.copy(isFavorite = false)
         )
     }
-
-//    private fun mapHours(
-//        visualCrossingResponse: VisualCrossingResponse,
-//        airQuality: AirQualityResponse
-//    ) =
-//        visualCrossingResponse.days?.mapNotNull { it }?.fastFlatMap { it.hours ?: emptyList() }
-//            ?.map { hour ->
-//                hour.let { hourly ->
-//                    val airQualityResponseItem =
-//                        airQuality.list.firstOrNull { it.timestamp.toTimeStamp() == hourly.datetimeEpoch.toTimeStamp() }
-//                    VisualCrossingMapper.mapHourlyWeather(hourly, airQualityResponseItem)
-//                }
-//            }?.filter {
-//                it.dateTime > System.currentTimeMillis()
-//            } ?: listOf()
-//
-//    private fun mapDays(visualCrossingResponse: VisualCrossingResponse) =
-//        visualCrossingResponse.days?.mapNotNull {
-//            it?.let {
-//                VisualCrossingMapper.mapDailyWeather(
-//                    it
-//                )
-//            }
-//        }?.filter {
-//            it.dateTime > System.currentTimeMillis()
-//        } ?: listOf()
-//
-//    private fun mapAlerts(visualCrossingResponse: VisualCrossingResponse) =
-//        visualCrossingResponse.alerts?.map {
-//            VisualCrossingMapper.mapAlert(it)
-//        } ?: emptyList()
 }
