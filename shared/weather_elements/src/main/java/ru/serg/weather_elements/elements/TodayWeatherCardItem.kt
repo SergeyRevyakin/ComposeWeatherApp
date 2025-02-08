@@ -157,7 +157,7 @@ fun TodayWeatherCardItem(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp),
-                        paramIcon = drawable.ic_thermometer,
+                        paramIcon = drawable.ic_rain_mix,
                         paramValue = stringResource(
                             string.precipitation_probability,
                             weatherItem.precipitationProbability
