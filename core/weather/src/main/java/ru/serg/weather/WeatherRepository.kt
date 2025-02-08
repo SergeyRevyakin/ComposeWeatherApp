@@ -17,39 +17,6 @@ class WeatherRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-//    fun fetchCurrentLocationWeather(
-//        coordinates: Coordinates,
-//    ): Flow<WeatherItem> = combine(
-//        remoteDataSource.getWeather(coordinates.latitude, coordinates.longitude),
-//        remoteDataSource.getAirQuality(coordinates.latitude, coordinates.longitude),
-//        visualCrossingDataSource.getVisualCrossingForecast(
-//            coordinates.latitude,
-//            coordinates.longitude
-//        )
-//    ) { weatherResponse, airQuality, visualCrossingResponse ->
-//
-//        val cityItem = DataMapper.mapCityItem(weatherResponse, true)
-//
-//        val hourlyWeather = mapHours(visualCrossingResponse, airQuality)
-//
-//        val dailyWeather = mapDays(visualCrossingResponse)
-//
-//        val alerts = mapAlerts(visualCrossingResponse)
-//
-//        if (dailyWeather.isNotEmpty() && hourlyWeather.isNotEmpty()) {
-//            localDataSource.saveWeather(hourlyWeather, dailyWeather, alerts, cityItem)
-//            localDataSource.insertCityItemToSearchHistory(cityItem)
-//        }
-//
-//        WeatherItem(
-//            cityItem,
-//            dailyWeather,
-//            hourlyWeather,
-//            alerts,
-//            visualCrossingResponse.alerts?.firstOrNull()?.description
-//        )
-//    }.flowOn(Dispatchers.IO)
-
     fun fetchCurrentLocationWeather(
         coordinates: Coordinates,
     ): Flow<WeatherItem> =
@@ -115,7 +82,10 @@ class WeatherRepository @Inject constructor(
                 )
             } ?: emptyList()
 
-            val updatedCityItem = cityItem.copy(lastTimeUpdated = System.currentTimeMillis())
+            val updatedCityItem = cityItem.copy(
+                lastTimeUpdated = System.currentTimeMillis(),
+                secondsOffset = resp.city?.secondsOffset ?: 0L
+            )
 
 
 
