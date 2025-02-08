@@ -125,20 +125,25 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(
-                    text = stringResource(
-                        id = string.morning_value,
-                        daily.dailyWeatherItem.morningTemp,
-                        stringResource(id = units.tempUnits)
+                daily.dailyWeatherItem.minTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.daily_min_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
-                Text(
-                    text = stringResource(
-                        id = string.day_value,
-                        daily.dailyWeatherItem.dayTemp,
-                        stringResource(id = units.tempUnits)
+                }
+
+                daily.dailyWeatherItem.maxTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.daily_max_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
             }
 
             Column(
@@ -147,21 +152,25 @@ fun DailyWeatherBottomSheet(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                Text(
-                    text = stringResource(
-                        id = string.evening_value,
-                        daily.dailyWeatherItem.eveningTemp,
-                        stringResource(id = units.tempUnits)
+                daily.feelsLike.minTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.feels_min_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
 
-                Text(
-                    text = stringResource(
-                        id = string.night_value,
-                        daily.dailyWeatherItem.nightTemp,
-                        stringResource(id = units.tempUnits)
+                daily.feelsLike.maxTemp?.let {
+                    Text(
+                        text = stringResource(
+                            id = string.feels_max_value,
+                            it,
+                            stringResource(id = units.tempUnits)
+                        )
                     )
-                )
+                }
             }
         }
 

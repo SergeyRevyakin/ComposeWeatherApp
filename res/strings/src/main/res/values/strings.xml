@@ -183,6 +183,11 @@
     <string name="evening_value">Evening: %1$.0f%2$s</string>
     <string name="night_value">Night: %1$.0f%2$s</string>
 
+    <string name="daily_max_value">Daily max: %1$.0f%2$s</string>
+    <string name="daily_min_value">Daily min: %1$.0f%2$s</string>
+    <string name="feels_max_value">Feels max: %1$.0f%2$s</string>
+    <string name="feels_min_value">Feels min: %1$.0f%2$s</string>
+
     <string name="sunrise_value">Sunrise: %1$s</string>
     <string name="sunrise_val4ue">Sunrise: %1$s</string>
     <string name="sunset_value">Sunset: %1$s</string>

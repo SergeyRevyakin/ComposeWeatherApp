@@ -34,7 +34,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import ru.serg.designsystem.simple_items.DailyWeatherItem
-import ru.serg.designsystem.theme.descriptionSubHeader
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.model.DailyWeather
@@ -49,9 +48,9 @@ import ru.serg.weather_elements.bottom_sheets.HourlyWeatherBottomSheet
 import ru.serg.weather_elements.bottom_sheets.UviBottomSheet
 import ru.serg.weather_elements.elements.AlertCardItem
 import ru.serg.weather_elements.elements.HourlyWeatherItem
+import ru.serg.weather_elements.elements.LocalTimeItem
 import ru.serg.weather_elements.elements.SunriseSunsetItem
 import ru.serg.weather_elements.elements.TodayWeatherCardItem
-import ru.serg.weather_elements.getFormattedTime
 import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,18 +115,7 @@ fun CityWeatherContentItem(
         )
 
         if (!hasTheSameTimeAsDevice) {
-
-            val localTime =
-                getFormattedTime(System.currentTimeMillis(), weatherItem.cityItem.secondsOffset)
-
-            Text(
-                text = stringResource(string.local_time, localTime),
-                style = descriptionSubHeader,
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+            LocalTimeItem(weatherItem.cityItem.secondsOffset)
         }
 
         if (screenState.isAlertsEnabled) {
