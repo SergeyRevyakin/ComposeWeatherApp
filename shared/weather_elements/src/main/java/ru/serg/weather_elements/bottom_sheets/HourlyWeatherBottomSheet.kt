@@ -39,7 +39,6 @@ fun HourlyWeatherBottomSheet(
             units,
             modifier,
             hasFrame = false,
-            offsetSeconds = offsetSeconds,
             showAqiInfo = showAqi,
             showUviInfo = showUvi
         )

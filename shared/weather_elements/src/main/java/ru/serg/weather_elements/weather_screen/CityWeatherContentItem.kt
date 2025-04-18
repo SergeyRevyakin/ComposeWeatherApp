@@ -137,7 +137,6 @@ fun CityWeatherContentItem(
             weatherItem = weatherItem.hourlyWeatherList.first(),
             units = screenState.units,
             lastUpdatedTime = weatherItem.cityItem.lastTimeUpdated,
-            offsetSeconds = weatherItem.cityItem.secondsOffset,
             showUviInfo = {
                 showUviDetailsBottomSheet = true
             },
