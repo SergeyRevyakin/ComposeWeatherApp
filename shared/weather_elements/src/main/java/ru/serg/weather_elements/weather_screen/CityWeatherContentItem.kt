@@ -33,6 +33,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.offsetAt
 import ru.serg.designsystem.simple_items.DailyWeatherItem
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -51,7 +55,6 @@ import ru.serg.weather_elements.elements.HourlyWeatherItem
 import ru.serg.weather_elements.elements.LocalTimeItem
 import ru.serg.weather_elements.elements.SunriseSunsetItem
 import ru.serg.weather_elements.elements.TodayWeatherCardItem
-import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,8 +95,11 @@ fun CityWeatherContentItem(
         mutableStateOf(null)
     }
 
+    val now: Instant = Clock.System.now()
+    val offset = TimeZone.currentSystemDefault().offsetAt(now).totalSeconds
+
     val hasTheSameTimeAsDevice by remember {
-        mutableStateOf(TimeZone.getDefault().rawOffset / 1000 == weatherItem.cityItem.secondsOffset.toInt())
+        mutableStateOf(offset == weatherItem.cityItem.secondsOffset.toInt())
     }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
