@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
@@ -49,13 +50,14 @@ fun HourlyWeatherItem(
         modifier = modifier
             .width(80.dp)
             .wrapContentHeight()
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
             .background(
                 shape = RoundedCornerShape(8.dp),
                 color = MaterialTheme.colorScheme.surface
                     .copy(alpha = 0.9f)
                     .compositeOver(MaterialTheme.colorScheme.onSurface)
             )
-            .clickable(onClick = onClick)
     ) {
             Row {
                 Image(
