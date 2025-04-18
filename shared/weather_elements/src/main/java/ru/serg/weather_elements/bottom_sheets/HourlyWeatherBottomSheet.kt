@@ -2,6 +2,8 @@ package ru.serg.weather_elements.bottom_sheets
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +23,9 @@ fun HourlyWeatherBottomSheet(
     showUvi: () -> Unit,
     showAqi: () -> Unit
 ) {
-    Column {
+    Column(
+        Modifier.verticalScroll(rememberScrollState())
+    ) {
         Text(
             text = getFormattedLastUpdateDate(hourlyWeather.dateTime, offsetSeconds),
             style = headerStyle,
@@ -35,6 +39,7 @@ fun HourlyWeatherBottomSheet(
             units,
             modifier,
             hasFrame = false,
+            offsetSeconds = offsetSeconds,
             showAqiInfo = showAqi,
             showUviInfo = showUvi
         )

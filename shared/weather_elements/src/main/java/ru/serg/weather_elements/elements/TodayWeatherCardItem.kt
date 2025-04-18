@@ -48,6 +48,7 @@ fun TodayWeatherCardItem(
     modifier: Modifier = Modifier,
     hasFrame: Boolean = true,
     lastUpdatedTime: Long = System.currentTimeMillis(),
+    offsetSeconds: Long = 0,
     showUviInfo: () -> Unit = {},
     showAqiInfo: () -> Unit = {},
 ) {
@@ -172,7 +173,7 @@ fun TodayWeatherCardItem(
                         Text(
                             text = stringResource(
                                 id = string.last_updated_value,
-                                getFormattedLastUpdateDate(it, 0)
+                                getFormattedLastUpdateDate(it, offsetSeconds)
                             ),
                             textAlign = TextAlign.End,
                             modifier = Modifier
