@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-class NetworkStatus(val context: Context) {
+class NetworkStatusSource(val context: Context) {
 
     fun isNetworkConnected() = context.currentConnectionsState == ConnectionState.Available
 }
@@ -27,10 +27,10 @@ val Context.currentConnectionsState: ConnectionState
 
 private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager): ConnectionState {
     val network = connectivityManager.activeNetwork
-    network?.let {
-        connectivityManager.getNetworkCapabilities(network) ?: return ConnectionState.Unavailable
-        return ConnectionState.Available
-    }?: return ConnectionState.Unavailable
+    return network?.let {
+        connectivityManager.getNetworkCapabilities(network) ?: ConnectionState.Unavailable
+        ConnectionState.Available
+    } ?: ConnectionState.Unavailable
 }
 
 @ExperimentalCoroutinesApi

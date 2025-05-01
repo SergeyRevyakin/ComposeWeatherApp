@@ -1,4 +1,4 @@
-package ru.serg.main_pager
+package ru.serg.main_pager.use_case
 
 import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject

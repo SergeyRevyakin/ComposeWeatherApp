@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.serg.common.NetworkStatus
+import ru.serg.common.NetworkStatusSource
 import ru.serg.datastore.dataStore
 import ru.serg.location.LocationDataSource
 import ru.serg.work.WorkerManager
@@ -22,7 +22,7 @@ class AppModule {
     @Provides
     fun provideNetworkStatus(
         @ApplicationContext context: Context
-    ): NetworkStatus = NetworkStatus(context)
+    ): NetworkStatusSource = NetworkStatusSource(context)
 
     @Singleton
     @Provides

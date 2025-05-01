@@ -19,14 +19,14 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
-import ru.serg.common.NetworkStatus
 import ru.serg.common.asResult
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
-import ru.serg.main_pager.IsDarkThemeEnabledUseCase
-import ru.serg.main_pager.IsDateExpiredUseCase
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
+import ru.serg.main_pager.use_case.IsDarkThemeEnabledUseCase
+import ru.serg.main_pager.use_case.IsDateExpiredUseCase
+import ru.serg.main_pager.use_case.IsNetworkAvailableUseCase
 import ru.serg.model.WeatherItem
 import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
     private val locationService: LocationService,
     private val isDateExpired: IsDateExpiredUseCase,
     isDarkThemeEnabledUseCase: IsDarkThemeEnabledUseCase,
-    private val networkStatus: NetworkStatus,
+    private val isNetworkAvailableUseCase: IsNetworkAvailableUseCase,
 ) : ViewModel() {
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
@@ -145,7 +145,7 @@ class MainViewModel @Inject constructor(
             when {
                 _pagerScreenState.value.error is PagerScreenError.NetworkError -> Unit
 
-                !networkStatus.isNetworkConnected() -> Unit
+                !isNetworkAvailableUseCase() -> Unit
 
                 isDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
                     refresh()
