@@ -21,9 +21,9 @@ import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.local.LocalDataSource
-import ru.serg.location.LocationService
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
+import ru.serg.main_pager.use_case.GetCurrentLocationUseCase
 import ru.serg.main_pager.use_case.IsDarkThemeEnabledUseCase
 import ru.serg.main_pager.use_case.IsDateExpiredUseCase
 import ru.serg.main_pager.use_case.IsNetworkAvailableUseCase
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val weatherRepository: WeatherRepository,
-    private val locationService: LocationService,
+    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
     private val isDateExpired: IsDateExpiredUseCase,
     isDarkThemeEnabledUseCase: IsDarkThemeEnabledUseCase,
     private val isNetworkAvailableUseCase: IsNetworkAvailableUseCase,
@@ -227,7 +227,7 @@ class MainViewModel @Inject constructor(
             )
         }
         viewModelScope.launch(coroutineExceptionHandler) {
-            locationService.getLocationUpdate()
+            getCurrentLocationUseCase()
                 .distinctUntilChanged()
                 .collectLatest { coordinatesWrapper ->
                     weatherRepository.fetchCurrentLocationWeather(
