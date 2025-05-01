@@ -35,7 +35,7 @@ class CityWeatherViewModel @Inject constructor(
             CityWeatherScreen.from(savedStateHandle)
                 .let { city ->
                     uiState =
-                        weatherRepository.getCityWeatherFlow(city.cityItem.toCityItem(), false)
+                        weatherRepository.fetchCityWeatherFlow(city.cityItem.toCityItem(), false)
                             .asResult()
                             .map { networkResult ->
                                 when (networkResult) {
@@ -64,7 +64,7 @@ class CityWeatherViewModel @Inject constructor(
         viewModelScope.launch {
             CityWeatherScreen.from(savedStateHandle)
                 .let { city ->
-                    weatherRepository.getCityWeatherFlow(city.cityItem.toCityItem(), false)
+                    weatherRepository.fetchCityWeatherFlow(city.cityItem.toCityItem(), false)
                         .asResult()
                         .collectLatest { networkResult ->
                             when (networkResult) {

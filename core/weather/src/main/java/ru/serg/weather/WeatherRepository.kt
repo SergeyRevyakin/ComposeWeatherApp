@@ -17,7 +17,7 @@ class WeatherRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-    fun fetchCurrentLocationWeather(
+    fun fetchLocationWeatherFlow(
         coordinates: Coordinates,
     ): Flow<WeatherItem> =
         selfProxyRemoteDataSource.getSelfProxyForecast(coordinates.latitude, coordinates.longitude)
@@ -58,7 +58,7 @@ class WeatherRepository @Inject constructor(
             }.flowOn(Dispatchers.IO)
 
 
-    fun getCityWeatherFlow(
+    fun fetchCityWeatherFlow(
         cityItem: CityItem,
         isResultSavingRequired: Boolean = true
     ) = selfProxyRemoteDataSource.getSelfProxyForecast(cityItem.latitude, cityItem.longitude)

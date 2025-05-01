@@ -22,20 +22,24 @@ import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
+import ru.serg.main_pager.use_case.GetCityWeatherUseCase
 import ru.serg.main_pager.use_case.GetCurrentLocationUseCase
 import ru.serg.main_pager.use_case.GetLocalStoredWeatherUseCase
+import ru.serg.main_pager.use_case.GetLocationWeatherUseCase
 import ru.serg.main_pager.use_case.IsDarkThemeEnabledUseCase
 import ru.serg.main_pager.use_case.IsDateExpiredUseCase
 import ru.serg.main_pager.use_case.IsNetworkAvailableUseCase
+import ru.serg.main_pager.use_case.RemoveFavouriteCityUseCase
 import ru.serg.model.WeatherItem
-import ru.serg.weather.WeatherRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getLocalStoredWeatherUseCase: GetLocalStoredWeatherUseCase,
-    private val weatherRepository: WeatherRepository,
+    private val getLocationWeatherUseCase: GetLocationWeatherUseCase,
+    private val getCityWeatherUseCase: GetCityWeatherUseCase,
+    private val removeFavouriteCityUseCase: RemoveFavouriteCityUseCase,
     private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
     private val isDateExpired: IsDateExpiredUseCase,
     isDarkThemeEnabledUseCase: IsDarkThemeEnabledUseCase,
@@ -167,8 +171,8 @@ class MainViewModel @Inject constructor(
                 if (updatedWeatherItem.cityItem.isFavorite) {
                     if (_pagerScreenState.value.isLocationAvailable) {
                         checkLocationAndFetchWeather()
-                    } else weatherRepository.removeFavouriteCityParam(updatedWeatherItem)
-                } else weatherRepository.getCityWeatherFlow(updatedWeatherItem.cityItem)
+                    } else removeFavouriteCityUseCase(updatedWeatherItem)
+                } else getCityWeatherUseCase(updatedWeatherItem.cityItem)
                     .asResult()
                     .collectLatest { result ->
                         when (result) {
@@ -230,7 +234,7 @@ class MainViewModel @Inject constructor(
             getCurrentLocationUseCase()
                 .distinctUntilChanged()
                 .collectLatest { coordinatesWrapper ->
-                    weatherRepository.fetchCurrentLocationWeather(
+                    getLocationWeatherUseCase(
                         coordinatesWrapper,
                     ).asResult()
                         .collectLatest { result ->

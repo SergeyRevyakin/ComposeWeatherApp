@@ -29,7 +29,7 @@ class WeatherServiceUseCase @Inject constructor(
                 updateFrequency = fetchFrequency.toLong()
             ).flatMapLatest { coordinatesWrapper ->
                 Log.e(this::class.simpleName, "Coordinates are $coordinatesWrapper")
-                weatherRepository.fetchCurrentLocationWeather(
+                weatherRepository.fetchLocationWeatherFlow(
                     coordinatesWrapper
                 ).asResult().map { networkResult ->
                     when (networkResult) {

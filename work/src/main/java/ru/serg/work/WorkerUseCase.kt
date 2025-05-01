@@ -13,7 +13,7 @@ class WorkerUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() =
         localDataSource.getFavouriteCity().first().run {
-            weatherRepository.getCityWeatherFlow(this)
+            weatherRepository.fetchCityWeatherFlow(this)
         }.flowOn(Dispatchers.IO)
 
 }
