@@ -20,10 +20,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
-import ru.serg.local.LocalDataSource
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
 import ru.serg.main_pager.use_case.GetCurrentLocationUseCase
+import ru.serg.main_pager.use_case.GetLocalStoredWeatherUseCase
 import ru.serg.main_pager.use_case.IsDarkThemeEnabledUseCase
 import ru.serg.main_pager.use_case.IsDateExpiredUseCase
 import ru.serg.main_pager.use_case.IsNetworkAvailableUseCase
@@ -34,7 +34,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val localDataSource: LocalDataSource,
+    private val getLocalStoredWeatherUseCase: GetLocalStoredWeatherUseCase,
     private val weatherRepository: WeatherRepository,
     private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
     private val isDateExpired: IsDateExpiredUseCase,
@@ -80,7 +80,7 @@ class MainViewModel @Inject constructor(
 
     fun initCitiesWeatherFlow() {
         viewModelScope.launch {
-            localDataSource.getWeatherFlow().distinctUntilChanged().collectLatest { items ->
+            getLocalStoredWeatherUseCase().distinctUntilChanged().collectLatest { items ->
                 _pagerScreenState.update {
                     it.copy(
                         isLoading = false,
