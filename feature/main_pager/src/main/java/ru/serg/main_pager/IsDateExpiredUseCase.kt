@@ -5,17 +5,13 @@ import kotlinx.coroutines.flow.map
 import ru.serg.datastore.DataStoreDataSource
 import javax.inject.Inject
 
-class DateUseCase @Inject constructor(
+class IsDateExpiredUseCase @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource
 ) {
 
-    suspend fun isFetchDateExpired(timestamp: Long): Boolean {
+    suspend operator fun invoke(timestamp: Long): Boolean {
         return dataStoreDataSource.fetchFrequency.map {
             (((Constants.HOUR_FREQUENCY_LIST[it]) * 60L * 60L * 1000L + timestamp) - System.currentTimeMillis()) < 0
         }.first()
     }
-
-    fun isDarkThemeEnabled() =
-        dataStoreDataSource.isDarkThemeEnabled
-
 }

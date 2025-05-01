@@ -23,7 +23,8 @@ import ru.serg.common.NetworkStatus
 import ru.serg.common.asResult
 import ru.serg.local.LocalDataSource
 import ru.serg.location.LocationService
-import ru.serg.main_pager.DateUseCase
+import ru.serg.main_pager.IsDarkThemeEnabledUseCase
+import ru.serg.main_pager.IsDateExpiredUseCase
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
 import ru.serg.model.WeatherItem
@@ -36,13 +37,14 @@ class MainViewModel @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val weatherRepository: WeatherRepository,
     private val locationService: LocationService,
-    private val dateUtils: DateUseCase,
+    private val isDateExpired: IsDateExpiredUseCase,
+    isDarkThemeEnabledUseCase: IsDarkThemeEnabledUseCase,
     private val networkStatus: NetworkStatus,
 ) : ViewModel() {
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
     val pagerScreenState = _pagerScreenState.asStateFlow()
-    val isDarkThemeEnabled = dateUtils.isDarkThemeEnabled()
+    val isDarkThemeEnabled = isDarkThemeEnabledUseCase()
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, t ->
@@ -145,7 +147,7 @@ class MainViewModel @Inject constructor(
 
                 !networkStatus.isNetworkConnected() -> Unit
 
-                dateUtils.isFetchDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
+                isDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
                     refresh()
                 }
 
