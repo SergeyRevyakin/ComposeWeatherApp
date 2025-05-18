@@ -31,6 +31,11 @@ class ProxyNetworkModule {
         const val FORECAST = "v1/weather/owm_proxy/coord"
         const val CITY_SEARCH = "/v1/location/city"
         const val LANG = "lang"
+        const val UNITS = "units"
+
+        const val NAME = "name"
+        const val LAT = "lat"
+        const val LON = "lon"
     }
 
     @Singleton
