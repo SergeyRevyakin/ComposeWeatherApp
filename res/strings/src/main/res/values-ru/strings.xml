@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connection_restored">Соединение восстановлено!</string>
+    <string name="no_network_connection">Нет сетевого подключения!</string>
+
+    <string name="last_updated_value">Последнее обновление: %1$s</string>
+
+    <string name="today_value">Сегодня %1$s</string>
+    <string name="yesterday_value">Вчера %1$s</string>
+
+    <string name="enter_city_name">Введите название города или места</string>
+    <string name="eg_city_name">например, Лондон</string>
+
+    <string name="weather_in">Погода в</string>
+
+    <string name="no_weather_data_available">Данные о погоде недоступны</string>
+    <string name="please_allow_us_to_get_location_access">Пожалуйста, разрешите доступ к местоположению</string>
+    <string name="click_here_to_change_it_in_settings">Нажмите здесь, чтобы изменить это в настройках</string>
+    <string name="or_find_city_manually">Или найдите город вручную</string>
+
+    <string name="how_often_update_weather_data">Как часто обновлять данные о погоде?</string>
+    <string name="weather_will_be_updated_every_value">Погода будет обновляться каждые %1$d часов</string>
+
+    <string name="look_for_the_place">Искать место</string>
+    <string name="favourite_places">Избранные места</string>
+    <string name="are_you_looking_for_one_of_this">Вы ищете одно из этого?</string>
+
+    <string name="error_we_cant_show_you_a_weather">Мы не можем показать вам погоду</string>
+    <string name="error_check_connection_or_try_again_later">Проверьте подключение к интернету или попробуйте позже</string>
+    <string name="error_no_results_found">Результаты не найдены</string>
+
+    <string name="starts_at">Начинается в</string>
+    <string name="end_at">Заканчивается в</string>
+
+    <string name="feels_like">Ощущается как: %1$s</string>
+    <string name="precipitation_probability">Вероятность осадков: %1$d%%</string>
+
+    <!--    Settings Screen-->
+    <string name="settings">Настройки</string>
+    <string name="use_dark_mode">Использовать тёмную тему</string>
+    <string name="app_can_send_you_notifications">Теперь приложение может отправлять вам уведомления</string>
+    <string name="app_can_not_send_you_notifications">Теперь приложение не может отправлять вам уведомления</string>
+    <string name="tap_to_turn_it_on">Нажмите, если хотите включить</string>
+    <string name="tap_to_turn_it_off">Нажмите, если хотите отключить</string>
+    <string name="update_weather_in_background">Обновлять погоду в фоновом режиме</string>
+    <string name="allow_get_updates_consumes_traffic">Разрешить приложению получать данные о погоде в фоновом режиме. Это потребляет трафик</string>
+    <string name="location_is_on">В данный момент приложению разрешён доступ к местоположению устройства</string>
+    <string name="location_is_off">В данный момент приложению не разрешён доступ к местоположению устройства</string>
+    <string name="fetch_weather_every_morning">Получать погоду каждое утро</string>
+    <string name="show_notifications_when_updated">Показывать уведомления о погоде при обновлении</string>
+    <string name="show_widget_settings">Показать настройки виджета</string>
+    <string name="settings_current_app_version">Версия приложения: %1$s</string>
+    <string name="show_alerts">Оповещения о погоде</string>
+    <string name="show_alerts_desc">Показывать предупреждения об экстремальных погодных явлениях на главном экране</string>
+
+    <!--    Widget Settings Screen-->
+    <string name="widget_settings">Настройки виджета</string>
+    <string name="widget_settings_color">Цвет виджета</string>
+    <string name="pick_color">Выбрать цвет</string>
+    <string name="enter_color_code">Введите код цвета</string>
+    <string name="color_code_format">В формате XXXXX</string>
+    <string name="widget_settings_preview">Предварительный просмотр виджета</string>
+    <string name="widget_settings_big_font_size">Размер основного текста виджета</string>
+    <string name="widget_settings_small_font_size">Размер дополнительного текста виджета</string>
+    <string name="widget_settings_system_data_label">Показывать системные данные</string>
+    <string name="widget_settings_system_data_desc">Эта опция показывает время последнего получения данных о погоде и обновления виджета.\nЭто может помочь понять, работает ли виджет правильно</string>
+    <string name="widget_settings_weather_changes_label">Показывать предупреждения об изменениях погоды</string>
+    <string name="widget_settings_weather_changes_desc">Уведомлять о дожде, снеге или грозе в следующем часе</string>
+    <string name="widget_settings_bottom_padding">Интервал между строками</string>
+    <string name="widget_settings_icon_size">Размер иконки погоды</string>
+    <string name="widget_settings_bad_weather_example">Сильный дождь</string>
+
+    <!--    Measurement units-->
+    <string name="measurement_units">Единицы измерения</string>
+
+    <string name="units_metric_title">Метрические</string>
+    <string name="units_imperial_title">Имперские</string>
+    <string name="units_kelvin_title">Кельвин</string>
+
+    <string name="units_metric_description">Температура в градусах Цельсия, скорость ветра в м/с</string>
+    <string name="units_imperial_description">Температура в градусах Фаренгейта и скорость ветра в милях/ч</string>
+    <string name="units_kelvin_description">Температура в кельвинах и скорость ветра в м/с</string>
+
+    <string name="units_metric_degrees" translatable="false">℃</string>
+    <string name="units_imperial_degrees" translatable="false">℉</string>
+    <string name="units_kelvin_degrees" translatable="false">K</string>
+
+    <string name="units_metric_wind_speed">m/s</string>
+    <string name="units_imperial_wind_speed">mph</string>
+    <string name="units_kelvin_wind_speed">m/s</string>
+
+    <!--    Uvi strings-->
+    <string name="uv_index_value">Индекс УФ: %1$s</string>
+    <string name="ultraviolet_index">Ультрафиолетовый индекс</string>
+    <string name="uvi_low">Низкий</string>
+    <string name="uvi_moderate">Умеренный</string>
+    <string name="uvi_high">Высокий</string>
+    <string name="uvi_very_high">Очень высокий</string>
+    <string name="uvi_extreme">Экстремальный</string>
+
+    <string name="uiv_low_description">Низкая опасность от УФ-лучей для среднего человека</string>
+    <string name="uiv_moderate_description">Умеренный риск повреждений от незащищённого воздействия солнца</string>
+    <string name="uiv_high_description">Высокий риск повреждений от незащищённого воздействия солнца. Требуется защита кожи и глаз</string>
+    <string name="uiv_very_high_description">Очень высокий риск повреждений от незащищённого воздействия солнца. Примите дополнительные меры предосторожности, так как незащищённая кожа и глаза могут быстро получить ожоги</string>
+    <string name="uiv_extreme_description">Экстремальный риск повреждений от незащищённого воздействия солнца. Примите все меры предосторожности, так как незащищённая кожа и глаза могут обжечься за считанные минуты</string>
+
+    <!--    Air Quality strings-->
+    <string name="aqi_value">Качество воздуха: %1$s</string>
+    <string name="aqi_good">Хорошо</string>
+    <string name="aqi_fair">Удовлетворительно</string>
+    <string name="aqi_moderate">Умеренно</string>
+    <string name="aqi_poor">Плохо</string>
+    <string name="aqi_very_poor">Очень плохо</string>
+
+    <string name="aqi_eu_index_1">Хорошо</string>
+    <string name="aqi_eu_index_2">Удовлетворительно</string>
+    <string name="aqi_eu_index_3">Умеренно</string>
+    <string name="aqi_eu_index_4">Плохо</string>
+    <string name="aqi_eu_index_5">Очень плохо</string>
+    <string name="aqi_eu_index_6">Чрезвычайно плохо</string>
+    <string name="aqi_eu_index_unknown">Неизвестно</string>
+    <string name="aqi_eu_general_pop_desc_1">Качество воздуха хорошее. Наслаждайтесь обычными активностями на улице</string>
+    <string name="aqi_eu_general_pop_desc_2">Наслаждайтесь обычными активностями на улице</string>
+    <string name="aqi_eu_general_pop_desc_3">Наслаждайтесь обычными активностями на улице</string>
+    <string name="aqi_eu_general_pop_desc_4">Рассмотрите возможность снижения интенсивных активностей на улице, если у вас есть симптомы, такие как жжение в глазах, кашель или боль в горле</string>
+    <string name="aqi_eu_general_pop_desc_5">Рассмотрите возможность снижения интенсивных активностей на улице, если у вас есть симптомы, такие как жжение в глазах, кашель или боль в горле</string>
+    <string name="aqi_eu_general_pop_desc_6">Сократите физическую активность на улице</string>
+    <string name="aqi_eu_sensitive_pop_desc_1">Качество воздуха хорошее. Наслаждайтесь обычными активностями на улице</string>
+    <string name="aqi_eu_sensitive_pop_desc_2">Наслаждайтесь обычными активностями на улице</string>
+    <string name="aqi_eu_sensitive_pop_desc_3">Рассмотрите возможность снижения интенсивных активностей на улице, если возникают симптомы</string>
+    <string name="aqi_eu_sensitive_pop_desc_4">Рассмотрите возможность снижения физической активности, особенно на улице, если возникают симптомы</string>
+    <string name="aqi_eu_sensitive_pop_desc_5">Сократите физическую активность, особенно на улице, если возникают симптомы</string>
+    <string name="aqi_eu_sensitive_pop_desc_6">Избегайте физической активности на улице</string>
+
+    <string name="aqi_index">Индекс качества воздуха</string>
+    <string name="aqi_general_population">Общая популяция</string>
+    <string name="aqi_sensitive_population">Чувствительные группы</string>
+    <string name="aqi_based_on_eu_calc">Скалировано по Европейскому индексу качества воздуха, нажмите для подробностей</string>
+    <string name="aqi_eu_link" translatable="false">https://airindex.eea.europa.eu/AQI/index.html#</string>
+
+    <string name="aqi_no2">NO2</string>
+    <string name="aqi_no2_desc">Диоксид азота</string>
+    <string name="aqi_no2_link">https://en.wikipedia.org/wiki/Nitrogen_dioxide</string>
+    <string name="aqi_o3">O3</string>
+    <string name="aqi_o3_desc">Озон</string>
+    <string name="aqi_o3_link">https://en.wikipedia.org/wiki/Ozone</string>
+    <string name="aqi_so2">SO2</string>
+    <string name="aqi_so2_desc">Диоксид серы</string>
+    <string name="aqi_so2_link">https://en.wikipedia.org/wiki/Sulfur_dioxide</string>
+    <string name="aqi_pm25">Концентрация PM2.5</string>
+    <string name="aqi_pm25_desc">Мелкие твердые частицы</string>
+    <string name="aqi_pm25_link">https://en.wikipedia.org/wiki/Particulates</string>
+    <string name="aqi_pm10">Концентрация PM10</string>
+
+    <!--    Widget strings -->
+    <string name="widget_weather_changes_expected">Ожидаются изменения погоды: %1$s</string>
+    <string name="widget_last_updated">Последнее обновление %1$s</string>
+    <string name="widget_last_recomposition">Последняя перерисовка %1$s</string>
+
+    <!-- Прочие строки -->
+    <string name="local_time">Местное время: %1$s</string>
+
+    <string name="wind">Ветер</string>
+    <string name="humidity">Влажность</string>
+    <string name="pressure">Давление</string>
+    <string name="wind_value">Скорость ветра: %1$.1f %2$s</string>
+    <string name="humidity_value">Влажность: %1$d%%</string>
+    <string name="pressure_value">Давление: %1$d</string>
+    <string name="precipitation_value">Вероятность осадков: %1$d%%</string>
+
+    <string name="sunrise">Восход</string>
+
+    <string name="morning_value">Утро: %1$.0f%2$s</string>
+    <string name="day_value">День: %1$.0f%2$s</string>
+    <string name="evening_value">Вечер: %1$.0f%2$s</string>
+    <string name="night_value">Ночь: %1$.0f%2$s</string>
+
+    <string name="daily_max_value">Макс. за день: %1$.0f%2$s</string>
+    <string name="daily_min_value">Мин. за день: %1$.0f%2$s</string>
+    <string name="feels_max_value">Ощущ. макс.: %1$.0f%2$s</string>
+    <string name="feels_min_value">Ощущ. мин.: %1$.0f%2$s</string>
+
+    <string name="sunrise_value">Восход: %1$s</string>
+    <string name="sunset_value">Закат: %1$s</string>
+
+    <string name="hourly">Почасовой</string>
+    <string name="daily">Ежедневный</string>
+
+    <!--    Welcome bottomsheet -->
+    <string name="welcome">Добро пожаловать</string>
+    <string name="search_city">Поиск места по имени</string>
+    <string name="turn_on_geolocation">Включить геолокацию</string>
+    <string name="welcome_desc_breaks" translatable="false">%2$s%3$s</string>
+
+    <string name="welcome_desc">Добро пожаловать в приложение Serg Weather\n\n
+        У нас есть два способа получить данные о погоде\n\n
+        Первый — введите название интересующего вас места.\n\nВторой — разрешите приложению определить геопозицию вашего устройства. Это может быть точнее предыдущего
+    </string>
+    <string name="welc_app">Добро пожаловать в приложение Serg Weather\n\n
+        У нас есть два способа получить данные о погоде\n\n</string>
+    <string name="welc_f">— введите название интересующего вас места.\n\n</string>
+    <string name="welc_s">— разрешите приложению определить геопозицию вашего устройства. Это может быть точнее предыдущего</string>
+    <string name="first">Первый </string>
+    <string name="second">Второй </string>
+
+    <string name="degree_sign" translatable="false">°</string>
+
+    <!--    Icons description -->
+    <string name="accessibility_desc_weather_icon">Иконка погоды</string>
+    <string name="accessibility_desc_search_icon">Поиск</string>
+    <string name="accessibility_desc_settings_icon">Настройки</string>
+    <string name="accessibility_desc_thermometer_icon">Термометр</string>
+    <string name="accessibility_desc_add_to_favourite_icon">Добавить в избранное</string>
+    <string name="accessibility_desc_delete_favourite_icon">Удалить из избранного</string>
+    <string name="accessibility_desc_clear_field_icon">Очистить поле</string>
+    <string name="accessibility_desc_position_icon">Позиция</string>
+    <string name="accessibility_desc_info_icon">Информация</string>
+    <string name="accessibility_desc_description_icon">Иконка описания</string>
+</resources>
