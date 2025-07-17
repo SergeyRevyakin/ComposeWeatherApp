@@ -20,7 +20,7 @@ class WeatherServiceUseCase @Inject constructor(
     private val locationService: LocationDataSource,
     private val dataStoreDataSource: DataStoreDataSource
 ) {
-    fun checkCurrentLocationAndWeather(): Flow<ServiceFetchingResult<WeatherItem>> =
+    operator fun invoke(): Flow<ServiceFetchingResult<WeatherItem>> =
 
         dataStoreDataSource.fetchFrequency.flatMapLatest { fetchFrequency ->
             Log.e(this::class.simpleName, "Fetch frequency $fetchFrequency")

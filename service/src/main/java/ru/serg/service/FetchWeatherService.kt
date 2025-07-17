@@ -70,7 +70,7 @@ class FetchWeatherService : Service() {
         }
 
         serviceScope.launch {
-            weatherServiceUseCase.checkCurrentLocationAndWeather()
+            weatherServiceUseCase()
                 .collectLatest {
                     Log.e(this::class.simpleName, "Fetch service $it")
                     when (it) {
