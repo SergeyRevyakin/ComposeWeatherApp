@@ -12,5 +12,6 @@ data class HourlyWeather(
     val dateTime: Long,
     val uvi: Double,
     val airQuality: AirQuality,
-    val precipitationProbability: Int = 0
+    val precipitationProbability: Int = 0,
+    val precipitationAmount: Int = 0
 )

@@ -15,6 +15,7 @@ data class DailyWeatherModel(
     val sunset: Long?,
     val uvi: Double?,
     val precipitationProbability: Int?,
+    val precipitationAmount: Int?,
     val maxTemp: Double?,
     val minTemp: Double?,
     val feelsLikeMaxTemp: Double?,

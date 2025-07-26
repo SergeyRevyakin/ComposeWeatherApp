@@ -14,5 +14,6 @@ data class HourlyWeatherModel(
     val weatherIcon: Int?,
     val dateTime: Long?,
     val uvi: Double?,
-    val precipitationProbability: Int?
+    val precipitationProbability: Int?,
+    val precipitationAmount: Int?,
 )
