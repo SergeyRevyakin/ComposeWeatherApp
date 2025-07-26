@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -96,11 +97,12 @@ fun CityWeatherContentItem(
     }
 
     val now: Instant = Clock.System.now()
-    val offset = TimeZone.currentSystemDefault().offsetAt(now).totalSeconds
 
-    val hasTheSameTimeAsDevice by remember {
-        mutableStateOf(offset == weatherItem.cityItem.secondsOffset.toInt())
+    val offset by remember {
+        mutableIntStateOf(TimeZone.currentSystemDefault().offsetAt(now).totalSeconds)
     }
+
+    val hasTheSameTimeAsDevice = offset == weatherItem.cityItem.secondsOffset.toInt()
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
