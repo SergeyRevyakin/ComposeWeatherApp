@@ -16,10 +16,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.asTimeZone
+import kotlinx.datetime.toJavaDayOfWeek
+import kotlinx.datetime.toJavaMonth
 import kotlinx.datetime.toJavaZoneOffset
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.designsystem.theme.customColors
@@ -28,7 +29,10 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun getHourWithNowAndAccent(timestamp: Long?, offset: Long, color: Color): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
@@ -69,18 +73,19 @@ fun getHourWithNowAndAccent(timestamp: Long?, offset: Long, color: Color): Annot
     }
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun getFormattedLastUpdateDate(timestamp: Long, offset: Long? = null): String {
     val time = Instant.fromEpochMilliseconds(timestamp)
 
     val date = time.toLocalDateTime(TimeZone.currentSystemDefault())
     return when {
-        (date.dayOfMonth == LocalDateTime.now().dayOfMonth) -> stringResource(
+        (date.day == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.today_value,
             getFormattedTime(timestamp, offset)
         )
 
-        (date.dayOfMonth + 1 == LocalDateTime.now().dayOfMonth) -> stringResource(
+        (date.day + 1 == LocalDateTime.now().dayOfMonth) -> stringResource(
             id = string.yesterday_value,
             getFormattedTime(timestamp, offset)
         )
@@ -90,7 +95,6 @@ fun getFormattedLastUpdateDate(timestamp: Long, offset: Long? = null): String {
 }
 
 fun getFormattedTime(timestamp: Long, offset: Long? = null): String {
-    val time = timestamp
 
     val utcOffset = UtcOffset(seconds = offset?.toInt())
 
@@ -100,9 +104,10 @@ fun getFormattedTime(timestamp: Long, offset: Long? = null): String {
         "HH:mm",
         Locale.getDefault()
     ).apply { if (offset != null) this.timeZone = timeZone }
-        .format(time)
+        .format(timestamp)
 }
 
+@OptIn(ExperimentalTime::class)
 fun getFullDate(timestamp: Long?): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
@@ -113,7 +118,7 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                 append(
                     "${
-                        local.dayOfWeek.getDisplayName(
+                        local.dayOfWeek.toJavaDayOfWeek().getDisplayName(
                             TextStyle.FULL_STANDALONE,
                             Locale.getDefault()
                         )
@@ -122,8 +127,8 @@ fun getFullDate(timestamp: Long?): AnnotatedString {
             }
 
             append(
-                "${local.dayOfMonth} ${
-                    local.month.getDisplayName(
+                "${local.day} ${
+                    local.month.toJavaMonth().getDisplayName(
                         TextStyle.SHORT,
                         Locale.getDefault()
                     )

@@ -15,8 +15,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import kotlinx.datetime.Instant
+import androidx.core.graphics.createBitmap
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaDayOfWeek
+import kotlinx.datetime.toJavaMonth
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.common.R.color
 import ru.serg.drawables.R.drawable
@@ -27,6 +29,8 @@ import ru.serg.notifications.Constants.Notifications.TARGET_ACTIVITY_NAME
 import java.time.format.TextStyle
 import java.util.Locale
 import java.util.Random
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
 @SuppressLint("MissingPermission")
@@ -172,16 +176,14 @@ fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     drawable?.setTint(ContextCompat.getColor(context, color.primary))
 
 
-    val bitmap = Bitmap.createBitmap(
-        drawable!!.intrinsicWidth,
-        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-    )
+    val bitmap = createBitmap(drawable!!.intrinsicWidth, drawable.intrinsicHeight)
     val canvas = Canvas(bitmap)
     drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
     return bitmap
 }
 
+@OptIn(ExperimentalTime::class)
 fun getDate(timestamp: Long?): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
@@ -192,7 +194,7 @@ fun getDate(timestamp: Long?): AnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                 append(
                     "${
-                        local.dayOfWeek.getDisplayName(
+                        local.dayOfWeek.toJavaDayOfWeek().getDisplayName(
                             TextStyle.SHORT,
                             Locale.getDefault()
                         )
@@ -201,8 +203,8 @@ fun getDate(timestamp: Long?): AnnotatedString {
             }
 
             append(
-                "${local.dayOfMonth} ${
-                    local.month.getDisplayName(
+                "${local.day} ${
+                    local.month.toJavaMonth().getDisplayName(
                         TextStyle.SHORT,
                         Locale.getDefault()
                     )

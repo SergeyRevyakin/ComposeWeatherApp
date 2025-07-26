@@ -31,10 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.offsetAt
 import ru.serg.designsystem.simple_items.DailyWeatherItem
@@ -55,8 +52,11 @@ import ru.serg.weather_elements.elements.HourlyWeatherItem
 import ru.serg.weather_elements.elements.LocalTimeItem
 import ru.serg.weather_elements.elements.SunriseSunsetItem
 import ru.serg.weather_elements.elements.TodayWeatherCardItem
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun CityWeatherContentItem(
     weatherItem: WeatherItem,
@@ -239,16 +239,14 @@ fun CityWeatherContentItem(
                     modifier = Modifier,
                     offsetSeconds = weatherItem.cityItem.secondsOffset,
                     showUvi = {
-                        scope.async {
+                        scope.launch {
                             showHourlyWeatherBottomSheet = false
-//                            delay(100)
                             showUviDetailsBottomSheet = true
                         }
                     },
                     showAqi = {
                         scope.launch {
                             showHourlyWeatherBottomSheet = false
-//                            delay(100)
                             showAqiDetailsBottomSheet = true
                         }
                     }

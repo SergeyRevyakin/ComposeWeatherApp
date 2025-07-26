@@ -21,13 +21,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaDayOfWeek
+import kotlinx.datetime.toJavaMonth
 import kotlinx.datetime.toLocalDateTime
 import ru.serg.model.DailyTempItem
 import java.time.format.TextStyle
 import java.util.Locale
 import java.util.UUID
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 fun getMinMaxTemp(temp: DailyTempItem, units: String): String {
     return "${temp.minTemp?.toInt()}-${temp.maxTemp?.toInt()}$units"
@@ -41,6 +44,7 @@ fun getTemp(temp: Int?, units: String): String {
     return "${temp?.toString()}$units"
 }
 
+@OptIn(ExperimentalTime::class)
 fun getDate(timestamp: Long?): AnnotatedString {
     return if (timestamp == null) buildAnnotatedString { append("") }
     else {
@@ -51,7 +55,7 @@ fun getDate(timestamp: Long?): AnnotatedString {
             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                 append(
                     "${
-                        local.dayOfWeek.getDisplayName(
+                        local.dayOfWeek.toJavaDayOfWeek().getDisplayName(
                             TextStyle.SHORT,
                             Locale.getDefault()
                         )
@@ -60,8 +64,8 @@ fun getDate(timestamp: Long?): AnnotatedString {
             }
 
             append(
-                "${local.dayOfMonth} ${
-                    local.month.getDisplayName(
+                "${local.day} ${
+                    local.month.toJavaMonth().getDisplayName(                      
                         TextStyle.SHORT,
                         Locale.getDefault()
                     )
