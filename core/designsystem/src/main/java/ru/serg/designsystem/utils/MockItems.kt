@@ -22,7 +22,26 @@ object MockItems {
             feelsLike = getUpdatedDailyTempMockItem(),
             dateTime = System.currentTimeMillis(),
             uvi = 3.2,
-            precipitationProbability = 44
+            precipitationProbability = 44,
+            precipitationAmount = 5,
+        )
+
+    fun getDryDailyWeatherMockItem() =
+        DailyWeather(
+            windDirection = 90,
+            windSpeed = 2.4,
+            humidity = 60,
+            pressure = 980,
+            weatherDescription = "Sunny",
+            weatherIcon = drawable.ic_day_sunny,
+            sunrise = System.currentTimeMillis() - 100000L,
+            sunset = System.currentTimeMillis() + 100000L,
+            dailyWeatherItem = getUpdatedDailyTempMockItem(),
+            feelsLike = getUpdatedDailyTempMockItem(),
+            dateTime = System.currentTimeMillis(),
+            uvi = 3.2,
+            precipitationProbability = 0,
+            precipitationAmount = 0,
         )
 
     fun getHourlyWeatherMockItem() =
@@ -38,7 +57,8 @@ object MockItems {
             dateTime = System.currentTimeMillis(),
             uvi = 2.2,
             airQuality = AirQuality.blankAirQuality(),
-            precipitationProbability = 10
+            precipitationProbability = 10,
+            precipitationAmount = 2
         )
 
     private fun getUpdatedDailyTempMockItem() =
