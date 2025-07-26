@@ -57,7 +57,8 @@ object SelfDataMapper {
         feelsLike = hourly.feelsLike.orZero(),
         uvi = hourly.uvi.orZero(),
         airQuality = mapAirQuality(airQualityResponseItem),
-        precipitationProbability = hourly.precipitationProbability.orZero()
+        precipitationProbability = hourly.precipitationProbability.orZero(),
+        precipitationAmount = hourly.precipitationAmount.orZero(),
     )
 
     fun mapDailyWeather(daily: DailyWeatherModel) = DailyWeather(
@@ -73,7 +74,8 @@ object SelfDataMapper {
         sunset = daily.sunset.toTimeStamp(),
         sunrise = daily.sunrise.toTimeStamp(),
         uvi = daily.uvi.orZero(),
-        precipitationProbability = daily.precipitationProbability.orZero()
+        precipitationProbability = daily.precipitationProbability.orZero(),
+        precipitationAmount = daily.precipitationAmount.orZero(),
     )
 
     private fun mapAirQuality(responseItem: AirPollutionModel?): AirQuality {
