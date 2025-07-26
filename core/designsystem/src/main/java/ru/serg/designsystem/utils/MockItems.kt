@@ -61,6 +61,23 @@ object MockItems {
             precipitationAmount = 2
         )
 
+    fun getDryHourlyWeatherMockItem() =
+        HourlyWeather(
+            windDirection = 90,
+            windSpeed = 2.4,
+            humidity = 60,
+            pressure = 980,
+            weatherDescription = "Sunny",
+            weatherIcon = drawable.ic_day_sunny,
+            currentTemp = 20.1,
+            feelsLike = 23.3,
+            dateTime = System.currentTimeMillis(),
+            uvi = 2.2,
+            airQuality = AirQuality.blankAirQuality(),
+            precipitationProbability = 0,
+            precipitationAmount = 0
+        )
+
     private fun getUpdatedDailyTempMockItem() =
         DailyTempItem(
             morningTemp = 14.5,

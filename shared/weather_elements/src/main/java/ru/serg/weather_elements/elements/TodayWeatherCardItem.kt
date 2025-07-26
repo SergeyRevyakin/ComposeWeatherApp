@@ -118,6 +118,23 @@ fun TodayWeatherCardItem(
                     ),
                 )
 
+                if (weatherItem.precipitationProbability > 0 || weatherItem.precipitationAmount > 0) {
+                    val precipitationText = stringResource(
+                        string.precipitation_probability_value,
+                        weatherItem.precipitationProbability
+                    ) + "\n" + stringResource(
+                        string.precipitation_amount_value,
+                        weatherItem.precipitationAmount
+                    )
+                    ParamRowWithInfoItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        paramIcon = drawable.ic_sleet,
+                        paramValue = precipitationText,
+                    )
+                }
+
                 ParamRowWithInfoItem(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -151,19 +168,6 @@ fun TodayWeatherCardItem(
                     hasInfoButton = true,
                     onInfoClick = showAqiInfo
                 )
-
-                if (!hasFrame) {
-                    ParamRowWithInfoItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
-                        paramIcon = drawable.ic_rain_mix,
-                        paramValue = stringResource(
-                            string.precipitation_probability,
-                            weatherItem.precipitationProbability
-                        ),
-                    )
-                }
 
                 HorizontalWeatherMoreInfoItem(item = weatherItem, units = units)
 
@@ -212,7 +216,7 @@ fun TodayWeatherCardItemPreviewDark() {
     ComposeWeatherAppTheme(isDarkTheme) {
         Scaffold {
             TodayWeatherCardItem(
-                MockItems.getHourlyWeatherMockItem(),
+                MockItems.getDryHourlyWeatherMockItem(),
                 Units.METRIC,
                 hasFrame = false,
                 modifier = Modifier.padding(it)
