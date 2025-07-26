@@ -174,7 +174,8 @@
     <string name="wind_value">Wind speed: %1$.1f %2$s</string>
     <string name="humidity_value">Humidity: %1$d%%</string>
     <string name="pressure_value">Pressure: %1$d</string>
-    <string name="precipitation_value">Precipitation probability: %1$d%%</string>
+    <string name="precipitation_probability_value">Precipitation probability: %1$d%%</string>
+    <string name="precipitation_amount_value">Precipitation amount: %1$dmm</string>
 
     <string name="sunrise">Sunrise</string>
 
@@ -189,7 +190,6 @@
     <string name="feels_min_value">Feels min: %1$.0f%2$s</string>
 
     <string name="sunrise_value">Sunrise: %1$s</string>
-    <string name="sunrise_val4ue">Sunrise: %1$s</string>
     <string name="sunset_value">Sunset: %1$s</string>
 
     <string name="hourly">Hourly</string>

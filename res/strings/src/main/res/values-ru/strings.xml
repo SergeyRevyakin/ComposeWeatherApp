@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="no_connection">Нет интернет соединения</string>
+    <string name="not_able_to_fetch">Невозможно получить данные от сервера\n Пожалуйста, попробуйте позже</string>
+    <string name="exception_details">Детали ошибки %1$s</string>
+    <string name="now">сейчас</string>
+    <string name="refresh">Обновить</string>
+
     <string name="connection_restored">Соединение восстановлено!</string>
     <string name="no_network_connection">Нет сетевого подключения!</string>
 
@@ -151,6 +157,8 @@
     <string name="aqi_pm25_desc">Мелкие твердые частицы</string>
     <string name="aqi_pm25_link">https://en.wikipedia.org/wiki/Particulates</string>
     <string name="aqi_pm10">Концентрация PM10</string>
+    <string name="aqi_pm10_desc">Крупные твердые  частицы</string>
+    <string name="aqi_pm10_link">https://en.wikipedia.org/wiki/Particulates#Size,_shape,_and_solubility_matter</string>
 
     <!--    Widget strings -->
     <string name="widget_weather_changes_expected">Ожидаются изменения погоды: %1$s</string>
@@ -166,7 +174,8 @@
     <string name="wind_value">Скорость ветра: %1$.1f %2$s</string>
     <string name="humidity_value">Влажность: %1$d%%</string>
     <string name="pressure_value">Давление: %1$d</string>
-    <string name="precipitation_value">Вероятность осадков: %1$d%%</string>
+    <string name="precipitation_probability_value">Вероятность осадков: %1$d%%</string>
+    <string name="precipitation_amount_value">Количество осадков: %1$dмм</string>
 
     <string name="sunrise">Восход</string>
 
