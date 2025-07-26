@@ -54,7 +54,8 @@ fun HourlyWeatherEntity.toHourlyWeather() = HourlyWeather(
     dateTime = dateTime.orZero(),
     uvi = uvi.orZero(),
     airQuality = airQuality.orBlank(),
-    precipitationProbability = precipitationProbability
+    precipitationProbability = precipitationProbability,
+    precipitationAmount = precipitationAmount,
 )
 
 fun DailyWeatherEntity.toDailyWeather() = DailyWeather(
@@ -70,7 +71,8 @@ fun DailyWeatherEntity.toDailyWeather() = DailyWeather(
     sunrise = sunrise.orZero(),
     sunset = sunset.orZero(),
     uvi = uvi.orZero(),
-    precipitationProbability = precipitationProbability
+    precipitationProbability = precipitationProbability,
+    precipitationAmount = precipitationAmount,
 )
 
 fun HourlyWeather.toHourlyWeatherEntity(cityId: Int) = HourlyWeatherEntity(
@@ -86,7 +88,8 @@ fun HourlyWeather.toHourlyWeatherEntity(cityId: Int) = HourlyWeatherEntity(
     uvi = uvi.orZero(),
     airQuality = airQuality,
     cityId = cityId,
-    precipitationProbability = precipitationProbability
+    precipitationProbability = precipitationProbability,
+    precipitationAmount = precipitationAmount
 )
 
 fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
@@ -103,7 +106,8 @@ fun DailyWeather.toDailyWeatherEntity(cityId: Int) = DailyWeatherEntity(
     sunset = sunset.orZero(),
     uvi = uvi.orZero(),
     cityId = cityId,
-    precipitationProbability = precipitationProbability
+    precipitationProbability = precipitationProbability,
+    precipitationAmount = precipitationAmount.orZero()
 )
 
 fun AlertEntity.toAlertItem() = AlertItem(

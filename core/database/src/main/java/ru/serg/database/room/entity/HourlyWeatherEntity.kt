@@ -32,6 +32,7 @@ data class HourlyWeatherEntity(
     val uvi: Double?,
     @Embedded(prefix = Constants.AIR_QUALITY)
     val airQuality: AirQuality?,
-    val precipitationProbability: Int = 0
+    val precipitationProbability: Int = 0,
+    val precipitationAmount: Int = 0
 )
 

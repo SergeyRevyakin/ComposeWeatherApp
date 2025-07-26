@@ -14,7 +14,7 @@ import ru.serg.database.room.entity.HourlyWeatherEntity
 @Database(
     entities = [CityEntity::class, DailyWeatherEntity::class, HourlyWeatherEntity::class, AlertEntity::class],
     autoMigrations = [],
-    version = 4,
+    version = 5,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -27,6 +27,13 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE day_weather_table ADD COLUMN precipitationProbability INTEGER DEFAULT 0 not null")
                 db.execSQL("ALTER TABLE hour_weather_table ADD COLUMN precipitationProbability INTEGER DEFAULT 0 not null")
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE day_weather_table ADD COLUMN precipitationAmount INTEGER DEFAULT 0 not null")
+                db.execSQL("ALTER TABLE hour_weather_table ADD COLUMN precipitationAmount INTEGER DEFAULT 0 not null")
             }
         }
     }
