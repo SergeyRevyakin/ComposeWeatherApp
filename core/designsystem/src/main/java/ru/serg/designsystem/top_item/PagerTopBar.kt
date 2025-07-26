@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +35,7 @@ fun PagerTopBar(
     onRightIconClick: (() -> Unit)? = null,
     isLoading: Boolean = false,
     pagerState: PagerState,
-    appBarState: TopAppBarScrollBehavior?,
+    appBarState: TopAppBarScrollBehavior,
     content: @Composable () -> Unit = {}
 ) {
     Column {
@@ -100,7 +101,7 @@ fun PreviewMaterialPagerTopBar() {
             pagerState = rememberPagerState(1, 0f) {
                 3
             },
-            appBarState = null
+            appBarState = TopAppBarDefaults.pinnedScrollBehavior()
         )
     }
 }
@@ -116,7 +117,7 @@ fun PreviewNoItemMaterialPagerTopBar() {
             pagerState = rememberPagerState(0, 0f) {
                 0
             },
-            appBarState = null
+            appBarState = TopAppBarDefaults.pinnedScrollBehavior()
         )
     }
 }
