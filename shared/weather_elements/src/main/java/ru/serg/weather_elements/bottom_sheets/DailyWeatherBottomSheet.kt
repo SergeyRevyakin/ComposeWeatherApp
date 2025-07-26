@@ -194,15 +194,27 @@ fun DailyWeatherBottomSheet(
             rotation = daily.windDirection
         )
 
+        val precipitationDescription = if (daily.precipitationAmount > 0) {
+            stringResource(
+                id = string.precipitation_probability_value,
+                daily.precipitationProbability
+            ) + "\n" + stringResource(
+                id = string.precipitation_amount_value,
+                daily.precipitationAmount
+            )
+        } else {
+            stringResource(
+                id = string.precipitation_probability_value,
+                daily.precipitationProbability
+            )
+        }
+
         ParamRowItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            paramIcon = drawable.ic_rain,
-            paramValue = stringResource(
-                id = string.precipitation_value,
-                daily.precipitationProbability
-            ),
+            paramIcon = drawable.ic_sleet,
+            paramValue = precipitationDescription,
         )
 
         ParamRowItem(
@@ -252,7 +264,7 @@ fun PreviewLightDailyWeatherDetailsScreen() {
     ComposeWeatherAppTheme(isDarkTheme) {
         Scaffold {
             DailyWeatherBottomSheet(
-                daily = MockItems.getDailyWeatherMockItem(),
+                daily = MockItems.getDryDailyWeatherMockItem(),
                 units = Units.METRIC,
                 modifier = Modifier.padding(it)
             )
