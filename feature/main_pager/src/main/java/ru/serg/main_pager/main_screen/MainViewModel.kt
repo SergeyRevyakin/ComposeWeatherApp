@@ -10,18 +10,23 @@ import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.serg.common.NetworkResult
 import ru.serg.common.asResult
 import ru.serg.main_pager.PagerScreenError
 import ru.serg.main_pager.PagerScreenState
+import ru.serg.main_pager.mvi.MainScreenIntent
 import ru.serg.main_pager.use_case.GetCityWeatherUseCase
 import ru.serg.main_pager.use_case.GetCurrentLocationUseCase
 import ru.serg.main_pager.use_case.GetLocalStoredWeatherUseCase
@@ -47,7 +52,18 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _pagerScreenState = MutableStateFlow(PagerScreenState.defaultState())
-    val pagerScreenState = _pagerScreenState.asStateFlow()
+    val pagerScreenState = _pagerScreenState
+        .onStart {
+            emitIntent(MainScreenIntent.InitScreen)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = PagerScreenState.defaultState()
+        )
+
+    private val intentFlow = MutableSharedFlow<MainScreenIntent>()
+
     val isDarkThemeEnabled = isDarkThemeEnabledUseCase()
 
     private val coroutineExceptionHandler =
@@ -62,6 +78,14 @@ class MainViewModel @Inject constructor(
         }
 
     init {
+        viewModelScope.launch {
+            intentFlow.distinctUntilChanged().collect { intent ->
+                processIntent(intent)
+            }
+        }
+    }
+
+    private fun checkLocationPermission() {
         val locationPermissionFlow = PermissionFlow.getInstance().getMultiplePermissionState(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -70,19 +94,55 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             locationPermissionFlow.distinctUntilChangedBy { _pagerScreenState.value.isLocationAvailable == it.grantedPermissions.isNotEmpty() }
                 .collectLatest { permissionState ->
-                    _pagerScreenState.update {
-                        it.copy(
-                            isLocationAvailable = permissionState.grantedPermissions.isNotEmpty(),
-                        )
-                    }
+                    emitIntent(MainScreenIntent.SetLocationPermission(permissionState.grantedPermissions.isNotEmpty()))
                 }
         }
+    }
 
+    private fun checkNetworkAvailability() {
+        viewModelScope.launch {
+            isNetworkAvailableUseCase().distinctUntilChanged()
+                .collectLatest { isAvailable ->
+                    emitIntent(MainScreenIntent.SetNetworkAvailability(isAvailable))
+                }
+        }
+    }
+
+    fun emitIntent(intent: MainScreenIntent) {
+        viewModelScope.launch {
+            intentFlow.emit(intent)
+        }
+    }
+
+    private fun processIntent(intent: MainScreenIntent) {
+
+        when (intent) {
+            MainScreenIntent.InitScreen -> initScreen()
+
+            MainScreenIntent.RefreshScreen -> refresh()
+
+            is MainScreenIntent.SetLocationPermission -> setLocationPermission(intent.isGranted)
+
+
+            is MainScreenIntent.SetPageNumber -> setPageNumber(intent.pageNumber)
+
+
+            MainScreenIntent.TurnOffWelcomeDialog -> turnOffDialog()
+
+            is MainScreenIntent.SetNetworkAvailability -> setNetworkAvailability(intent.isAvailable)
+
+        }
+
+    }
+
+    private fun initScreen() {
+        checkLocationPermission()
+        checkNetworkAvailability()
         initCitiesWeatherFlow()
         setInitialState()
     }
 
-    fun initCitiesWeatherFlow() {
+    private fun initCitiesWeatherFlow() {
         viewModelScope.launch {
             getLocalStoredWeatherUseCase().distinctUntilChanged().collectLatest { items ->
                 _pagerScreenState.update {
@@ -98,7 +158,32 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun turnOffDialog() {
+    private fun setLocationPermission(isGranted: Boolean) {
+        _pagerScreenState.update {
+            it.copy(
+                isLocationAvailable = isGranted,
+            )
+        }
+    }
+
+    private fun setNetworkAvailability(isAvailable: Boolean) {
+        _pagerScreenState.update {
+            it.copy(
+                isNetworkAvailable = isAvailable,
+                error = if (isAvailable) null else it.error
+            )
+        }
+    }
+
+    private fun setPageNumber(pageNumber: Int) {
+        _pagerScreenState.update {
+            it.copy(
+                activeItem = pageNumber
+            )
+        }
+    }
+
+    private fun turnOffDialog() {
         _pagerScreenState.update {
             it.copy(
                 hasWelcomeDialog = false
@@ -115,14 +200,13 @@ class MainViewModel @Inject constructor(
 
                     state.weatherList.isEmpty() -> {
                         when {
-                            state.isLocationAvailable /*&& !state.isInit*/ -> checkLocationAndFetchWeather()
+                            state.isLocationAvailable -> checkLocationAndFetchWeather()
                             else -> _pagerScreenState.update {
                                 it.copy(
                                     isInit = true
                                 )
                             }
                         }
-
                     }
 
                     else -> {
@@ -149,7 +233,7 @@ class MainViewModel @Inject constructor(
             when {
                 _pagerScreenState.value.error is PagerScreenError.NetworkError -> Unit
 
-                !isNetworkAvailableUseCase() -> Unit
+                !_pagerScreenState.value.isNetworkAvailable -> Unit
 
                 isDateExpired(weatherItem.cityItem.lastTimeUpdated) -> {
                     refresh()
@@ -162,64 +246,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun refresh() {
+    private fun refresh() {
         viewModelScope.launch(coroutineExceptionHandler) {
 
-            val item = _pagerScreenState.value.weatherList[_pagerScreenState.value.activeItem]
+            val updatedWeatherItem =
+                _pagerScreenState.value.weatherList[_pagerScreenState.value.activeItem]
 
-            item.let { updatedWeatherItem ->
-                if (updatedWeatherItem.cityItem.isFavorite) {
-                    if (_pagerScreenState.value.isLocationAvailable) {
-                        checkLocationAndFetchWeather()
-                    } else removeFavouriteCityUseCase(updatedWeatherItem)
-                } else getCityWeatherUseCase(updatedWeatherItem.cityItem)
-                    .asResult()
-                    .collectLatest { result ->
-                        when (result) {
-                            is NetworkResult.Error -> _pagerScreenState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    isInit = true,
-                                    error = PagerScreenError.NetworkError(
-                                        result.message.orEmpty(),
-                                        result.throwable
-                                    )
-                                )
-                            }
-
-                            NetworkResult.Loading -> {
-                                _pagerScreenState.update {
-                                    it.copy(
-                                        isLoading = true,
-                                        error = null,
-                                    )
-                                }
-                            }
-
-                            is NetworkResult.Success -> {
-                                val mutableList =
-                                    _pagerScreenState.value.weatherList.toMutableList()
-                                mutableList[_pagerScreenState.value.activeItem] = result.data
-                                _pagerScreenState.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        weatherList = mutableList,
-                                        error = null,
-                                        isInit = true
-                                    )
-                                }
-                            }
-                        }
-                    }
-            }
-        }
-    }
-
-    fun setPageNumber(number: Int) {
-        _pagerScreenState.update {
-            it.copy(
-                activeItem = number
-            )
+            if (updatedWeatherItem.cityItem.isFavorite) {
+                if (_pagerScreenState.value.isLocationAvailable) {
+                    checkLocationAndFetchWeather()
+                } else removeFavouriteCityUseCase(updatedWeatherItem)
+            } else getCityWeatherUseCase(updatedWeatherItem.cityItem)
+                .asResult()
+                .collectLatest { result ->
+                    processNetworkResult(result)
+                }
         }
     }
 
@@ -233,48 +274,67 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(coroutineExceptionHandler) {
             getCurrentLocationUseCase()
                 .distinctUntilChanged()
+                .catch { e ->
+                    if (_pagerScreenState.value.weatherList.isEmpty()) {
+                        _pagerScreenState.update {
+                            it.copy(
+                                isLoading = false,
+                                isInit = true,
+                                isLocationAvailable = false,
+                                error = PagerScreenError.GPSError(
+                                    message = e.message.orEmpty()
+                                )
+                            )
+                        }
+                    }
+                }
                 .collectLatest { coordinatesWrapper ->
                     getLocationWeatherUseCase(
                         coordinatesWrapper,
                     ).asResult()
                         .collectLatest { result ->
-                            when (result) {
-                                is NetworkResult.Error -> _pagerScreenState.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isInit = true,
-                                        error = PagerScreenError.NetworkError(
-                                            result.message.orEmpty(),
-                                            result.throwable
-                                        )
-                                    )
-                                }
-
-                                NetworkResult.Loading -> {
-                                    _pagerScreenState.update {
-                                        it.copy(
-                                            isLoading = true,
-                                            error = null
-                                        )
-                                    }
-                                }
-
-                                is NetworkResult.Success -> {
-                                    val mutableList =
-                                        _pagerScreenState.value.weatherList.toMutableList()
-                                    mutableList[_pagerScreenState.value.activeItem] = result.data
-                                    _pagerScreenState.update {
-                                        it.copy(
-                                            isLoading = false,
-                                            isInit = true,
-                                            weatherList = mutableList,
-                                            error = null
-                                        )
-                                    }
-                                }
-                            }
+                            processNetworkResult(result)
                         }
                 }
+        }
+    }
+
+    private fun processNetworkResult(result: NetworkResult<WeatherItem>) {
+
+        when (result) {
+            is NetworkResult.Error -> _pagerScreenState.update {
+                it.copy(
+                    isLoading = false,
+                    isInit = true,
+                    error = PagerScreenError.NetworkError(
+                        result.message.orEmpty(),
+                        result.throwable
+                    )
+                )
+            }
+
+            NetworkResult.Loading -> {
+                _pagerScreenState.update {
+                    it.copy(
+                        isLoading = true,
+                        error = null
+                    )
+                }
+            }
+
+            is NetworkResult.Success -> {
+                val mutableList =
+                    _pagerScreenState.value.weatherList.toMutableList()
+                mutableList[_pagerScreenState.value.activeItem] = result.data
+                _pagerScreenState.update {
+                    it.copy(
+                        isLoading = false,
+                        isInit = true,
+                        weatherList = mutableList,
+                        error = null
+                    )
+                }
+            }
         }
     }
 }

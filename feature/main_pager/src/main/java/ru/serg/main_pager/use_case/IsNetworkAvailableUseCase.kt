@@ -7,5 +7,5 @@ class IsNetworkAvailableUseCase @Inject constructor(
     private val networkStatusSource: NetworkStatusSource
 ) {
     operator fun invoke() =
-        networkStatusSource.isNetworkConnected()
+        networkStatusSource.isNetworkAvailableFlow()
 }

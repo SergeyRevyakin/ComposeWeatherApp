@@ -9,11 +9,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -21,15 +19,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.shreyaspatil.permissionFlow.utils.launch
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,6 +39,7 @@ import ru.serg.designsystem.common.SunLoadingScreen
 import ru.serg.designsystem.top_item.ErrorTopBarItem
 import ru.serg.designsystem.top_item.PagerTopBar
 import ru.serg.main_pager.PagerScreenError
+import ru.serg.main_pager.mvi.MainScreenIntent
 import ru.serg.main_pager.openAppSystemSettings
 import ru.serg.main_pager.updated_pager.PagerScreen
 import ru.serg.weather_elements.elements.NoCitiesMainScreenItem
@@ -53,7 +55,16 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-    val screenState by viewModel.pagerScreenState.collectAsState()
+    val screenState by viewModel.pagerScreenState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+//    LaunchedEffect(context.currentConnectionsState) {
+//        viewModel.processIntent(
+//            MainScreenIntent.SetNetworkAvailability(
+//                 context.currentConnectionsState == ConnectionState.Available
+//            )
+//        )
+//    }
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -63,144 +74,154 @@ fun MainScreen(
     }
 
     LaunchedEffect(pagerState.currentPage) {
-        viewModel.setPageNumber(pagerState.currentPage)
+        viewModel.emitIntent(MainScreenIntent.SetPageNumber(pagerState.currentPage))
     }
 
     val pullToRefreshState = rememberPullToRefreshState()
 
-
     LaunchedEffect(screenState.isLoading) {
         pullToRefreshState.animateToHidden()
     }
-        val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-        Scaffold(
-            modifier = modifier
-                .consumeWindowInsets(
-                    WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
-                )
-                .fillMaxSize(),
-            topBar = {
-                PagerTopBar(
-                    pagerState = pagerState,
-                    isLoading = screenState.isLoading,
-                    onLeftIconClick = remember {
-                        navigateToChooseCity
-                    },
-                    onRightIconClick = remember {
-                        navigateToSettings
-                    },
-                    appBarState = appBarState,
+    val appBarState = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    Scaffold(
+        modifier = modifier
+            .consumeWindowInsets(
+                WindowInsets.navigationBars
+            )
+            .fillMaxSize(),
+        topBar = {
+            PagerTopBar(
+                pagerState = pagerState,
+                isLoading = screenState.isLoading,
+                onLeftIconClick = remember {
+                    navigateToChooseCity
+                },
+                onRightIconClick = remember {
+                    navigateToSettings
+                },
+                appBarState = appBarState,
+            ) {
+                AnimatedVisibility(
+                    visible = screenState.error is PagerScreenError,
+                    enter = expandVertically(animationSpec = tween(300)),
+                    exit = shrinkVertically(animationSpec = tween(300))
                 ) {
-                    AnimatedVisibility(
-                        visible = screenState.error is PagerScreenError,
-                        enter = expandVertically(animationSpec = tween(300)),
-                        exit = shrinkVertically(animationSpec = tween(300))
-                    ) {
+                    if (screenState.isNetworkAvailable) {
                         ErrorTopBarItem(
                             (screenState.error as? PagerScreenError.NetworkError)?.throwable
                         )
                     }
                 }
-            },
-        ) { padding ->
-
-            val context = LocalContext.current
-
-            AnimatedVisibility(
-                visible = screenState.error != null && screenState.weatherList.isEmpty(),
-                enter = fadeIn(
-                    animationSpec = tween(300)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(300)
-                )
-            ) {
-                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
             }
+        },
+    ) { padding ->
 
-            AnimatedVisibility(
-                visible = screenState.weatherList.isEmpty() && !screenState.isStartUp
-                        && !screenState.isLoading && screenState.error == null && screenState.isInit,
-                enter = fadeIn(
-                    animationSpec = tween(300)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(300)
-                )
-            ) {
+        AnimatedVisibility(
+            visible = screenState.error != null && screenState.weatherList.isEmpty(),
+            enter = fadeIn(
+                animationSpec = tween(300)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(300)
+            )
+        ) {
+            ErrorItem(
+                errorText = screenState.error?.message,
+                onRefreshClick = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) })
+        }
 
-                NoCitiesMainScreenItem(
-                    onSearchClick = remember {
-                        navigateToChooseCity
-                    },
-                    onRequestPermissionClick = remember {
-                        {
-                            permissionLauncher.launch(
-                                ACCESS_COARSE_LOCATION,
-                                ACCESS_FINE_LOCATION
-                            )
-                        }
-                    },
-                    goToSettings = remember {
-                        { context.openAppSystemSettings() }
-                    },
-                    hasWelcomeBottomSheet = screenState.hasWelcomeDialog
-                )
+        AnimatedVisibility(
+            visible = screenState.weatherList.isEmpty() && !screenState.isStartUp
+                    && !screenState.isLoading && screenState.error == null && screenState.isInit,
+            enter = fadeIn(
+                animationSpec = tween(300)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(300)
+            )
+        ) {
 
-                viewModel.turnOffDialog()
-            }
+            NoCitiesMainScreenItem(
+                onSearchClick = remember {
+                    navigateToChooseCity
+                },
+                onRequestPermissionClick = remember {
+                    {
+                        permissionLauncher.launch(
+                            ACCESS_COARSE_LOCATION,
+                            ACCESS_FINE_LOCATION
+                        )
+                    }
+                },
+                goToSettings = remember {
+                    { context.openAppSystemSettings() }
+                },
+                hasWelcomeBottomSheet = screenState.hasWelcomeDialog
+            )
 
-            AnimatedVisibility(
-                visible = screenState.isStartUp || (screenState.weatherList.isEmpty() && screenState.isLoading),
-                enter = fadeIn(
-                    animationSpec = tween(300)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(300)
-                )
-            ) {
-                SunLoadingScreen()
-            }
+            viewModel.emitIntent(MainScreenIntent.TurnOffWelcomeDialog)
+        }
 
-            AnimatedVisibility(
-                visible = screenState.weatherList.isNotEmpty(),
-                enter = fadeIn(
-                    animationSpec = tween(300)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(300)
-                )
-            ) {
-                PullToRefreshBox(
-                    state = pullToRefreshState,
-                    onRefresh = { viewModel.refresh() },
-                    isRefreshing = screenState.isLoading
-                ) {
-                    HorizontalPager(
+        AnimatedVisibility(
+            visible = screenState.isStartUp || (screenState.weatherList.isEmpty() && screenState.isLoading),
+            enter = fadeIn(
+                animationSpec = tween(300)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(300)
+            )
+        ) {
+            SunLoadingScreen()
+        }
+
+        AnimatedVisibility(
+            visible = screenState.weatherList.isNotEmpty(),
+            enter = fadeIn(
+                animationSpec = tween(300)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(300)
+            )
+        ) {
+            PullToRefreshBox(
+                state = pullToRefreshState,
+                onRefresh = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) },
+                isRefreshing = false,//screenState.isLoading,
+                indicator = {
+                    Indicator(
                         modifier = Modifier
-//                            .safeDrawingPadding()
-                            .fillMaxSize()
-                            .padding(padding)
-                            .nestedScroll(appBarState.nestedScrollConnection),
-                        state = pagerState,
-                        userScrollEnabled = true,
-                        reverseLayout = false,
-                        pageContent = {
-                            val weatherItem = screenState.weatherList[it]
-
-                            if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
-                                ErrorItem(onRefreshClick = { viewModel.initCitiesWeatherFlow() })
-                            } else {
-                                PagerScreen(
-                                    weatherItem = weatherItem,
-                                    modifier = Modifier
-                                )
-                            }
-                        }
+                            .align(Alignment.TopCenter)
+                            .padding(top = 144.dp),
+                        isRefreshing = screenState.isLoading,
+                        state = pullToRefreshState,
                     )
                 }
+            ) {
+                HorizontalPager(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                        .nestedScroll(appBarState.nestedScrollConnection),
+                    state = pagerState,
+                    userScrollEnabled = true,
+                    reverseLayout = false,
+                    pageContent = {
+                        val weatherItem = screenState.weatherList[it]
+
+                        if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
+                            ErrorItem(onRefreshClick = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) })
+                        } else {
+                            PagerScreen(
+                                weatherItem = weatherItem,
+                                modifier = Modifier
+                            )
+                        }
+                    }
+                )
             }
         }
+    }
 }
 

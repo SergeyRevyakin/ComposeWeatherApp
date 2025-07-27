@@ -7,10 +7,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class NetworkStatusSource(val context: Context) {
 
-    fun isNetworkConnected() = context.currentConnectionsState == ConnectionState.Available
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun isNetworkAvailableFlow() = context.observeConnectivityAsFlow()
+        .map { it == ConnectionState.Available }
 }
 
 sealed class ConnectionState {
