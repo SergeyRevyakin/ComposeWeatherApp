@@ -31,6 +31,7 @@ import ru.serg.designsystem.simple_items.ParamRowWithInfoItem
 import ru.serg.designsystem.theme.ComposeWeatherAppTheme
 import ru.serg.designsystem.theme.gradientBorder
 import ru.serg.designsystem.utils.AnimWeather
+import ru.serg.designsystem.utils.Constants
 import ru.serg.designsystem.utils.MockItems
 import ru.serg.designsystem.utils.getTemp
 import ru.serg.drawables.R.drawable
@@ -119,13 +120,17 @@ fun TodayWeatherCardItem(
                 )
 
                 if (weatherItem.precipitationProbability > 0 || weatherItem.precipitationAmount > 0) {
+                    val amountText = if (weatherItem.precipitationAmount > 0) {
+                        stringResource(
+                            string.precipitation_amount_value,
+                            weatherItem.precipitationAmount
+                        )
+                    } else Constants.EMPTY_STRING
                     val precipitationText = stringResource(
                         string.precipitation_probability_value,
                         weatherItem.precipitationProbability
-                    ) + "\n" + stringResource(
-                        string.precipitation_amount_value,
-                        weatherItem.precipitationAmount
-                    )
+                    ) + amountText
+
                     ParamRowWithInfoItem(
                         modifier = Modifier
                             .fillMaxWidth()
