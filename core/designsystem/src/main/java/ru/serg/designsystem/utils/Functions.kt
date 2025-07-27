@@ -2,9 +2,13 @@ package ru.serg.designsystem.utils
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -65,7 +69,7 @@ fun getDate(timestamp: Long?): AnnotatedString {
 
             append(
                 "${local.day} ${
-                    local.month.toJavaMonth().getDisplayName(                      
+                    local.month.toJavaMonth().getDisplayName(
                         TextStyle.SHORT,
                         Locale.getDefault()
                     )
@@ -110,6 +114,43 @@ fun <S> AnimWeather(
     },
     content = content
 )
+
+@Composable
+fun AnimateWeatherVisibility(
+    visible: Boolean,
+    content: @Composable() AnimatedVisibilityScope.() -> Unit
+) {
+//    val isVisible by remember(visible) {
+//        mutableStateOf(visible)
+//    }
+    AnimatedVisibility(
+        visible = visible,
+        label = "AnimWeather",
+        enter = fadeIn(
+            animationSpec = tween(
+                durationMillis = 300,
+                delayMillis = 300
+            )
+        ) + expandVertically(
+            animationSpec = tween(
+                durationMillis = 300,
+                delayMillis = 300
+            )
+        ),
+        exit = fadeOut(
+            animationSpec = tween(
+                durationMillis = 300,
+                delayMillis = 300
+            )
+        ) + shrinkVertically(
+            animationSpec = tween(
+                durationMillis = 300,
+                delayMillis = 300
+            )
+        ),
+        content = content
+    )
+}
 
 @Preview
 @Composable
