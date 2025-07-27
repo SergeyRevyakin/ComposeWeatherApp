@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Common-->
+    <string name="no_connection">Sin conexión a Internet</string>
+    <string name="not_able_to_fetch">No se pueden obtener datos del servidor\n Inténtalo más tarde</string>
+    <string name="exception_details">Detalles del error %1$s</string>
+    <string name="now">ahora</string>
+    <string name="refresh">Actualizar</string>
+
+    <string name="connection_restored">¡Conexión restaurada!</string>
+    <string name="no_network_connection">¡Sin conexión de red!</string>
+
+    <string name="last_updated_value">Última actualización: %1$s</string>
+
+    <string name="today_value">Hoy %1$s</string>
+    <string name="yesterday_value">Ayer %1$s</string>
+
+    <string name="enter_city_name">Introduce el nombre de la ciudad o lugar</string>
+    <string name="eg_city_name">p.ej. Londres</string>
+
+    <string name="weather_in">Tiempo en</string>
+
+    <string name="no_weather_data_available">No hay datos meteorológicos disponibles</string>
+    <string name="please_allow_us_to_get_location_access">Permítenos acceder a la ubicación</string>
+    <string name="click_here_to_change_it_in_settings">Haz clic aquí para cambiarlo en la configuración</string>
+    <string name="or_find_city_manually">O busca la ciudad manualmente</string>
+
+    <string name="how_often_update_weather_data">¿Con qué frecuencia actualizar los datos meteorológicos?</string>
+    <string name="weather_will_be_updated_every_value">El tiempo se actualizará cada %1$d horas</string>
+
+    <string name="look_for_the_place">Busca el lugar</string>
+    <string name="favourite_places">Lugares favoritos</string>
+    <string name="are_you_looking_for_one_of_this">¿Estás buscando uno de estos?</string>
+
+    <string name="error_we_cant_show_you_a_weather">No podemos mostrarte el tiempo</string>
+    <string name="error_check_connection_or_try_again_later">Comprueba la conexión a Internet o inténtalo de nuevo más tarde</string>
+    <string name="error_no_results_found">No se encontraron resultados</string>
+
+    <string name="starts_at">Empieza a las</string>
+    <string name="end_at">Termina a las</string>
+
+    <string name="feels_like">Sensación térmica: %1$s</string>
+    <string name="precipitation_probability">Probabilidad de precipitación: %1$d%%</string>
+
+    <!--    Settings Screen-->
+    <string name="settings">Ajustes</string>
+    <string name="use_dark_mode">Usar modo oscuro</string>
+    <string name="app_can_send_you_notifications">Ahora la aplicación puede enviarte notificaciones</string>
+    <string name="app_can_not_send_you_notifications">Ahora la aplicación no puede enviarte notificaciones</string>
+    <string name="tap_to_turn_it_on">Toca si quieres desactivarlo</string>
+    <string name="tap_to_turn_it_off">Toca si quieres activarlo</string>
+    <string name="update_weather_in_background">Actualizar el tiempo en segundo plano</string>
+    <string name="allow_get_updates_consumes_traffic">Permitir que la aplicación obtenga datos sobre el tiempo en segundo plano. Consumirá algo de tráfico de red</string>
+    <string name="location_is_on">En este momento, la aplicación tiene acceso a la ubicación de tu dispositivo</string>
+    <string name="location_is_off">En este momento, la aplicación no tiene acceso a la ubicación de tu dispositivo</string>
+    <string name="fetch_weather_every_morning">Obtener el tiempo cada mañana</string>
+    <string name="show_notifications_when_updated">Mostrar notificaciones meteorológicas al recibir una actualización</string>
+    <string name="show_widget_settings">Mostrar ajustes del widget</string>
+    <string name="settings_current_app_version">Versión de la aplicación: %1$s</string>
+    <string name="show_alerts">Alertas meteorológicas</string>
+    <string name="show_alerts_desc">Mostrar alertas de tiempo extremo en la pantalla principal</string>
+
+    <!--    Widget Settings Screen-->
+    <string name="widget_settings">Ajustes del widget</string>
+    <string name="widget_settings_color">Color del widget</string>
+    <string name="pick_color">Elige un color</string>
+    <string name="enter_color_code">Introduce el código de color</string>
+    <string name="color_code_format">En formato XXXXX</string>
+    <string name="widget_settings_preview">Vista previa del widget</string>
+    <string name="widget_settings_big_font_size">Tamaño del texto principal del widget</string>
+    <string name="widget_settings_small_font_size">Tamaño del texto de información adicional del widget</string>
+    <string name="widget_settings_system_data_label">Mostrar datos del sistema</string>
+    <string name="widget_settings_system_data_desc">Esta opción muestra la última vez que se obtuvieron los datos meteorológicos y se actualizó el widget.\nPuede ayudar a comprender si el widget funciona correctamente o no</string>
+    <string name="widget_settings_weather_changes_label">Mostrar advertencias de cambios meteorológicos</string>
+    <string name="widget_settings_weather_changes_desc">Te avisa sobre lluvia, nieve o tormenta en la próxima hora</string>
+    <string name="widget_settings_bottom_padding">Espacio entre líneas</string>
+    <string name="widget_settings_icon_size">Tamaño del icono del tiempo</string>
+    <string name="widget_settings_bad_weather_example">Lluvia intensa</string>
+
+    <!--    Measurement units-->
+    <string name="measurement_units">Unidades de medida</string>
+
+    <string name="units_metric_title">Métrico</string>
+    <string name="units_imperial_title">Imperial</string>
+    <string name="units_kelvin_title">Kelvin</string>
+
+    <string name="units_metric_description">Temperatura en Celsius, velocidad del viento en metros/seg</string>
+    <string name="units_imperial_description">Temperatura en Fahrenheit y velocidad del viento en millas/hora</string>
+    <string name="units_kelvin_description">Temperatura en Kelvin y velocidad del viento en metros/seg</string>
+
+    <string name="units_metric_degrees" translatable="false">℃</string>
+    <string name="units_imperial_degrees" translatable="false">℉</string>
+    <string name="units_kelvin_degrees" translatable="false">K</string>
+
+    <string name="units_metric_wind_speed">m/s</string>
+    <string name="units_imperial_wind_speed">mph</string>
+    <string name="units_kelvin_wind_speed">m/s</string>
+
+    <!--    Uvi strings-->
+    <string name="uv_index_value">Índice UV: %1$s</string>
+    <string name="ultraviolet_index">Índice ultravioleta</string>
+    <string name="uvi_low">Bajo</string>
+    <string name="uvi_moderate">Moderado</string>
+    <string name="uvi_high">Alto</string>
+    <string name="uvi_very_high">Muy alto</string>
+    <string name="uvi_extreme">Extremo</string>
+
+    <string name="uiv_low_description">Peligro bajo de los rayos UV del sol para la persona promedio</string>
+    <string name="uiv_moderate_description">Riesgo moderado de daño por exposición solar sin protección</string>
+    <string name="uiv_high_description">Alto riesgo de daño por exposición solar sin protección. Se necesita protección contra daños en la piel y los ojos</string>
+    <string name="uiv_very_high_description">Riesgo muy alto de daño por exposición solar sin protección. Toma precauciones adicionales porque la piel y los ojos sin protección se dañarán y pueden quemarse rápidamente</string>
+    <string name="uiv_extreme_description">Riesgo extremo de daño por exposición solar sin protección. Toma todas las precauciones porque la piel y los ojos sin protección pueden quemarse en minutos</string>
+
+    <!--    Air Quality strings-->
+    <string name="aqi_value">Calidad del aire: %1$s</string>
+    <string name="aqi_good">Buena</string>
+    <string name="aqi_fair">Aceptable</string>
+    <string name="aqi_moderate">Moderada</string>
+    <string name="aqi_poor">Mala</string>
+    <string name="aqi_very_poor">Muy mala</string>
+
+    <string name="aqi_eu_index_1">Buena</string>
+    <string name="aqi_eu_index_2">Aceptable</string>
+    <string name="aqi_eu_index_3">Moderada</string>
+    <string name="aqi_eu_index_4">Mala</string>
+    <string name="aqi_eu_index_5">Muy mala</string>
+    <string name="aqi_eu_index_6">Extremadamente mala</string>
+    <string name="aqi_eu_index_unknown">Desconocida</string>
+    <string name="aqi_eu_general_pop_desc_1">La calidad del aire es buena. Disfruta de tus actividades habituales al aire libre</string>
+    <string name="aqi_eu_general_pop_desc_2">Disfruta de tus actividades habituales al aire libre</string>
+    <string name="aqi_eu_general_pop_desc_3">Disfruta de tus actividades habituales al aire libre</string>
+    <string name="aqi_eu_general_pop_desc_4">Considera reducir las actividades intensas al aire libre si experimentas síntomas como dolor en los ojos, tos o dolor de garganta</string>
+    <string name="aqi_eu_general_pop_desc_5">Considera reducir las actividades intensas al aire libre si experimentas síntomas como dolor en los ojos, tos o dolor de garganta</string>
+    <string name="aqi_eu_general_pop_desc_6">Reduce las actividades físicas al aire libre.</string>
+    <string name="aqi_eu_sensitive_pop_desc_1">La calidad del aire es buena. Disfruta de tus actividades habituales al aire libre</string>
+    <string name="aqi_eu_sensitive_pop_desc_2">Disfruta de tus actividades habituales al aire libre</string>
+    <string name="aqi_eu_sensitive_pop_desc_3">Considera reducir las actividades intensas al aire libre si experimentas síntomas</string>
+    <string name="aqi_eu_sensitive_pop_desc_4">Considera reducir las actividades físicas, especialmente al aire libre, sobre todo si experimentas síntomas</string>
+    <string name="aqi_eu_sensitive_pop_desc_5">Reduce las actividades físicas, especialmente al aire libre, sobre todo si experimentas síntomas</string>
+    <string name="aqi_eu_sensitive_pop_desc_6">Evita las actividades físicas al aire libre</string>
+
+    <string name="aqi_index">Índice de calidad del aire</string>
+    <string name="aqi_general_population">Población general</string>
+    <string name="aqi_sensitive_population">Poblaciones sensibles</string>
+    <string name="aqi_based_on_eu_calc">Escalado con el Índice Europeo de Calidad del Aire, haz clic para más información</string>
+    <string name="aqi_eu_link" translatable="false">https://airindex.eea.europa.eu/AQI/index.html#</string>
+
+    <string name="aqi_no2">NO2</string>
+    <string name="aqi_no2_desc">Dióxido de nitrógeno</string>
+    <string name="aqi_no2_link">https://es.wikipedia.org/wiki/Di%C3%B3xido_de_nitr%C3%B3geno</string>
+    <string name="aqi_o3">O3</string>
+    <string name="aqi_o3_desc">Ozono</string>
+    <string name="aqi_o3_link">https://es.wikipedia.org/wiki/Ozono</string>
+    <string name="aqi_so2">SO2</string>
+    <string name="aqi_so2_desc">Dióxido de azufre</string>
+    <string name="aqi_so2_link">https://es.wikipedia.org/wiki/Di%C3%B3xido_de_azufre</string>
+    <string name="aqi_pm25">Concentración de PM2.5</string>
+    <string name="aqi_pm25_desc">Partículas finas</string>
+    <string name="aqi_pm25_link">https://es.wikipedia.org/wiki/Part%C3%ADculas_en_suspensi%C3%B3n</string>
+    <string name="aqi_pm10">Concentración de PM10</string>
+    <string name="aqi_pm10_desc">Partículas gruesas</string>
+    <string name="aqi_pm10_link">https://es.wikipedia.org/wiki/Part%C3%ADculas_en_suspensi%C3%B3n#Tama%C3%B1o,_forma_y_solubilidad</string>
+
+    <!--    Widget strings-->
+    <string name="widget_weather_changes_expected">Cambios meteorológicos esperados: %1$s</string>
+    <string name="widget_last_updated">Última actualización %1$s</string>
+    <string name="widget_last_recomposition">Último redibujado %1$s</string>
+
+    <string name="local_time">Hora local: %1$s</string>
+
+    <string name="wind">Viento</string>
+    <string name="humidity">Humedad</string>
+    <string name="pressure">Presión</string>
+    <string name="wind_value">Velocidad del viento: %1$.1f %2$s</string>
+    <string name="humidity_value">Humedad: %1$d%%</string>
+    <string name="pressure_value">Presión: %1$d</string>
+    <string name="precipitation_probability_value">Probabilidad de precipitación: %1$d%%</string>
+    <string name="precipitation_amount_value">Cantidad de precipitación: %1$dmm</string>
+
+    <string name="sunrise">Amanecer</string>
+
+    <string name="morning_value">Mañana: %1$.0f%2$s</string>
+    <string name="day_value">Día: %1$.0f%2$s</string>
+    <string name="evening_value">Tarde: %1$.0f%2$s</string>
+    <string name="night_value">Noche: %1$.0f%2$s</string>
+
+    <string name="daily_max_value">Máxima diaria: %1$.0f%2$s</string>
+    <string name="daily_min_value">Mínima diaria: %1$.0f%2$s</string>
+    <string name="feels_max_value">Sensación térmica máxima: %1$.0f%2$s</string>
+    <string name="feels_min_value">Sensación térmica mínima: %1$.0f%2$s</string>
+
+    <string name="sunrise_value">Amanecer: %1$s</string>
+    <string name="sunset_value">Atardecer: %1$s</string>
+
+    <string name="hourly">Por hora</string>
+    <string name="daily">Diario</string>
+
+    <!--    Welcome bottomsheet-->
+    <string name="welcome">Bienvenido</string>
+    <string name="search_city">Busca un lugar por su nombre</string>
+    <string name="turn_on_geolocation">Activar geolocalización</string>
+    <string name="welcome_desc_breaks" translatable="false">%2$s%3$s
+    </string>
+    <string name="welcome_desc">Bienvenido a la aplicación Serg Weather\n\nTenemos dos opciones diferentes para obtener datos meteorológicos
+        \n\nLa primera es introducir el nombre del lugar que te interesa.
+        \n\nLa segunda es dejar que la aplicación compruebe la geoposición de tu dispositivo. Podría ser más precisa que la anterior
+    </string>
+    <string name="welc_app">Bienvenido a la aplicación Serg Weather\n\nTenemos dos opciones diferentes para obtener datos meteorológicos\n\n</string>
+    <string name="welc_f">una es introducir el nombre del lugar que te interesa.\n\n</string>
+    <string name="welc_s">es dejar que la aplicación compruebe la geoposición de tu dispositivo. Podría ser más precisa que la anterior</string>
+    <string name="first">Primera </string>
+    <string name="second">Segunda </string>
+
+    <string name="degree_sign" translatable="false">°</string>
+
+    <!--    Icons description-->
+    <string name="accessibility_desc_weather_icon">Icono del tiempo</string>
+    <string name="accessibility_desc_search_icon">Buscar</string>
+    <string name="accessibility_desc_settings_icon">Ajustes</string>
+    <string name="accessibility_desc_thermometer_icon">Ajustes</string>
+    <string name="accessibility_desc_add_to_favourite_icon">Añadir a favoritos</string>
+    <string name="accessibility_desc_delete_favourite_icon">Eliminar favorito</string>
+    <string name="accessibility_desc_clear_field_icon">Limpiar campo</string>
+    <string name="accessibility_desc_position_icon">Posición</string>
+    <string name="accessibility_desc_info_icon">Información</string>
+    <string name="accessibility_desc_description_icon">Icono de descripción</string>
+</resources>
