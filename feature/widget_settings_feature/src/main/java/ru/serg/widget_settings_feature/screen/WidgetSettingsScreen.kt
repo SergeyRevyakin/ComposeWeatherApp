@@ -30,8 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
@@ -45,7 +43,8 @@ import ru.serg.widget_settings_feature.items.WidgetPreviewItem
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WidgetSettingsScreen(
-    navController: NavController = rememberNavController(),
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: WidgetSettingsViewModel = hiltViewModel()
 ) {
     val openColorPickDialog = remember { mutableStateOf(false) }
@@ -62,7 +61,7 @@ fun WidgetSettingsScreen(
     val header = stringResource(id = R.string.widget_settings)
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .consumeWindowInsets(WindowInsets.navigationBars)
             .imePadding(),
@@ -73,7 +72,7 @@ fun WidgetSettingsScreen(
                         header = header,
                         leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
-                        onLeftIconClick = { navController.navigateUp() },
+                        onLeftIconClick = { navigateBack() },
                         onRightIconClick = null,
                         appBarState = appBarState
                     )

@@ -43,8 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.FlowPreview
 import ru.serg.choose_city_feature.Constants
 import ru.serg.choose_city_feature.elements.CityRow
@@ -56,8 +54,7 @@ import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
 import ru.serg.designsystem.top_item.TopBar
 import ru.serg.designsystem.top_item.TopBarHolder
-import ru.serg.navigation.CityWeatherScreen
-import ru.serg.navigation.toParcCityItem
+import ru.serg.model.CityItem
 import ru.serg.strings.R.string
 
 @ExperimentalFoundationApi
@@ -65,7 +62,8 @@ import ru.serg.strings.R.string
 @Composable
 fun ChooseCityScreen(
     modifier: Modifier = Modifier,
-    navController: NavController = rememberNavController()
+    navigateBack: () -> Unit,
+    navigateToCityWeather: (CityItem) -> Unit,
 ) {
     val viewModel: ChooseCityViewModel = hiltViewModel()
     val screenState by viewModel.screenState.collectAsState()
@@ -90,7 +88,7 @@ fun ChooseCityScreen(
                         header = header,
                         leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
-                        onLeftIconClick = { navController.navigateUp() },
+                        onLeftIconClick = { navigateBack() },
                         onRightIconClick = null,
                         appBarState = appBarState
                     )
@@ -149,11 +147,7 @@ fun ChooseCityScreen(
                                 },
                                 onItemClick = remember {
                                     { cityItem ->
-                                        navController.navigate(
-                                            CityWeatherScreen(
-                                                cityItem.toParcCityItem()
-                                            )
-                                        )
+                                        navigateToCityWeather(cityItem)
                                     }
                                 },
                                 modifier = Modifier
@@ -217,9 +211,7 @@ fun ChooseCityScreen(
                             cityItem = cityItem,
                             onItemClick = {
                                 keyboard?.hide()
-                                navController.navigate(
-                                    CityWeatherScreen(cityItem.toParcCityItem())
-                                )
+                                navigateToCityWeather(it)
                             },
                             onAddClick = {
                                 viewModel.doAction(Action.OnAddCityClick(it))

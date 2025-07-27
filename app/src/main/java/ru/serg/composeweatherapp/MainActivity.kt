@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.view.WindowCompat
 import androidx.glance.appwidget.updateAll
@@ -49,9 +48,7 @@ class MainActivity : ComponentActivity() {
             ComposeWeatherAppTheme(
                 darkTheme = isDarkTheme
             ) {
-                Surface {
-                    Navigation(viewModel)
-                }
+                NavGraph(viewModel)
             }
         }
     }

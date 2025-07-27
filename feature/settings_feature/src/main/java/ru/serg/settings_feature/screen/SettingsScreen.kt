@@ -32,8 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
@@ -41,7 +39,6 @@ import ru.serg.designsystem.theme.settingsSubText
 import ru.serg.designsystem.top_item.TopBar
 import ru.serg.designsystem.top_item.TopBarHolder
 import ru.serg.model.enums.Units
-import ru.serg.navigation.WidgetSettingsScreen
 import ru.serg.settings_feature.Constants
 import ru.serg.settings_feature.elements.CollapsingContainer
 import ru.serg.settings_feature.elements.HourSliderItem
@@ -58,7 +55,9 @@ import ru.serg.strings.R.string
 
 @Composable
 fun SettingsScreen(
-    navController: NavController = rememberNavController(),
+    navigateBack: () -> Unit,
+    navigateToWidgetSettings: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val viewModel: SettingViewModel = hiltViewModel()
     val context = LocalContext.current
@@ -67,7 +66,7 @@ fun SettingsScreen(
     val header = stringResource(id = string.settings)
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .consumeWindowInsets(
                 WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
@@ -81,7 +80,7 @@ fun SettingsScreen(
                         leftIconImageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
                         rightIconImageVector = null,
                         onLeftIconClick =
-                            { navController.navigateUp() },
+                            { navigateBack() },
                         onRightIconClick = null,
                         appBarState = appBarState
                     )
@@ -157,7 +156,7 @@ fun SettingsScreen(
             MenuCommonButton(
                 headerText = stringResource(id = string.show_widget_settings),
             ) {
-                navController.navigate(WidgetSettingsScreen)
+                navigateToWidgetSettings()
             }
 
             val isLocationEnabled = viewModel.isLocationEnabled.collectAsState().value
