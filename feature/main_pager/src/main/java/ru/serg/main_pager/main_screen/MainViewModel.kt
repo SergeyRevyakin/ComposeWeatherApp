@@ -323,17 +323,18 @@ class MainViewModel @Inject constructor(
             }
 
             is NetworkResult.Success -> {
-                val mutableList =
-                    _pagerScreenState.value.weatherList.toMutableList()
-                mutableList[_pagerScreenState.value.activeItem] = result.data
-                _pagerScreenState.update {
-                    it.copy(
-                        isLoading = false,
-                        isInit = true,
-                        weatherList = mutableList,
-                        error = null
-                    )
-                }
+                //TODO think about
+//                val mutableList =
+//                    _pagerScreenState.value.weatherList.toMutableList()
+//                mutableList[_pagerScreenState.value.activeItem] = result.data
+//                _pagerScreenState.update {
+//                    it.copy(
+//                        isLoading = false,
+//                        isInit = true,
+//                        weatherList = mutableList,
+//                        error = null
+//                    )
+//                }
             }
         }
     }
