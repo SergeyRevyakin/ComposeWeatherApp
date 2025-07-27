@@ -94,7 +94,7 @@ class WeatherRepository @Inject constructor(
             }
 
             WeatherItem(
-                cityItem,
+                updatedCityItem,
                 dailyWeather,
                 hourlyWeather,
                 alerts,
