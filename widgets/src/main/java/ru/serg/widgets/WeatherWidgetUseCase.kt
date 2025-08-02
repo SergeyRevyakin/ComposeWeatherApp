@@ -9,7 +9,7 @@ import ru.serg.model.WidgetDataSettings
 class WeatherWidgetUseCase(
     private val dataStoreDataSource: DataStoreDataSource
 ) {
-    fun prepareData(): Flow<WidgetDataSettings> = combine(
+    fun prepareData(): Flow<WidgetDataSettings> = combine<Any, WidgetDataSettings>(
         dataStoreDataSource.widgetColorCode,
         dataStoreDataSource.widgetBigFontSize,
         dataStoreDataSource.widgetSmallFontSize,
