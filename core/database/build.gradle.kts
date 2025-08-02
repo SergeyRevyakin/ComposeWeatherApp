@@ -13,21 +13,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        ksp {
-            arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
-            arg("room.incremental", "true")
-            arg("room.expandProjection", "true")
-        }
     }
 
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
-    kotlinOptions {
-        jvmTarget = "18"
+    ksp {
+        arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
+        arg("room.incremental", "true")
+        arg("room.expandProjection", "true")
     }
 }
 

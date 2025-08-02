@@ -1,3 +1,8 @@
+import com.android.build.gradle.BaseExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 buildscript {
     repositories {
         google()
@@ -24,5 +29,37 @@ plugins {
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
+}
+
+subprojects {
+    plugins.withId("com.android.application") {
+        extensions.configure<BaseExtension> {
+            compileOptions {
+                sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+                targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+            }
+        }
+    }
+    plugins.withId("com.android.library") {
+        extensions.configure<BaseExtension> {
+            compileOptions {
+                sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+                targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
+            }
+        }
+    }
+    plugins.withId("org.jetbrains.kotlin.android") {
+        tasks.withType<KotlinJvmCompile>().configureEach {
+            compilerOptions {
+                jvmTarget = JvmTarget.fromTarget(libs.versions.javaVersion.get())
+                optIn.add("kotlin.RequiresOptIn")
+                freeCompilerArgs.addAll(listOf("-Xcontext-receivers", "-Xinline-classes"))
+                progressiveMode.set(true)
+                jvmDefault.set(JvmDefaultMode.NO_COMPATIBILITY)
+            }
+            // Adjust validation mode if Gradle 8+ and AGP < 8.1
+            jvmTargetValidationMode.set(org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode.WARNING)
+        }
+    }
 }
 

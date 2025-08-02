@@ -18,8 +18,8 @@ android {
         applicationId = "ru.serg.composeweatherapp"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 97
-        versionName = "0.97"
+        versionCode = 98
+        versionName = "0.98"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -57,14 +57,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
-    kotlinOptions {
-        jvmTarget = "18"
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-    }
     buildFeatures {
         compose = true
     }
