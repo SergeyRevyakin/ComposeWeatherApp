@@ -3,9 +3,9 @@ package ru.serg.main_pager
 import androidx.compose.runtime.Stable
 
 @Stable
-sealed class PagerScreenError(open val message: String) {
-    data class NetworkError(override val message: String, val throwable: Throwable) :
-        PagerScreenError(message)
+sealed class PagerScreenError() {
+    data class NetworkError(val throwable: Throwable) :
+        PagerScreenError()
 
-    data class GPSError(override val message: String) : PagerScreenError(message)
+    data object GPSError : PagerScreenError()
 }

@@ -6,10 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.entry
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -21,8 +20,8 @@ import ru.serg.navigation.nav3.SettingsScreenNav
 
 @OptIn(ExperimentalFoundationApi::class, FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun EntryProviderBuilder<*>.MainScreenNavigation(
-    backStack: SnapshotStateList<NavKey>,
+fun EntryProviderScope<NavKey>.MainScreenNavigation(
+    backStack: NavBackStack<NavKey>,
     viewModel: MainViewModel,
     animationDuration: Int
 ) =

@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/core/local" />
             <option value="$PROJECT_DIR$/core/location" />
             <option value="$PROJECT_DIR$/core/model" />
+            <option value="$PROJECT_DIR$/core/mvi_core" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/network_self_proxy" />

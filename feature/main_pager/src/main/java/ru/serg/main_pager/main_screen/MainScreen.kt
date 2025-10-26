@@ -2,6 +2,7 @@ package ru.serg.main_pager.main_screen
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -55,16 +56,8 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
-    val screenState by viewModel.pagerScreenState.collectAsStateWithLifecycle()
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-//    LaunchedEffect(context.currentConnectionsState) {
-//        viewModel.processIntent(
-//            MainScreenIntent.SetNetworkAvailability(
-//                 context.currentConnectionsState == ConnectionState.Available
-//            )
-//        )
-//    }
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -74,7 +67,7 @@ fun MainScreen(
     }
 
     LaunchedEffect(pagerState.currentPage) {
-        viewModel.emitIntent(MainScreenIntent.SetPageNumber(pagerState.currentPage))
+        viewModel.sendAction(MainScreenIntent.SetPageNumber(pagerState.currentPage))
     }
 
     val pullToRefreshState = rememberPullToRefreshState()
@@ -118,23 +111,23 @@ fun MainScreen(
         },
     ) { padding ->
 
-        AnimatedVisibility(
-            visible = screenState.error != null && screenState.weatherList.isEmpty(),
-            enter = fadeIn(
-                animationSpec = tween(300)
-            ),
-            exit = fadeOut(
-                animationSpec = tween(300)
-            )
-        ) {
-            ErrorItem(
-                errorText = screenState.error?.message,
-                onRefreshClick = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) })
-        }
+//        AnimatedVisibility(
+//            visible = screenState.error != null && screenState.weatherList.isEmpty(),
+//            enter = fadeIn(
+//                animationSpec = tween(300)
+//            ),
+//            exit = fadeOut(
+//                animationSpec = tween(300)
+//            )
+//        ) {
+//            ErrorItem(
+//                errorText = screenState.error?.message,
+//                onRefreshClick = { viewModel.sendAction(MainScreenIntent.RefreshScreen) })
+//        }
 
         AnimatedVisibility(
-            visible = screenState.weatherList.isEmpty() && !screenState.isStartUp
-                    && !screenState.isLoading && screenState.error == null && screenState.isInit,
+            visible = screenState.weatherList.isEmpty()
+                    && !screenState.isLoading && screenState.error == null,
             enter = fadeIn(
                 animationSpec = tween(300)
             ),
@@ -142,6 +135,7 @@ fun MainScreen(
                 animationSpec = tween(300)
             )
         ) {
+            Log.e("TAG", "MainScreen: +++ TROLOLO ")
 
             NoCitiesMainScreenItem(
                 onSearchClick = remember {
@@ -161,11 +155,17 @@ fun MainScreen(
                 hasWelcomeBottomSheet = screenState.hasWelcomeDialog
             )
 
-            viewModel.emitIntent(MainScreenIntent.TurnOffWelcomeDialog)
+            viewModel.sendAction(
+                MainScreenIntent.ShowEmptyCitiesScreen(
+                    hasWelcomeDialog = false,
+                    isLoading = false
+                )
+            )
         }
 
         AnimatedVisibility(
-            visible = screenState.isStartUp || (screenState.weatherList.isEmpty() && screenState.isLoading),
+            visible = screenState.weatherList.isEmpty() && screenState.isLoading
+                    && screenState.error == null,
             enter = fadeIn(
                 animationSpec = tween(300)
             ),
@@ -187,8 +187,8 @@ fun MainScreen(
         ) {
             PullToRefreshBox(
                 state = pullToRefreshState,
-                onRefresh = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) },
-                isRefreshing = false,//screenState.isLoading,
+                onRefresh = { viewModel.sendAction(MainScreenIntent.RefreshScreen) },
+                isRefreshing = false,
                 indicator = {
                     Indicator(
                         modifier = Modifier
@@ -211,7 +211,7 @@ fun MainScreen(
                         val weatherItem = screenState.weatherList[it]
 
                         if ((weatherItem.dailyWeatherList.isEmpty() || weatherItem.hourlyWeatherList.isEmpty()) && screenState.error != null) {
-                            ErrorItem(onRefreshClick = { viewModel.emitIntent(MainScreenIntent.RefreshScreen) })
+                            ErrorItem(onRefreshClick = { viewModel.sendAction(MainScreenIntent.RefreshScreen) })
                         } else {
                             PagerScreen(
                                 weatherItem = weatherItem,

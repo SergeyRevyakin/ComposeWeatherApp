@@ -5,15 +5,14 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
-import androidx.navigation3.runtime.EntryProviderBuilder
-import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import ru.serg.city_weather.screen.CityWeatherScreen
 import ru.serg.navigation.nav3.CityWeatherScreenNav
 
-
 @Composable
-fun EntryProviderBuilder<*>.CityWeatherScreenNavigation(
+fun EntryProviderScope<NavKey>.CityWeatherScreenNavigation(
     navigateBack: () -> Unit,
     animationDuration: Int
 ) =

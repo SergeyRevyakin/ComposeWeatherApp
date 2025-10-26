@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetLocationWeatherUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
-    operator fun invoke(coordinates: Coordinates) =
-        weatherRepository.fetchLocationWeatherFlow(coordinates)
+    suspend operator fun invoke(coordinates: Coordinates) =
+        weatherRepository.fetchLocationWeather(coordinates)
 }

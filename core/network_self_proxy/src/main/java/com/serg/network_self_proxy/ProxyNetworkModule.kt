@@ -27,7 +27,7 @@ import javax.inject.Singleton
 class ProxyNetworkModule {
 
     companion object {
-        const val BASE_URL = "209.38.184.64"
+        const val BASE_URL = "s3rgi0.duckdns.org"
         const val FORECAST = "v1/weather/owm_proxy/coord"
         const val CITY_SEARCH = "/v1/location/city"
         const val LANG = "lang"

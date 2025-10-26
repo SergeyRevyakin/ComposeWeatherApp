@@ -10,9 +10,17 @@ class IsDateExpiredUseCase @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource
 ) {
 
-    suspend operator fun invoke(timestamp: Long): Boolean {
-        return dataStoreDataSource.fetchFrequency.map {
-            (((Constants.HOUR_FREQUENCY_LIST[it]) * 60L * 60L * 1000L + timestamp) - System.currentTimeMillis()) < 0
+    suspend operator fun invoke(timestamp: Long, isFavorite: Boolean = false): Boolean {
+        return if (isFavorite) isExpired(timestamp, 0.25)
+        else dataStoreDataSource.fetchFrequency.map {
+            isExpired(timestamp, Constants.HOUR_FREQUENCY_LIST[it].toDouble())
         }.first()
+    }
+
+    private fun isExpired(
+        timestamp: Long,
+        frequency: Double
+    ): Boolean {
+        return (frequency * 60L * 60L * 1000L + timestamp) - System.currentTimeMillis() < 0
     }
 }

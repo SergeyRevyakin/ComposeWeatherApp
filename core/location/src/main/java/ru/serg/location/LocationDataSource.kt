@@ -13,9 +13,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.serg.model.Coordinates
 
@@ -105,7 +107,7 @@ class LocationDataSource(
                 Log.e(this::class.simpleName, "Closed")
                 client.removeLocationUpdates(locationCallback)
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }
 

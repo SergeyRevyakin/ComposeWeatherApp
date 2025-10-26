@@ -6,10 +6,9 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.entry
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.FlowPreview
 import ru.serg.choose_city_feature.screen.ChooseCityScreen
@@ -18,8 +17,8 @@ import ru.serg.navigation.nav3.SearchScreenNav
 
 @OptIn(ExperimentalFoundationApi::class, FlowPreview::class)
 @Composable
-fun EntryProviderBuilder<*>.SearchScreenNavigation(
-    backStack: SnapshotStateList<NavKey>,
+fun EntryProviderScope<NavKey>.SearchScreenNavigation(
+    backStack: NavBackStack<NavKey>,
     navigateBack: () -> Unit,
     animationDuration: Int
 ) = entry<SearchScreenNav>(

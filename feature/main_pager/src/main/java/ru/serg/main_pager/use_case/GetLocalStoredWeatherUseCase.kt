@@ -4,7 +4,7 @@ import ru.serg.local.LocalDataSource
 import javax.inject.Inject
 
 class GetLocalStoredWeatherUseCase @Inject constructor(
-    val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource
 ) {
     operator fun invoke() = localDataSource.getWeatherFlow()
 }

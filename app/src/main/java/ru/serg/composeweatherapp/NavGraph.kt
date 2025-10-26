@@ -4,7 +4,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -14,11 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import ru.serg.composeweatherapp.navigation.CityWeatherScreenNavigation
 import ru.serg.composeweatherapp.navigation.MainScreenNavigation
 import ru.serg.composeweatherapp.navigation.SearchScreenNavigation
@@ -27,7 +24,8 @@ import ru.serg.composeweatherapp.navigation.WidgetSettingsScreenNavigation
 import ru.serg.main_pager.main_screen.MainViewModel
 import ru.serg.navigation.nav3.MainScreenNav
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalFoundationApi::class, FlowPreview::class)
+
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun NavGraph(
     viewModel: MainViewModel,
@@ -51,8 +49,7 @@ fun NavGraph(
     NavDisplay(
         modifier = modifier,
         entryDecorators = listOf(
-            rememberSceneSetupNavEntryDecorator(),
-            rememberSavedStateNavEntryDecorator(),
+            rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ),
         transitionSpec = {

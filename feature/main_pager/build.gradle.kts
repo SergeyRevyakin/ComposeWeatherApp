@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:location"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:mvi_core"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
