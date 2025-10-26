@@ -14,10 +14,16 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +39,8 @@ fun HourSliderItem(
     stateValue: MutableState<Float> = mutableFloatStateOf(2f),
     onValueChanged: ((Int) -> Unit) = {}
 ) {
+    val haptic = LocalHapticFeedback.current
+    var previousValue by remember { mutableIntStateOf(stateValue.value.roundToInt()) }
 
     Column(
         modifier = Modifier
@@ -45,21 +53,17 @@ fun HourSliderItem(
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-//        val drawPadding = with(LocalDensity.current) { 10.dp.toPx() }
-//        val textSize = with(LocalDensity.current) { 14.sp.toPx() }
-//        val canvasHeight = 50.dp
-//        val textPaint = android.graphics.Paint().apply {
-//            color = MaterialTheme.colorScheme.onBackground.toArgb()
-//            textAlign = android.graphics.Paint.Align.CENTER
-//            this.textSize = textSize
-//        }
-
         val primaryColor = MaterialTheme.colorScheme.primary
 
         Box(contentAlignment = Alignment.Center) {
             Slider(
                 value = stateValue.value,
                 onValueChange = {
+                    val newRoundedValue = it.roundToInt()
+                    if (newRoundedValue != previousValue) {
+                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        previousValue = newRoundedValue
+                    }
                     stateValue.value = it
                 },
                 onValueChangeFinished = {
@@ -67,11 +71,6 @@ fun HourSliderItem(
                 },
                 valueRange = 0f..hours.size.minus(1).toFloat(),
                 steps = hours.size.minus(2),
-//                colors = SliderDefaults.colors(
-////                    activeTickColor = Color.Transparent,
-////                    inactiveTickColor = Color.Transparent
-//
-//                ),
                 thumb = {
                     Box(
                         modifier = Modifier
@@ -86,33 +85,6 @@ fun HourSliderItem(
                     )
                 }
             )
-
-//            Canvas(
-//                modifier = Modifier
-//                    .height(canvasHeight)
-//                    .fillMaxWidth()
-//            ) {
-//
-//                val distance = (size.width.minus(2 * drawPadding)).div(hours.size.minus(1))
-//                hours.forEachIndexed { index, hour ->
-//                    drawCircle(
-//                        color = primaryColor,
-//                        radius = 8f,
-//                        center = Offset(
-//                            x = drawPadding + index.times(distance),
-//                            y = size.height / 2
-//                        )
-//                    )
-//                    if (index.rem(2) == 0) {
-//                        this.drawContext.canvas.nativeCanvas.drawText(
-//                            hour.toString(),
-//                            drawPadding + index.times(distance),
-//                            size.height,
-//                            textPaint
-//                        )
-//                    }
-//                }
-//            }
         }
 
         Text(

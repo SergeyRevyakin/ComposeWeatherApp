@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +25,8 @@ fun MenuRowWithRadioButton(
     buttonState: Boolean = false,
     onSwitchClick: ((Boolean) -> Unit) = {}
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -65,6 +69,7 @@ fun MenuRowWithRadioButton(
             Switch(
                 checked = buttonState,
                 onCheckedChange = {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                     onSwitchClick(it)
                 }
             )
