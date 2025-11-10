@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +34,7 @@ fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
             paramName = stringResource(id = string.wind),
             param = "${item.windSpeed} ${stringResource(id = units.windUnits)}",
             paramIcon = drawable.ic_wind_dir_north,
-            rotation = item.windDirection
+            rotation = 360 - item.windDirection
         )
 
         WeatherParamItem(
@@ -41,7 +42,7 @@ fun HorizontalWeatherMoreInfoItem(item: HourlyWeather, units: Units) {
             param = "${item.humidity} %",
             paramIcon = drawable.ic_humidity
         )
-        
+
         WeatherParamItem(
             paramName = stringResource(id = string.pressure),
             param = "${item.pressure}",
@@ -62,10 +63,12 @@ fun HorizontalWeatherMoreInfoItemPreview() {
         mutableStateOf(false)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        HorizontalWeatherMoreInfoItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Surface {
+            HorizontalWeatherMoreInfoItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC
+            )
+        }
     }
 }
 
@@ -76,9 +79,11 @@ fun HorizontalWeatherMoreInfoItemPreviewDark() {
         mutableStateOf(true)
     }
     ComposeWeatherAppTheme(isDarkTheme) {
-        HorizontalWeatherMoreInfoItem(
-            MockItems.getHourlyWeatherMockItem(),
-            Units.METRIC
-        )
+        Surface {
+            HorizontalWeatherMoreInfoItem(
+                MockItems.getHourlyWeatherMockItem(),
+                Units.METRIC
+            )
+        }
     }
 }
