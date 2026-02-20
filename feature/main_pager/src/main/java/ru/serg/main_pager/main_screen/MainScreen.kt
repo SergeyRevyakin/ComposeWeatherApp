@@ -2,7 +2,6 @@ package ru.serg.main_pager.main_screen
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -135,7 +134,6 @@ fun MainScreen(
                 animationSpec = tween(300)
             )
         ) {
-            Log.e("TAG", "MainScreen: +++ TROLOLO ")
 
             NoCitiesMainScreenItem(
                 onSearchClick = remember {
@@ -155,12 +153,14 @@ fun MainScreen(
                 hasWelcomeBottomSheet = screenState.hasWelcomeDialog
             )
 
-            viewModel.sendAction(
-                MainScreenIntent.ShowEmptyCitiesScreen(
-                    hasWelcomeDialog = false,
-                    isLoading = false
+            LaunchedEffect(Unit) {
+                viewModel.sendAction(
+                    MainScreenIntent.ShowEmptyCitiesScreen(
+                        hasWelcomeDialog = false,
+                        isLoading = false
+                    )
                 )
-            )
+            }
         }
 
         AnimatedVisibility(

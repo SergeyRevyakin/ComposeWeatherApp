@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
@@ -54,6 +55,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             locationPermissionFlow.distinctUntilChangedBy { state.value.isLocationAvailable == it.grantedPermissions.isNotEmpty() }
+                .debounce(300L)
                 .collectLatest { permissionState ->
                     sendAction(MainScreenIntent.SetLocationPermission(permissionState.grantedPermissions.isNotEmpty()))
                 }
@@ -118,8 +120,7 @@ class MainViewModel @Inject constructor(
                     if (it.isExpired(0.25) || it.dailyWeatherList.isEmpty() || it.hourlyWeatherList.isEmpty()) sendAction(
                         MainScreenIntent.RefreshScreen
                     )
-                } //?: sendAction(MainScreenIntent.RefreshScreen)
-
+                }
             }
         }
     }
@@ -155,6 +156,8 @@ class MainViewModel @Inject constructor(
             this.copy(
                 isLocationAvailable = isGranted,
             )
+        }.also {
+            if (isGranted) sendAction(MainScreenIntent.GetLocationWeather)
         }
     }
 
