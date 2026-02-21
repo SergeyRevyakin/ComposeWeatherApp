@@ -31,7 +31,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ru.serg.designsystem.simple_items.MenuCommonButton
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.simple_items.MenuSettingsRowWithIcon
@@ -57,6 +57,7 @@ import ru.serg.strings.R.string
 fun SettingsScreen(
     navigateBack: () -> Unit,
     navigateToWidgetSettings: () -> Unit,
+    navigateToLanguageSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: SettingViewModel = hiltViewModel()
@@ -105,6 +106,13 @@ fun SettingsScreen(
                 buttonState = viewModel.isDarkModeEnabled.collectAsState().value,
                 onSwitchClick = viewModel::onScreenModeChanged
             )
+
+            MenuCommonButton(
+                headerText = stringResource(id = string.app_language),
+                descriptionText = stringResource(id = string.choose_app_language)
+            ) {
+                navigateToLanguageSelection()
+            }
 
             val isNotificationEnabled = viewModel.isNotificationEnabled.collectAsState().value
             val notificationIcon = getNotificationIcon(isNotificationEnabled)

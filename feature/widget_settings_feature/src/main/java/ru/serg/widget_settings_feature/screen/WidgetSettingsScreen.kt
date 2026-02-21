@@ -29,7 +29,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import ru.serg.designsystem.simple_items.MenuRowWithRadioButton
 import ru.serg.designsystem.theme.headerModifier
 import ru.serg.designsystem.theme.headerStyle
